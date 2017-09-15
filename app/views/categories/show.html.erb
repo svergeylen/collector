@@ -1,0 +1,17 @@
+<h1><%= @category.name %></h1>
+
+<%= link_to 'Modifier', edit_category_path(@category) %> - 
+<%= link_to 'Supprimer', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> - 
+Couleur:<%= @category.color %>
+
+<ul>
+
+<% @series.each do |serie| %>
+
+	<li><%= link_to serie.name, serie %></li>
+
+<% end %>
+
+<ul>
+
+

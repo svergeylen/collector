@@ -1,0 +1,9 @@
+<h1>Catégories</h1>
+
+<%= link_to 'Nouvelle', new_category_path %>
+
+<ul>
+	<% @categories.each do |category| %>
+		<li><%= link_to category.name, category %>  </li>
+	<% end %>
+</ul>

@@ -1,0 +1,22 @@
+<h1><%= @series.name %></h1>
+<%= link_to 'Edit', edit_series_path(@series) %>
+
+
+ <table>
+  <tr>
+    <th>Numéro</th>
+    <th>Titre</th>
+		<th>Auteurs</th>
+  </tr>
+
+<% @items.each do |item| %>
+  <tr>
+    <td><%= item.numero %></td>
+    <td><%= link_to item.name, edit_item_path(item) %></td>
+		<td></td>
+  </tr>
+<% end %>
+
+</table> 
+
+

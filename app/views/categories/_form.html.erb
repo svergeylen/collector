@@ -1,0 +1,31 @@
+
+<%= form_with model: @category, local: true do |form| %>
+
+ <% if @category.errors.any? %>
+    <div id="error_explanation">
+        <%= pluralize(@category.errors.count, "erreur") %> bloquent la création de cette catégorie :
+      <ul>
+        <% @category.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name %>
+  </p>
+ 
+  <p>
+    <%= form.label :color %><br>
+    <%= form.text_field :color %>
+  </p>
+
+	<p>
+    <%= form.submit %>
+  </p>
+
+<% end %>
