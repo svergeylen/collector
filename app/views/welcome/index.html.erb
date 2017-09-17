@@ -1,7 +1,7 @@
 
 
  <div class="row">
-  <div class="col-sm-5">
+  <div class="col-sm-6">
 
 		<h2>Catégories</h2>
 
@@ -12,8 +12,8 @@
 		</ul>
 
   </div>
-  <div class="col-sm-7">
-		<%= render partial: "shared/latest", locals: {items: @latest_items } %>
+  <div class="col-sm-6">
+		<%= render partial: "shared/latest", locals: {items: @latest_items, category_name: "" } %>
   </div>
 </div>
 

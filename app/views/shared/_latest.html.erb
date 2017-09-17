@@ -1,13 +1,19 @@
 
 
-<h2>Derniers ajouts</h2>
+
+<h2>Derniers ajouts <small> <%= category_name %>  </small></h2>
 
 <table class="table table-striped">
+	<tr>
+		<th>Série</th>
+		<th>Titre</th>
+		<th>Ajouté le</th>
+	</tr>
 	<% items.each do |item| %>
 		<tr>
-			<td><%= link_to item.series.name, series_path(item.series) %> </td>
+			<td><%= link_to item.series.name, series_path(item.series) %></td>
 			<td><%= link_to item.name, series_path(item.series) %> </td>
-			<td>le <%= format_date(item.created_at) %></td>				
+			<td>le <%= format_date(item.created_at) %></td>
 		</tr>
 	<% end %>
 </table>
