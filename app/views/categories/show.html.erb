@@ -1,18 +1,24 @@
-<h1><%= @category.name %></h1>
-
-<div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><%= link_to 'Modifier', edit_category_path(@category) %></li>
-    <li><%= link_to 'Supprimer', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> </li>
-  </ul>
-</div>
+<% content_for :current_category do %>
+	<%= link_to @category.name, category_path(@category) %>
+<% end %>
 
 
+<h2>
+	<%= @category.name %>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><%= link_to 'Modifier', edit_category_path(@category) %></li>
+			<li><%= link_to 'Supprimer', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> </li>
+		</ul>
+	</div>
+</h2>
 
-Couleur:<%= @category.color %>
+
+
+
 
 <ul>
 
