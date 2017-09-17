@@ -4,19 +4,17 @@
  		<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Collection</title>
+    <title>Site VGL </title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+		<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
 
-		<header>
-			<h1><%= link_to "Collections", welcome_index_path %></h1>
+		<%= link_to "Collector", welcome_index_path, class: "navbar-brand" %>
 
-			<div class="navbar-text pull-right">
+		<div class="navbar-text pull-right">
 			<% if user_signed_in? %>
 				Bonjour, <%= current_user.email %>
 				<%= link_to 'Edit profile', edit_user_registration_path %> |
@@ -25,17 +23,23 @@
 				<%= link_to "Sign up", new_user_registration_path  %> |
 				<%= link_to "Login", new_user_session_path %>
 			<% end %>
-			</div>
+		</div>
 
-		</header>
+	<div style="clear:both"></div>
 
-		<% if notice %>
-			<p class="alert alert-success"><%= notice %></p>
-		<% end %>
-		<% if alert %>
-			<p class="alert alert-danger"><%= alert %></p>
-		<% end %>
+		<div id="main-container" class="container">
+     	<% if notice %>
+				<p class="alert alert-success"><%= notice %></p>
+			<% end %>
+			<% if alert %>
+				<p class="alert alert-danger"><%= alert %></p>
+			<% end %>
 
-    <%= yield %>
+			<%= yield %>
+    </div>
+
+
+
+
   </body>
 </html>

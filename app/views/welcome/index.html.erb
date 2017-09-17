@@ -1,24 +1,32 @@
 
-<div id="catgegories_list">
-	<h2>Catégories</h2>
 
-	<ul>
-	<% @categories.each do |category| %>
-		<li><%= link_to category.name, category %> </li>
-	<% end %>
-	</ul>
-</div>
+ <div class="row">
+  <div class="col-sm-5">
 
-<div id="newest_items">
-	<h2>Derniers ajouts</h2>
-	<table>
-		<% @items.each do |item| %>
-			<tr>
-				<td><%= link_to item.series.name, series_path(item.series) %> </td>
-				<td><%= link_to item.name, series_path(item.series) %> </td>
-				<td>le <%= format_date(item.created_at) %></td>				
-			</tr>
+		<h2>Catégories</h2>
+
+		<ul>
+		<% @categories.each do |category| %>
+			<li><%= link_to category.name, category %> </li>
 		<% end %>
-	</table>
+		</ul>
 
+  </div>
+  <div class="col-sm-7">
+
+		<h2>Derniers ajouts</h2>
+
+		<table class="table table-striped">
+			<% @items.each do |item| %>
+				<tr>
+					<td><%= link_to item.series.name, series_path(item.series) %> </td>
+					<td><%= link_to item.name, series_path(item.series) %> </td>
+					<td>le <%= format_date(item.created_at) %></td>				
+				</tr>
+			<% end %>
+		</table>
+
+  </div>
 </div>
+
+
