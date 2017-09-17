@@ -4,7 +4,7 @@
  		<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Site VGL </title>
+    <title>Collector</title>
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 		<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -45,7 +45,7 @@
 				        	<li role="separator" class="divider"></li>
 				        	<li><%= link_to 'Déconnexion', destroy_user_session_path, method: :delete %></li>
 								<% else %>
-									<li><%= link_to 'Connexion', new_user_session_path %>/li>>
+									<li><%= link_to 'Connexion', new_user_session_path %> </li>
 									<li><%= link_to 'Créer un compte', new_user_registration_path  %> </li>
 								<% end %>				       
 				      </ul>
