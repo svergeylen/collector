@@ -2,8 +2,12 @@ module ApplicationHelper
 
 	# Affiche le nom de la dernière catégorie choisie (current)
 	def link_to_current_category
-		cat = Category.find(session[:category])
-		return link_to(cat.name, category_path(cat) )
+		if (session[:category]) 
+			cat = Category.find(session[:category])
+			return link_to(cat.name, category_path(cat) )
+		else
+			return ""
+		end
 	end
 
 	# Renvoie une date courte en français

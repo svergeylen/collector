@@ -19,15 +19,13 @@
 
 
 
-
 <ul>
-
-<% @series.each do |serie| %>
-
-	<li><%= link_to serie.name, serie %></li>
-
-<% end %>
-
-<ul>
+	<% @series.each do |serie| %>
+		<li><%= link_to serie.name, serie %></li>
+	<% end %>
+	<li><%= link_to "Ajouter une série", new_series_path %></li>
+</ul>
 
 
+
+<%= render partial: "shared/latest", locals: {items: @latest_items } %>

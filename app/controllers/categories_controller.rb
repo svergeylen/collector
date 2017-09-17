@@ -9,6 +9,7 @@ class CategoriesController < ApplicationController
 		set_session_category(params[:id])
     @category = Category.find(params[:id])
 		@series = @category.series.order(:name)
+		@latest_items =  @category.items.order(created_at: :desc).limit(10)
   end
 
 	def new
