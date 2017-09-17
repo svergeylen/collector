@@ -6,6 +6,7 @@ class CategoriesController < ApplicationController
   end
 
 	def show
+		set_session_category(params[:id])
     @category = Category.find(params[:id])
 		@series = @category.series.order(:name)
   end
@@ -18,7 +19,8 @@ class CategoriesController < ApplicationController
 		@category = Category.new(category_params)
  
 		if @category.save
-		  redirect_to @category
+			set_session_category(@category.id)
+		  redirect_to @category, notice: "Nouvelle catégorie créée"
 		else
 		  render 'new'
 		end
@@ -33,7 +35,7 @@ class CategoriesController < ApplicationController
 		@category = Category.find(params[:id])
 	 
 		if @category.update(category_params)
-		  redirect_to @category
+		  redirect_to @category, notice: 'Catégorie modifiée'
 		else
 		  render 'edit'
 		end
@@ -43,7 +45,7 @@ class CategoriesController < ApplicationController
 		@category = Category.find(params[:id])
 		@category.destroy
 	 
-		redirect_to categories_path
+		redirect_to categories_path, notice: 'Catégorie supprimée'
 	end
 
 private

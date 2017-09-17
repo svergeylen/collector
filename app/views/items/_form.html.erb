@@ -12,18 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :numero %>
-    <%= form.text_field :numero, id: :item_numero %>
+    <%= form.text_field :numero, id: :item_numero, placeholder: "Numéro" %>
   </div>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :item_name %>
+		<%= form.text_field :name, id: :item_name, placeholder:"Titre, Nom" %>
   </div>
 
   <div class="field">
-    <%= form.label :series_id %>
-    <%= form.number_field :series_id, id: :item_series_id %>
+		<%= form.select("series_id", Series.all.collect {|s| [ s.name, s.id ] }, { prompt: "Série", selected: item.series_id} ) %>
   </div>
 
   <div class="actions">

@@ -12,16 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, id: :series_name %>
+    Nom :     <%= form.text_field :name, id: :series_name %>
   </div>
 
   <div class="field">
-    <%= form.label :category_id %>
-    <%= form.number_field :category_id, id: :series_category_id %>
+    Catégorie : 	<%= form.select("category_id", Category.all.collect {|c| [ c.name, c.id ] }) %>
   </div>
 
   <div class="actions">
     <%= form.submit %>
   </div>
+
 <% end %>
