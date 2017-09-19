@@ -10,6 +10,7 @@ class SeriesController < ApplicationController
   # GET /series/1
   # GET /series/1.json
   def show
+		set_session_category(@series.category.id)
 		@items = @series.items.order(:numero, :name)
 		@new_item = Item.new
 		@new_item.series_id = params[:id]

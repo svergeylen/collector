@@ -52,11 +52,12 @@
 				    </li>
 				  </ul>
 
-					<form class="navbar-form navbar-right">
+					<%= form_tag({controller: "search", action: "search"}	, method: "get", class: "navbar-form navbar-right") do %>
 				    <div class="form-group">
-				      <input type="text" class="form-control" placeholder="Recherche">
+				      <%= text_field_tag(:keyword, "", { placeholder: "Recherche", class: 'form-control' }) %>
+							
 				    </div>
-				  </form>
+				  <% end %>
 
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
