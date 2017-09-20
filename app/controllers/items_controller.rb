@@ -28,6 +28,7 @@ class ItemsController < ApplicationController
 		@item.authors_list = params[:item][:authors_list]
 
     if @item.save
+			@item.series.touch
 			redirect_to @item.series, notice: 'Elément créé'
     else
 			render :new 
@@ -38,6 +39,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
 		@item.authors_list = params[:item][:authors_list]
+		@item.series.touch
 
     if @item.update(item_params)
       redirect_to @item.series, notice: 'Elément mis à jour' 
@@ -49,6 +51,7 @@ class ItemsController < ApplicationController
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy
+		@item.series.touch
     @item.destroy
     redirect_to items_url, notice: 'Elément supprimé'
   end

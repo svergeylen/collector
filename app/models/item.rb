@@ -10,7 +10,12 @@ class Item < ApplicationRecord
 	validates :name, presence: true, length: { minimum: 2 }
 	validates :series_id, presence: true
 
-	# ajoute un like ou edite le like existant
+	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient
+	def likes_count
+		self.likes.sum(:note)
+	end
+
+	# Ajoute un like ou edite le like existant
 	def add_or_update_like(user_id, note, remark)
 		note = 1 if note.nil?
 		like = self.likes.where(user_id: user_id).limit(1)
@@ -24,7 +29,7 @@ class Item < ApplicationRecord
 		return like
 	end
 
-	# REnvoie true si l'élément est déjà marqué comme like par l'utilisateur (note >= 1)
+	# Renvoie true si l'élément est déjà marqué comme like par l'utilisateur (note >= 1)
 	def is_liked_by?(user_id)
 		like = self.likes.where(user_id: user_id).first
 		if like.present? and like.note.present? and (like.note > 0) 

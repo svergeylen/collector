@@ -9,19 +9,19 @@
 					<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
-					<li><%= link_to 'Modifier', edit_category_path(@category) %></li>
-					<li><%= link_to 'Supprimer', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> </li>
+					<li><%= link_to "Ajouter une série", new_series_path %></li>
+					<li class="divider"></li>
+					<li><%= link_to 'Modifier la catégorie', edit_category_path(@category) %></li>
+					<li><%= link_to 'Supprimer la catégorie', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> </li>
 				</ul>
 			</div>
 		</h2>
 
-
-	<ul>
-		<% @series.each do |serie| %>
-			<li><%= link_to serie.name, serie %></li>
-		<% end %>
-		<li><%= link_to "Ajouter une série", new_series_path %></li>
-	</ul>
+		<ul>
+			<% @series.each do |serie| %>
+				<li><%= link_to serie.name, serie %> (<%= serie.items.count %>)</li>
+			<% end %>
+		</ul>
 
 	</div>
 
