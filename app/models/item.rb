@@ -1,15 +1,37 @@
 class Item < ApplicationRecord
 	belongs_to :series
-	has_many :itemauthors
+
+	has_many :itemauthors, :dependent => :destroy
 	has_many :authors, through: :itemauthors
+
+	has_many :likes, :dependent => :destroy
+	has_many :likers, through: :likes
 
 	validates :name, presence: true, length: { minimum: 2 }
 	validates :series_id, presence: true
 
+	# ajoute un like ou edite le like existant
+	def add_or_update_like(user_id, note, remark)
+		note = 1 if note.nil?
+		like = self.likes.where(user_id: user_id).limit(1)
+		if like.present?
+			like.update(note: note, remark: remark)
+		else
+			like = self.likes.build(user_id: user_id, item_id: self.id, note: note, remark: remark)
+			like.save
+			puts "SAVE !"
+		end
+		return like
+	end
 
-	# Récupère la liste des Item asociés à un auteur donné
-	def self.written_by(name)
-		Author.find_by_name!(name).items
+	# REnvoie true si l'élément est déjà marqué comme like par l'utilisateur (note >= 1)
+	def is_liked_by?(user_id)
+		like = self.likes.where(user_id: user_id).first
+		if like.present? and like.note.present? and (like.note > 0) 
+			return true
+		else
+			return false
+		end		
 	end
 
 	# Liste les auteurs de l'item

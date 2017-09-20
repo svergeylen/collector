@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :like]
 
   # GET /items
   # GET /items.json
@@ -25,6 +25,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
+		@item.authors_list = params[:item][:authors_list]
 
     if @item.save
 			redirect_to @item.series, notice: 'Elément créé'
@@ -36,12 +37,13 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
+		@item.authors_list = params[:item][:authors_list]
 
-      if @item.update(item_params)
-        redirect_to @item.series, notice: 'Elément mis à jour' 
-      else
-        render :edit 
-      end
+    if @item.update(item_params)
+      redirect_to @item.series, notice: 'Elément mis à jour' 
+    else
+      render :edit 
+    end
   end
 
   # DELETE /items/1
@@ -50,6 +52,17 @@ class ItemsController < ApplicationController
     @item.destroy
     redirect_to items_url, notice: 'Elément supprimé'
   end
+
+
+	# Gestion des likes sur les items
+	def like
+		@like = @item.add_or_update_like(current_user.id, params[:note], params[:remark])
+		puts @like.inspect
+		redirect_to @item.series, notice: 'Elément liké' 
+	end
+
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

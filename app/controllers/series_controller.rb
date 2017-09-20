@@ -14,6 +14,12 @@ class SeriesController < ApplicationController
 		@items = @series.items.order(:numero, :name)
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
+		if @items.last.present? and (@items.last.numero.to_i.is_a? Integer)
+			@new_item.numero = @items.last.numero.to_i + 1
+		else
+			@new_item.numero = 1
+		end
+		@new_item.authors_list = @items.last.authors_list if @items.last.present?
   end
 
   # GET /series/new

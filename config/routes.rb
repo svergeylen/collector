@@ -1,15 +1,18 @@
 Rails.application.routes.draw do
 
 
-  get 'search/search'
-
   devise_for :users
-	resources :categories
-	resources :series
-  resources :items
-
 
   get 'welcome/index'
+  get 'search/search'
+
+	resources :categories
+	resources :series
+  resources :items do
+		get 'like', on: :member
+	end
+	resources :authors
+
   root 'welcome#index'
 
 end

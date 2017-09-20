@@ -20,6 +20,7 @@
   <tr>
     <th>Numéro</th>
     <th>Titre</th>
+		<th>Like</th>
 		<th>Auteurs</th>
   </tr>
 
@@ -27,12 +28,19 @@
   <tr>
     <td><%= item.numero %></td>
     <td><%= link_to item.name, edit_item_path(item) %></td>
-		<td></td>
+		<td>
+			<% if item.is_liked_by?(current_user.id) %>
+				<strong><%= link_to "J'aime", like_item_path(item) %></strong>
+			<% else %>
+				<%= link_to "Cliquez pour aimer", like_item_path(item) %>
+			<% end %>
+		</td>
+		<td><%= raw item.authors.map { |a| link_to(a.name, authors_path(a)) }.join(", ") %></td>
   </tr>
 <% end %>
 
 </table> 
 
 
-<%= render partial: "items/form", locals: {item: @new_item} %>
+<%= render partial: "items/form", locals: {item: @new_item } %>
 
