@@ -18,24 +18,26 @@
 
 <table class="table table-striped">
   <tr>
-    <th>Numéro</th>
+    <th></th>
+		<th></th>
     <th>Titre</th>
-		<th>Like</th>
 		<th>Auteurs</th>
+		<th>Note</th>
+		<th>Remarque</th>
   </tr>
 
 <% @items.each do |item| %>
   <tr>
     <td><%= item.numero %></td>
-    <td><%= link_to item.name, edit_item_path(item) %></td>
-		<td>
-			<% if item.is_liked_by?(current_user.id) %>
-				<strong><%= link_to "J'aime", like_item_path(item) %></strong>
-			<% else %>
-				<%= link_to "Cliquez pour aimer", like_item_path(item) %>
+   	<td>
+			<%= link_to edit_item_path(item) do %>
+				<span class="glyphicon glyphicon-edit"></span>
 			<% end %>
 		</td>
-		<td><%= raw item.authors.map { |a| link_to(a.name, authors_path(a)) }.join(", ") %></td>
+		<td><%= link_to item.name, item_path(item) %></td>
+    <td><%= raw item.authors.map { |a| link_to(a.name, authors_path(a)) }.join(", ") %></td>
+		<td><%= item.like_from(current_user.id).note %></td>
+		<td><%= link_to_modal(item, current_user.id) %></td>
   </tr>
 <% end %>
 
@@ -43,4 +45,45 @@
 
 
 <%= render partial: "items/form", locals: {item: @new_item } %>
+
+
+
+<!-- Fenêtre modale -->
+<div id="avis" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+			<%= form_tag('/items/like') do %>
+
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      <h3 id="item-title">Titre</h3>
+		    </div>
+		    <div class="modal-body">
+		      
+					<div class="field">
+						<%= text_field_tag 'note', '', id: "item-note" %>
+					</div>
+					<div class="field">
+						<h4>Remarque </h4>
+						<%= text_area_tag 'remark', '', id: "item-remark", size: "60x3" %>
+					</div>
+				
+
+		    </div>
+		    <div class="modal-footer">
+					<%= hidden_field_tag 'id', '', id: "item-id" %>
+					<%= submit_tag 'Sauver' %>
+		    </div>
+
+			<% end %>
+
+    </div>
+
+  </div>
+</div>
+
+
+
 

@@ -59,6 +59,8 @@ class ItemsController < ApplicationController
 
 	# Gestion des likes sur les items
 	def like
+		logger.debug params.inspect
+
 		@like = @item.add_or_update_like(current_user.id, params[:note], params[:remark])
 		puts @like.inspect
 		redirect_to @item.series, notice: 'Elément liké' 

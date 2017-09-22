@@ -8,9 +8,8 @@ Rails.application.routes.draw do
 
 	resources :categories
 	resources :series
-  resources :items do
-		get 'like', on: :member
-	end
+  resources :items 
+	post 'items/like'
 	resources :authors
 
   root 'welcome#index'

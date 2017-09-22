@@ -18,15 +18,20 @@ class Item < ApplicationRecord
 	# Ajoute un like ou edite le like existant
 	def add_or_update_like(user_id, note, remark)
 		note = 1 if note.nil?
-		like = self.likes.where(user_id: user_id).limit(1)
+		like = self.like_from(user_id)
 		if like.present?
 			like.update(note: note, remark: remark)
+			like.save # ?
 		else
 			like = self.likes.build(user_id: user_id, item_id: self.id, note: note, remark: remark)
 			like.save
-			puts "SAVE !"
 		end
 		return like
+	end
+	
+	# Renvoie le like du user donné
+	def like_from(user_id)
+		return self.likes.where(user_id: user_id).first
 	end
 
 	# Renvoie true si l'élément est déjà marqué comme like par l'utilisateur (note >= 1)
