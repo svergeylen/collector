@@ -63,7 +63,7 @@ class ItemsController < ApplicationController
 
 		@like = @item.add_or_update_like(current_user.id, params[:note], params[:remark])
 		puts @like.inspect
-		redirect_to @item.series, notice: 'Elément liké' 
+		redirect_to @item, notice: 'Elément liké' 
 	end
 
 

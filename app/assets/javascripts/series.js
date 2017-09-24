@@ -10,7 +10,6 @@ $( document ).ready(function() {
 		$("#avis #item-remark").val( $(this).data("item-remark"));
 
 		// Greffon star-rating
-
 		$("#item-note").rating({
 			size: "sm",   // xl, lg, md, sm, or xs
 			min: 0,
@@ -20,16 +19,16 @@ $( document ).ready(function() {
 			clearCaption: "Pas de note",
 			showCaption: true,
 			starCaptions:     {
-        0.5: 'Moyen',
-        1: 'Moyen',
-        1.5: 'Bien',
-        2: 'Bien',
-        2.5: 'Très bien',
-        3: 'Très bien',
-        3.5: 'Recommandé',
-        4: 'Recommandé',
-        4.5: 'Excellent',
-        5: 'Excellent'
+        0.5: 'Bien',
+        1: 'Bien',
+        1.5: 'Très bien',
+        2: 'Très bien',
+        2.5: 'Recommandé',
+        3: 'Recommandé',
+        3.5: 'Excellent',
+        4: 'Excellent',
+        4.5: 'Exceptionnel',
+        5: 'Exceptionnel'
     	}
 		});
 	});

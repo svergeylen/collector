@@ -1,18 +1,23 @@
+	
+<h2><%= @item.name %></h2>
 
 <p>
-  <strong>Numero:</strong>
-  <%= @item.numero %>
+	<%= link_to edit_item_path(@item) do %>
+		<span class="glyphicon glyphicon-edit"></span>
+		Modifier
+	<% end %>
 </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @item.name %>
-</p>
+<p>Série : <%= link_to @item.series.name, @item.series %></p>
+<p>Numéro: <%= @item.numero %></p>
 
-<p>
-  <strong>Series:</strong>
-  <%= @item.series_id %>
-</p>
 
-<%= link_to 'Edit', edit_item_path(@item) %> |
-<%= link_to 'Back', items_path %>
+<h3>Mon commentaire</h3>
+
+
+	<p>Note : <%= link_to_modal( @item, current_user.id) %> </p>
+	<% if @item.like_from(current_user.id).remark.present? %>
+		<p>Remarque : <%= @item.like_from(current_user.id).remark %></p>
+	<% end %>
+
+<%= render partial: "items/modal" %>
