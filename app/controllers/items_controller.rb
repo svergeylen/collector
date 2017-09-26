@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :like]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :like, :upvote]
 
   # GET /items
   # GET /items.json
@@ -56,6 +56,14 @@ class ItemsController < ApplicationController
     redirect_to items_url, notice: 'Elément supprimé'
   end
 
+  # Gestion des votes sur les items
+  def upvote
+    if current_user.voted_for? @item
+      current_user.unvote_for @item
+    else
+      current_user.up_votes @item
+    end
+  end
 
 	# Gestion des likes sur les items
 	def like

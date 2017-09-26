@@ -7,6 +7,8 @@ class Item < ApplicationRecord
 	has_many :likes, :dependent => :destroy
 	has_many :likers, through: :likes
 
+	acts_as_votable
+	
 	validates :name, presence: true, length: { minimum: 2 }
 	validates :series_id, presence: true
 

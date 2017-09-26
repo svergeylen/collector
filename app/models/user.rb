@@ -6,5 +6,6 @@ class User < ApplicationRecord
 	has_many :likes, :dependent => :destroy
 	has_many :liked_items, through: :likes, source: :item
 
+	acts_as_voter
 
 end

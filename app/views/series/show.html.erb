@@ -13,31 +13,14 @@
 	</div>
 </h1>
 
-<table class="table table-striped">
-  <tr>
-    <th></th>
-    <th>Titre</th>
-		<th>Auteurs</th>
-		<th>Note</th>
-		<th>Remarque</th>
-  </tr>
 
-	<% @items.each do |item| %>
-		<tr>
-		  <td><%= item.numero %></td>
-			<td><%= link_to item.name, item_path(item) %></td>
-		  <td><%= raw item.authors.map { |a| link_to(a.name, authors_path(a)) }.join(", ") %></td>
-			<td><%= link_to_modal(item, current_user.id) %>
-			</td>
-			<td><%= truncate( item.like_from(current_user.id).remark, length: 50, separator: ' ') %></td>
-		</tr>
-	<% end %>
+<%= react_component "ProductList", render(template: 'items/index.json.jbuilder') %>
 
-</table> 
+<%# render(template: 'items/index.json.jbuilder') %>
 
-<%= render partial: "items/form", locals: {item: @new_item, submit_text: "Créer" } %>
+<%# render partial: "items/form", locals: {item: @new_item, submit_text: "Créer" } %>
 
-<%= render partial: "items/modal" %>
+<%# render partial: "items/modal" %>
 
 
 

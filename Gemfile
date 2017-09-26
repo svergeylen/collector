@@ -39,6 +39,14 @@ gem 'jquery-rails'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
+gem 'js-routes'
+gem 'react-rails'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-classnames'
+end
+
+gem 'acts_as_votable', '~> 0.10.0'
 
 
 group :development, :test do
