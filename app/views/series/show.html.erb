@@ -7,8 +7,8 @@
 			<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
-			<li><%= link_to 'Edit', edit_series_path(@series) %></li>
-			<li><%= link_to 'Supprimer', series_path(@series), method: :delete, data: { confirm: 'Supprimer la série entière et tous les éléments qu\'elle contient ?' } %> </li>
+			<li><%= link_to 'Modifier la série', edit_series_path(@series) %></li>
+			<li><%= link_to 'Supprimer la série', series_path(@series), method: :delete, data: { confirm: 'Supprimer la série entière et tous les éléments qu\'elle contient ?' } %> </li>
 		</ul>
 	</div>
 </h1>
@@ -16,7 +16,6 @@
 <table class="table table-striped">
   <tr>
     <th></th>
-		<th></th>
     <th>Titre</th>
 		<th>Auteurs</th>
 		<th>Note</th>
@@ -26,11 +25,6 @@
 	<% @items.each do |item| %>
 		<tr>
 		  <td><%= item.numero %></td>
-		 	<td>
-				<%= link_to edit_item_path(item) do %>
-					<span class="glyphicon glyphicon-edit"></span>
-				<% end %>
-			</td>
 			<td><%= link_to item.name, item_path(item) %></td>
 		  <td><%= raw item.authors.map { |a| link_to(a.name, authors_path(a)) }.join(", ") %></td>
 			<td><%= link_to_modal(item, current_user.id) %>
@@ -41,7 +35,7 @@
 
 </table> 
 
-<%= render partial: "items/form", locals: {item: @new_item } %>
+<%= render partial: "items/form", locals: {item: @new_item, submit_text: "Créer" } %>
 
 <%= render partial: "items/modal" %>
 

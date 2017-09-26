@@ -1,4 +1,4 @@
 <h1>Nouvel élément</h1>
 
-<%= render 'form', item: @item %>
+<%= render partial: 'form', locals: {item: @item, submit_text: "Créer"} %>
 
