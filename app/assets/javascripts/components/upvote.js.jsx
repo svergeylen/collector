@@ -1,6 +1,6 @@
 
 var UpVote = React.createClass({
-	/* Conversion de l'item tocké en props vers states à l'initialiation pour pouvoir modifier les valeurs */
+	/* Conversion de l'item stocké en this.props vers this.states à l'initialiation pour pouvoir modifier les valeurs */
 	getInitialState: function() {
 		return {
 			item: this.props.item

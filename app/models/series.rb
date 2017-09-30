@@ -1,6 +1,6 @@
 class Series < ApplicationRecord
 	belongs_to :category
-	has_many :items
+	has_many :items, dependent: :destroy
 
 	validates :name, presence: true, length: { minimum: 2 }
 	validates :category_id, presence: true

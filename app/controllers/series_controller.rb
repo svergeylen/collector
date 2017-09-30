@@ -57,8 +57,9 @@ class SeriesController < ApplicationController
   # DELETE /series/1
   # DELETE /series/1.json
   def destroy
+    category_id = @series.category_id
     @series.destroy
- 		redirect_to series_index_url, notice: 'Série supprimée' 
+ 		redirect_to category_path(category_id), notice: 'Série supprimée' 
 	end
 
   private

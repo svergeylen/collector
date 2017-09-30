@@ -1,0 +1,55 @@
+<h2>Modification d'un utilisateur</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <table class="table">
+    <tbody>
+      <tr>
+        <td><%= f.label "Nom" %></td>
+        <td><%= f.text_field :name, autofocus: true %></td>
+      </tr>
+      <tr>
+        <td><%= f.label "Courriel" %></td>
+        <td><%= f.email_field :email %></td>
+      </tr>  
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <tr>
+      <td></td>
+      <td>Currently waiting confirmation for: <%= resource.unconfirmed_email %></td>
+    </tr>
+  <% end %>
+
+  <tr>
+    <td><%= f.label "Mot de passe actuel" %> <br />
+    </td>
+    <td><%= f.password_field :current_password, autocomplete: "off" %></td>
+  </tr>
+
+    <tr>
+      <td><%= f.label "Nouveau mot de passe" %>
+      </td>
+      <td><%= f.password_field :password, autocomplete: "off" %>
+      <% if @minimum_password_length %>
+        <em><%= @minimum_password_length %> caractères minimum</em>
+      <% end %>
+    </td>
+  </tr>
+  
+  <tr>
+    <td><%= f.label "Confirmation mot de passe" %></td>
+    <td><%= f.password_field :password_confirmation, autocomplete: "off" %></td>
+  </tr>
+
+  
+  
+
+  <tr>
+    <td></td>
+    <td><%= f.submit "Sauver" %></td>
+  </tr>
+  </tbody>
+</table>
+
+<% end %>
+

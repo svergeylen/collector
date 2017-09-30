@@ -1,0 +1,25 @@
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+  <div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        <form class="form-signin">
+            <span id="reauth-email" class="reauth-email"></span>
+            <%= f.email_field :email, class:"form-control", placeholer:"Courriel", autofocus: true, required:true %>
+            <%= f.password_field :password, class:"form-control", placeholer:"Mot de passe", autocomplete: "off", required:true %>
+            <div id="remember" class="checkbox">
+                <label>
+                    <%= f.check_box :remember_me %> Mémoriser
+                </label>
+            </div>
+            <%= f.submit "Connexion", class:"btn btn-lg btn-primary btn-block btn-signin" %>
+        </form><!-- /form -->
+        <div class="shared-links">
+          <%= render "devise/shared/links" %>
+        </div>
+
+    </div><!-- /card-container -->
+  </div>
+
+<% end %>
+
