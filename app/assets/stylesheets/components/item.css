@@ -1,4 +1,22 @@
 
-.item-upvote-upvoted {
-	color: #0000FF;
+
+/* Div globale encadrant le composant React*/
+.item-upvote {
+
+}
+/* L'item n'est pas liké */
+.item-upvote-no {
+	background: url("heart-inactive.png");
+	background-repeat: no-repeat;
+	color : grey;
+}
+/* L'item est liké */
+.item-upvote-yes, .item-upvote-no:hover  {
+	background: url("heart-active.png");
+	background-repeat: no-repeat;
+	color: red;
+}
+/* Indication du nombre de like */
+.item-upvote-count {
+	padding-left: 25px;
 }

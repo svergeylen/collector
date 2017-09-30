@@ -51,7 +51,7 @@ class Item < ApplicationRecord
 		authors.map(&:name).join(", ")
 	end
 
-	# Associe l'item à un auteur exitant ou créé un nouvel auteur
+	# Associe l'item à un auteur exitant ou crée un nouvel auteur
 	def authors_list=(names)
 		self.authors = names.split(",").map do |n|
 		  Author.where(name: n.strip).first_or_create!

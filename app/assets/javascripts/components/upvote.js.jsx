@@ -10,12 +10,12 @@ var UpVote = React.createClass({
 	render: function() {
 		var divClasses = classNames({
 			"item-upvote": true,
-			"item-upvote-upvoted": this.state.item.up_voted
+			"item-upvote-no": !this.state.item.up_voted,
+			"item-upvote-yes": this.state.item.up_voted
 		});
 
 		return (
 			<div className={divClasses} onClick={this.handleClick} >
-				<div className="item-upvote-arrow">Like</div>
 				<div className="item-upvote-count">
 					{this.state.item.up_votes}
 				</div>
