@@ -9,7 +9,7 @@ json.items do
 end
 
 # URL pour la création des liens dans la vue
-json.path series_url(series, format: :json)
+json.show_path series_url(series, format: :json)
 json.edit_path edit_series_path(@series)
 json.delete_path series_path(@series)
 

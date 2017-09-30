@@ -1,5 +1,13 @@
 json.extract! item, :id, :numero, :name, :series_id, :created_at, :updated_at
 
+# Liste des auteurs de l'item
+json.authors item.authors do |author|
+  json.author_id author.id
+  json.name author.name
+  json.show_path author_path(author.id)
+end
+
+
 # Nombre de votes sur l'item actuellement. Utilisation du gem Acts_as_votable
 json.up_votes item.votes_for.count
 
@@ -14,4 +22,4 @@ if user_signed_in?
 end
 
 # ajouté par le scaffold. pas touché...
-# json.url item_url(item, format: :json)
+json.show_path item_path(item)
