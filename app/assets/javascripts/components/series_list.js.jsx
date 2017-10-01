@@ -14,6 +14,15 @@ var SeriesList = React.createClass({
 	},
 
 	render: function() {
+
+		let comp1 = null;
+		if (this.state.current_view == "list") {
+	      comp1 = <ProductList items={this.props.items} />;
+	    } else {
+	      comp1 = <ProductGallery items={this.props.items} />;
+	    }
+
+
 		return (
 
 			<div className="series-show">
@@ -53,10 +62,8 @@ var SeriesList = React.createClass({
 					{this.props.name}
 				</h1>
 				
-				/// https://reactjs.org/docs/conditional-rendering.html
-				<ProductGallery items={this.props.items} />
+				{comp1}
 				
-		  
 			</div>
 		);
 	}
