@@ -18,6 +18,10 @@
     <%= form.label :name %><br>
     <%= form.text_field :name %>
   </p>
+  <p>
+    <%= form.label "Vue par défaut" %><br>
+    <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], selected_key = @category.default_view) ) %>
+  </p>
  
   <p>
     <%= form.label :color %><br>
@@ -25,7 +29,7 @@
   </p>
 
 	<p>
-    <%= form.submit %>
+    <%= form.submit submit_text %>
   </p>
 
 <% end %>

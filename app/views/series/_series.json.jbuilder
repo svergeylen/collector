@@ -1,5 +1,6 @@
 json.extract! series, :id, :name, :category_id, :created_at, :updated_at
 
+json.default_view @series.category.default_view
 
 # Liste des éléments de la série
 json.items do

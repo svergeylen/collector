@@ -26,12 +26,6 @@ var SeriesList = React.createClass({
 		return (
 
 			<div className="series-show">
-				
-
-				<div>
-			      Current_view = {this.state.current_view}
-			    </div>
-
 				<div className="btn-group">
 					<button type="button" className="btn btn-default btn-sm" onClick={this.handleClick.bind(this, "list")}>
 						<span className="glyphicon glyphicon-th-list"></span>

@@ -3,3 +3,31 @@
 div.series-show div.btn-group {
 	float: right;
 }
+
+#product-gallery .item-card {
+	margin-bottom: 10px;
+	padding: 4px 4px 10px 4px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+#product-gallery .item-caption {
+	margin-top : 10px;
+	
+}
+#product-gallery .item-card img {
+	padding: 0px;
+	line-height: 1.428571429;
+	-webkit-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	display: inline-block;
+	width: 100% \9;
+	max-width: 100%;
+	height: auto;
+}
+
+#product-gallery .item-upvote {
+	float : right;
+}
+

@@ -1,6 +1,6 @@
 <h1>Nouvelle Catégorie</h1>
 
 
-<%= render 'form' %>
+<%= render partial: 'form', locals: {submit_text: "Créer"} %>
+ 
 
-<%= link_to 'Index', categories_path %>
