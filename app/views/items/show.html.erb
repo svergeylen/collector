@@ -21,7 +21,7 @@
 
 
 	<p>Note : <%= link_to_modal( @item, current_user.id) %> </p>
-	<% if @item.like_from(current_user.id).remark.present? %>
+	<% if @item.like_from(current_user.id).present? %>
 		<p>Remarque : <%= @item.like_from(current_user.id).remark %></p>
 	<% end %>
 

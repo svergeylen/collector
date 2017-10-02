@@ -7,12 +7,9 @@ var ProductListItem = React.createClass ({
 				<td>
 					<a href={this.props.item.show_path} >{this.props.item.name}</a>
 				</td>
-
 				<td> 
 					{this.props.item.authors.map (function(author, i) {
-						return (
-							<a href={author.show_path} >{author.name}</a>  
-						)
+						return ( <a href={author.show_path} >{author.name}, </a> )
 					}) }
 				</td>
 				<td>

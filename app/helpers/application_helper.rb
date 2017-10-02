@@ -3,7 +3,11 @@ module ApplicationHelper
 	# Affiche le nom de la dernière catégorie choisie (current)
 	def link_to_current_category
 		if (session[:category]) 
-			cat = Category.find(session[:category])
+			begin
+				cat = Category.find(session[:category])
+			rescue ActiveRecord::RecordNotFound => e
+				return ""
+			end
 			return link_to(cat.name, category_path(cat) )
 		else
 			return ""

@@ -6,9 +6,12 @@ module ItemsHelper
 	def link_to_modal(item, user_id)
 		if item.like_from(current_user.id).present? and item.like_from(current_user.id).note.present?
 			note = item.like_from(current_user.id).note
+			remark = item.like_from(current_user.id).remark
 			link_text = note_to_s(note)
 			title_text = "Note : #{note.to_s} / 5"
 		else
+			note = 0
+			remark = ""
 			link_text = "Noter"
 			title_text = "Pas de note"
 		end
@@ -19,8 +22,8 @@ module ItemsHelper
 			data: { 
 				item_id: item.id, 
 				item_title: item.name, 
-				item_note: item.like_from(current_user.id).note, 
-				item_remark: item.like_from(current_user.id).remark 		
+				item_note: note, 
+				item_remark: remark 		
 			} 
 		}
 	return ret.html_safe
