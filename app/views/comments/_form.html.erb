@@ -1,32 +1,26 @@
-<%= form_with(model: comment, local: true) do |form| %>
-  <% if comment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+<div class="comment-add">
 
-      <ul>
-      <% comment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+  <h5> Ajouter un commentaire </h5>
+  <%= form_with(model: comment, local: true) do |form| %>
+    <% if comment.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+        <ul>
+        <% comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="comment-add-textarea">
+      <%= form.text_area :message, id: :comment_message, size: "20x1" %>
+      <%= form.hidden_field :post_id, id: :comment_post_id %>
+      <%= form.hidden_field :user_id, id: :comment_user_id %>
+      <%= form.submit "Ajouter" %>
     </div>
+
   <% end %>
 
-  <div class="field">
-    <%= form.label :message %>
-    <%= form.text_area :message, id: :comment_message %>
-  </div>
-
-  <div class="field">
-    <%= form.label :post_id %>
-    <%= form.text_field :post_id, id: :comment_post_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :user_id %>
-    <%= form.text_field :user_id, id: :comment_user_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

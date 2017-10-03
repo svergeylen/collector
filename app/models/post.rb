@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
 	belongs_to :user
-	has_many :comments
+	has_many :comments, dependent: :destroy
 
 	validates :message, presence: { message: "Le contenu du message ne peut pas être vide" }
 

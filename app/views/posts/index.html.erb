@@ -1,16 +1,30 @@
 
+<%= render partial: "form" , locals: { post: Post.new }  %>
 
 
 <% @posts.each do |post| %>
-  <div>
-    <div>
-      <%= post.user.name %>
+  <div class="posts">
+    <div class="posts-user">
+      <h4><%= post.user.name %></h4>
     </div>
-    <div>
-      <small><%= format_date(post.updated_at) %></small>
+    <div class="posts-actions">
+      <% if (post.user.id == current_user.id) %>
+        <%= link_to "Modifier", edit_post_path(post) %>
+        <%= link_to 'Supprimer', post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message ?' } %>
+      <% end %>
+      <div class="time">
+        <small><%= format_date(post.updated_at) %></small>
+      </div>
     </div>
-    <div>
+    <div class="post-message">
       <%= post.message %>
+    </div>
+    <div class="comments">
+      <% post.comments.each do |comment| %>
+        <%= render partial: "comments/show", locals: { comment: comment } %>
+      <% end %>
+
+      <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
     </div>
   </div>
 <% end %>

@@ -7,16 +7,6 @@ class PostsController < ApplicationController
     @posts = Post.all.order(updated_at: :desc)
   end
 
-  # GET /posts/1
-  # GET /posts/1.json
-  def show
-  end
-
-  # GET /posts/new
-  def new
-    @post = Post.new
-  end
-
   # GET /posts/1/edit
   def edit
   end
@@ -29,7 +19,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @posts, notice: 'Message posté avec succès' }
+        format.html { redirect_to posts_path, notice: 'Message posté avec succès' }
         format.json { render :show, status: :created, location: @post }
       else
         format.html { render :new }

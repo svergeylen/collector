@@ -1,0 +1,11 @@
+<div class="comment">
+	<h5>
+		<%= comment.user.name %>
+	</h5>
+	<div class="time">
+		<%= format_date(comment.updated_at) %>	
+	</div>
+	<div class="comment-message">
+		<%= comment.message %>
+	</div>
+</div>

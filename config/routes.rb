@@ -8,9 +8,9 @@ Rails.application.routes.draw do
 
 
 	# Blog
-	resources :posts do
-		resources :comments
-	end
+	resources :posts 
+	resources :comments
+	
 
 
 	# Collector
