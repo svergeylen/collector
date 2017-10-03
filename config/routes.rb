@@ -1,11 +1,21 @@
 Rails.application.routes.draw do
 
+  
+  get 'users/show'
+
+	devise_for :users 
+	resources :users, only: [:show]
+
+
+	# Blog
+	resources :posts do
+		resources :comments
+	end
+
+
+	# Collector
 	get 'welcome/index'
-
-	devise_for :users
-
 	get 'search/search'
-
 	resources :categories
 	resources :series
 	resources :items do
@@ -17,6 +27,7 @@ Rails.application.routes.draw do
 	resources :authors
 	
 
-	root 'welcome#index'
+
+	root 'posts#index'
 
 end

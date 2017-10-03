@@ -1,0 +1,17 @@
+
+
+
+<% @posts.each do |post| %>
+  <div>
+    <div>
+      <%= post.user.name %>
+    </div>
+    <div>
+      <small><%= format_date(post.updated_at) %></small>
+    </div>
+    <div>
+      <%= post.message %>
+    </div>
+  </div>
+<% end %>
+

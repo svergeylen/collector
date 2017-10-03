@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
 	has_many :likes, dependent: :destroy
 	has_many :liked_items, through: :likes, source: :item
+	has_many :posts
+	has_many :comments, through: :posts
 
 	acts_as_voter # les users peuvent mettre des likes sur les items
 
