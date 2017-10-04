@@ -1,6 +1,8 @@
 <div class="comment-add">
+  <div class="user-picture">
+    <img src="" class="img-thumbnail" />
+  </div>
 
-  <h5> Ajouter un commentaire </h5>
   <%= form_with(model: comment, local: true) do |form| %>
     <% if comment.errors.any? %>
       <div id="error_explanation">
@@ -15,10 +17,10 @@
     <% end %>
 
     <div class="comment-add-textarea">
-      <%= form.text_area :message, id: :comment_message, size: "20x1" %>
+      <%= form.text_field :message, id: :comment_message, placeholder: "Votre commentaire..." %>
       <%= form.hidden_field :post_id, id: :comment_post_id %>
       <%= form.hidden_field :user_id, id: :comment_user_id %>
-      <%= form.submit "Ajouter" %>
+      <%# form.submit "Ajouter" %>
     </div>
 
   <% end %>

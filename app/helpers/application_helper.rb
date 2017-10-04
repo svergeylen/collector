@@ -8,7 +8,7 @@ module ApplicationHelper
 			rescue ActiveRecord::RecordNotFound => e
 				return ""
 			end
-			return link_to(cat.name, category_path(cat) )
+			return link_to(cat.name, category_path(cat), class: "white" )
 		else
 			return ""
 		end

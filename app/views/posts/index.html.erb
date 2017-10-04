@@ -1,31 +1,64 @@
 
-<%= render partial: "form" , locals: { post: Post.new }  %>
+<div class="row">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-8">
+  
+    <%= render partial: "form" , locals: { post: Post.new }  %>
 
 
-<% @posts.each do |post| %>
-  <div class="posts">
-    <div class="posts-user">
-      <h4><%= post.user.name %></h4>
-    </div>
-    <div class="posts-actions">
-      <% if (post.user.id == current_user.id) %>
-        <%= link_to "Modifier", edit_post_path(post) %>
-        <%= link_to 'Supprimer', post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message ?' } %>
-      <% end %>
-      <div class="time">
-        <small><%= format_date(post.updated_at) %></small>
+    <% @posts.each do |post| %>
+      <div class="post">
+
+        <div class="user-picture">
+          <img src="" class="img-thumbnail" />
+          
+          <div class="pull-right">
+            <% if (post.user.id == current_user.id) %>
+              <div class="btn-group btn-xs">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><%= link_to "Modifier", edit_post_path(post) %></li>
+                  <li> <%= link_to 'Supprimer', post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message ?' } %></li>
+                </ul>
+              </div>
+            <% end %>
+          </div>
+
+          <%= post.user.name %>
+
+          <div class="time">
+            Le <%= format_date(post.updated_at) %>
+          </div>
+        </div>
+        
+        <div class="post-message">
+
+          <%= post.message %>
+        </div>
+
+        <div class="comments">
+          <div class="likes">
+            J'aime
+          </div>
+          <% post.comments.each do |comment| %>
+            <%= render partial: "comments/show", locals: { comment: comment } %>
+          <% end %>
+
+          <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
+        </div>
+
       </div>
-    </div>
-    <div class="post-message">
-      <%= post.message %>
-    </div>
-    <div class="comments">
-      <% post.comments.each do |comment| %>
-        <%= render partial: "comments/show", locals: { comment: comment } %>
-      <% end %>
+    <% end %>
 
-      <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
-    </div>
   </div>
-<% end %>
+  <div class="col-sm-3">
+    <h4>Archives</h4>
+
+  </div>
+</div> 
+
+
+
 
