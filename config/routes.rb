@@ -1,10 +1,15 @@
 Rails.application.routes.draw do
 
   
-  get 'users/show'
+  # get 'users/show'
 
 	devise_for :users 
-	resources :users, only: [:show]
+	resources :users, only: [:show] do
+		member do
+			get 'delete_profile_picture', as: "delete_profile_picture"
+		end
+	end
+	
 
 
 	# Blog

@@ -30,49 +30,79 @@ $lateral-padding : 15px;
 	background: $post-background;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
-	.user-picture {
-		padding-left : $lateral-padding;
-		padding-right: $lateral-padding;
-		font-weight: 700;
-		font-size: 14px;
-	
-		img {
-			width: 30px;
-			height : 30px;
+	.post-header {
+		padding-right : $lateral-padding;
+		.profile-picture {
 			float: left;
-			margin-right: 15px;
+			margin-left: $lateral-padding;
 		}
-		.time {
-			color : $color-text-dimmed;
-			font-size: 0.8em;
-			font-weight: normal;
+		.user-name {
+			margin-left : 60px;
+			padding-top : 5px;
+			font-weight: 700;
+			font-size: 14px;
 		}
 	}
-	.post-message, .comment-message {
+	.post-message {
 		clear: both;
 		margin-top: 5px;
-		margin-bottom: 5px;
-		padding-bottom: 3px;
+		padding-top: 5px;
+		padding-bottom: 5px;
 		padding-left : $lateral-padding;
 		padding-right: $lateral-padding;
 	}
+	.likes {
+		margin-top: 5px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-right : $lateral-padding;
+		width: 100%;
+		text-align:right;
+	}
 	.comments {
-		padding-left : $lateral-padding;
+		font-size: 0.9em;
+		padding-left : 45px;
 		padding-right: $lateral-padding;
 		padding-top: 10px;
 		padding-bottom: 10px;
 		background: rgb(246, 247, 249);
-		.likes {
-			margin-bottom: 5px;
-			width: 100%;
-			text-align:center;
+
+		.comment {
+			clear: both;
+			margin-top: 5px;
+			margin-bottom : 10px;
+			.profile-picture {
+				float : left;
+			}
+			.comment-message {
+				padding-top : 8px;
+				margin-left : 50px;
+				.comment-username {
+					font-weight: 700;
+				}
+			}
 		}
-	}
-	.comment-add {
-		.comment-add-textarea {
-			input {
-				width : 80%;
+		.comment-add {
+			clear:both;
+			margin-top: 5px;
+			margin-bottom: 5px;
+			.profile-picture {
+				float : left;
+			}
+			.comment-add-textarea {
+				margin-left : 50px;
+				input {
+					width : 100%;
+				}
 			}
 		}
 	}
+	
+}
+
+.time {
+	color : $color-text-dimmed;
+	font-size: 0.8em;
+	font-weight: normal;
+	padding-right : 5px;
 }

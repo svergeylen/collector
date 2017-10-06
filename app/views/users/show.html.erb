@@ -1,5 +1,14 @@
 <h1>Profil</h1>
 
+<% if @user.avatar.present? %>
+	<div class="pull-right">
+		<%= image_tag @user.avatar.url(:medium) %><br />
+		<% if @user.id == current_user.id %>
+			<%= link_to "Supprimer l'image de profil", delete_profile_picture_user_path(current_user.id) %>
+		<% end %>
+	</div>
+<% end %>
+
 <p><%= @user.name %></p>
 <p><%= @user.email %></p>
 

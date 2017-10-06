@@ -1,14 +1,23 @@
 <div class="comment">
-	 <div class="user-picture">
-		<img src="" class="img-thumbnail" />
-		
-		<%= comment.user.name %>
-		<div class="time">
-			<%= format_date(comment.updated_at) %>	
-		</div>
-	</div>
-
+	
+	<%= profile_picture(comment.user) %>
+	
+	
 	<div class="comment-message">
+		<span class="comment-username">
+			<%= comment.user.name %>
+		</span>
+		
 		<%= comment.message %>
+		
+		<span class="time">
+			<%= format_date(comment.updated_at) %>	
+		</span>	
+
+		<% if current_user.id == comment.user.id %>
+		<%= link_to edit_comment_path(comment) do %><span class="glyphicon glyphicon-edit"></span><% end %>
+		<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
+			
+		<% end %>
 	</div>
 </div>

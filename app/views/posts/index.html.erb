@@ -9,44 +9,48 @@
     <% @posts.each do |post| %>
       <div class="post">
 
-        <div class="user-picture">
-          <img src="" class="img-thumbnail" />
-          
+        <div class="post-header">
           <div class="pull-right">
-            <% if (post.user.id == current_user.id) %>
-              <div class="btn-group btn-xs">
-                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><%= link_to "Modifier", edit_post_path(post) %></li>
-                  <li> <%= link_to 'Supprimer', post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message ?' } %></li>
-                </ul>
-              </div>
-            <% end %>
+            <span class="time">
+              Le <%= format_date(post.updated_at) %>
+            </span> 
+            <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
+            <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires asociés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
           </div>
 
-          <%= post.user.name %>
+          
 
-          <div class="time">
-            Le <%= format_date(post.updated_at) %>
+          <%= profile_picture(post.user) %>
+          
+          <div class="user-name">
+            <%= post.user.name %>
           </div>
         </div>
         
         <div class="post-message">
-
           <%= post.message %>
         </div>
 
-        <div class="comments">
-          <div class="likes">
-            J'aime
-          </div>
+        <div class="likes">
+          J'aime
+         
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#comments-post-<%= post.id %>">
+               <% if post.comments.present? %>
+                <%= pluralize(post.comments.count, "réponse", "réponses") %>
+              <% else %>
+                Répondre
+              <% end %>
+             </button>
+        </div>
+
+        <div class="comments collapse" id="comments-post-<%= post.id %>">
           <% post.comments.each do |comment| %>
             <%= render partial: "comments/show", locals: { comment: comment } %>
           <% end %>
 
-          <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
+          <div class="comment-add">
+            <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
+          </div>
         </div>
 
       </div>

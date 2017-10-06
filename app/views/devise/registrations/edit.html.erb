@@ -41,8 +41,12 @@
     <td><%= f.password_field :password_confirmation, autocomplete: "off" %></td>
   </tr>
 
-  
-  
+  <tr>
+    <td>Image de profil</td>
+    <td>
+      <%= f.file_field :avatar %>
+    </td>
+  </tr>  
 
   <tr>
     <td></td>

@@ -58,4 +58,7 @@ Rails.application.configure do
   # React
   config.react.variant = :development
 
+  # PaperClip
+  Paperclip.options[:command_path] = "/usr/bin/"
+
 end
