@@ -3,7 +3,7 @@
   <div class="col-sm-1"></div>
   <div class="col-sm-8">
   
-    <%= render partial: "form" , locals: { post: Post.new }  %>
+    <%= render partial: "form" , locals: { post: Post.new, submit_text: "Poster", intro_text: "Poster un message" }  %>
 
 
     <% @posts.each do |post| %>

@@ -4,7 +4,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all.order(updated_at: :desc)
+    @posts = Post.all.order(updated_at: :desc).limit(50)
   end
 
   # GET /posts/1/edit
@@ -34,7 +34,7 @@ class PostsController < ApplicationController
     if (@post.user_id == current_user.id)
       respond_to do |format|
         if @post.update(post_params)
-          format.html { redirect_to @post, notice: 'Message modifié avec succès' }
+          format.html { redirect_to posts_path, notice: 'Message modifié avec succès' }
           format.json { render :show, status: :ok, location: @post }
         else
           format.html { render :edit }
