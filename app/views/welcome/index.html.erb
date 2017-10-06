@@ -1,20 +1,19 @@
 
-
  <div class="row">
-  <div class="col-sm-6">
+	<div class="col-sm-6">
+		<div class="rounded-box">
+			<h2>Catégories</h2>
 
-		<h2>Catégories</h2>
-
-		<ul>
-		<% @categories.each do |category| %>
-			<li><%= link_to category.name, category %> </li>
-		<% end %>
-		</ul>
-
-  </div>
-  <div class="col-sm-6">
-		<%= render partial: "shared/latest", locals: {items: @latest_items, category_name: "" } %>
-  </div>
+			<ul>
+			<% @categories.each do |category| %>
+				<li><%= link_to category.name, category %> </li>
+			<% end %>
+			</ul>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="rounded-box">
+			<%= render partial: "shared/latest", locals: {items: @latest_items, category_name: "" } %>
+		</div>
+	</div>
 </div>
-
-

@@ -1,32 +1,34 @@
 
 <div class="row">
-	<div class="col-sm-6">
-
-		<h2>
-			<%= @category.name %>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><%= link_to "Ajouter une série", new_series_path %></li>
-					<li class="divider"></li>
-					<li><%= link_to 'Modifier la catégorie', edit_category_path(@category) %></li>
-					<li><%= link_to 'Supprimer la catégorie', category_path(@category), method: :delete, data: { confirm: 'Certain ?' } %> </li>
-				</ul>
+	<div class="col-sm-6">		
+		<div class="rounded-box">
+			<div class="pull-right">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+						<span class="glyphicon glyphicon-cog"></span>
+				 	<span class="caret"></span></button>
+					<ul class="dropdown-menu">
+					    <li><%= link_to "Modifier", edit_category_path(@category)  %></li>
+					    <li><%= link_to "Supprimer", category_path(@category), method: :delete, data: { confirm: 'Etes-vous certain de supprimer une catégorie entière ainsi que toutes les séries et tous les éléments qu\'elle contient ?' } %>
+					    </li>
+				  	</ul>
+				</div>				
 			</div>
-		</h2>
+			
+			<h2><%= @category.name %></h2>
 
-		<ul>
-			<% @series.each do |serie| %>
-				<li><%= link_to serie.name, serie %> (<%= serie.items.count %>)</li>
-			<% end %>
-		</ul>
-
+			<ul>
+				<% @series.each do |serie| %>
+					<li><%= link_to serie.name, serie %> (<%= serie.items.count %>)</li>
+				<% end %>
+			</ul>
+		</div>
 	</div>
 
-  <div class="col-sm-6">
-		<%= render partial: "shared/latest", locals: {items: @latest_items, category_name: @category.name } %>
+	<div class="col-sm-6">
+		<div class="rounded-box">
+			<%= render partial: "shared/latest", locals: {items: @latest_items, category_name: @category.name } %>
+		</div>
 	</div>
 
 </div>

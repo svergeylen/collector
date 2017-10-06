@@ -2,15 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$border-radius: 3px;
-$border-color: #ccc;
-$post-background: #fff;
-$color-text-dimmed: #888;
-$lateral-padding : 15px;
-
+@import 'colors';
 		
 #posts-new {
-	background: $post-background;
+	background: $box-color;
 	padding : 10px 20px 20px 20px;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
@@ -27,14 +22,14 @@ $lateral-padding : 15px;
 	margin-bottom: 10px;
 	padding-top : 20px;
 
-	background: $post-background;
+	background: $box-color;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
 	.post-header {
-		padding-right : $lateral-padding;
+		padding-right : $general-padding;
 		.profile-picture {
 			float: left;
-			margin-left: $lateral-padding;
+			margin-left: $general-padding;
 		}
 		.user-name {
 			margin-left : 60px;
@@ -48,21 +43,21 @@ $lateral-padding : 15px;
 		margin-top: 5px;
 		padding-top: 5px;
 		padding-bottom: 5px;
-		padding-left : $lateral-padding;
-		padding-right: $lateral-padding;
+		padding-left : $general-padding;
+		padding-right: $general-padding;
 	}
 	.likes {
 		margin-top: 5px;
 		padding-top: 5px;
 		padding-bottom: 5px;
-		padding-right : $lateral-padding;
+		padding-right : $general-padding;
 		width: 100%;
 		text-align:right;
 	}
 	.comments {
 		font-size: 0.9em;
 		padding-left : 45px;
-		padding-right: $lateral-padding;
+		padding-right: $general-padding;
 		padding-top: 10px;
 		padding-bottom: 10px;
 		background: rgb(246, 247, 249);

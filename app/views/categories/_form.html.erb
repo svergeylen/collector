@@ -23,10 +23,10 @@
     <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], selected_key = @category.default_view) ) %>
   </p>
  
-  <p>
-    <%= form.label :color %><br>
-    <%= form.text_field :color %>
-  </p>
+  
+    <%# form.label :color %><br>
+    <%# form.text_field :color %>
+ 
 
 	<p>
     <%= form.submit submit_text %>

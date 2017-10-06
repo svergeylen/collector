@@ -40,13 +40,13 @@ var SeriesList = React.createClass({
 					<ul className="dropdown-menu pull-right">
 						<li>
 							<a href={this.props.edit_path}>
-								<span className="glyphicon glyphicon-edit"></span> Modifier la série
+								Modifier la série
 							</a>
 						</li>
 
 						<li>
 							<a data-confirm="Supprimer la série entière et tous les éléments qu'elle contient ?" rel="nofollow" data-method="delete" href={this.props.delete_path}>
-								<span className="glyphicon glyphicon-trash"></span> Supprimer la série
+								Supprimer la série
 							</a>
 						</li>
 					</ul>
