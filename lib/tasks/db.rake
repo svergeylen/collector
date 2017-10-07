@@ -1,7 +1,7 @@
 namespace :db do
   desc "Conversion des BD depuis l'ancien site BD vers le site Collector"
   task load_sitebd: :environment do
-  	puts "Conversion des BD depuis l'ancien site BD vers le site Collector"
+  	puts "Script pour la Conversion des BD depuis l'ancien site BD vers le site Collector <3"
   	
     userL = User.where(name: "Luc").first
     userS = User.where(name: "Stéphane").first
@@ -13,6 +13,7 @@ namespace :db do
   	Author.delete_all
 
 
+    puts "Import en cours"
   	# Séries
   	Serie.all.each do |s|
   		STDOUT.flush
@@ -26,7 +27,7 @@ namespace :db do
         begin
 
   	  		creation_date = Time.at(bd.datedajout)
-          bd.titre = "unknown title" if bd.title.blank?
+          bd.titre = "unknown title" if bd.titre.blank?
   	  		new_item = Item.create!(name: bd.titre, numero: bd.numero, series_id: new_series.id, created_at: creation_date)
   	  		
   	  		# Auteurs
@@ -55,11 +56,7 @@ namespace :db do
 
 	  	end
   	end
-
-	
-  	
-
+    puts "Fini !"
 
   end
-
 end
