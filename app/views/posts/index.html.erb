@@ -33,6 +33,10 @@
 
         <div class="likes">
           J'aime
+
+
+          <%# react_component "UpVote", render(template: 'posts/show.json.jbuilder') %>
+
          
             <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#comments-post-<%= post.id %>">
                <% if post.comments.present? %>
