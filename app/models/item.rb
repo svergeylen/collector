@@ -4,12 +4,15 @@ class Item < ApplicationRecord
 	has_many :itemauthors, :dependent => :destroy
 	has_many :authors, through: :itemauthors
 
+	has_many :itemusers
+	has_many :users, through: :itemusers
+
 	has_many :likes, :dependent => :destroy
 	has_many :likers, through: :likes
 
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
-	validates :name, presence: true, length: { minimum: 2 }
+	validates :name, presence: true
 	validates :series_id, presence: true
 
 	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient

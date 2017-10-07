@@ -2,7 +2,7 @@ class Series < ApplicationRecord
 	belongs_to :category
 	has_many :items, dependent: :destroy
 
-	validates :name, presence: true, length: { minimum: 2 }
+	validates :name, presence: true
 	validates :category_id, presence: true
 
 	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient

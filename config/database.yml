@@ -10,19 +10,20 @@ default: &default
   timeout: 5000
 
 
-# development:
-#   <<: *default
-#   database: db/development.sqlite3
-
-
 development:
-  adapter: mysql2
-  encoding: utf8
-  database: vergeylendata
-  pool: 5
-  username: root
-  password: xcalibur
-  socket: /run/mysqld/mysqld.sock
+  <<: *default
+  database: db/development.sqlite3
+
+
+# Ancienne connexion à la Database mysql du site BD
+# development:
+#   adapter: mysql2
+#   encoding: utf8
+#   database: vergeylendata
+#   pool: 5
+#   username: root
+#   password: xcalibur
+#   socket: /run/mysqld/mysqld.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

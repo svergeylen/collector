@@ -33,6 +33,10 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'mysql2'
+gem 'yaml_db'
+
+
 gem 'devise'
 
 gem 'jquery-rails'
@@ -52,7 +56,7 @@ gem 'acts_as_votable', '~> 0.10.0'
 # Attchment for image uploads
 gem "paperclip", "~> 5.0.0"
 
-gem 'mysql2'
+
 
 
 group :development, :test do
