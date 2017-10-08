@@ -1,2 +1,28 @@
-<h1>Authors#edit</h1>
-<p>Find me in app/views/authors/edit.html.erb</p>
+<h1>Modification d'un auteur</h1>
+
+
+<%= form_with model: @author, local: true do |form| %>
+
+ <% if @author.errors.any? %>
+    <div id="error_explanation">
+        <%= pluralize(@author.errors.count, "erreur") %> bloquent la création de cet auteur :
+      <ul>
+        <% @author.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+  <p>
+    Nom : 
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.submit "Modifier" %>
+  </p>
+
+<% end %>
+

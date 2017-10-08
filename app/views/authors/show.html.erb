@@ -1,2 +1,32 @@
-<h1>Authors#show</h1>
-<p>Find me in app/views/authors/show.html.erb</p>
+<div class="pull-right">
+	<div class="dropdown">
+		<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+			<span class="glyphicon glyphicon-cog"></span>
+	 	<span class="caret"></span></button>
+		<ul class="dropdown-menu dropdown-menu-right">
+		    <li><%= link_to "Modifier l'auteur", edit_author_path(@author)  %></li>
+		    <li><%= link_to "Supprimer l'auteur", author_path(@author), method: :delete, data: { confirm: 'Etes-vous certain de supprimer cet auteur ?' } %>
+		    </li>
+	  	</ul>
+	</div>				
+</div>
+
+
+<h1><%= @author.name %></h1>
+
+<h4>Séries</h4>
+<ul>
+	<% @series.each do |serie| %>
+		<li>
+			<%= link_to serie.name, series_path(serie) %>
+		</li>
+	<% end %>
+</ul>
+
+<h4>Collègues</h4>
+<ul>
+	<% @colleagues.each do |colleague| %>
+		<li><%= link_to colleague.name, author_path(colleague.id) %></li>
+	<% end %>
+</ul>
+

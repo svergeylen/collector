@@ -7,7 +7,7 @@
 					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-cog"></span>
 				 	<span class="caret"></span></button>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu dropdown-menu-right">
 					    <li><%= link_to "Modifier", edit_category_path(@category)  %></li>
 					    <li><%= link_to "Supprimer", category_path(@category), method: :delete, data: { confirm: 'Etes-vous certain de supprimer une catégorie entière ainsi que toutes les séries et tous les éléments qu\'elle contient ?' } %>
 					    </li>
