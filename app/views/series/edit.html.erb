@@ -1,4 +1,4 @@
-<h1>Modification d'une série</h1>
+<h3>Modification d'une série</h3>
 
-<%= render 'form', series: @series %>
+<%= render partial: 'form', locals: { series: @series, submit_text: "Modifier" }  %>
 

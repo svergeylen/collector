@@ -2,13 +2,16 @@
 
 <div class="rounded-box">
 	<%= react_component "SeriesList", render(template: 'series/show.json.jbuilder') %>
+
+	<div class="separator">
+		<%= render partial: "items/form", locals: {item: @new_item, submit_text: "Ajouter" } %>
+	</div>
 </div>
 
 <%# render(template: 'series/show.json.jbuilder') %>
 
 <%# render(template: 'items/index.json.jbuilder') %>
 
-<%# render partial: "items/form", locals: {item: @new_item, submit_text: "Créer" } %>
+
 
 <%# render partial: "items/modal" %>
-

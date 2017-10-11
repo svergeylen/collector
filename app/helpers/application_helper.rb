@@ -46,7 +46,7 @@ module ApplicationHelper
 				mois = "inconnu"
 			end
 
-		return mydate.strftime("%d") + " " + mois.capitalize + " " + mydate.strftime("%y")
+		return mydate.strftime("%d") + " " + mois.capitalize #+ " " + mydate.strftime("%y")
 	end
 
 

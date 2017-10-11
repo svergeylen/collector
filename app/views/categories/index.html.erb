@@ -1,9 +1,25 @@
-<h1>Catégories</h1>
+ <div class="row">
+	<div class="col-sm-6">
+		<div class="rounded-box">
+			<div class="pull-right">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+						<span class="glyphicon glyphicon-cog"></span>
+				 	<span class="caret"></span></button>
+					<ul class="dropdown-menu dropdown-menu-right">
+					    <li><%= link_to "Nouvelle catégorie", new_category_path  %></li>
+				  	</ul>
+				</div>				
+			</div>
 
-<%= link_to 'Nouvelle', new_category_path, class: 'btn btn-primary' %>
+			<h2>Catégories</h2>
 
-<ul>
-	<% @categories.each do |category| %>
-		<li><%= link_to category.name, category %>  </li>
-	<% end %>
-</ul>
+			<ul>
+			<% @categories.each do |category| %>
+				<li><%= link_to category.name, category %> </li>
+			<% end %>
+			</ul>
+		</div>
+	</div>
+	<div class="col-sm-6"></div>
+</div>
