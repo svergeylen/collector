@@ -4,6 +4,9 @@ class CommentsController < ApplicationController
   
   # GET /comments/1/edit
   def edit
+    if (@comment.user_id != current_user.id)
+      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
+    end
   end
 
   # POST /comments
@@ -36,7 +39,7 @@ class CommentsController < ApplicationController
         end
       end
     else
-      redirect_to posts_path, error: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 
@@ -50,7 +53,7 @@ class CommentsController < ApplicationController
         format.json { head :no_content }
       end
     else
-      redirect_to posts_path, error: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 

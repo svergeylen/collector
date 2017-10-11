@@ -10,60 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011155552) do
+ActiveRecord::Schema.define(version: 20171011184222) do
 
   create_table "authors", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "bd_auteurs", primary_key: "aid", force: :cascade do |t|
-    t.string "nom", limit: 50, default: "", null: false
-  end
-
-  create_table "bd_bd", primary_key: "bdid", force: :cascade do |t|
-    t.integer "sid", limit: 3, default: 0, null: false
-    t.string "titre", limit: 100, default: "", null: false
-    t.integer "numero", limit: 2, default: 0, null: false
-    t.integer "datedajout", default: 1198486315, null: false
-    t.integer "par", limit: 3, default: 0, null: false
-    t.integer "PID1", limit: 1, default: 0, null: false
-    t.integer "PID2", limit: 1, default: 0, null: false
-    t.integer "PID9", limit: 1, default: 0, null: false
-    t.integer "PID23", limit: 1, default: 0, null: false
-  end
-
-  create_table "bd_bdaid", force: :cascade do |t|
-    t.integer "bdid", null: false
-    t.integer "aid", null: false
-    t.index ["bdid", "aid"], name: "bdid"
-    t.index ["id"], name: "id", unique: true
-  end
-
-  create_table "bd_membres", primary_key: "pid", force: :cascade do |t|
-    t.string "cle", limit: 32, default: "", null: false
-    t.string "login", limit: 30, default: "", null: false
-    t.string "password", limit: 35, default: "", null: false
-    t.string "nom", limit: 70, default: "", null: false
-    t.text "amis", limit: 16777215, null: false
-    t.boolean "admin", default: false, null: false
-  end
-
-  create_table "bd_prets", force: :cascade do |t|
-    t.integer "bdid", null: false
-    t.string "texte", null: false
-    t.datetime "date", null: false
-    t.integer "pid", null: false
-  end
-
-  create_table "bd_series", primary_key: "sid", force: :cascade do |t|
-    t.string "nom", limit: 50, default: "", null: false
-    t.string "lettre", limit: 1, default: "", null: false
-    t.integer "PID1", limit: 1, default: 0, null: false
-    t.integer "PID2", limit: 1, default: 0, null: false
-    t.integer "PID9", limit: 1, default: 0, null: false
-    t.integer "PID23", limit: 1, default: 0, null: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -109,17 +61,6 @@ ActiveRecord::Schema.define(version: 20171011155552) do
     t.datetime "checked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "likes", force: :cascade do |t|
-    t.integer "item_id"
-    t.integer "user_id"
-    t.integer "note"
-    t.string "remark"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_id"], name: "index_likes_on_item_id"
-    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|

@@ -10,38 +10,19 @@
 	</div>
 </div>
 
-<h3><%= @item.name %></h3>
+<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h4>
 
-
-<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %>
-<p>Série : <%= link_to @item.series.name, @item.series %></p>
-<p>Auteurs : <%= @item.authors_list %></p>
+<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 <p>Numéro : <%= @item.numero %></p>
-<p>Utilisateurs qui l'ont : </p>
-<ul>
-<% @item.users.each do |u| %>
-	<li><%= link_to u.name, u %></li>
-<% end %>
-</ul>
+<p>Auteurs : <%= @item.authors_list %></p>
 
-<!--
-<h3>Mon commentaire</h3>
-
-	<p>Note : <%= link_to_modal( @item, current_user.id) %> </p>
-	<% if @item.like_from(current_user.id).present? %>
-		<p>Remarque : <%= @item.like_from(current_user.id).remark %></p>
+<% if @item.users.present? %>
+	<p>Utilisateurs qui l'ont : </p>
+	<ul>
+	<% @item.users.each do |u| %>
+		<li><%= link_to u.name, u %></li>
 	<% end %>
--->
-<%# render partial: "items/modal" %>
-<!--
-<h3>Autres commentaires</h3>
-
-<% @item.likes.each  do |like| %>
-	<% if like.user.id != current_user.id %>
-		<blockquote>
-			<h5><%= like.user.email %> (le <%= long_date(like.updated_at) %>)</h5>
-			<p><%= note_to_s(like.note) %> <%= like.remark %></p>
-		</blockquote>
-	<% end %>
+	</ul>
+<% else %>
+	<p>Personne ne possède cet item.</p>
 <% end %>
--->

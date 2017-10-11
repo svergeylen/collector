@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-  
-  # get 'users/show'
-
 	devise_for :users 
 	resources :users, only: [:show] do
 		member do
@@ -28,7 +25,6 @@ Rails.application.routes.draw do
 			post :upvote
 		end
 	end
-	post 'items/like'
 	resources :authors
 	
 

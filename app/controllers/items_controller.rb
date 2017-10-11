@@ -1,12 +1,6 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy, :like, :upvote]
 
-  # GET /items
-  # GET /items.json
-  def index
-    @items = Item.all
-  end
-
   # GET /items/1
   # GET /items/1.json
   def show
@@ -57,7 +51,7 @@ class ItemsController < ApplicationController
   def destroy
 		@item.series.touch
     @item.destroy
-    redirect_to items_url, notice: 'Elément supprimé'
+    redirect_to @item.series, notice: 'Elément supprimé'
   end
 
   # Gestion des votes sur les items
@@ -68,16 +62,6 @@ class ItemsController < ApplicationController
       current_user.up_votes @item
     end
   end
-
-	# Gestion des likes sur les items
-	def like
-		logger.debug params.inspect
-
-		@like = @item.add_or_update_like(current_user.id, params[:note], params[:remark])
-		puts @like.inspect
-		redirect_to @item, notice: 'Elément liké' 
-	end
-
 
 
 
