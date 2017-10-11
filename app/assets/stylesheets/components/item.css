@@ -6,13 +6,13 @@
 }
 /* L'item n'est pas liké */
 .item-upvote-no {
-	background: asset-url("heart-inactive.png");
+	background: image_url("heart-inactive.png");
 	background-repeat: no-repeat;
 	color : grey;
 }
 /* L'item est liké */
 .item-upvote-yes, .item-upvote-no:hover  {
-	background: asset-url("heart-active.png");
+	background: image_url("heart-active.png");
 	background-repeat: no-repeat;
 	color: red;
 }
