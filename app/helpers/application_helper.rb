@@ -15,7 +15,7 @@ module ApplicationHelper
 	end
 
 	# Renvoie une date courte en français
-	def format_date(mydate) 
+	def long_date(mydate) 
 		
 		case mydate.strftime("%m")
 			when "01"
@@ -46,8 +46,11 @@ module ApplicationHelper
 				mois = "inconnu"
 			end
 
-		return mydate.strftime("%d") + " " + mois.capitalize #+ " " + mydate.strftime("%y")
+		return mydate.strftime("%d") + " " + mois.capitalize + " " + mydate.strftime("%y")
 	end
 
+	def short_date(mydate) 
+		return mydate.strftime("%d/%m")
+	end
 
 end

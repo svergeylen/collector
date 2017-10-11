@@ -6,6 +6,7 @@ class Item < ApplicationRecord
 
 	has_many :itemusers
 	has_many :users, through: :itemusers
+	belongs_to :adder, class_name: "User"
 
 	has_many :likes, :dependent => :destroy
 	has_many :likers, through: :likes
@@ -14,6 +15,7 @@ class Item < ApplicationRecord
 	
 	validates :name, presence: true
 	validates :series_id, presence: true
+	validates :adder_id, presence: true
 
 	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient
 	def likes_count
@@ -69,5 +71,4 @@ class Item < ApplicationRecord
 		  scoped
 		end
 	end
-
 end

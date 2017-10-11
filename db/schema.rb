@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171007130110) do
+ActiveRecord::Schema.define(version: 20171011155552) do
 
   create_table "authors", force: :cascade do |t|
     t.string "name"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20171007130110) do
     t.integer "series_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "added_by"
+    t.integer "adder_id"
   end
 
   create_table "itemusers", force: :cascade do |t|

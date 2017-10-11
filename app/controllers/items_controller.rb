@@ -26,6 +26,10 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
 		@item.authors_list = params[:item][:authors_list]
+    # L'utilisateur courant a ajouté l'élément
+    @item.adder_id = current_user.id
+    # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
+    @item.itemusers.build(user_id: current_user.id, quantity: 1)
 
     if @item.save
 			@item.series.touch
