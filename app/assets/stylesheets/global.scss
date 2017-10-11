@@ -7,7 +7,7 @@ body {
 }
 
 nav.navbar {
-	background: $high-color;
+	background-color: $high-color;
 
 	div.navbar-header a.navbar-brand,
 	ul.nav.navbar-nav li a.white, 
@@ -22,7 +22,7 @@ nav.navbar {
 }
 
 .rounded-box {
-	background: $box-color;
+	background-color: $box-color;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
 	padding: $general-padding;
