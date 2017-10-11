@@ -9,7 +9,7 @@ var ProductList = React.createClass({
 				    <th>Titre</th>
 					<th>Auteurs</th>
 					<th>Like</th>
-					<th>Remarque</th>
+					<th></th>
 				  </tr>
 			  </thead>
 			  <tbody>

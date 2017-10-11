@@ -3,7 +3,7 @@ var ProductListItem = React.createClass ({
 	render: function() {
 		return (
 			<tr>
-			  <td>{this.props.item.numero}</td>
+				<td>{this.props.item.numero}</td>
 				<td>
 					<a href={this.props.item.show_path} >{this.props.item.name}</a>
 				</td>
@@ -15,7 +15,11 @@ var ProductListItem = React.createClass ({
 				<td>
 					<UpVote item={this.props.item} />
 				</td>
-				<td></td>
+				<td>
+			  		<a href="#"><span className="glyphicon glyphicon-edit"></span></a> &nbsp;
+			  		<a href="#"><span className="glyphicon glyphicon-trash"></span></a>
+			  	</td>
+
 			</tr>
 		);
 	}

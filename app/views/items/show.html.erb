@@ -5,7 +5,7 @@
 		</button>
 		<ul class="dropdown-menu dropdown-menu-right">
 			<li><%= link_to 'Modifier l\'élément', edit_item_path(@item) %></li>
-			<li><%= link_to 'Supprimer l\'élément', items_path(@item), method: :delete, data: { confirm: 'Supprimer l\'élément ?' } %> </li>
+			<li><%= link_to 'Supprimer l\'élément', @item, method: :delete, data: { confirm: 'Supprimer l\'élément ?' } %> </li>
 		</ul>
 	</div>
 </div>

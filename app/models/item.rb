@@ -8,9 +8,6 @@ class Item < ApplicationRecord
 	has_many :users, through: :itemusers
 	belongs_to :adder, class_name: "User"
 
-	has_many :likes, :dependent => :destroy
-	has_many :likers, through: :likes
-
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
 	validates :name, presence: true
