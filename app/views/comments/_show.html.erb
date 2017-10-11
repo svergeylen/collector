@@ -11,7 +11,7 @@
 		<%= comment.message %>
 		
 		<span class="time">
-			<%= format_date(comment.updated_at) %>	
+			<%= long_date(comment.updated_at) %>	
 		</span>	
 
 		<% if current_user.id == comment.user.id %>

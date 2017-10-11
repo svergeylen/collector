@@ -12,7 +12,7 @@
         <div class="post-header">
           <div class="pull-right">
             <span class="time">
-              Le <%= format_date(post.updated_at) %>
+              Le <%= long_date(post.updated_at) %>
             </span> 
             <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
             <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires asociés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
