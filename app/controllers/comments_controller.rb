@@ -12,16 +12,24 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
+    if (params[:comment][:user_id] == current_user.id.to_s)
 
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to posts_path, notice: 'Commentaire créé avec succès' }
-        format.json { render :show, status: :created, location: @comment }
-      else
-        format.html { render :new }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+      @comment = Comment.new(comment_params)
+      @css_selector = "#comments-post-"+params[:comment][:post_id].to_s
+      
+      respond_to do |format|
+        if @comment.save
+          format.html { redirect_to posts_path, notice: 'Commentaire créé avec succès' }
+          format.json { render :show, status: :created, location: @comment }
+          format.js
+        else
+          format.html { render :new }
+          format.json { render json: @comment.errors, status: :unprocessable_entity }
+          format.js
+        end
       end
+    else
+      redirect_to posts_path, alert: 'Identifiant utilisateur erroné' 
     end
   end
 
@@ -31,7 +39,7 @@ class CommentsController < ApplicationController
     if (@comment.user_id == current_user.id)
       respond_to do |format|
         if @comment.update(comment_params)
-          format.html { redirect_to posts_path, notice: 'Commentaire modifié avec succès' }
+          format.html { redirect_to posts_url, notice: 'Commentaire modifié avec succès' }
           format.json { render :show, status: :ok, location: @comment }
         else
           format.html { render :edit }
@@ -39,7 +47,7 @@ class CommentsController < ApplicationController
         end
       end
     else
-      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 
@@ -49,11 +57,11 @@ class CommentsController < ApplicationController
     if (@comment.user_id == current_user.id)
       @comment.destroy
       respond_to do |format|
-        format.html { redirect_to comments_url, notice: 'Commentaire supprimé' }
+        format.html { redirect_to posts_url, notice: 'Commentaire supprimé' }
         format.json { head :no_content }
       end
     else
-      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 
