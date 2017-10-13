@@ -1,5 +1,5 @@
 json.extract! post, :id
-s
+
 # Nombre de votes sur l'item actuellement. Utilisation du gem Acts_as_votable
 json.up_votes post.votes_for.count
 

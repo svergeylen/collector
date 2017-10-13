@@ -50,10 +50,11 @@
         </div>
 
         <div class="comments collapse" id="comments-post-<%= post.id %>">
-          <% post.comments.each do |comment| %>
-            <%= render partial: "comments/show", locals: { comment: comment } %>
-          <% end %>
-
+          <div class="comments-list">
+            <% post.comments.each do |comment| %>
+              <%= render partial: "comments/show", locals: { comment: comment } %>
+            <% end %>
+          </div>
           <div class="comment-add">
             <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
           </div>
