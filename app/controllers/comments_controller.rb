@@ -31,7 +31,7 @@ class CommentsController < ApplicationController
     if (@comment.user_id == current_user.id)
       respond_to do |format|
         if @comment.update(comment_params)
-          format.html { redirect_to posts_path, notice: 'Commentaire modifié avec succès' }
+          format.html { redirect_to posts_url, notice: 'Commentaire modifié avec succès' }
           format.json { render :show, status: :ok, location: @comment }
         else
           format.html { render :edit }
@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
         end
       end
     else
-      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 
@@ -49,11 +49,11 @@ class CommentsController < ApplicationController
     if (@comment.user_id == current_user.id)
       @comment.destroy
       respond_to do |format|
-        format.html { redirect_to comments_url, notice: 'Commentaire supprimé' }
+        format.html { redirect_to posts_url, notice: 'Commentaire supprimé' }
         format.json { head :no_content }
       end
     else
-      redirect_to posts_path, alert: 'Ce commentaire ne vous appartient pas' 
+      redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
     end
   end
 
