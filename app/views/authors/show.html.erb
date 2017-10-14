@@ -24,9 +24,12 @@
 </ul>
 
 <h4>Collègues</h4>
-<ul>
-	<% @colleagues.each do |colleague| %>
-		<li><%= link_to colleague.name, author_path(colleague.id) %></li>
-	<% end %>
-</ul>
-
+<% if @colleagues.present? %>
+	<ul>
+		<% @colleagues.each do |colleague| %>
+			<li><%= link_to colleague.name, author_path(colleague.id) %></li>
+		<% end %>
+	</ul>
+<% else %>
+	<p> Pas de collègue connu</p>
+<% end %>

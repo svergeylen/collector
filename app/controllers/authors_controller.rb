@@ -5,8 +5,10 @@ class AuthorsController < ApplicationController
     @author = Author.find(params[:id])
     @series = Series.find( @author.items.collect(&:series_id).uniq! ).sort_by{ |s| s.name }
 
-    @colleague_ids = Itemauthor.where(item_id: @author.items.collect(&:id)).where.not(author_id: @author.id).collect(&:author_id).uniq!
-    @colleagues = Author.find(@colleague_ids).sort_by{ |a| a.name}
+    colleague_ids = Itemauthor.where(item_id: @author.items.collect(&:id)).where.not(author_id: @author.id).collect(&:author_id).uniq!
+    if colleague_ids
+      @colleagues = Author.find(colleague_ids).sort_by{ |a| a.name}
+    end
   end
 
   def create
