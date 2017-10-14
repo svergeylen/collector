@@ -11,13 +11,7 @@ class SeriesController < ApplicationController
   # GET /series/1.json
   def show
 		set_session_category(@series.category.id)
-		@items = @series.items.includes(:authors).sort do |a,b| 
-      if (a.numero.is_a? Integer and b.numero.is_a? Integer)
-        a.numero.to_i <=> b.numero.to_i 
-      else
-        a.numero.to_s <=> b.numero.to_s
-      end
-    end
+    @items = @series.items.includes(:authors).sort_by{ |a| a.numero.to_i } 
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
 		if @items.last.present?
