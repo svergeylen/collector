@@ -1,0 +1,36 @@
+<table class="table table-striped" id="product-list">
+  <thead>
+	  <tr>
+	    <th></th>
+	    <th>Titre</th>
+		<th>Auteurs</th>
+		<th></th>
+		<th></th>
+	  </tr>
+  </thead>
+  <tbody>
+	<% items.each do |item| %>
+		<tr>
+			<td><%= item.numero %></td>
+			<td>
+				<%= link_to item.name, item %></a>
+			</td>
+			<td> 
+				<%= item.authors.map{ |author| link_to(author.name, author) }.join(", ").html_safe %>
+			</td>
+			<td>
+				<!-- <UpVote item=item /> -->
+			</td>
+			<td>
+		  		<%= link_to edit_item_path(item) do %>
+					<span class="glyphicon glyphicon-edit"></span>
+				<% end %>
+				&nbsp;
+				<%= link_to item, method: :delete, data: { confirm: "Etes vous certain de supprimer cet élément ?" } do %>
+		  			<span class="glyphicon glyphicon-trash"></span>
+				<% end %>
+		  	</td>
+		</tr>
+	<% end %>
+  </tbody>
+</table>

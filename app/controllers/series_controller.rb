@@ -11,11 +11,17 @@ class SeriesController < ApplicationController
   # GET /series/1.json
   def show
 		set_session_category(@series.category.id)
-		@items = @series.items.order(:numero, :name)
+		@items = @series.items.includes(:authors).sort do |a,b| 
+      if (a.numero.is_a? Integer and b.numero.is_a? Integer)
+        a.numero.to_i <=> b.numero.to_i 
+      else
+        a.numero.to_s <=> b.numero.to_s
+      end
+    end
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
-		if @items.last.present? and (@items.last.numero.to_i.is_a? Integer)
-			@new_item.numero = @items.last.numero.to_i + 1
+		if @items.last.present?
+      @new_item.numero = @items.last.numero.next
 		else
 			@new_item.numero = 1
 		end
