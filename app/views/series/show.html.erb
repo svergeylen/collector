@@ -28,15 +28,11 @@
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li>
-					<a href={this.props.edit_path}>
-						Modifier la série
-					</a>
+					<%= link_to "Modifier la série", edit_series_path(@series) %>
 				</li>
 
 				<li>
-					<a data-confirm="Supprimer la série entière et tous les éléments qu'elle contient ?" rel="nofollow" data-method="delete" href={this.props.delete_path}>
-						Supprimer la série
-					</a>
+					<%= link_to "Supprimer la série", @series, method: :delete, data: {confirm: "Supprimer la série entière et tous les éléments qu'elle contient ?" } %>
 				</li>
 			</ul>
 		</div>
