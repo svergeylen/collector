@@ -10,7 +10,8 @@
 		<% end %>
 		</ul>
 	<% else %>
-		<h4>Pas de série trouvée.</h4>
+		<p>Pas de série trouvée.</p>
+		<p><%= link_to "Créer la série \"#{@keyword}\"", new_series_path(name: @keyword) %></p>
 	<% end %>
 
 
@@ -24,7 +25,7 @@
 		<% end %>
 		</ul>
 	<% else %>
-		<h4>Pas d'élément trouvé.</h4>
+		<p>Pas d'élément trouvé.</p>
 	<% end %>
 
 </div>

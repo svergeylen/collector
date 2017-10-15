@@ -26,6 +26,10 @@ class SeriesController < ApplicationController
   def new
     @series = Series.new
 		@series.category_id = session[:category]
+    if params[:name].present?
+      @series.name = params[:name].capitalize
+      @series.letter = params[:name][0].capitalize
+    end
   end
 
   # GET /series/1/edit
