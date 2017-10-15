@@ -14,6 +14,9 @@
   <div class="field">
     Nom :     <%= form.text_field :name, id: :series_name %>
   </div>
+  <div class="field">
+    Classé à la lettre : <%= form.text_field :letter, id: :letter %>
+  </div>
 
   <div class="field">
     Catégorie : 	<%= form.select("category_id", Category.all.collect {|c| [ c.name, c.id ] }) %>

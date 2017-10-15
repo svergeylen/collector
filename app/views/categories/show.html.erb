@@ -19,9 +19,15 @@
 			
 			<h2><%= @category.name %></h2>
 
+			<div class="btn-group header-letters">
+				<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"].each do |letter| %>
+					<%= link_to letter, category_path(@category, letter: letter), role: "button", class: "btn btn-default btn-xs #{"active" if (params[:letter]==letter)}" %>
+				<% end %>
+			</div>
+
 			<ul>
 				<% @series.each do |serie| %>
-					<li><%= link_to serie.name, serie %> (<%= serie.items.count %>)</li>
+					<li><%= link_to serie.name, serie %></li>
 				<% end %>
 			</ul>
 		</div>

@@ -10,7 +10,21 @@ def index
 def show
 	set_session_category(params[:id])
 	@category = Category.find(params[:id])
-	@series = @category.series.order(updated_at: :desc).limit(7)
+
+	# Si l'utilisateur a sélectionné une lettre de l'alphabet, on revoie uniquement les séries commencant par cette lettre
+	letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+	if params[:letter].present?
+		# Défense contre l'injection de n'importe quelle valeur par l'utilisateur
+		if letters.include?(params[:letter])
+			@series = @category.series.where(letter: params[:letter]).order(:name)
+		else
+			@series = @category.series.where.not(letter: letters).order(:name)
+		end
+	else
+		@series = @category.series.order(updated_at: :desc).limit(7)
+	end
+
+	# Derniers ajouts
 	@latest_items =  @category.items.order(created_at: :desc).limit(7)
 	end
 
