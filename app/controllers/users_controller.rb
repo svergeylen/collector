@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
 	def show
   		@user = User.find(params[:id])
+  		@months_quantity = 6
+  		@items = @user.items.where(created_at: (Date.current-@months_quantity.months)..Date.current).order(created_at: :desc)
 	end
 
 	# Supprmier l'image de profil

@@ -7,4 +7,10 @@ module UsersHelper
 							title: user.name,
 							class: 'profile-picture'
 	end
+
+	# Renvoie le nom d'un item récemment ajouté
+	def name_for(item)
+		ret = item.series.name + " - " + item.name
+		ret += " (n°"+item.numero+")" if item.numero.present?
+	end
 end

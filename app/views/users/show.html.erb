@@ -1,15 +1,33 @@
-<h1>Profil</h1>
+<div class="row">
+	<div class="col-sm-8">
+		<div class="rounded-box">
+			<h1><%= @user.name %></h1>
 
-<% if @user.avatar.present? %>
-	<div class="pull-right">
-		<%= image_tag @user.avatar.url(:medium) %><br />
-		<% if @user.id == current_user.id %>
-			<%= link_to "Supprimer l'image de profil", delete_profile_picture_user_path(current_user.id) %>
+			
+
+			<p>Courriel : <%= @user.email %></p>
+
+			<h4>Derniers ajouts en <%= @months_quantity %> mois</h4>
+
+			<ul>
+			<% @items.each do |item| %>
+				<li><%= link_to( name_for(item), item.series) %> 
+					<small>, le <%= long_date(item.created_at) %> </small></li>
+			<% end %>	
+			</ul>
+		</div>
+	</div>
+	<div class="col-sm-4">
+		<% if @user.avatar.present? %>
+			<div class="user-avatar">
+				<%= image_tag @user.avatar.url(:medium) %><br />
+				<% if @user.id == current_user.id %>
+					<small>
+						<%= link_to "Supprimer l'image de profil", delete_profile_picture_user_path(current_user.id) %>
+					</small>
+				<% end %>
+			</div>
 		<% end %>
 	</div>
-<% end %>
-
-<p><%= @user.name %></p>
-<p><%= @user.email %></p>
-
-<p><%= link_to "Modifier", edit_user_registration_path %></p>
+	
+</div>
