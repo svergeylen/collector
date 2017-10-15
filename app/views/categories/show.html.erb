@@ -8,11 +8,12 @@
 						<span class="glyphicon glyphicon-cog"></span>
 				 	<span class="caret"></span></button>
 					<ul class="dropdown-menu dropdown-menu-right">
-						<li><%= link_to "Nouvelle Série", new_series_path %></li>
-						<li class="divider"></li>
-					    <li><%= link_to "Modifier la catégorie", edit_category_path(@category)  %></li>
-					    <li><%= link_to "Supprimer la catégorie", category_path(@category), method: :delete, data: { confirm: 'Etes-vous certain de supprimer une catégorie entière ainsi que toutes les séries et tous les éléments qu\'elle contient ?' } %>
-					    </li>
+						<li><%= link_to "Nouvelle catégorie", new_category_path  %></li>
+					    <li><%= link_to "Modifier \"#{@category.name}\"", edit_category_path(@category)  %></li>
+					    <li class="divider"></li>
+					    <li><%= link_to "Nouvelle série", new_series_path %></li>
+						
+					    
 				  	</ul>
 				</div>				
 			</div>
