@@ -53,6 +53,9 @@
 		padding-right : $general-padding;
 		width: 100%;
 		text-align:right;
+		.new-comments {
+			
+		}
 	}
 	.comments {
 		font-size: 0.9em;
@@ -93,6 +96,10 @@
 		}
 	}
 	
+}
+
+.post-old {
+	background: $box-color-dimmed;
 }
 
 .time {

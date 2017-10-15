@@ -7,7 +7,7 @@
 
 
     <% @posts.each do |post| %>
-      <div class="post">
+      <div class="post <%= old_post(post, current_user) %> ">
 
         <div class="post-header">
           <div class="pull-right">
@@ -16,7 +16,7 @@
             </span> 
             <% if post.user_id == current_user.id %>
               <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
-              <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires asociés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
+              <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
             <% end %>
           </div>
 
@@ -40,7 +40,7 @@
           <%# react_component "UpVote", render(template: 'posts/show.json.jbuilder') %>
 
          
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#comments-post-<%= post.id %>">
+            <button type="button" class="btn <%= old_comment(post.last_commented_at, current_user) %>" data-toggle="collapse" data-target="#comments-post-<%= post.id %>">
                <% if post.comments.present? %>
                 <%= pluralize(post.comments.count, "réponse", "réponses") %>
               <% else %>
@@ -61,11 +61,13 @@
         </div>
 
       </div>
-    <% end %>
+    <% end #  posts.each %>
 
   </div>
   <div class="col-sm-3">
     <h4>Archives</h4>
+
+    <!-- <p>User last_sign_in_at : <%= current_user.last_sign_in_at.strftime("%d/%m/%Y %Hh%M:%S") if current_user.present? %> </p> -->
 
   </div>
 </div> 
