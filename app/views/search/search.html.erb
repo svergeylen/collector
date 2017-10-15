@@ -1,30 +1,31 @@
-<h2>Recherche de "<%= @keyword %>"</h2>
+<div class="rounded-box">
+	<h2>Recherche de "<%= @keyword %>"</h2>
 
 
-<% if @series.present? %>
-	<h4><%= pluralize( @series.count, "série trouvée", "séries trouvées", locale: :fr) %> : </h4>
-	<ul>
-	<% @series.each do |serie| %>
-		<li><%= link_to serie.name, series_path(serie) %> (<%= serie.category.name %>) </li>
+	<% if @series.present? %>
+		<h4><%= pluralize( @series.count, "série trouvée", "séries trouvées", locale: :fr) %> : </h4>
+		<ul>
+		<% @series.each do |serie| %>
+			<li><%= link_to serie.name, series_path(serie), class:"results" %> (<%= serie.category.name %>) </li>
+		<% end %>
+		</ul>
+	<% else %>
+		<h4>Pas de série trouvée.</h4>
 	<% end %>
-	</ul>
-<% else %>
-	<h4>Pas de série trouvée.</h4>
-<% end %>
 
 
 
-<% if @items.present? %>
-	<h4><%= pluralize( @items.count, "élément trouvé", "éléments trouvés", locale: :fr) %> : </h4>
+	<% if @items.present? %>
+		<h4><%= pluralize( @items.count, "élément trouvé", "éléments trouvés", locale: :fr) %> : </h4>
 
-	<ul>
-	<% @items.each do |item| %>
-		<li><%= link_to item.name, series_path(item.series) %> (<%= item.series.name %>) </li>
+		<ul>
+		<% @items.each do |item| %>
+			<li><%= link_to item.name, series_path(item.series) %> (<%= item.series.name %>) </li>
+		<% end %>
+		</ul>
+	<% else %>
+		<h4>Pas d'élément trouvé.</h4>
 	<% end %>
-	</ul>
-<% else %>
-	<h4>Pas d'élément trouvé.</h4>
-<% end %>
 
-
+</div>
 
