@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016115744) do
+ActiveRecord::Schema.define(version: 20171016135526) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20171016115744) do
     t.string "name"
     t.string "color"
     t.string "default_view"
+    t.boolean "view_alphabet"
   end
 
   create_table "comments", force: :cascade do |t|

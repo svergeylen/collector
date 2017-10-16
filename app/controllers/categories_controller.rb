@@ -72,7 +72,7 @@ private
     end
 
   def category_params
-    params.require(:category).permit(:name, :default_view, :color)
+    params.require(:category).permit(:name, :default_view, :color, :view_alphabet)
   end
 
 end
