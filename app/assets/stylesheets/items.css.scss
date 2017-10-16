@@ -1,0 +1,21 @@
+
+@import 'colors';
+
+/* Galerie photo en dessous des items */
+.attachments {
+	margin: 5px;
+	padding: 5px;
+	.attachment-thumbnail {
+		display: inline-block;
+		vertical-align: top;
+		margin: 3px;
+		padding: 3px;
+		text-align: center;
+		img {
+			border-radius: $border-radius;
+		}
+		a.attachment-delete-icon {
+			font-size: 0.75em;
+		}
+	}
+}	

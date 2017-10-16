@@ -8,6 +8,9 @@ class Item < ApplicationRecord
 	has_many :users, through: :itemusers
 	belongs_to :adder, class_name: "User"
 
+	has_many :attachments, as: :element, :dependent => :destroy
+	accepts_nested_attributes_for :attachments
+
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
 	validates :name, presence: true

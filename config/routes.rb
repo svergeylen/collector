@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 	resources :items do
 		member do
 			post :upvote
+			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end
 	end
 	resources :authors
