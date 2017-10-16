@@ -20,6 +20,13 @@ class SeriesController < ApplicationController
 			@new_item.numero = 1
 		end
 		@new_item.authors_list = @items.last.authors_list if @items.last.present?
+
+    # Vue en liste ou en galerie ?
+    if params[:view].present? 
+      @gallery_view = (params[:view] == "gallery") ? true : false
+    else
+      @gallery_view = (@series.category.default_view == "gallery") ? true : false
+    end
   end
 
   # GET /series/new

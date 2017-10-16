@@ -16,12 +16,13 @@
 <div class="rounded-box">
 	<div class="series-show">
 		<div class="btn-group">
-			<button type="button" class="btn btn-default btn-sm">
+
+			<%= link_to series_path(@series, view: "list"), class:"btn btn-default btn-sm" do %>
 				<span class="glyphicon glyphicon-th-list"></span>
-			</button>
-			<button type="button" class="btn btn-default btn-sm">
+			<% end %>
+			<%= link_to series_path(@series, view: "gallery"), class:"btn btn-default btn-sm" do %>
 				<span class="glyphicon glyphicon-th"></span>
-			</button>
+			<% end %>
 
 			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
@@ -41,8 +42,12 @@
 			<%= @series.name %>
 		</h1>
 		
-		<%= render partial: "table", locals: { items: @items} %>
-		
+		<% if @gallery_view %>
+			<%= render partial: "gallery", locals: {items: @items } %>
+		<% else %>
+			<%= render partial: "table", locals: { items: @items} %>
+		<% end %>
+
 	</div>
 	<div class="separator">
 		<%= render partial: "items/form", locals: {item: @new_item, submit_text: "Ajouter" } %>
