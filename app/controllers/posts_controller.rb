@@ -4,7 +4,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all.order(updated_at: :desc).limit(50)
+    # Eager loading comments
+    @posts = Post.all.includes(:comments).order(updated_at: :desc).limit(30)
   end
 
   # GET /posts/1/edit
@@ -22,6 +23,14 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+
+        # Paperclip multiple upload of attachments on Post
+        if params[:post][:attachments]
+          params[:post][:attachments].each { |attach|
+            @post.attachments.create(image: attach, user_id: current_user.id)
+          }
+        end
+
         format.html { redirect_to posts_path, notice: 'Message posté avec succès' }
         format.json { render :show, status: :created, location: @post }
       else

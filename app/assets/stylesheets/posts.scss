@@ -28,8 +28,8 @@
 	.tool-box {
 		background: $box-color-dimmed;
 		height: 34px;
-		button, input[type=submit] {
-			
+		input[type=file] {
+			padding: 2px;
 		}
 		#uploaded-files {
 			display: inline-block;
@@ -65,6 +65,15 @@
 		padding-bottom: 5px;
 		padding-left : $general-padding;
 		padding-right: $general-padding;
+	}
+	.post-photo-gallery {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left : $general-padding;
+		padding-right: $general-padding;
+		.post-photo {
+			
+		}
 	}
 	.likes {
 		margin-top: 5px;

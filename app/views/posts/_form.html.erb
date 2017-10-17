@@ -27,13 +27,16 @@
         <div id="uploaded-files">
         </div>
         <div class="btn-group pull-right">
-          <%= button_tag type: "button", class: "btn btn-primary" do %>
-            <span class="glyphicon glyphicon-paperclip"></span>
-          <% end %>
-          <%= button_tag type: "button", class: "btn btn-primary" do %>
+          <label class="btn btn-primary btn-file">
+            <span class="glyphicon glyphicon-paperclip" title="Ajouter des photos"></span> 
+            <%= form.file_field :attachments, multiple: true, class:"hidden" %>
+          </label>
+
+          <%= button_tag type: "button", class: "btn btn-primary", title: "Ajouter une émoticône" do %>
             <span class="glyphicon glyphicon-star-empty"></span>
           <% end %>
-          <%= form.button type: "submit", class: "btn btn-primary" do %>
+
+          <%= form.button type: "submit", class: "btn btn-primary", title: "Poster le message" do %>
             <span class="glyphicon glyphicon-send"></span>
           <% end %>
         </div>

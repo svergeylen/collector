@@ -33,6 +33,15 @@
           <%= post.message %>
         </div>
 
+        <% if post.attachments.present? %>
+          <div class="post-photo-gallery"> 
+            <% post.attachments.each do |a| %>
+              <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+            <% end %>
+          </div>
+          
+        <% end %>
+          
         <div class="likes">
           <%= button_tag type:"button", class:"btn btn-secondary" do %>
             <span class="glyphicon glyphicon-thumbs-up"></span>
