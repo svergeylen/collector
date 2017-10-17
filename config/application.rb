@@ -17,5 +17,7 @@ module Collection
 
 	config.i18n.default_locale = :fr
 
+	config.time_zone = 'Brussels' 
+
   end
 end
