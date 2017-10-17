@@ -35,9 +35,7 @@
 
         <% if post.attachments.present? %>
           <div class="post-photo-gallery"> 
-            <% post.attachments.each do |a| %>
-              <%= image_tag a.image(:medium), class:"img-thumbnail" %>
-            <% end %>
+            <% post.attachments.each do |a| %><%= image_tag a.image(:medium), class:"img-thumbnail" %><% end %>
           </div>
           
         <% end %>

@@ -16,6 +16,8 @@
 //= require bootstrap-sprockets
 //= require star-rating/star-rating.min
 //= require star-rating/fr
+//= require jquery-emoji-picker-master/jquery.emojipicker
+//= require jquery-emoji-picker-master/jquery.emojis
 //= require react
 //= require react_ujs
 //= require components

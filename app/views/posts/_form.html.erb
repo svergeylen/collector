@@ -13,13 +13,9 @@
         </ul>
       </div>
     <% end %>
-
-
-
-   
+  
     <%= profile_picture(current_user) %>
      
-    
       <div class="text-zone">
         <%= form.text_area :message, id: :post_message %> 
       </div>
@@ -32,7 +28,7 @@
             <%= form.file_field :attachments, multiple: true, class:"hidden" %>
           </label>
 
-          <%= button_tag type: "button", class: "btn btn-primary", title: "Ajouter une émoticône" do %>
+          <%= button_tag type: "button", class: "btn btn-primary", id: "button-emoji", title: "Ajouter une émoticône" do %>
             <span class="glyphicon glyphicon-star-empty"></span>
           <% end %>
 

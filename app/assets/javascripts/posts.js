@@ -21,5 +21,4 @@ document.addEventListener("turbolinks:load", function() {
 		var modifiedHtml = replaceURLWithHTMLLinks($(this).html());
   		$(this).html(modifiedHtml);
 	});
-
 });
