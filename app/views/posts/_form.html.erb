@@ -1,5 +1,5 @@
 
-<div id="posts-new">
+<div id="create-post">
 
   <%= form_with(model: post, local: true) do |form| %>
     <% if post.errors.any? %>
@@ -16,19 +16,29 @@
 
 
 
-    <div class="row">
-      <div class="col-md-10">
-        <h4><%= intro_text %></h4>
+   
+    <%= profile_picture(current_user) %>
+     
+    
+      <div class="text-zone">
         <%= form.text_area :message, id: :post_message %> 
       </div>
-      <div class="col-md-2">
-        <%# button_tag "Images", class: "btn btn-default" %>
-        <br /><br />
-        <%= form.submit submit_text, { class: "btn btn-primary"} %>
-       </div>
-    </div>
-
-
+      <div class="tool-box">
+        <div id="uploaded-files">
+        </div>
+        <div class="btn-group pull-right">
+          <%= button_tag type: "button", class: "btn btn-primary" do %>
+            <span class="glyphicon glyphicon-paperclip"></span>
+          <% end %>
+          <%= button_tag type: "button", class: "btn btn-primary" do %>
+            <span class="glyphicon glyphicon-star-empty"></span>
+          <% end %>
+          <%= form.button type: "submit", class: "btn btn-primary" do %>
+            <span class="glyphicon glyphicon-send"></span>
+          <% end %>
+        </div>
+      </div>
+  
 
   <% end %>
 

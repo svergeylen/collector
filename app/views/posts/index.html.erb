@@ -3,7 +3,7 @@
   <div class="col-sm-1"></div>
   <div class="col-sm-8">
   
-    <%= render partial: "form" , locals: { post: Post.new, submit_text: "Poster", intro_text: "Poster un message" }  %>
+    <%= render partial: "form" , locals: { post: Post.new }  %>
 
 
     <% @posts.each do |post| %>
@@ -25,7 +25,7 @@
           <%= profile_picture(post.user) %>
           
           <div class="user-name">
-            <%= post.user.name %>
+            <%= link_to post.user.name, post.user %>
           </div>
         </div>
         
@@ -34,19 +34,14 @@
         </div>
 
         <div class="likes">
-          J'aime
+          <%= button_tag type:"button", class:"btn btn-secondary" do %>
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+          <% end %>
 
-
-          <%# react_component "UpVote", render(template: 'posts/show.json.jbuilder') %>
-
-         
-            <button type="button" class="btn <%= old_comment(post.last_commented_at, current_user) %>" data-toggle="collapse" data-target="#comments-post-<%= post.id %>">
-               <% if post.comments.present? %>
-                <%= pluralize(post.comments.count, "réponse", "réponses") %>
-              <% else %>
-                Répondre
-              <% end %>
-             </button>
+          <%= button_tag type: "button", class:"btn #{old_comment(post.last_commented_at, current_user)}", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+            <%= post.comments.count if post.comments.present? %>
+            <span class="glyphicon glyphicon-comment"></span>
+          <% end %>
         </div>
 
         <div class="comments collapse" id="comments-post-<%= post.id %>">
