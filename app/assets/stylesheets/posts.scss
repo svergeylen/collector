@@ -3,8 +3,9 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 @import 'colors';
-		
-#create-post {
+	
+/* NEW */	
+#post-new {
 	background-color: $box-color;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
@@ -37,6 +38,32 @@
 	}
 }
 
+/* EDIT */
+#post-edit {
+	.text-zone {
+		textarea {
+			border : 1px solid $border-color;
+			min-width: 100%;
+			max-width: 100%;
+			min-height: 50px;
+			height : 75px;
+		}			
+	}
+	.tool-box {
+		margin-bottom: 30px;
+		text-align : right;
+		background: $box-color-dimmed;
+		height: 34px;
+		input[type=file] {
+			padding: 2px;
+		}
+		#uploaded-files {
+			display: inline-block;
+		}
+	}
+}
+
+/* INDEX */
 .post {
 	margin-top : 10px;
 	margin-bottom: 10px;

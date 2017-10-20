@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:edit, :update, :destroy]
+  before_action :set_post, only: [:edit, :delete_attachment, :update, :destroy]
 
   # GET /posts
   # GET /posts.json
@@ -15,6 +15,16 @@ class PostsController < ApplicationController
     end
   end
 
+  # Supprimer un attachment du post
+  def delete_attachment
+    if @post.attachments.exists?(params[:attachment_id])
+      @post.attachments.find(params[:attachment_id]).destroy
+      redirect_to edit_post_path(@post), notice: 'Pièce jointe supprimée' 
+    else
+      redirect_to edit_post_path(@post), alert: 'Erreur lors de la suppression de la pièce jointe' 
+    end
+  end
+
   # POST /posts
   # POST /posts.json
   def create
@@ -23,13 +33,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-
-        # Paperclip multiple upload of attachments on Post
-        if params[:post][:attachments]
-          params[:post][:attachments].each { |attach|
-            @post.attachments.create(image: attach, user_id: current_user.id)
-          }
-        end
+        save_attachments
 
         format.html { redirect_to posts_path, notice: 'Message posté avec succès' }
         format.json { render :show, status: :created, location: @post }
@@ -46,6 +50,8 @@ class PostsController < ApplicationController
     if (@post.user_id == current_user.id)
       respond_to do |format|
         if @post.update(post_params)
+          save_attachments
+
           format.html { redirect_to posts_path, notice: 'Message modifié avec succès' }
           format.json { render :show, status: :ok, location: @post }
         else
@@ -72,7 +78,19 @@ class PostsController < ApplicationController
     end
   end
 
+
   private
+
+    # Crée les attachments correspondants aux (plusieurs) fichiers uploadés dans l'objet @post
+    def save_attachments
+      # Paperclip multiple upload of attachments on Post
+      if params[:post][:attachments]
+        params[:post][:attachments].each { |attach|
+          @post.attachments.create(image: attach, user_id: current_user.id)
+        }
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_post
       @post = Post.find(params[:id])
