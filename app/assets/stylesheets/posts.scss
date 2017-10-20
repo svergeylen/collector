@@ -3,20 +3,67 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 @import 'colors';
-		
-#posts-new {
+	
+/* NEW */	
+#post-new {
 	background-color: $box-color;
-	padding : 10px 20px 20px 20px;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
-	textarea {
-		width : 100%;
+	img.profile-picture {
+		float: left;
+		margin-left: $general-padding;
+		margin-top : 30px;
 	}
-	button, input[type=submit] {
-		margin : 5px;
+	.text-zone {
+		margin-left : 60px;
+		padding : 10px $general-padding 10px $general-padding;
+		textarea {
+			border : none;
+			width : 100%;
+			min-width: 100%;
+			max-width: 100%;
+			min-height: 50px;
+			height : 75px;
+		}			
+	}
+	.tool-box {
+		background: $box-color-dimmed;
+		height: 34px;
+		input[type=file] {
+			padding: 2px;
+		}
+		#uploaded-files {
+			display: inline-block;
+		}
 	}
 }
 
+/* EDIT */
+#post-edit {
+	.text-zone {
+		textarea {
+			border : 1px solid $border-color;
+			min-width: 100%;
+			max-width: 100%;
+			min-height: 50px;
+			height : 75px;
+		}			
+	}
+	.tool-box {
+		margin-bottom: 30px;
+		text-align : right;
+		background: $box-color-dimmed;
+		height: 34px;
+		input[type=file] {
+			padding: 2px;
+		}
+		#uploaded-files {
+			display: inline-block;
+		}
+	}
+}
+
+/* INDEX */
 .post {
 	margin-top : 10px;
 	margin-bottom: 10px;
@@ -45,6 +92,15 @@
 		padding-bottom: 5px;
 		padding-left : $general-padding;
 		padding-right: $general-padding;
+	}
+	.post-photo-gallery {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left : $general-padding;
+		padding-right: $general-padding;
+		.post-photo {
+			
+		}
 	}
 	.likes {
 		margin-top: 5px;

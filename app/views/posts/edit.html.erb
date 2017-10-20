@@ -1,2 +1,54 @@
 
-<%= render partial: 'form', locals: {post: @post, submit_text: "Modifier", intro_text: "Modifier le message"} %>
+<div id="post-edit" class="rounded-box">
+
+	<h2>Modification du message</h2>
+
+	<%= form_with(model: @post, local: true) do |form| %>
+
+		<% if @post.errors.any? %>
+		  <div id="error_explanation">
+		    <h4><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h4>
+		    <ul>
+		    <% @post.errors.full_messages.each do |message| %>
+		      <li><%= message %></li>
+		    <% end %>
+		    </ul>
+		  </div>
+		<% end %>
+
+	  	<div class="text-zone">
+	    	<%= form.text_area :message %> 
+	  	</div>
+		<div class="tool-box">
+
+		    <div class="btn-group">
+		      <label class="btn btn-primary btn-file">
+		        <span class="glyphicon glyphicon-paperclip" title="Ajouter des photos"></span> Ajouter
+		        <%= form.file_field :attachments, multiple: true, class:"hidden" %>
+		      </label>
+
+		      <%= button_tag type: "button", class: "btn btn-primary", id: "button-emoji", title: "Ajouter une émoticône" do %>
+		        <span class="glyphicon glyphicon-star-empty"></span> Emoticone
+		      <% end %>
+
+		      <%= form.button type: "submit", class: "btn btn-primary", title: "Poster le message" do %>
+		        <span class="glyphicon glyphicon-send"></span> Poster
+		      <% end %>
+		    </div>
+		</div>
+
+	  	<h4>Pièces jointes</h4>
+		  
+		<div class="attachments">
+			<% @post.attachments.each do |attachment| %>
+				<div class="attachment-thumbnail">
+					<%= image_tag attachment.image.url(:thumb) %><br />
+					<%= link_to "Supprimer", delete_attachment_post_path(@post, attachment.id), class:"attachment-delete-icon" %>
+				</div>
+			<% end %>
+		</div>
+	        
+
+	<% end %>
+
+</div>

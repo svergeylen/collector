@@ -22,6 +22,13 @@
     <%= form.label "Vue par défaut" %><br>
     <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], selected_key = @category.default_view) ) %>
   </p>
+  <p>
+    <%= form.label :view_alphabet do %>
+      <%= form.check_box :view_alphabet, id: :category_view_alphabet %> Afficher la barre Alphabet 
+    <% end %>
+  </p>
+
+
  
   
     <%# form.label :color %><br>

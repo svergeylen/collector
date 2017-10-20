@@ -36,11 +36,19 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-		@item.authors_list = params[:item][:authors_list]
+		@item.authors_list = params[:item][:authors_list] if params[:item][:authors_list]
+    @item.adder = current_user  if @item.adder.blank?
 		@item.series.touch
 
     if @item.update(item_params)
-      redirect_to @item.series, notice: 'Elément mis à jour' 
+      # Paperclip multiple upload of attachments on Item
+      if params[:item][:attachments]
+        params[:item][:attachments].each { |attach|
+          @item.attachments.create(image: attach, user_id: current_user.id)
+        }
+      end
+
+      redirect_to @item, notice: 'Elément mis à jour' 
     else
       render :edit 
     end
@@ -53,6 +61,19 @@ class ItemsController < ApplicationController
     @item.destroy
     redirect_to @item.series, notice: 'Elément supprimé'
   end
+
+
+  # Supprimer un attachment de l'item
+  def delete_attachment
+    @item = Item.find(params[:id])
+    if @item.attachments.exists?(params[:attachment_id])
+      @item.attachments.find(params[:attachment_id]).destroy
+      redirect_to @item, notice: 'Pièce jointe supprimée' 
+    else
+      redirect_to @item, alert: 'Erreur lors de la suppression de la pièce jointe' 
+    end
+  end
+
 
   # Gestion des votes sur les items
   def upvote
@@ -73,6 +94,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:numero, :name, :series_id)
+      params.require(:item).permit(:numero, :name, :series_id, :attachments)
     end
 end

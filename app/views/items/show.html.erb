@@ -1,28 +1,48 @@
-<div class="pull-right">
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu dropdown-menu-right">
-			<li><%= link_to 'Modifier l\'élément', edit_item_path(@item) %></li>
-			<li><%= link_to 'Supprimer l\'élément', @item, method: :delete, data: { confirm: 'Supprimer l\'élément ?' } %> </li>
-		</ul>
+<div class="rounded-box">
+	<div class="pull-right">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right">
+				<li><%= link_to 'Modifier l\'élément', edit_item_path(@item) %></li>
+				<li><%= link_to 'Supprimer l\'élément', @item, method: :delete, data: { confirm: 'Supprimer l\'élément ?' } %> </li>
+			</ul>
+		</div>
 	</div>
-</div>
 
-<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h4>
+	<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h3>
 
-<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
-<p>Numéro : <%= @item.numero %></p>
-<p>Auteurs : <%= @item.authors_list %></p>
+	<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
+	<p>Numéro : <%= @item.numero %></p>
+	<p>Auteurs : <%= @item.authors_list %></p>
 
-<% if @item.users.present? %>
-	<p>Utilisateurs qui l'ont : </p>
-	<ul>
-	<% @item.users.each do |u| %>
-		<li><%= link_to u.name, u %></li>
+	<% if @item.users.present? %>
+		<p>Utilisateurs qui l'ont : </p>
+		<ul>
+		<% @item.users.each do |u| %>
+			<li><%= link_to u.name, u %></li>
+		<% end %>
+		</ul>
+	<% else %>
+		<p>Personne ne possède cet item.</p>
 	<% end %>
-	</ul>
-<% else %>
-	<p>Personne ne possède cet item.</p>
-<% end %>
+
+	<h4>Images</h4>
+	<div class="attachments">
+		<% @item.attachments.each do |attachment| %>
+			<div class="attachment-thumbnail">
+				<%# attachment.inspect %>
+				<%= image_tag attachment.image.url(:thumb) %><br />
+				<%= link_to "Supprimer", delete_attachment_item_path(@item, attachment.id), class:"attachment-delete-icon" %>
+			</div>
+		<% end %>
+	</div>
+
+
+
+	<%= form_with(model: @item, local: true, :html => { :multipart => true } ) do |form| %>
+		Ajouter une image : <%= form.file_field :attachments, multiple: true %>
+		<%= form.submit "Envoyer" %>
+	<% end %>
+</div>

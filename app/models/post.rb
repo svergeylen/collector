@@ -2,6 +2,9 @@ class Post < ApplicationRecord
 	belongs_to :user
 	has_many :comments, dependent: :destroy
 
+	has_many :attachments, as: :element, :dependent => :destroy
+	accepts_nested_attributes_for :attachments
+
 	validates :message, presence: { message: "Le contenu du message ne peut pas être vide" }
 
 	acts_as_votable # les users peuvent liker des posts

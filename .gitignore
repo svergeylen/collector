@@ -22,4 +22,6 @@
 
 .byebug_history
 
-public/system/attachments
+# Paperclip Attachments
+public/system/
+
