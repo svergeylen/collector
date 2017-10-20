@@ -12,7 +12,8 @@ module UsersHelper
 
 	# Renvoie le nom d'un item récemment ajouté
 	def name_for(item)
-		ret = item.series.name + " - " + item.name
+		ret = item.series.name
 		ret += " (n°"+item.numero+")" if item.numero.present?
+		ret += " - " + item.name
 	end
 end
