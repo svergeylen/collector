@@ -21,7 +21,14 @@ def show
 			@series = @category.series.where.not(letter: letters).order(:name)
 		end
 	else
-		@series = @category.series.order(updated_at: :desc).limit(7)
+		
+		if (@category.series.count < 30) 
+			# Si le nombre de séries est limité, on affiche tout
+			@series = @category.series.order(:name)
+		else
+			# Sinon, on affiche les séries modifiées récemment
+			@series = @category.series.order(updated_at: :desc).limit(7)
+		end
 	end
 
 	# Derniers ajouts
