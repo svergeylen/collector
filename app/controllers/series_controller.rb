@@ -11,7 +11,7 @@ class SeriesController < ApplicationController
   # GET /series/1.json
   def show
 		set_session_category(@series.category.id)
-    @items = @series.items.includes(:authors).sort_by{ |a| a.numero.to_i } 
+    @items = @series.sorted_items
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
 		if @items.last.present?

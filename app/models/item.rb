@@ -17,6 +17,25 @@ class Item < ApplicationRecord
 	validates :series_id, presence: true
 	validates :adder_id, presence: true
 
+	# Renvoie les id des items précédents et suivants dans la serie triée (sorted_items)
+	def next_and_previous_ids
+		# Chargement de la série en entier pour connaitre les éléments de la liste par numéro
+		items = self.series.sorted_items
+		
+		# Récupération de l'index dans la collection correspondant à l'item self
+		my_index = items.index { |item| item.id == self.id }
+		
+		# Récupération des index puis des ID correspondants  dans la collection
+		previous_index = (my_index <= 0) ? nil : my_index - 1
+		previous_id = items.at(previous_index).id if !previous_index.nil?
+		
+		next_index = (my_index >= (items.length-1) )? nil : my_index + 1
+		next_id = items.at(next_index).id if !next_index.nil?
+
+		return { previous: previous_id, next: next_id }
+	end
+
+
 	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient
 	def likes_count
 		self.likes.sum(:note)

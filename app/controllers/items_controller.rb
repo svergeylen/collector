@@ -4,6 +4,9 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    h = @item.next_and_previous_ids
+    @next_id = h[:next]
+    @previous_id = h[:previous]
   end
 
   # GET /items/new

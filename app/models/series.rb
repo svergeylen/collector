@@ -21,6 +21,9 @@ class Series < ApplicationRecord
 		end
 	end
 
-
+	# Renvoie les elements d'une série triés par numéro puis par nom
+	def sorted_items
+		self.items.sort_by{ |a| a.numero.to_i }
+	end
 
 end
