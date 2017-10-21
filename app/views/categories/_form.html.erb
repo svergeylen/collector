@@ -27,13 +27,11 @@
       <%= form.check_box :view_alphabet, id: :category_view_alphabet %> Afficher la barre Alphabet 
     <% end %>
   </p>
-
-
- 
-  
-    <%# form.label :color %><br>
-    <%# form.text_field :color %>
- 
+  <p>
+    <%= form.label :menu do %>
+      <%= form.check_box :menu, id: :category_menu %> Afficher dans le menu supérieur 
+    <% end %>
+  </p> 
 
 	<p>
     <%= form.submit submit_text %>

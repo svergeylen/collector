@@ -31,21 +31,11 @@
 
 				<div class="collapse navbar-collapse" id="top-navbar">
 				  <ul class="nav navbar-nav">
-			    	<li class="dropdown">
-			          <a href="#" class="dropdown-toggle white-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Collector <span class="caret"></span></a>
-			          <ul class="dropdown-menu">
-			            <% Category.all.order(:name).each do |category| %>
-			            	<li><%= link_to category.name, category %></li> 
-			            <% end %>
-			            <li role="separator" class="divider"></li>
-			            <li>
-			            	<%= link_to "Catégories", categories_path %>
-			            </li>
-			          </ul>
-			        </li>
-				    <!-- <li>
-				    	<%= link_to_current_category() %>
-			    	</li> -->
+				  	<li><%= link_to "News", posts_path, class:"white-link" %></li>
+			    	<li><%= link_to "Collector", categories_path, class:"white-link" %></li>
+		            <% Category.where(menu: true).order(:name).each do |category| %>
+		            	<li><%= link_to category.name, category, class:"white-link" %></li> 
+		            <% end %>
 				  </ul>
 				  
 				  <ul class="nav navbar-nav navbar-right">
