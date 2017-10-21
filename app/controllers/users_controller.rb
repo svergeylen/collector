@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
   		# Derniers ajouts Collector
   		@months_quantity = 6
-  		@items = @user.items.where(created_at: (Date.current-@months_quantity.months)..Date.current).order(created_at: :desc)
+  		@items = @user.last_added_items(@months_quantity)
 	end
 
 	# Supprmier l'image de profil

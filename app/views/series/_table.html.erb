@@ -3,16 +3,24 @@
   <thead>
 	  <tr>
 	    <th></th>
+	    
 	    <th>Titre</th>
 		<th>Auteurs</th>
+		<th></th>
 		<th></th>
 		<th></th>
 	  </tr>
   </thead>
   <tbody>
 	<% items.each do |item| %>
-		<tr>
+		<% if item.is_owned_by?(current_user.id) %>
+			<tr class="owned-by-user">
+		<%else %>
+			<tr class="not-owned-by-user">
+		<% end %>
+			
 			<td><%= item.numero %></td>
+			
 			<td>
 				<%= link_to item.name, item %></a>
 			</td>
@@ -22,6 +30,19 @@
 			<td>
 				<!-- <UpVote item=item /> -->
 			</td>
+			<td>
+				<div class="quantity_management">
+					<%= link_to minus_item_path(item), remote: true do %>
+						<span class="glyphicon glyphicon-minus" title="Diminuer"></span>
+					<% end %>
+					<span class="quantity" data-item-id="<%= item.id.to_s %>">
+						<%= item.quantity_for(current_user.id).to_s %>
+					</span>
+			 		<%= link_to plus_item_path(item), remote: true do %>
+				 		<span class="glyphicon glyphicon-plus" title="Augmenter"></span>
+			 		<% end %>
+			 	</div>
+		 	</td>
 			<td>
 		  		<%= link_to edit_item_path(item) do %>
 					<span class="glyphicon glyphicon-edit"></span>

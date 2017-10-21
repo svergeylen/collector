@@ -12,6 +12,8 @@ class SeriesController < ApplicationController
   def show
 		set_session_category(@series.category.id)
     @items = @series.sorted_items
+
+    # Formulaire d'ajout d'item
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
 		if @items.last.present?

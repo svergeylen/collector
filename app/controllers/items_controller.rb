@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :like, :upvote]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :upvote, :plus, :minus]
 
   # GET /items/1
   # GET /items/1.json
@@ -87,6 +87,23 @@ class ItemsController < ApplicationController
     end
   end
 
+  # Ajoute l'item à l'utilisateur ou augmente la quantité de 1
+  def plus
+    @iu = @item.update_quantity(1, current_user.id)
+    respond_to do |format|
+      format.html { redirect_to @item.series }
+      format.js
+    end
+  end
+
+  # Diminue la quantité de 1
+  def minus
+    @iu = @item.update_quantity(-1, current_user.id)
+    respond_to do |format|
+      format.html { redirect_to @item.series }
+      format.js
+    end
+  end
 
 
   private

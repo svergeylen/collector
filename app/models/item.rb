@@ -35,6 +35,38 @@ class Item < ApplicationRecord
 		return { previous: previous_id, next: next_id }
 	end
 
+	# Renvoie true si l'utilisateur possède cet item
+	def is_owned_by?(user_id)
+		return self.itemusers.collect(&:user_id).include?(user_id)
+	end
+
+	# Renvoie le Itemuer de l'utiliateur donné
+	def iu(user_id)
+		return self.itemusers.where(user_id: user_id).limit(1).first
+	end
+
+	# Renvoie le nombre d'item possédé par l'utiliateur donné
+	def quantity_for(user_id)
+		iu = self.iu(user_id)
+		if iu.present?
+			return iu.quantity
+		else
+			return 0
+		end
+	end
+
+	# Modifie la quantité posédée par l'utilisateur donné
+	def update_quantity(delta, user_id)
+		iu = self.iu(user_id)
+	    if iu.present?
+	      iu.quantity = [ (iu.quantity + delta), 0].max
+	      iu.save
+	    else
+	      iu = Itemuser.create!(item_id: self.id, user_id: user_id, quantity: 1)
+	    end
+	    return iu
+	end
+
 
 	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient
 	def likes_count

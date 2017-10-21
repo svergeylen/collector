@@ -23,7 +23,7 @@ class Series < ApplicationRecord
 
 	# Renvoie les elements d'une série triés par numéro puis par nom
 	def sorted_items
-		self.items.sort_by{ |a| a.numero.to_i }
+		self.items.includes(:users).sort_by{ |a| a.numero.to_i }
 	end
 
 end
