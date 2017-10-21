@@ -49,6 +49,8 @@ class SeriesController < ApplicationController
   # POST /series.json
   def create
     @series = Series.new(series_params)
+    @series.name = @series.name.capitalize
+    @series.letter = params[:series][:name][0].capitalize if @series.letter.blank?
 
     if @series.save
       redirect_to @series, notice: 'Série créée' 
