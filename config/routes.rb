@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 	resources :users, only: [:show] do
 		member do
 			get 'delete_profile_picture', as: "delete_profile_picture"
+			get :favorites
 		end
 	end
 	
@@ -23,7 +24,11 @@ Rails.application.routes.draw do
 	get 'welcome/index'
 	get 'search/keyword'
 	resources :categories
-	resources :series
+	resources :series do
+		member do
+			get :star
+		end
+	end
 	resources :items do
 		member do
 			post :upvote

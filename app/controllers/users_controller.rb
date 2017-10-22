@@ -10,7 +10,21 @@ class UsersController < ApplicationController
   		@items = @user.last_added_items(@months_quantity)
 	end
 
-	# Supprmier l'image de profil
+	# Montre les séries suivies et les prochains numéro à acquérir
+	def favorites
+		@series = current_user.series.order(name: :asc)
+
+
+		# Item.all.each do |item|
+	 #  		item.number = item.numero.to_f
+	 #  		item.save
+	 #  	end
+
+
+
+	end
+
+	# Supprimer l'image de profil
 	def delete_profile_picture
 		if (current_user.id == params[:id].to_i) 
 			logger.debug "egaux"

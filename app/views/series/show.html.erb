@@ -16,7 +16,9 @@
 <div class="rounded-box">
 	<div class="series-show">
 		<div class="btn-group">
-
+			<%= link_to star_series_path(@series), remote: true, class:"btn btn-default btn-sm" do %>
+			 	<span class="glyphicon <%= @starred ? 'glyphicon-star' : 'glyphicon-star-empty' %>" id="series-star"></span>
+			<% end %>
 			<%= link_to series_path(@series, view: "list"), class:"btn btn-default btn-sm" do %>
 				<span class="glyphicon glyphicon-th-list"></span>
 			<% end %>

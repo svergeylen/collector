@@ -16,7 +16,7 @@
 	<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h3>
 
 	<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
-	<p>Numéro : <%= @item.numero %></p>
+	<p>Numéro : <%= @item.number %></p>
 	<p>Auteurs : <%= @item.authors_list %></p>
 
 	<% if @item.users.present? %>

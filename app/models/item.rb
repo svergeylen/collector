@@ -40,7 +40,7 @@ class Item < ApplicationRecord
 		return self.itemusers.collect(&:user_id).include?(user_id)
 	end
 
-	# Renvoie le Itemuer de l'utiliateur donné
+	# Renvoie le Itemuser de l'utiliateur donné
 	def iu(user_id)
 		return self.itemusers.where(user_id: user_id).limit(1).first
 	end

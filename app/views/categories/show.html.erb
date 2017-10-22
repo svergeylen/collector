@@ -36,11 +36,15 @@
 			<% end %>
 
 		  	<div id="search_results">
-				<ul>
-					<% @series.each do |serie| %>
-						<li><%= link_to serie.name, serie %></li>
-					<% end %>
-				</ul>
+		  		<% if @series.present? %>
+					<ul>
+						<% @series.each do |serie| %>
+							<li><%= link_to serie.name, serie %></li>
+						<% end %>
+					</ul>
+				<% else %>
+					<p><small>Ajoutez vos séries favorites en cliquant sur <span class="glyphicon glyphicon-star-empty"></span></small></p>
+				<% end %>
 			</div>
 		</div>
 	</div>

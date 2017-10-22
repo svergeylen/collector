@@ -1,5 +1,5 @@
 class SeriesController < ApplicationController
-  before_action :set_series, only: [:show, :edit, :update, :destroy]
+  before_action :set_series, only: [:show, :edit, :update, :destroy, :star]
 
   # GET /series
   # GET /series.json
@@ -29,6 +29,9 @@ class SeriesController < ApplicationController
     else
       @gallery_view = (@series.category.default_view == "gallery") ? true : false
     end
+
+    # Série favorite ?
+    @starred = current_user.series.exists?(@series.id) ? true : false
   end
 
   # GET /series/new
@@ -80,6 +83,23 @@ class SeriesController < ApplicationController
     @series.destroy
  		redirect_to category_path(category_id), notice: 'Série supprimée' 
 	end
+
+  # Ajoute la serie à la liste des séries favorites de l'utilisateur ou la supprime des favoris si existant
+  def star
+    if current_user.series.exists?(@series.id)
+      current_user.series.delete(@series)
+      @glyph = "glyphicon-star-empty"
+    else
+      current_user.series << @series
+      @glyph = "glyphicon-star"
+    end
+    
+    respond_to do |f|
+      f.html { redirect_to @series }
+      f.js
+    end
+
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
