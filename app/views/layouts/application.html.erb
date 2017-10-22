@@ -68,9 +68,9 @@
  					</li>
 				  </ul>
 
-					<%= form_tag(search_search_path, method: "get", class: "navbar-form navbar-right") do %>
+					<%= form_tag(search_keyword_path, method: "get", class: "navbar-form navbar-right") do %>
 				    <div class="form-group">
-				      <%= text_field_tag(:keyword, "", { placeholder: "Recherche", class: 'form-control' }) %>
+				      <%= text_field_tag(:keyword, "", { placeholder: "Recherche", class: 'form-control', autocomplete: 'off' }) %>
 							
 				    </div>
 				  <% end %>

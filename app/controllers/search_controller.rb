@@ -1,14 +1,17 @@
 class SearchController < ApplicationController
 
 	# recherche le terme donnée dans les séries et items
-  def search
-		@keyword = params[:keyword]
-		@series = Series.search(params[:keyword]).limit(50)
+  def keyword
+	@keyword = params[:keyword]
+	@series = Series.search(params[:keyword], params[:category_id]).limit(50)
 
-		# Poursuite de la recherche dans les items si pas de série correspondante
-		#if (@series.count <= 0)
-			@items = Item.search(params[:keyword]).limit(50)
-		#end
-	
+	# Poursuite de la recherche dans les items
+	@items = Item.search(params[:keyword]).limit(50)
+
+	 respond_to do |format|
+         format.html
+         format.json { render json: { keyword: @keyword, category_id: params[:category_id], series: @series}  }
+     end
   end
+
 end

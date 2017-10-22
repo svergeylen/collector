@@ -14,8 +14,6 @@
 		<p><%= link_to "Créer la série \"#{@keyword}\"", new_series_path(name: @keyword) %></p>
 	<% end %>
 
-
-
 	<% if @items.present? %>
 		<h4><%= pluralize( @items.count, "élément trouvé", "éléments trouvés", locale: :fr) %> : </h4>
 

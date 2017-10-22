@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
 	# Collector
 	get 'welcome/index'
-	get 'search/search'
+	get 'search/keyword'
 	resources :categories
 	resources :series
 	resources :items do

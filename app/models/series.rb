@@ -13,9 +13,13 @@ class Series < ApplicationRecord
 	end
 
 	# Renvoie une liste de série qui contiennent le mot clé donné
-	def self.search(keyword)
+	def self.search(keyword, category_id)
 		if keyword
-		  where('name LIKE ?', "%#{keyword}%")
+			if category_id
+				where(category_id: category_id).where('name LIKE ?', "%#{keyword}%")
+			else
+		  		where('name LIKE ?', "%#{keyword}%")
+		  	end
 		else
 		  scoped
 		end

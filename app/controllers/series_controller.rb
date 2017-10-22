@@ -34,7 +34,11 @@ class SeriesController < ApplicationController
   # GET /series/new
   def new
     @series = Series.new
-		@series.category_id = session[:category]
+		if params[:category_id].present?
+      @series.category_id = params[:category_id] 
+    else
+      @series.category_id = session[:category]
+    end
     if params[:name].present?
       @series.name = params[:name].capitalize
       @series.letter = params[:name][0].capitalize
