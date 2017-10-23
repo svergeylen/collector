@@ -17,9 +17,9 @@ class SeriesController < ApplicationController
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
 		if @items.last.present?
-      @new_item.numero = @items.last.numero.next
+      @new_item.number = @items.last.number + 1
 		else
-			@new_item.numero = 1
+			@new_item.number = 1
 		end
 		@new_item.authors_list = @items.last.authors_list if @items.last.present?
 

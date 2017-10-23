@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-		<%= form.text_field :number, id: :item_number, placeholder: "n°", size:2 %>
+		<%= form.text_field :number, id: :item_number, value: friendly(item.number), placeholder: "n°", size:2 %>
 		<%= form.text_field :name, id: :item_name, placeholder:"Titre", size: 36 %>
 		<%= form.text_field :authors_list, size: 30, placeholder: "Auteurs" %>
 		<%= form.hidden_field :series_id %>

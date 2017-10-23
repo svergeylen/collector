@@ -50,7 +50,7 @@
 						    <ul class="dropdown-menu">		
 								<li><%= link_to 'Mon profil', current_user %></li>
 					        	<li><%= link_to 'Modifier mon profil', edit_user_registration_path %></li>
-					        	<li><%= link_to 'Mes favoris', favorites_user_path %></li>
+					        	<li><%= link_to 'Mes favoris', favorites_user_path(current_user) %></li>
 					        	<li role="separator" class="divider"></li>
 					        	<li><%= link_to 'Déconnexion', destroy_user_session_path, method: :delete %></li>
 							</ul>

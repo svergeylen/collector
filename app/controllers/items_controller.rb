@@ -40,7 +40,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
 		@item.authors_list = params[:item][:authors_list] if params[:item][:authors_list]
-    @item.adder = current_user  if @item.adder.blank?
+    @item.adder = current_user if @item.adder.blank?
 		@item.series.touch
 
     if @item.update(item_params)
