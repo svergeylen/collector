@@ -14,7 +14,7 @@ document.addEventListener("turbolinks:load", function() {
 			$.ajax({
 			    type: "GET",
 			    url: "/search/keyword",
-			    data: { keyword: thekeyword, category_id: thecategory_id },
+			    data: { series_keyword: thekeyword, category_id: thecategory_id },
 			    dataType: "json",
 			    success: function(data) {
 			    	var ret = "";

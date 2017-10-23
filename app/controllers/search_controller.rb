@@ -2,11 +2,11 @@ class SearchController < ApplicationController
 
 	# recherche le terme donnée dans les séries et items
   def keyword
-	@keyword = params[:keyword]
-	@series = Series.search(params[:keyword], params[:category_id]).limit(50)
+	@keyword = params[:series_keyword]
+	@series = Series.search(@keyword, params[:category_id]).limit(50)
 
 	# Poursuite de la recherche dans les items
-	@items = Item.search(params[:keyword]).limit(50)
+	@items = Item.search(@keyword).limit(50)
 
 	 respond_to do |format|
          format.html
