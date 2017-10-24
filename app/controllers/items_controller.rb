@@ -57,6 +57,15 @@ class ItemsController < ApplicationController
     end
   end
 
+  # Gestion des votes sur les comments
+  def upvote
+    if current_user.voted_for? @comment
+      current_user.unvote_for @comment
+    else
+      current_user.up_votes @comment
+    end
+  end
+
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy

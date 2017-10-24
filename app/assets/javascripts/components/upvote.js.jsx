@@ -1,23 +1,23 @@
 
 var UpVote = React.createClass({
-	/* Conversion de l'item stocké en this.props vers this.states à l'initialiation pour pouvoir modifier les valeurs */
+	/* Conversion de l'element stocké en this.props vers this.states à l'initialiation pour pouvoir modifier les valeurs */
 	getInitialState: function() {
 		return {
-			item: this.props.item
+			element: this.props.element
 		}
 	},
 
 	render: function() {
 		var divClasses = classNames({
-			"item-upvote": true,
-			"item-upvote-no": !this.state.item.up_voted,
-			"item-upvote-yes": this.state.item.up_voted
+			"upvote": true,
+			"upvote-no": !this.state.element.up_voted,
+			"upvote-yes": this.state.element.up_voted
 		});
 
 		return (
 			<div className={divClasses} onClick={this.handleClick} >
-				<div className="item-upvote-count">
-					{this.state.item.up_votes}
+				<div className="upvote-count">
+					{this.state.element.up_votes}
 				</div>
 			</div>
 		);
@@ -27,10 +27,10 @@ var UpVote = React.createClass({
 		var that = this;
 		$.ajax({
 			type: 'POST',
-			url: Routes.upvote_item_path(this.props.item.id, {format: 'json' }),
+			url: this.props.element.route,
 			success: function(data) {
 				console.log(data);
-				that.setState({ item: data})
+				that.setState({ element: data})
 			}
 
 		});

@@ -41,13 +41,10 @@
         <% end %>
           
         <div class="likes">
-
-          <%# react_component "UpVote", render(template: 'series/show.json.jbuilder') %>
-
-          <%= button_tag type:"button", class:"btn btn-secondary" do %>
-            <span class="glyphicon glyphicon-thumbs-up"></span>
-          <% end %>
-
+          <%= react_component "UpVote", 
+                render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
+                {style: "display:inline-block"} %>
+          
           <%= button_tag type: "button", class:"btn #{old_comment(post.last_commented_at, current_user)}", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
             <%= post.comments.count if post.comments.present? %>
             <span class="glyphicon glyphicon-comment"></span>

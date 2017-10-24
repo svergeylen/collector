@@ -18,7 +18,11 @@ Rails.application.routes.draw do
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
 		end
 	end
-	resources :comments
+	resources :comments do
+		member do
+			post :upvote
+		end
+	end
 	
 
 
