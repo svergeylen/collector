@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:edit, :delete_attachment, :update, :destroy]
+  before_action :set_post, only: [:edit, :delete_attachment, :update, :destroy, :upvote]
 
   # GET /posts
   # GET /posts.json
@@ -78,6 +78,14 @@ class PostsController < ApplicationController
     end
   end
 
+  # Gestion des votes sur les posts
+  def upvote
+    if current_user.voted_for? @post
+      current_user.unvote_for @post
+    else
+      current_user.up_votes @post
+    end
+  end
 
   private
 

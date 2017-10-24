@@ -41,6 +41,9 @@
         <% end %>
           
         <div class="likes">
+
+          <%# react_component "UpVote", render(template: 'series/show.json.jbuilder') %>
+
           <%= button_tag type:"button", class:"btn btn-secondary" do %>
             <span class="glyphicon glyphicon-thumbs-up"></span>
           <% end %>

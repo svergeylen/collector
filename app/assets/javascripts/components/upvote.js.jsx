@@ -29,6 +29,7 @@ var UpVote = React.createClass({
 			type: 'POST',
 			url: Routes.upvote_item_path(this.props.item.id, {format: 'json' }),
 			success: function(data) {
+				console.log(data);
 				that.setState({ item: data})
 			}
 

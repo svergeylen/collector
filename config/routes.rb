@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+	# Users
 	devise_for :users 
 	resources :users, only: [:show] do
 		member do
@@ -10,9 +11,10 @@ Rails.application.routes.draw do
 	
 
 
-	# Blog
+	# News
 	resources :posts do
 		member do
+			post :upvote
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
 		end
 	end

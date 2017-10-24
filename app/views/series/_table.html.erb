@@ -28,7 +28,11 @@
 				<%= item.authors.map{ |author| link_to(author.name, author) }.join(", ").html_safe %>
 			</td>
 			<td>
-				<!-- <UpVote item=item /> -->
+				<%= react_component "UpVote", { item: 
+					{ 	up_votes: item.votes_for.count, 
+						id: item.id, 
+						up_voted: current_user.voted_for?(item) 
+					} } %>
 			</td>
 			<td>
 				<div class="quantity_management">
