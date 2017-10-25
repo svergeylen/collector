@@ -1,0 +1,37 @@
+ <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vergeylen.eu</title>
+    <%= favicon_link_tag 'favicon.png', type: 'image/png' %>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+	
+	<style>
+		body.welcome {
+			background: white !important;
+			text-align : center;
+		}
+		.logo {
+			padding : 80px 0;
+		}
+		.direct {
+			margin-top : 40px;
+		}
+	</style>
+</head>
+
+<body class="welcome">
+	<div class="logo">
+		<%= image_tag @image_name %>
+	</div>
+	<div class="direct">
+		<%= link_to "Collector", posts_path, class:"btn btn-primary h-" %> 
+		<%= link_to "Stedan", "http://stedan.be", class:"btn btn-primary" %> 
+		<%= link_to "Site BD", "http://www.vergeylen.eu/bd", class:"btn btn-primary" %>
+	</div>
+</body>
+</html>

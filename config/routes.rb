@@ -47,6 +47,6 @@ Rails.application.routes.draw do
 	
 
 
-	root 'posts#index'
+	root 'welcome#index'
 
 end
