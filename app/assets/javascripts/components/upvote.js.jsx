@@ -10,8 +10,12 @@ var UpVote = React.createClass({
 	render: function() {
 		var btnClasses = classNames({
 			"btn": true,
-			"btn-default": !this.state.element.up_voted,
-			"btn-primary": this.state.element.up_voted
+			"btn-default": true
+		});
+		var glyphClasses = classNames({
+			"fa": true,
+			"fa-thumbs-up": this.state.element.up_voted,
+			"fa-thumbs-o-up" : !this.state.element.up_voted
 		});
 
 		/* Construction du titre pour contenir les noms des gens qui like l'élement et la date du like. */
@@ -23,7 +27,7 @@ var UpVote = React.createClass({
 		return (
 			<button name='button' type='button' className={btnClasses} onClick={this.handleClick} title={title} >
 	            <span className='upvote-count'>{this.state.element.up_votes}</span>
-	            <span className='glyphicon glyphicon-thumbs-up'></span>
+	            <span className={glyphClasses}></span>
 			</button>
 		);
 	},

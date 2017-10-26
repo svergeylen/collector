@@ -50,6 +50,9 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-classnames'
 end
 
+# Icones
+gem "font-awesome-rails"
+
 # "Likes" and votes on items, posts, comments
 gem 'acts_as_votable', '~> 0.10.0'
 
