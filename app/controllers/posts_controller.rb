@@ -6,6 +6,10 @@ class PostsController < ApplicationController
   def index
     # Eager loading comments
     @posts = Post.all.includes(:comments).order(updated_at: :desc).limit(30)
+    respond_to do |format|
+      format.html
+      format.atom
+    end
   end
 
   # GET /posts/1/edit
