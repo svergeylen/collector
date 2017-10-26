@@ -129,11 +129,19 @@
 				float : left;
 			}
 			.comment-message {
+				float : left;
+				width: 75%;
 				padding-top : 8px;
 				margin-left : 50px;
 				.comment-username {
 					font-weight: 700;
 				}
+			}
+			div.comment-upvote {
+				display : inline-block;
+				float: right;
+				padding-right : $general-padding;
+				padding-top : $general-padding;
 			}
 		}
 		.comment-add {

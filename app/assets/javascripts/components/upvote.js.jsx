@@ -8,29 +8,35 @@ var UpVote = React.createClass({
 	},
 
 	render: function() {
-		var divClasses = classNames({
-			"upvote": true,
-			"upvote-no": !this.state.element.up_voted,
-			"upvote-yes": this.state.element.up_voted
+		var btnClasses = classNames({
+			"btn": true,
+			"btn-default": !this.state.element.up_voted,
+			"btn-primary": this.state.element.up_voted
+		});
+
+		/* Construction du titre pour contenir les noms des gens qui like l'élement et la date du like. */
+		var title = this.state.element.title+ "\n";
+		$.each(this.state.element.voters, function(i, el) { 
+			title+= el.voter_name+" ("+ (el.updated_at) +")\n" 
 		});
 
 		return (
-			<div className={divClasses} onClick={this.handleClick} >
-				<div className="upvote-count">
-					{this.state.element.up_votes}
-				</div>
-			</div>
+			<button name='button' type='button' className={btnClasses} onClick={this.handleClick} title={title} >
+	            <span className='upvote-count'>{this.state.element.up_votes}</span>
+	            <span className='glyphicon glyphicon-thumbs-up'></span>
+			</button>
 		);
 	},
 
 	handleClick: function() {
 		var that = this;
+		console.log("handleClick() : %O", this.props.element);
 		$.ajax({
 			type: 'POST',
 			url: this.props.element.route,
 			success: function(data) {
-				console.log(data);
-				that.setState({ element: data})
+				console.log("Back from server : %O", data);
+				that.setState({ element: data.element })
 			}
 
 		});

@@ -54,7 +54,7 @@
         <div class="comments collapse" id="comments-post-<%= post.id %>">
           <div class="comments-list">
             <% post.comments.each do |comment| %>
-              <%= render partial: "comments/show", locals: { comment: comment } %>
+              <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
             <% end %>
           </div>
           <div class="comment-add">

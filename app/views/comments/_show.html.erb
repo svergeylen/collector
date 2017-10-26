@@ -1,8 +1,7 @@
 <div class="comment">
 	
 	<%= profile_picture(comment.user) %>
-	
-	
+	      
 	<div class="comment-message">
 		<span class="comment-username">
 			<%= comment.user.name %>
@@ -13,13 +12,14 @@
 		<span class="time">
 			<%= long_date(comment.updated_at) %>	
 		</span>	
-
-		<%# react_component "UpVote", render(template: 'comments/_comment.json.jbuilder', locals: {comment: comment}) %>
-
 		<% if current_user.id == comment.user.id %>
 			<%= link_to edit_comment_path(comment) do %><span class="glyphicon glyphicon-edit"></span><% end %>
 			<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
-			
-		<% end %>
+		<% end %>           
 	</div>
+	
+	<%= react_component "UpVote", 
+                render(template: 'comments/_comment.json.jbuilder', locals: {comment: comment}),  
+                class: "comment-upvote" %>
+
 </div>

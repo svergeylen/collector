@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :edit, :update, :destroy, :upvote]
 
   
   # GET /comments/1/edit
@@ -62,6 +62,15 @@ class CommentsController < ApplicationController
       end
     else
       redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
+    end
+  end
+
+  # Gestion des votes sur les comments
+  def upvote
+    if current_user.voted_for? @comment
+      current_user.unvote_for @comment
+    else
+      current_user.up_votes @comment
     end
   end
 
