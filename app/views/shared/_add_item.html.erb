@@ -1,0 +1,14 @@
+
+<%= data[:user].name %> vient d'ajouter :
+
+<ul>
+	<% data[:items].each do |item| %>
+		<li>
+			<%= link_to series_path(item.series) do %>
+				<%= item.series.name %>
+				<%= "(n°"+friendly(item.number).to_s+")" if item.number %>
+		 		: <%= item.name %>
+		 	<% end %>
+		</li>
+	<% end %>
+</ul>

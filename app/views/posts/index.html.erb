@@ -30,7 +30,7 @@
         </div>
         
         <div class="post-message">
-          <%= post.message %>
+          <%= post.message.html_safe %>
         </div>
 
         <% if post.attachments.present? %>

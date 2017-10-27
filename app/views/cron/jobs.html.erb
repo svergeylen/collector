@@ -1,0 +1,38 @@
+
+<h1>Cron</h1>
+
+<% if @post.present? %>
+	<p><%= @post.message.html_safe %></p>
+<%end %>
+
+
+<h3>Jobs en cours</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Action</th>
+			<th>Element_id</th>
+			<th>Element_type</th>
+			<th>User_id</th>
+			<th>Done</th>
+			<th>Created_at</th>
+			<th>Updated_at</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @jobs.each do |job| %>
+			<tr>
+				<td><%= job.id %></td>
+				<td><%= job.action %></td>
+				<td><%= job.element_id %></td>
+				<td><%= job.element_type %></td>
+				<td><%= job.user_id %> </td>
+				<td><%= job.done %></td>
+				<td><%= job.created_at %></td>
+				<td><%= job.updated_at %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>	

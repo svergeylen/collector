@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  
+
 	# Users
 	devise_for :users 
 	resources :users, only: [:show] do
@@ -45,6 +47,8 @@ Rails.application.routes.draw do
 	end
 	resources :authors
 	
+	# Cron
+	get 'cron/jobs'
 
 
 	root 'welcome#index'

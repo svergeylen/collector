@@ -30,6 +30,8 @@ class ItemsController < ApplicationController
 
     if @item.save
 			@item.series.touch
+      Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
+      
 			redirect_to @item.series, notice: 'Elément créé'
     else
 			render :new 
