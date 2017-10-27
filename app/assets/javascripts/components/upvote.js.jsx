@@ -34,7 +34,6 @@ var UpVote = React.createClass({
 
 	handleClick: function() {
 		var that = this;
-		console.log("handleClick() : %O", this.props.element);
 		$.ajax({
 			type: 'POST',
 			url: this.props.element.route,

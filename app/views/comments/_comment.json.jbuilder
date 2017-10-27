@@ -2,9 +2,8 @@ json.element do
 	json.type "comment"
 	json.id comment.id
 	
-	voters = []
-	comment.votes_for.each do |vote|
-		voters << { updated_at: vote.updated_at.strftime("%d/%m"), voter_id: vote.voter_id, voter_name: User.find(vote.voter_id).name }
+	voters = comment.votes_for.includes(:voter).map do |vote|
+	    { updated_at: vote.updated_at.strftime("%d/%m/%y"), voter_id: vote.voter_id, voter_name: vote.voter.name }
 	end
 	json.voters voters
 	json.up_votes voters.count
