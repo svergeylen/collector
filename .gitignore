@@ -23,7 +23,7 @@
 .byebug_history
 
 # Paperclip Attachments
-public/system/
+public/system/*
 
 # fichier natif svg, word, excel, utilié pour construire le site
 native-files
