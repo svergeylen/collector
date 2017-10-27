@@ -1,8 +1,10 @@
 
-<%= data[:user].name %> vient d'ajouter :
+<p>
+	<%= User.find(data[:user_id]).name %> vient d'ajouter :
+</p>
 
 <ul>
-	<% data[:items].each do |item| %>
+	<% Item.find(data[:item_ids]).each do |item| %>
 		<li>
 			<%= link_to series_path(item.series) do %>
 				<%= item.series.name %>

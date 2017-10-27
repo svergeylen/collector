@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   
 
 	# Users
-	devise_for :users 
+	devise_for :users, controllers: {
+    	sessions: 'users/sessions',
+    	registrations: 'users/registrations'
+	}
 	resources :users, only: [:show] do
 		member do
 			get 'delete_profile_picture', as: "delete_profile_picture"

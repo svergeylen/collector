@@ -16,9 +16,9 @@
 			<th>Element_id</th>
 			<th>Element_type</th>
 			<th>User_id</th>
+			<th>Memory</th>
 			<th>Done</th>
 			<th>Created_at</th>
-			<th>Updated_at</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -29,9 +29,9 @@
 				<td><%= job.element_id %></td>
 				<td><%= job.element_type %></td>
 				<td><%= job.user_id %> </td>
+				<td><%= job.memory.to_s %></td>
 				<td><%= job.done %></td>
 				<td><%= job.created_at %></td>
-				<td><%= job.updated_at %></td>
 			</tr>
 		<% end %>
 	</tbody>

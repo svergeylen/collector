@@ -1,0 +1,6 @@
+
+<p>
+	<%= data[:jobs].first.memory[:previous_name] if data[:jobs].first.memory.present? %> 
+	s'appelle à présent 
+	<%= User.find(data[:user_id]).name %>
+</p>
