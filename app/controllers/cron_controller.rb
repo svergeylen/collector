@@ -1,8 +1,8 @@
 class CronController < ApplicationController
 
 	# Réalise les taches de cron.
-	# Doit être invoqué par le cron du système ou manuellement /cron/jobs
-	def jobs
+	# Doit être invoqué par le cron du système ou manuellement /cron/run
+	def run
 		possible_actions = ["add_item", "new_profile_picture", "new_profile_name"]
 		@user_ids = Job.where(done: false).select(:user_id).distinct.map{ |job| job.user_id }
 
@@ -29,19 +29,14 @@ class CronController < ApplicationController
 						jobs.update_all(done: true)
 						# TODO supprimer les jobs finalisés au lieu de les marqués "done" si tout marche bien
 					end
-				end
+				end # jobs present
+				
+			end # each action
+		end # each user
+	end
 
-			end # action
-
-
-
-		end
-		
-
-
-
-
+	# Liste les jobs dans la table
+	def jobs
 		@jobs = Job.all
-		render template: "cron/jobs"
 	end
 end

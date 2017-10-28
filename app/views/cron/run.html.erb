@@ -1,0 +1,7 @@
+<h2>Cron</h2>
+
+<% if @post.present? %>
+	<p><%= @post.message.html_safe %></p>
+<% else %>
+	<p>Pas de jobs à réaliser</p>
+<%end %>

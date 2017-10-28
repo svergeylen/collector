@@ -52,6 +52,7 @@ Rails.application.routes.draw do
 	
 	# Cron
 	get 'cron/jobs'
+	get 'cron/run'
 
 
 	root 'welcome#index'
