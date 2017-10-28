@@ -1,4 +1,4 @@
-<%= form_with(model: item, local: true) do |form| %>
+<%= form_with(model: item, local: true, class: "form-horizontal") do |form| %>
   <% if item.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
@@ -11,12 +11,37 @@
     </div>
   <% end %>
 
-  <div class="field">
-		<%= form.text_field :number, id: :item_number, value: friendly(item.number), placeholder: "n°", size:2 %>
-		<%= form.text_field :name, id: :item_name, placeholder:"Titre", size: 36 %>
-		<%= form.text_field :authors_list, size: 30, placeholder: "Auteurs" %>
-		<%= form.hidden_field :series_id %>
-  	<%= form.submit submit_text %>
-	</div>
+  <div class="form-group">
+    <%= form.label :number, "Numéro", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.text_field :number, id: :item_number, value: friendly(item.number), class: "form-control" %>
+      <span class="help-block">Nombre entier (1) ou décimal avec un point (1.1)</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= form.label :name, "Titre", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.text_field :name, id: :item_name, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= form.label :authors_list, "Auteurs", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.text_field :authors_list, id: :item_authors_list, class: "form-control" %>
+      <span class="help-block">Les auteurs doivent être séparés par une virgule.</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= form.label :description, "Description", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.text_area :description, id: :item_description, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+     <div class="col-sm-offset-2 col-sm-6">
+          <%= form.hidden_field :series_id %>
+        <%= form.submit submit_text %>
+      </div>
+  </div>
 
 <% end %>

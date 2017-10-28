@@ -1,18 +1,4 @@
 
-<!-- 
-<div class="rounded-box">
-	<%# react_component "SeriesList", render(template: 'series/show.json.jbuilder') %>
-
-	<div class="separator">
-		<%# render partial: "items/form", locals: {item: @new_item, submit_text: "Ajouter" } %>
-	</div>
-</div>
--->
-
-<%# render(template: 'series/show.json.jbuilder') %>
-<%# render(template: 'items/index.json.jbuilder') %>
-<%# render partial: "items/modal" %>
-
 <div class="rounded-box">
 	<div class="series-show">
 		<div class="btn-group">
@@ -31,9 +17,12 @@
 			</button>
 			<ul class="dropdown-menu pull-right">
 				<li>
+					<%= link_to "Ajouter un item", new_item_path %>
+				</li>
+				<li class="divider"></li>
+				<li>
 					<%= link_to "Modifier la série", edit_series_path(@series) %>
 				</li>
-
 				<li>
 					<%= link_to "Supprimer la série", @series, method: :delete, data: {confirm: "Supprimer la série entière et tous les éléments qu'elle contient ?" } %>
 				</li>
@@ -50,8 +39,5 @@
 			<%= render partial: "table", locals: { items: @items} %>
 		<% end %>
 
-	</div>
-	<div class="mt-4">
-		<%= render partial: "items/form", locals: {item: @new_item, submit_text: "Ajouter" } %>
 	</div>
 </div>
