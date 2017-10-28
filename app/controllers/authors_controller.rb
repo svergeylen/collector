@@ -3,7 +3,7 @@ class AuthorsController < ApplicationController
 
   def show
     @author = Author.find(params[:id])
-    @series = Series.find( @author.items.collect(&:series_id).uniq! ).sort_by{ |s| s.name }
+    @series = Series.find( @author.items.collect(&:series_id).uniq ).sort_by{ |s| s.name }
 
     colleague_ids = Itemauthor.where(item_id: @author.items.collect(&:id)).where.not(author_id: @author.id).collect(&:author_id).uniq!
     if colleague_ids
