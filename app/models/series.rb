@@ -29,7 +29,7 @@ class Series < ApplicationRecord
 
 	# Renvoie les elements d'une série triés par numéro puis par nom
 	def sorted_items
-		self.items.includes(:users).sort_by{ |a| a.number.to_i }
+		self.items.includes(:users).sort_by{ |a| [a.number.to_i, a.name] }
 	end
 
 	# Renvoie le numero le plus élevé connu pour cette serie
