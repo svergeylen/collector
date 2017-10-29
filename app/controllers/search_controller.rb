@@ -2,7 +2,9 @@ class SearchController < ApplicationController
 
 	# recherche le terme donnée dans les séries et items
   def keyword
-	@keyword = params[:series_keyword]
+	@keyword = params[:series_keyword] if params[:series_keyword].present?
+	@keyword = params[:keyword] if params[:keyword].present?
+	
 	@series = Series.search(@keyword, params[:category_id]).limit(50)
 
 	# Poursuite de la recherche dans les items
