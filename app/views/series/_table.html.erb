@@ -30,24 +30,6 @@
 				</td>
 				<td>
 					<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item})  %>
- 
-
-
-<!--		render(template: 'items/_quantity.json.jbuilder', locals: {item: item})
-
-
-			<div class="quantity_management">
-						<%# link_to minus_item_path(item), remote: true do %>
-							<span class="glyphicon glyphicon-minus" title="Diminuer"></span>
-						<%# end %>
-						<span class="quantity" data-item-id="<%= item.id.to_s %>">
-							<%= item.quantity_for(current_user.id).to_s %>
-						</span>
-				 		<%# link_to plus_item_path(item), remote: true do %>
-					 		<span class="glyphicon glyphicon-plus" title="Augmenter"></span>
-				 		<%# end %>
-				 	-->
-				 	</div>
 			 	</td>
 			 	<td>
 					<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table" %>

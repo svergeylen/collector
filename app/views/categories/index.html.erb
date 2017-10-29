@@ -14,6 +14,8 @@
 
 			<h2>Collector</h2>
 
+			<%= react_component "Ago", { since: "1506000024"} %>
+			
 			<ul>
 			<% @categories.each do |category| %>
 				<li><%= link_to category.name, category %> </li>
