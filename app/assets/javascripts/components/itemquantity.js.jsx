@@ -11,21 +11,41 @@ var ItemQuantity = React.createClass({
 			"itemquantity-box": true
 		});
 
-		/* Quantité */
-		if (this.state.item.quantity > 1) {
-			html = <span className='green'>{this.state.item.quantity}</span>;
+		/* Construction du titre pour contenir les noms des gens qui possèdent cet item. */
+		var title = "";
+		if (this.state.item.owners.length > 0) {
+			title = "Item en possession de :\n"
+			$.each(this.state.item.owners, function(i, el) { 
+				title+= "- "+ el.name+" ("+el.quantity+")\n" 
+			});
 		}
 		else {
-			if (this.state.item.quantity == 0) {
-				html = <span className='fa fa-ban grey'></span>;
-			}
-			else {
-				html = <span className='fa fa-check green'></span>;
-			}
+			title = "Personne d'autre ne possède cet item"
 		}
 
+
+		/* Quantité */
+		switch(this.state.item.quantity) {
+		    case 0: {
+		    	if(this.state.item.owners.length > 0) {
+		        	html = <span className='fa fa-user grey'></span>;
+				}
+				else {
+					html = <span className='fa fa-ban grey'></span>;
+				}
+				break;
+		    }
+		    case 1: {
+		        html = <span className='glyphicon glyphicon-ok green'></span>;
+		        break;
+		    }
+		    default: {
+		        html = <span className='green'>{this.state.item.quantity}</span>;
+		    }
+		} 
+
 		return (
-			<div className={itemquantityClasses} title='mon titre'>
+			<div className={itemquantityClasses} title={title}>
 				<div className='itemquantity-gen itemquantity-minus' title='Diminuer' onClick={this.handleMinus}>
 					<span className='glyphicon glyphicon-minus'></span>
 				</div>
