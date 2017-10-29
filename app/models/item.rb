@@ -45,7 +45,7 @@ class Item < ApplicationRecord
 		return self.itemusers.where(user_id: user_id).limit(1).first
 	end
 
-	# Renvoie le nombre d'item possédé par l'utiliateur donné
+	# Renvoie le nombre d'items possédés par l'utiliateur donné
 	def quantity_for(user_id)
 		iu = self.iu(user_id)
 		if iu.present?
@@ -59,7 +59,7 @@ class Item < ApplicationRecord
 	def update_quantity(delta, user_id)
 		iu = self.iu(user_id)
 	    if iu.present?
-	      iu.quantity = [ (iu.quantity + delta), 0].max
+	      iu.quantity = [ (iu.quantity + delta.to_i), 0].max
 	      iu.save
 	    else
 	      iu = Itemuser.create!(item_id: self.id, user_id: user_id, quantity: 1)

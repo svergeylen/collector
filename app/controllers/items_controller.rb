@@ -68,6 +68,13 @@ class ItemsController < ApplicationController
     end
   end
 
+  # Gestion des quantités (Composant React ItemQuantity)
+  def quantity
+    @item = Item.find(params[:id])
+    @iu = @item.update_quantity(params[:delta], current_user.id)
+    render partial: "items/quantity.json.jbuilder", locals: {item: @item}
+  end
+
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy
@@ -89,7 +96,7 @@ class ItemsController < ApplicationController
   end
 
 
-  # Gestion des votes sur les items
+  # Gestion des votes "like" sur les items
   def upvote
     if current_user.voted_for? @item
       current_user.unvote_for @item

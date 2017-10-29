@@ -29,10 +29,14 @@
 					<%= item.authors.map{ |author| link_to(author.name, author) }.join(", ").html_safe %>
 				</td>
 				<td>
-					<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) %>
-				</td>
-				<td>
-					<div class="quantity_management">
+					<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item})  %>
+ 
+
+
+<!--		render(template: 'items/_quantity.json.jbuilder', locals: {item: item})
+
+
+			<div class="quantity_management">
 						<%= link_to minus_item_path(item), remote: true do %>
 							<span class="glyphicon glyphicon-minus" title="Diminuer"></span>
 						<% end %>
@@ -42,8 +46,12 @@
 				 		<%= link_to plus_item_path(item), remote: true do %>
 					 		<span class="glyphicon glyphicon-plus" title="Augmenter"></span>
 				 		<% end %>
+				 	-->
 				 	</div>
 			 	</td>
+			 	<td>
+					<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) %>
+				</td>
 				<td>
 			  		<%= link_to edit_item_path(item) do %>
 						<span class="glyphicon glyphicon-edit"></span>
