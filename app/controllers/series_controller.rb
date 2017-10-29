@@ -16,12 +16,15 @@ class SeriesController < ApplicationController
     # Formulaire d'ajout d'item
 		@new_item = Item.new
 		@new_item.series_id = params[:id]
-		if @items.last.present?
-      @new_item.number = @items.last.number + 1
+		if @items.last.present? 
+      if @items.last.number.present?
+        @new_item.number = @items.last.number + 1
+      end
 		else
 			@new_item.number = 1
 		end
-		@new_item.authors_list = @items.last.authors_list if @items.last.present?
+		
+    @new_item.authors_list = @items.last.authors_list if @items.last.present?
 
     # Vue en liste ou en galerie ?
     if params[:view].present? 
