@@ -1,13 +1,38 @@
 
+@import 'colors';
+
+$w: 30px;
+$r: 15px;
 
 .itemquantity-box {
-	padding: 5px;
-	
-	.itemquantity-count {
+	font-weight: 700;
+	.itemquantity-gen {
 		display: inline-block;
-		margin-right: 5px;
+		padding: 5px;
+		min-width : $w;
+		text-align : center;
 	}
-	.itemquantity-actions {
-		display: inline-block;
-	}	
+	/* On masque les controles par défauts (+/-) */
+	.itemquantity-minus span,
+	.itemquantity-plus span {
+		display: none;
+	}
+	.itemquantity-minus {
+		border-radius: $r 0 0 $r;
+	}
+	.itemquantity-plus {
+		border-radius: 0 $r $r 0;
+	}
+	.itemquantity-minus:hover, 
+	.itemquantity-plus:hover {
+		color: white;
+		background-color: $high-color-hover;
+	}
 }
+
+/* On affiche les controles lorsque toute la div globale est survolée */
+.itemquantity-box:hover .itemquantity-minus span,
+.itemquantity-box:hover .itemquantity-plus span {
+	display: inline-block;
+}
+

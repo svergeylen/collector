@@ -43,8 +43,8 @@ Rails.application.routes.draw do
 	resources :items do
 		member do
 			post :upvote
-			get :plus
-			get :minus
+			#get :plus
+			#get :minus
 			post :quantity
 			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end

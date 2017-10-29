@@ -106,22 +106,22 @@ class ItemsController < ApplicationController
   end
 
   # Ajoute l'item à l'utilisateur ou augmente la quantité de 1
-  def plus
-    @iu = @item.update_quantity(1, current_user.id)
-    respond_to do |format|
-      format.html { redirect_to @item.series }
-      format.js
-    end
-  end
+  # def plus
+  #   @iu = @item.update_quantity(1, current_user.id)
+  #   respond_to do |format|
+  #     format.html { redirect_to @item.series }
+  #     format.js
+  #   end
+  # end
 
-  # Diminue la quantité de 1
-  def minus
-    @iu = @item.update_quantity(-1, current_user.id)
-    respond_to do |format|
-      format.html { redirect_to @item.series }
-      format.js
-    end
-  end
+  # # Diminue la quantité de 1
+  # def minus
+  #   @iu = @item.update_quantity(-1, current_user.id)
+  #   respond_to do |format|
+  #     format.html { redirect_to @item.series }
+  #     format.js
+  #   end
+  # end
 
 
   private

@@ -7,30 +7,32 @@ var ItemQuantity = React.createClass({
 	},
 
 	render: function() {
-		var topClasses = classNames({
+		var itemquantityClasses = classNames({
 			"itemquantity-box": true
 		});
 
 		/* Quantité */
 		if (this.state.item.quantity > 1) {
-			html = this.state.item.quantity;
+			html = <span className='green'>{this.state.item.quantity}</span>;
 		}
 		else {
 			if (this.state.item.quantity == 0) {
-				html = "0";
+				html = <span className='fa fa-ban grey'></span>;
 			}
 			else {
-				html = 'V'; /* <span className="fa fa-check"></span> */
+				html = <span className='fa fa-check green'></span>;
 			}
 		}
 
 		return (
-			<div className={topClasses} title='mon titre'>
-	            <div className='itemquantity-count'>{html}</div>
-	            <div className='itemquantity-actions'>
-	            	<div className='fa fa-caret-up ' title='Augmenter' onClick={this.handlePlus}></div>
-	            	<div className='fa fa-caret-down' title='Diminuer' onClick={this.handleMinus}></div>
-            	</div>
+			<div className={itemquantityClasses} title='mon titre'>
+				<div className='itemquantity-gen itemquantity-minus' title='Diminuer' onClick={this.handleMinus}>
+					<span className='glyphicon glyphicon-minus'></span>
+				</div>
+	            <div className='itemquantity-gen itemquantity-count'>{html}</div>
+	            <div className='itemquantity-gen itemquantity-plus' title='Augmenter' onClick={this.handlePlus}>
+					<span className='glyphicon glyphicon-plus'></span>
+	            </div>
 			</div>
 		);
 	},

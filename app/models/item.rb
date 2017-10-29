@@ -56,13 +56,17 @@ class Item < ApplicationRecord
 	end
 
 	# Modifie la quantité posédée par l'utilisateur donné
-	def update_quantity(delta, user_id)
+	def update_quantity(value, user_id)
+		delta = value.to_i
 		iu = self.iu(user_id)
 	    if iu.present?
-	      iu.quantity = [ (iu.quantity + delta.to_i), 0].max
+	      iu.quantity = [ (iu.quantity + delta), 0].max
 	      iu.save
 	    else
-	      iu = Itemuser.create!(item_id: self.id, user_id: user_id, quantity: 1)
+	    	# Si l'utilisateur n'a pas l'item ET que l'on veut diminuer la quantité... autant ne rien faire
+	    	if (delta > 0)
+	      		iu = Itemuser.create!(item_id: self.id, user_id: user_id, quantity: delta)
+	      	end
 	    end
 	    return iu
 	end

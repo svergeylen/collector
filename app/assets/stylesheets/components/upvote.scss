@@ -6,19 +6,13 @@
 }
 
 button.btn-upvote {
-	-webkit-transition-duration: 1s;
-    -moz-transition-duration: 1s;
-    -o-transition-duration: 1s;
-    transition-duration: 1s;
-    -webkit-transition-property: -webkit-transform;
-    -moz-transition-property: -moz-transform;
-    -o-transition-property: -o-transform;
-    transition-property: transform;
-  
-	
-	
 }
 
 button.btn-upvote.clicked {
 	font-weight: bold;
+}
+
+.upvote-in-table button {
+    padding : 3px 8px;
+
 }
