@@ -24,7 +24,6 @@ var ItemQuantity = React.createClass({
 			 }
 		});
 
-		
 		/* Quantité */
 		if (this.state.item.quantity == 0) {
 			var quantity = <span className="glyphicon glyphicon-ban"></span>;
@@ -37,7 +36,6 @@ var ItemQuantity = React.createClass({
 			}
 		}
 		
-
 		return (
 			<div className='itemquantity-box'>
 				<div className='itemquantity-actions'>
@@ -65,7 +63,6 @@ var ItemQuantity = React.createClass({
 			url: this.props.item.route,
 			data : { delta: delta},
 			success: function(data) {
-				console.log("send_ajax: Back from server : %O", data);
 				that.setState({ item: data.item })
 			}
 		});

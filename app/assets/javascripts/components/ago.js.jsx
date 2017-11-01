@@ -8,7 +8,9 @@ var Ago = React.createClass({
 	},
 
 	componentDidMount() {
-	    this.timerID = setInterval(  () => this.tick(), 60000 );
+		/* J'appelle tick uen première fois sinon les valeurs sont NaN... (pq ?) */
+		this.tick();
+	    this.timerID = setInterval(  () => this.tick(), 10000 );
 	},
 
 	componentWillUnmount() {
@@ -26,10 +28,13 @@ var Ago = React.createClass({
 
 	render: function() {
 		var text = "";
+		var mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 		var val = this.state.delta;
 		var ajd = new Date(this.props.since*1000);
-		var title = "Le "+ajd.getDate()+"/"+ajd.getMonth()+"/"+ajd.getFullYear()+", à "+ajd.getHours()+"h"+ajd.getMinutes();
-
+		var d = (ajd.getDate()  < 10) ? "0"+ajd.getDate()  : ajd.getDate();
+		var m = mois[ajd.getMonth()];
+		var title = "Le "+d+" "+m+" "+ajd.getFullYear()+", à "+ajd.getHours()+"h"+ajd.getMinutes();
+	
 		/* Moins de une minute */
 		if (val < 60) {
 			text = "A l'instant !";
@@ -67,9 +72,9 @@ var Ago = React.createClass({
 						if (ajd > hier_minuit) {
 							text = "Hier, à "+ajd.getHours()+"h"+ajd.getMinutes();
 						}
-						/* C'était avant hier. On arrondit au jour près */
+						/* C'était avant hier minuit. On peut arrondir au jour près */
 						else {
-							if (val < (15*24*3600)) {
+							if (val < (7*24*3600)) {
 								tmp = Math.round(val/(3600*24));
 								text = "Il y a "+tmp+" jour";
 								if (tmp > 0) {text+= "s"; }
@@ -84,7 +89,7 @@ var Ago = React.createClass({
 		}
 
 		return (
-	      <div>{text}</div>
+	      <span className="time" title={title} >{text}</span>
 	    );
 	}
 });
