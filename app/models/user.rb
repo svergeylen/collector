@@ -23,4 +23,14 @@ class User < ApplicationRecord
 		self.items.where(["quantity > ?", 0]).where(created_at: (Date.current-months_quantity.months)..Date.current).order(created_at: :desc)
 	end
 
+	# Donne l'accès ou non à une ressource en fonction des droits de l'utilisateur
+	def can?(res)
+		resources = { collector: 5, une: 10 }
+		if resources.include?(res)
+			return  self.rights >= resources[res] 
+		else
+			return false
+		end
+	end
+
 end

@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:edit, :delete_attachment, :update, :destroy, :upvote]
+  before_action :check_access
 
   # GET /posts
   # GET /posts.json
@@ -102,6 +103,11 @@ class PostsController < ApplicationController
         }
       end
     end
+
+    # Renvoi l'utilisateur à la page de garde s'il n'a pas accès à POST
+    def check_access
+      redirect_to root_url, alert: "Accès non autorisé" if !current_user.can?(:une)
+    end 
 
     # Use callbacks to share common setup or constraints between actions.
     def set_post

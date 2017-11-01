@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :upvote]
-
+  before_action :check_access
   
   # GET /comments/1/edit
   def edit
@@ -75,6 +75,12 @@ class CommentsController < ApplicationController
   end
 
   private
+
+    # Renvoi l'utilisateur à la page de garde s'il n'a pas accès à POST
+    def check_access
+      redirect_to root_url, alert: "Accès non autorisé" if !current_user.can?(:une)
+    end 
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])

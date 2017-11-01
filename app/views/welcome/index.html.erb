@@ -25,6 +25,14 @@
 </head>
 
 <body class="welcome">
+
+	<% if notice %>
+		<p class="alert alert-success"><%= notice %></p>
+	<% end %>
+	<% if alert %>
+		<p class="alert alert-danger"><%= alert %></p>
+	<% end %>
+	
 	<div class="logo">
 		<%= image_tag @image_name %>
 	</div>
