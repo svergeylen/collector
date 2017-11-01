@@ -49,7 +49,7 @@ Rails.application.routes.draw do
 			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end
 	end
-	resources :authors
+	resources :tags
 	
 	# Cron
 	get 'cron/jobs'

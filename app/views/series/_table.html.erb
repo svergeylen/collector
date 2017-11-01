@@ -26,7 +26,7 @@
 					<%= link_to item.name, item %></a>
 				</td>
 				<td> 
-					<%= item.authors.map{ |author| link_to(author.name, author) }.join(", ").html_safe %>
+					<%= item.tags.map{ |tag| link_to(tag.name, tag) }.join(", ").html_safe %>
 				</td>
 				<td>
 					<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
@@ -55,7 +55,7 @@
 				<%= form.text_field :name, id: :item_name, placeholder:"Titre", size: 36, class: "form-control" %>
 			</td>
 			<td>
-				<%= form.text_field :authors_list, size: 30, placeholder: "Auteurs, séparés par une virgule", class: "form-control" %>
+				<%= form.text_field :tags_list, size: 30, placeholder: "Tags, séparés par une virgule", class: "form-control" %>
 			</td>
 			<td>
 				<%= form.hidden_field :series_id %>

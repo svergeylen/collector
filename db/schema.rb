@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101092844) do
+ActiveRecord::Schema.define(version: 20171101121201) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -24,10 +24,6 @@ ActiveRecord::Schema.define(version: 20171101092844) do
     t.integer "image_file_size"
     t.datetime "image_updated_at"
     t.index ["element_type", "element_id"], name: "index_attachments_on_element_type_and_element_id"
-  end
-
-  create_table "authors", force: :cascade do |t|
-    t.string "name"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -49,13 +45,6 @@ ActiveRecord::Schema.define(version: 20171101092844) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "itemauthors", force: :cascade do |t|
-    t.integer "author_id"
-    t.integer "item_id"
-    t.index ["author_id"], name: "index_itemauthors_on_author_id"
-    t.index ["item_id"], name: "index_itemauthors_on_item_id"
-  end
-
   create_table "items", force: :cascade do |t|
     t.string "numero"
     t.string "name"
@@ -65,6 +54,13 @@ ActiveRecord::Schema.define(version: 20171101092844) do
     t.integer "adder_id"
     t.float "number"
     t.text "description"
+  end
+
+  create_table "items_tags", id: false, force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "item_id"
+    t.index ["item_id"], name: "index_items_tags_on_item_id"
+    t.index ["tag_id"], name: "index_items_tags_on_tag_id"
   end
 
   create_table "itemusers", force: :cascade do |t|
@@ -109,6 +105,11 @@ ActiveRecord::Schema.define(version: 20171101092844) do
     t.integer "series_id"
     t.index ["series_id"], name: "index_series_users_on_series_id"
     t.index ["user_id"], name: "index_series_users_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.integer "category_id"
   end
 
   create_table "users", force: :cascade do |t|

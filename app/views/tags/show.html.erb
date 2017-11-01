@@ -1,0 +1,37 @@
+<div class="rounded-box">
+	<div class="pull-right">
+		<div class="dropdown">
+			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+				<span class="glyphicon glyphicon-cog"></span>
+		 	<span class="caret"></span></button>
+			<ul class="dropdown-menu dropdown-menu-right">
+			    <li><%= link_to "Modifier le tag", edit_tag_path(@tag)  %></li>
+			    <li><%= link_to "Supprimer le tag", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } %>
+			    </li>
+		  	</ul>
+		</div>				
+	</div>
+
+
+	<h1><%= @tag.name.capitalize %></h1>
+
+	<h4>Séries</h4>
+	<ul>
+		<% @series.each do |serie| %>
+			<li>
+				<%= link_to serie.name, series_path(serie) %>
+			</li>
+		<% end %>
+	</ul>
+
+	<h4>Reliés</h4>
+	<% if @related_tags.present? %>
+		<ul>
+			<% @related_tags.each do |tag| %>
+				<li><%= link_to tag.name.capitalize, tag %></li>
+			<% end %>
+		</ul>
+	<% else %>
+		<p> Pas de lien connu</p>
+	<% end %>
+</div>

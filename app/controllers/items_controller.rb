@@ -22,7 +22,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-		@item.authors_list = params[:item][:authors_list]
+		@item.tags_list = params[:item][:tags_list]
     # L'utilisateur courant a ajouté l'élément
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
@@ -41,7 +41,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-		@item.authors_list = params[:item][:authors_list] if params[:item][:authors_list]
+		@item.tags_list = params[:item][:tags_list] if params[:item][:tags_list]
     @item.adder = current_user if @item.adder.blank?
 		@item.series.touch
 
