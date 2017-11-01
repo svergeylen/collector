@@ -17,7 +17,7 @@ class CronController < ApplicationController
 					logger.debug jobs.inspect
 
 					# On vérifie que le dernier job a été ajouté il y a un certain temps (sinon on attend)
-					if (jobs.last.updated_at + 5.minutes < Time.now )
+					if (jobs.last.updated_at + 15.minutes < Time.now )
 						
 						data = { jobs: jobs,
 								 item_ids: jobs.map(&:element_id),

@@ -1,38 +1,55 @@
 
 @import 'colors';
 
-$w: 30px;
-$r: 15px;
+
+$r: 50%;
+$w: 20px;
+
 
 .itemquantity-box {
-	font-weight: 700;
-	.itemquantity-gen {
+	min-width: 180px;
+	min-height: 40px;
+
+	div.itemquantity-actions,
+	div.itemquantity-count,
+	div.itemquantity-owners {
 		display: inline-block;
-		padding: 5px;
-		min-width : $w;
 		text-align : center;
 	}
-	/* On masque les controles par défauts (+/-) */
-	.itemquantity-minus span,
-	.itemquantity-plus span {
-		display: none;
+	.itemquantity-actions {
+		vertical-align: middle !important;
+		width: $w;
+
+		.glyphicon {
+			display: none;
+			padding: 3px;
+			width: $w;
+		}
+		.glyphicon:hover {
+			color: white;
+			background-color: $high-color-hover;
+		}
+		 .glyphicon-plus {
+			border-radius: $r $r 0 0;
+		}
+		.glyphicon-minus {
+			border-radius: 0 0 $r $r;
+		}
 	}
-	.itemquantity-minus {
-		border-radius: $r 0 0 $r;
+	.itemquantity-count {
+		min-width: ($w+5px);
+		padding: 5px;
+		color: green;
+		font-weight: 700;
 	}
-	.itemquantity-plus {
-		border-radius: 0 $r $r 0;
-	}
-	.itemquantity-minus:hover, 
-	.itemquantity-plus:hover {
-		color: white;
-		background-color: $high-color-hover;
+	.itemquantity-owners {
+		min-width: $w;
+		padding: 5px;
 	}
 }
 
 /* On affiche les controles lorsque toute la div globale est survolée */
-.itemquantity-box:hover .itemquantity-minus span,
-.itemquantity-box:hover .itemquantity-plus span {
-	display: inline-block;
+.itemquantity-box:hover .itemquantity-actions div.glyphicon {
+	display: block;
 }
 

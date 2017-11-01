@@ -39,9 +39,6 @@ nav.navbar.navbar-default {
 	#top-navbar form.navbar-form {
 		border : none;
 	}
-
-
-
 }
 
 .rounded-box {
@@ -59,4 +56,10 @@ nav.navbar.navbar-default {
 .img-thumbnail {
 	margin-bottom: 5px;
 	margin-right: 5px;
+}
+
+table.table-extra-condensed tbody tr td {
+	padding-top : 0;
+	padding-bottom: 0;
+	vertical-align: middle;
 }

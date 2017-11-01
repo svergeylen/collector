@@ -7,52 +7,45 @@ var ItemQuantity = React.createClass({
 	},
 
 	render: function() {
-		var itemquantityClasses = classNames({
-			"itemquantity-box": true
+		user_id = this.props.user_id;
+		var that = this;
+
+		/* Construction des utilisateurs qui possèdent l'article */
+		/* Je recherche l'utiliateur courant pour l'afficher en premier dans la liste*/
+		var result = $.grep(this.state.item.owners, function(el){ return el.user_id == user_id; });
+		console.log(result);
+		if (result.length > 0) {
+			var me = that.picture(result[0]) ;
+		}
+		/* Autres posesseurs de l'article */
+		var owners = this.state.item.owners.map(function(el, i) { 
+			 if (el.user_id != user_id) {
+				return that.picture(el);
+			 }
 		});
 
-		/* Construction du titre pour contenir les noms des gens qui possèdent cet item. */
-		var title = "";
-		if (this.state.item.owners.length > 0) {
-			title = "Item en possession de :\n"
-			$.each(this.state.item.owners, function(i, el) { 
-				title+= "- "+ el.name+" ("+el.quantity+")\n" 
-			});
+		
+		/* Quantité */
+		if (this.state.item.quantity == 0) {
+			var quantity = <span className="glyphicon glyphicon-ban"></span>;
 		}
 		else {
-			title = "Personne d'autre ne possède cet item"
+			if (this.state.item.quantity == 1) {
+				var quantity = <i className="fa fa-check"></i>;
+			} else {
+				var quantity = this.state.item.quantity;
+			}
 		}
-
-
-		/* Quantité */
-		switch(this.state.item.quantity) {
-		    case 0: {
-		    	if(this.state.item.owners.length > 0) {
-		        	html = <span className='fa fa-user grey'></span>;
-				}
-				else {
-					html = <span className='fa fa-ban grey'></span>;
-				}
-				break;
-		    }
-		    case 1: {
-		        html = <span className='glyphicon glyphicon-ok green'></span>;
-		        break;
-		    }
-		    default: {
-		        html = <span className='green'>{this.state.item.quantity}</span>;
-		    }
-		} 
+		
 
 		return (
-			<div className={itemquantityClasses} title={title}>
-				<div className='itemquantity-gen itemquantity-minus' title='Diminuer' onClick={this.handleMinus}>
-					<span className='glyphicon glyphicon-minus'></span>
+			<div className='itemquantity-box'>
+				<div className='itemquantity-actions'>
+					<div className='glyphicon glyphicon-plus' title='Augmenter' onClick={this.handlePlus}></div>
+					<div className='glyphicon glyphicon-minus' title='Diminuer' onClick={this.handleMinus}></div>
 				</div>
-	            <div className='itemquantity-gen itemquantity-count'>{html}</div>
-	            <div className='itemquantity-gen itemquantity-plus' title='Augmenter' onClick={this.handlePlus}>
-					<span className='glyphicon glyphicon-plus'></span>
-	            </div>
+	            <div className='itemquantity-count'>{quantity}</div>
+	            <div className='itemquantity-owners'>{me} {owners}</div>
 			</div>
 		);
 	},
@@ -76,7 +69,10 @@ var ItemQuantity = React.createClass({
 				that.setState({ item: data.item })
 			}
 		});
-	}
+	},
 
+	picture(el) {
+		return <img src={el.avatar} className="profile-picture" title={el.name+" ("+el.quantity+"x)"} />
+	}
 
 });

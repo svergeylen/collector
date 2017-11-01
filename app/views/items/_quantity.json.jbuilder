@@ -1,3 +1,8 @@
+
+# Données sur l'utilisateur
+json.user_id current_user.id
+
+# Item
 json.item do 
 	json.id item.id
 	
@@ -10,9 +15,12 @@ json.item do
 			json.user_id iu.user_id
 			json.quantity iu.quantity
 			json.name iu.user.name
+			json.avatar iu.user.avatar.url(:tiny)
 		end
 	end
 
 	# Route pour cliquer sur plus ou moins
 	json.route quantity_item_path(item.id, format: "json")
+
+
 end

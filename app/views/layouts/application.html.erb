@@ -31,7 +31,7 @@
 
 				<div class="collapse navbar-collapse" id="top-navbar">
 				  <ul class="nav navbar-nav">
-				  	<li><%= link_to "News", posts_path, class:"white-link" %></li>
+				  	<li><%= link_to "La Une", posts_path, class:"white-link" %></li>
 			    	<li><%= link_to "Collector", categories_path, class:"white-link" %></li>
 		            <% Category.where(menu: true).order(:name).each do |category| %>
 		            	<li><%= link_to category.name, category, class:"white-link" %></li> 
