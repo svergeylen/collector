@@ -31,7 +31,9 @@
 
 				<div class="collapse navbar-collapse" id="top-navbar">
 				  <ul class="nav navbar-nav">
-				  	<li><%= link_to "La Une", posts_path, class:"white-link" %></li>
+				  	<% if user_signed_in? && current_user.can?(:une) %>
+				  		<li><%= link_to "La Une", posts_path, class:"white-link" %></li>
+				  	<% end %>
 			    	<li><%= link_to "Collector", categories_path, class:"white-link" %></li>
 		            <% Category.where(menu: true).order(:name).each do |category| %>
 		            	<li><%= link_to category.name, category, class:"white-link" %></li> 
@@ -43,7 +45,7 @@
 						<% if user_signed_in? %>
 
 						    <a href="#" class="dropdown-toggle white-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<%= image_tag current_user.avatar.url(:tiny), alt: "#{current_user.name}", class: "profile-picture" %>
+								<%= image_tag current_user.avatar.url(:tiny), alt: "Icon", class: "profile-picture" %>
 								<%= current_user.name %>
 								<span class="caret"></span>
 							</a>

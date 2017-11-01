@@ -22,5 +22,6 @@ json.item do
 	# Route pour cliquer sur plus ou moins
 	json.route quantity_item_path(item.id, format: "json")
 
+	json.empty_profile User.new.avatar.url(:tiny)
 
 end
