@@ -11,7 +11,8 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = Item.new
+    @item = Item.new(series_id: params[:series_id])
+    @series = Series.find(@item.series_id) if params[:series_id]
   end
 
   # GET /items/1/edit

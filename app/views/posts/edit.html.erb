@@ -1,7 +1,7 @@
 
 <div id="post-edit" class="rounded-box">
 
-	<h2>Modification du message</h2>
+	<h2>Votre message</h2>
 
 	<%= form_with(model: @post, local: true) do |form| %>
 
@@ -17,7 +17,7 @@
 		<% end %>
 
 	  	<div class="text-zone">
-	    	<%= form.text_area :message %> 
+	    	<%= form.text_area :message, class: "form-control" %> 
 	  	</div>
 		<div class="tool-box">
 

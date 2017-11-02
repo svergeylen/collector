@@ -12,6 +12,13 @@
   <% end %>
 
   <div class="form-group">
+    <%= form.label :series, "Série", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <span class="help-block"> <%= @series.name %> </span>    
+    </div>
+  </div>
+
+  <div class="form-group">
     <%= form.label :number, "Numéro", class:"control-label col-sm-2" %>
     <div class="col-sm-6">
       <%= form.text_field :number, id: :item_number, value: friendly(item.number), class: "form-control" %>
@@ -39,7 +46,7 @@
   </div>
   <div class="form-group">
      <div class="col-sm-offset-2 col-sm-6">
-          <%= form.hidden_field :series_id %>
+        <%= form.hidden_field :series_id %>
         <%= form.submit submit_text %>
       </div>
   </div>

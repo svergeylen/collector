@@ -6,13 +6,14 @@
 			<p>Courriel : <%= @user.email %></p>
 			<p>Dernière connexion : <%= long_date(@user.last_sign_in_at) %></p>
 
-			
-			<h3>Dernier message</h3>
-			<% if @last_post.present? %>
-				<p><small>Posté le <%= long_date(@last_post.updated_at) %></small></p>
-				<p><%= @last_post.message %></p>
-			<% else %>
-				<p>Aucun message posté</p>
+			<% if current_user.can?(:une) %>
+				<h3>Dernier message</h3>
+				<% if @last_post.present? %>
+					<p><small>Posté le <%= long_date(@last_post.updated_at) %></small></p>
+					<p><%= @last_post.message %></p>
+				<% else %>
+					<p>Aucun message posté</p>
+				<% end %>
 			<% end %>
 
 			<h3>Derniers ajouts en <%= @months_quantity %> mois</h3>

@@ -1,13 +1,13 @@
-<h1>Modification d'un auteur</h1>
+<h2>Modification d'un tag</h2>
 
 
-<%= form_with model: @author, local: true do |form| %>
+<%= form_with model: @tag, local: true, class: "form-horizontal" do |form| %>
 
- <% if @author.errors.any? %>
+ <% if @tag.errors.any? %>
     <div id="error_explanation">
-        <%= pluralize(@author.errors.count, "erreur") %> bloquent la création de cet auteur :
+        <%= pluralize(@tag.errors.count, "erreur") %> bloquent la création de cet auteur :
       <ul>
-        <% @author.errors.full_messages.each do |msg| %>
+        <% @tag.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
@@ -15,14 +15,18 @@
   <% end %>
 
 
-
-  <p>
-    Nom : 
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.submit "Modifier" %>
-  </p>
+  
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="tag_name">Nom</label>
+    <div class="col-sm-3">
+      <%= form.text_field :name, id: "tag_name", class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-3">
+      <%= form.submit "Modifier", class: "btn btn-primary" %>
+    </div>
+  </div>
 
 <% end %>
 

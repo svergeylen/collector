@@ -18,7 +18,8 @@
 	<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 	<p>Numéro : <%= friendly(@item.number) %></p>
 	<p>Tags : <%= @item.tags_list %></p>
-
+	<p>Description : <%= @item.description %></p>
+	
 	<% if @item.users.present? %>
 		<p>Utilisateurs qui l'ont : </p>
 		<ul>
