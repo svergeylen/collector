@@ -27,16 +27,12 @@ class SeriesController < ApplicationController
     @new_item.tags_list = @items.last.tags_list if @items.last.present?
 
     # Vue en liste ou en galerie ?
-    if params[:view].present? 
-      @gallery_view = (params[:view] == "gallery") ? true : false
-    else
-      @gallery_view = (@series.category.default_view == "gallery") ? true : false
-    end
+    @gallery_view = params[:view].present? ? (params[:view] == "gallery") : (@series.category.default_view == "gallery")
 
     # Série favorite ?
-    @starred = current_user.series.exists?(@series.id) ? true : false
+    @starred = current_user.series.exists?(@series.id) 
   end
-
+  
   # GET /series/new
   def new
     @series = Series.new
