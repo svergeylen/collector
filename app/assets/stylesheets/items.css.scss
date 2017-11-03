@@ -1,21 +1,46 @@
 
 @import 'colors';
 
-/* Galerie photo en dessous des items */
-.attachments {
-	margin: 5px;
-	padding: 5px;
-	.attachment-thumbnail {
-		display: inline-block;
-		vertical-align: top;
-		margin: 3px;
-		padding: 3px;
-		text-align: center;
-		img {
-			border-radius: $border-radius;
-		}
-		a.attachment-delete-icon {
-			font-size: 0.75em;
+/* Item/show */
+#itemCarousel {
+	.carousel-inner {
+		.item {
+			img {
+				width: auto;
+				height: 550px;
+				max-height: 550px;
+				margin : auto;
+			}
 		}
 	}
-}	
+	a.carousel-control {
+		background:none !important;
+	}
+}
+
+
+
+/* Pièces jointes aux items (item/edit) */
+.attachment-thumbnail {
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	margin: 3px;
+	padding: 3px;
+	text-align: center;
+	img {
+		border-radius: $border-radius;
+	}
+	a {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 30px;
+		height: 30px;
+		font-size: 1.25em;
+		background: $box-color-dimmed;
+		border-radius: 50%;
+		padding: 5px;
+		margin: 5px;
+	}
+}

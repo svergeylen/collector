@@ -7,16 +7,19 @@
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<% if item.attachments.present? && item.attachments.last.image.exists? %>
-						<%= image_tag item.attachments.last.image(:medium), class:"img-responsive" %>
-					<% else %>
-						<%= image_tag "no-image.png", class:"img-responsive img-rounded" %>
+					<%= link_to item do %>
+						<% if item.attachments.present? && item.attachments.last.image.exists? %>
+							<%= image_tag item.attachments.last.image(:medium), class:"img-responsive" %>
+						<% else %>
+							<%= image_tag "no-image.png", class:"img-responsive img-rounded" %>
+						<% end %>
+						
+						<% if item.number %>
+							<div class="panel-overlay">
+								<span>n°<%= friendly(item.number) %></span>
+							</div>
+						<% end %>
 					<% end %>
-					
-					<div class="panel-overlay">
-						<span>n°<%= friendly(item.number) %></span>
-						<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table", style: "display:inline;" %>
-					</div>
 				</div>
 				<div class="panel-body">
 					<span class="item-name"><%= link_to item.name, item %></span>					

@@ -7,6 +7,7 @@ class ItemsController < ApplicationController
     h = @item.next_and_previous_ids
     @next_id = h[:next]
     @previous_id = h[:previous]
+    @attachments = @item.attachments
   end
 
   # GET /items/new
@@ -17,6 +18,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+    @series = @item.series
   end
 
   # POST /items
@@ -33,7 +35,7 @@ class ItemsController < ApplicationController
 			@item.series.touch
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
-			redirect_to @item.series, notice: 'Elément créé'
+			redirect_to @item.series, notice: 'Item créé'
     else
 			render :new 
     end
@@ -54,7 +56,7 @@ class ItemsController < ApplicationController
         }
       end
 
-      redirect_to @item, notice: 'Elément mis à jour' 
+      redirect_to edit_item_path(@item), notice: 'Item mis à jour'
     else
       render :edit 
     end
@@ -81,7 +83,7 @@ class ItemsController < ApplicationController
   def destroy
 		@item.series.touch
     @item.destroy
-    redirect_to @item.series, notice: 'Elément supprimé'
+    redirect_to @item.series, notice: 'Item supprimé'
   end
 
 
@@ -90,9 +92,9 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     if @item.attachments.exists?(params[:attachment_id])
       @item.attachments.find(params[:attachment_id]).destroy
-      redirect_to @item, notice: 'Pièce jointe supprimée' 
+      redirect_to edit_item_path(@item), notice: 'Pièce jointe supprimée' 
     else
-      redirect_to @item, alert: 'Erreur lors de la suppression de la pièce jointe' 
+      redirect_to edit_item_path(@item), alert: 'Erreur lors de la suppression de la pièce jointe' 
     end
   end
 
@@ -105,25 +107,6 @@ class ItemsController < ApplicationController
       current_user.up_votes @item
     end
   end
-
-  # Ajoute l'item à l'utilisateur ou augmente la quantité de 1
-  # def plus
-  #   @iu = @item.update_quantity(1, current_user.id)
-  #   respond_to do |format|
-  #     format.html { redirect_to @item.series }
-  #     format.js
-  #   end
-  # end
-
-  # # Diminue la quantité de 1
-  # def minus
-  #   @iu = @item.update_quantity(-1, current_user.id)
-  #   respond_to do |format|
-  #     format.html { redirect_to @item.series }
-  #     format.js
-  #   end
-  # end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.

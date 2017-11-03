@@ -15,41 +15,63 @@
 
 	<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h3>
 
-	<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
-	<p>Numéro : <%= friendly(@item.number) %></p>
-	<p>Tags : <%= @item.tags_list %></p>
-	<p>Description : <%= @item.description %></p>
-	
-	<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table" %>
-			
-	<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
-	
-	<% if @item.users.present? %>
-		<p>Utilisateurs qui l'ont : </p>
-		<ul>
-		<% @item.users.each do |u| %>
-			<li><%= link_to u.name, u %></li>
-		<% end %>
-		</ul>
-	<% else %>
-		<p>Personne ne possède cet item.</p>
-	<% end %>
+	<div class="row">
+		<div class="col-md-8">
+			<!-- Carousel -->
+			<div id="itemCarousel" class="carousel slide" data-ride="carousel">
+			  <div class="carousel-inner">
+			  	<% @attachments.each_with_index do |attachment, i| %>
+				  	<div class="item <%=  "active" if i==0 %>">
+				      <%= image_tag attachment.image.url %>
+				      <div class="carousel-caption">
+				      	<%= long_date(attachment.image_updated_at) %>
+				      </div>
+				    </div>			      
+				    <% content_for :carousel_indicators do %>
+				    	<li data-target="#itemCarousel" data-slide-to=<%= i.to_s %> class="<%= "active" if i==0 %>"></li>
+				    <% end %>
+			    <% end %>
+			  </div>
 
-	<h4>Images</h4>
-	<div class="attachments">
-		<% @item.attachments.each do |attachment| %>
-			<div class="attachment-thumbnail">
-				<%# attachment.inspect %>
-				<%= image_tag attachment.image.url(:thumb) %><br />
-				<%= link_to "Supprimer", delete_attachment_item_path(@item, attachment.id), class:"attachment-delete-icon" %>
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+			    <%= yield :carousel_indicators %>
+			  </ol>
+
+			  <!-- Left and right controls -->
+			  <a class="left carousel-control" href="#itemCarousel" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			    <span class="sr-only">Précédent</span>
+			  </a>
+			  <a class="right carousel-control" href="#itemCarousel" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			    <span class="sr-only">Suivant</span>
+			  </a>
 			</div>
-		<% end %>
+			<!-- End of Carousel -->
+		</div>
+		<div class="col-md-4">
+			<h4>
+				<%= "n°"+friendly(@item.number).to_s+" - " if @item.number %>
+				<%= @item.name %>
+			</h4>
+			<% if @item.tags.present? %>
+				<p>Tags : <%= @item.tags_list %></p>
+			<% end %>
+			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
+			
+					
+			<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item:  @item })  %>
+			
+			<% if @item.description.present? %>
+				<h4>Description</h4>
+				<%= @item.description %>
+			<% end %>
+
+			<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: @item}) , class: "upvote-in-table" %>
+			
+			
+		</div>
 	</div>
-
-
-
-	<%= form_with(model: @item, local: true, :html => { :multipart => true } ) do |form| %>
-		Ajouter une image : <%= form.file_field :attachments, multiple: true %>
-		<%= form.submit "Envoyer" %>
-	<% end %>
+	
 </div>

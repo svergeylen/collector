@@ -9,6 +9,7 @@ div.series-show div.btn-group {
 
 .item-gallery {
 	.panel {
+		text-align: center;
 		
 		.panel-heading {
 			padding: $internal-padding;
@@ -18,12 +19,11 @@ div.series-show div.btn-group {
 				position: absolute;
 				top : 20px;
 				left : $internal-padding;
-				padding: 5px;
+				padding: 5px 10px 5px 10px;
 				background: $light-background-opactity;
 				display: none;
-				vertical-align: middle;
-				button {
-					margin-left: 10px;
+				span {
+					color: black;
 				}
 			}
 
