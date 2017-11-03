@@ -20,6 +20,10 @@
 	<p>Tags : <%= @item.tags_list %></p>
 	<p>Description : <%= @item.description %></p>
 	
+	<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table" %>
+			
+	<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
+	
 	<% if @item.users.present? %>
 		<p>Utilisateurs qui l'ont : </p>
 		<ul>

@@ -1,25 +1,31 @@
 
 
-<div class="row text-center text-lg-left" id="product-gallery">
-	<% @series.items.each do |item| %>
-		<div class="col-lg-3 col-md-4 col-xs-6" >
-			<div class="item-card">
-				<%= link_to item, class: "d-block mb-4 h-100" do %>
-					<% if item.attachments.present? %>
-						<%= image_tag item.attachments.first.image(:medium) %>
+<div class="row item-gallery">
+	<% @series.items.each_with_index do |item, i| %>
+
+		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" >
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<% if item.attachments.present? && item.attachments.last.image.exists? %>
+						<%= image_tag item.attachments.last.image(:medium), class:"img-responsive" %>
 					<% else %>
-						<%= image_tag "no-image.png" %>
+						<%= image_tag "no-image.png", class:"img-responsive img-rounded" %>
 					<% end %>
-				<% end %>
-
-				<div class="item-caption">
-					<!-- <UpVote item={this.props.item} /> -->
-
-					<div class="item-name">
-						<%= link_to item.name, item %> 
+					
+					<div class="panel-overlay">
+						<span>n°<%= friendly(item.number) %></span>
+						<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table", style: "display:inline;" %>
 					</div>
 				</div>
+				<div class="panel-body">
+					<span class="item-name"><%= link_to item.name, item %></span>					
+				</div>
 			</div>
+
 		</div>
+
+		<%= clear_fix(i) %>
+
 	<% end %>
 </div>

@@ -1,33 +1,42 @@
 
+@import "colors.scss";
+
+$internal-padding: 5px;
 
 div.series-show div.btn-group {
 	float: right;
 }
 
-#product-gallery .item-card {
-	margin-bottom: 10px;
-	padding: 4px 4px 10px 4px;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
+.item-gallery {
+	.panel {
+		
+		.panel-heading {
+			padding: $internal-padding;
+			position: relative;
 
-#product-gallery .item-caption {
-	margin-top : 10px;
-	
-}
-#product-gallery .item-card img {
-	padding: 0px;
-	line-height: 1.428571429;
-	-webkit-transition: all 0.2s ease-in-out;
-	transition: all 0.2s ease-in-out;
-	display: inline-block;
-	width: 100% \9;
-	max-width: 100%;
-	height: auto;
-}
+			.panel-overlay {
+				position: absolute;
+				top : 20px;
+				left : $internal-padding;
+				padding: 5px;
+				background: $light-background-opactity;
+				display: none;
+				vertical-align: middle;
+				button {
+					margin-left: 10px;
+				}
+			}
 
-#product-gallery .element-upvote {
-	float : right;
+		}
+		.panel-heading:hover .panel-overlay {
+			display: block;
+		}
+		img {
+			border-radius: 3px;
+		}
+	}
+	.panel:hover {
+		box-shadow: 3px 3px 15px #CCC;
+	}
 }
 
