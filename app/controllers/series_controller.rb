@@ -10,7 +10,7 @@ class SeriesController < ApplicationController
   # GET /series/1
   # GET /series/1.json
   def show
-		set_session_category(@series.category.id)
+		set_session_category(@series.category)
     @items = @series.sorted_items
 
     # Formulaire d'ajout d'item

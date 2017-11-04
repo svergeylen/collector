@@ -35,9 +35,7 @@
 				  		<li><%= link_to "La Une", posts_path, class:"white-link" %></li>
 				  	<% end %>
 			    	<li><%= link_to "Collector", categories_path, class:"white-link" %></li>
-		            <% Category.where(menu: true).order(:name).each do |category| %>
-		            	<li><%= link_to category.name, category, class:"white-link" %></li> 
-		            <% end %>
+		            <li><%= link_to session[:category_name], category_path(session[:category_id]), class:"white-link" %></li>
 				  </ul>
 				  
 				  <ul class="nav navbar-nav navbar-right">

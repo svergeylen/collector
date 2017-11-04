@@ -7,8 +7,9 @@ class ApplicationController < ActionController::Base
 
 
 	# Mémorise la dernière catégorie choisie par l'utilisateur (catégorie courante)
-	def set_session_category(id)
-		session[:category] = id
+	def set_session_category(cat)
+		session[:category_id] = cat.id
+		session[:category_name] = cat.name
 	end
 
 

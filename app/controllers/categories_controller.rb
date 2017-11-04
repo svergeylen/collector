@@ -3,13 +3,12 @@ class CategoriesController < ApplicationController
 
 	def index
 		@categories = Category.all.order(:name)
-		# @latest_items = Item.order(created_at: :desc).limit(20)
-		# set_session_category(nil)
 	end
 
 	def show
-		set_session_category(params[:id])
 		@category = Category.find(params[:id])
+		set_session_category(@category)
+		
 
 		# Si l'utilisateur a sélectionné une lettre de l'alphabet, on renvoie uniquement les séries commencant par cette lettre
 		letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -43,7 +42,7 @@ class CategoriesController < ApplicationController
 		@category = Category.new(category_params)
 
 		if @category.save
-			set_session_category(@category.id)
+			set_session_category(@category)
 		  redirect_to @category, notice: "Nouvelle catégorie créée"
 		else
 		  render 'new'
