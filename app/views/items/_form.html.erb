@@ -26,12 +26,14 @@
        <%= form.text_field :name, id: :item_name, class: "form-control", autocomplete: :off %>
     </div>
   </div>
-  <div class="form-group">
-    <%= form.label :tags_list, "Auteurs", class:"control-label col-sm-2" %>
-    <div class="col-sm-6">
-      <%= form.text_field :tags_list, id: :item_tags_list, class: "form-control", placeholder:"Séparés par une virgule", autocomplete: :off %>
+  <% if item.series.category.tag_name.present? %>
+    <div class="form-group">
+      <%= form.label :tags_list, item.series.category.tag_name, class:"control-label col-sm-2" %>
+      <div class="col-sm-6">
+        <%= form.text_field :tags_list, id: :item_tags_list, class: "form-control", placeholder:"Séparés par une virgule", autocomplete: :off %>
+      </div>
     </div>
-  </div>
+  <% end %>
   <div class="form-group">
     <%= form.label :description, "Description", class:"control-label col-sm-2" %>
     <div class="col-sm-6">

@@ -6,7 +6,9 @@
 		    <th></th>
 		    
 		    <th>Titre</th>
-			<th>Auteurs</th>
+			<% if tag_name.present? %>
+				<th><%= tag_name %></th>
+			<% end %>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -25,9 +27,11 @@
 				<td>
 					<%= link_to item.name, item %></a>
 				</td>
-				<td> 
-					<%= item.tags.map{ |tag| link_to(tag.name.capitalize, tag) }.join(", ").html_safe %>
-				</td>
+				<% if tag_name.present? %>
+					<td> 
+						<%= item.tags.map{ |tag| link_to(tag.name.capitalize, tag) }.join(", ").html_safe %>
+					</td>
+				<% end %>
 				<td>
 					<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
 			 	</td>
@@ -54,9 +58,11 @@
 			<td>
 				<%= form.text_field :name, id: :item_name, placeholder:"Titre", size: 36, class: "form-control" %>
 			</td>
-			<td>
-				<%= form.text_field :tags_list, size: 30, placeholder: "Tags, séparés par une virgule", class: "form-control" %>
-			</td>
+			<% if tag_name.present? %>
+				<td>
+					<%= form.text_field :tags_list, size: 30, placeholder: "#{tag_name}, séparés par une virgule", class: "form-control" %>
+				</td>
+			<% end %>
 			<td>
 				<%= form.hidden_field :series_id %>
 	      		<%= form.submit "Créer" %>

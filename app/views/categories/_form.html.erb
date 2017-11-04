@@ -20,6 +20,12 @@
     </div>
   </div>
   <div class="form-group">
+    <label class="control-label col-sm-2" for="category_tag_name">Nom de la colonne tag</label>
+    <div class="col-sm-3">
+      <%= form.text_field :tag_name, id:"category_tag_name", class:"form-control", placeholder: "Laisser vide pour désactiver" %>
+    </div>
+  </div>
+  <div class="form-group">
     <label class="control-label col-sm-2" for="category_default_view">Vue par défaut</label>
     <div class="col-sm-3">
       <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], selected_key = @category.default_view), class: "form-control" ) %>

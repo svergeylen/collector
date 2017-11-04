@@ -36,7 +36,7 @@
 		<% if @gallery_view %>
 			<%= render partial: "gallery", locals: {items: @items } %>
 		<% else %>
-			<%= render partial: "table", locals: { items: @items} %>
+			<%= render partial: "table", locals: { items: @items, tag_name: @series.category.tag_name} %>
 		<% end %>
 
 	</div>

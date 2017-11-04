@@ -56,7 +56,7 @@
 				<%= @item.name %>
 			</h4>
 			<% if @item.tags.present? %>
-				<p>Tags : <%= @item.tags_list %></p>
+				<p><%= @item.series.category.tag_name %> : <%= @item.tags_list %></p>
 			<% end %>
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			
