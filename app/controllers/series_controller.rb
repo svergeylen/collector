@@ -39,7 +39,7 @@ class SeriesController < ApplicationController
 		if params[:category_id].present?
       @series.category_id = params[:category_id] 
     else
-      @series.category_id = session[:category]
+      @series.category_id = session[:category_id]
     end
     if params[:name].present?
       @series.name = params[:name].capitalize
