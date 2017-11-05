@@ -16,13 +16,14 @@ Rails.application.routes.draw do
 	
 
 
-	# News
+	# La Une
 	resources :posts do
 		member do
 			post :upvote
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
 		end
 	end
+	post 'posts/preview'
 	resources :comments do
 		member do
 			post :upvote
@@ -43,19 +44,17 @@ Rails.application.routes.draw do
 	resources :items do
 		member do
 			post :upvote
-			#get :plus
-			#get :minus
 			post :quantity
 			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end
 	end
 	resources :tags
 	
-	# Cron
+	# Cron /!\ Pas d'authentification
 	get 'cron/jobs'
 	get 'cron/run'
 
-
+	# Page d'accueil /!\ Pas d'authentification
 	root 'welcome#index'
 
 end

@@ -59,6 +59,9 @@ gem 'acts_as_votable', '~> 0.10.0'
 # Attchment for image uploads
 gem "paperclip", "~> 5.0.0"
 
+# Fetch page from URL
+gem 'nokogiri'
+
 
 group :development, :test do
   

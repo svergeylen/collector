@@ -242,6 +242,7 @@ DEPENDENCIES
   js-routes
   listen (>= 3.0.5, < 3.2)
   mysql2
+  nokogiri
   paperclip (~> 5.0.0)
   puma (~> 3.7)
   rails (~> 5.1.4)

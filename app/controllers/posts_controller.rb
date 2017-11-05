@@ -92,6 +92,14 @@ class PostsController < ApplicationController
     end
   end
 
+  # Génération d'une vignette pour les URL copiés/collés dans le formulaire post/new
+  def preview
+    url = params[:url]
+    page = LinkPreviewParser.parse(url)
+
+    render partial: "posts/preview", locals: { title: page[:title], description: page[:description], url: url, image_url: page[:image] } 
+  end
+
   private
 
     # Crée les attachments correspondants aux (plusieurs) fichiers uploadés dans l'objet @post
@@ -116,6 +124,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:message, :user_id)
+      params.require(:post).permit(:message, :user_id, :preview_title, :preview_description, :preview_url, :preview_image_url)
     end
 end

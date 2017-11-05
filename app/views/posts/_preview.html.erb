@@ -1,0 +1,24 @@
+
+<div class="preview-container">
+	<% if image_url.present? %>
+		<div class="row">
+			<div class="col-md-4">
+				<%= link_to url, target: :blank do %>
+					<%= image_tag image_url, alt: "No image", class:"img-responsive" %>
+				<% end %>	
+			</div>
+			<div class="col-md-8">
+				<h4><%= link_to title, url, target: :blank %></h4>
+				<p><%= description if description.present? %></p>
+			</div>
+		</div>
+	<% else %>
+		<h4><%= link_to title, url, target: :blank %></h4>
+		<p><%= description  if description.present? %></p>
+	<% end %>
+
+	<%= hidden_field_tag 'post[preview_title]', title %>
+	<%= hidden_field_tag 'post[preview_description]', description %>
+	<%= hidden_field_tag 'post[preview_url]', url %>
+	<%= hidden_field_tag 'post[preview_image_url]', image_url %>
+</div>

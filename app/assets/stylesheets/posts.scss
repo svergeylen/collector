@@ -162,6 +162,26 @@
 	
 }
 
+/* PREVIEW */
+.preview-container {
+	padding: 10px;
+	font-size: 0.9em;
+	margin: 10px 30px 10px 30px;
+	box-shadow: 3px 3px 15px #CCC;
+	color: black;
+}
+#live-preview {
+	display: none;
+	padding : 15px;
+	.preview-spinner {
+		text-align : center;
+		color:#ccc;
+		width : 100%;
+		padding: 30px;
+	}
+}
+
+
 .post-old {
 	background: $box-color-dimmed;
 }
