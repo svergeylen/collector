@@ -93,16 +93,7 @@
 		padding-left : $general-padding;
 		padding-right: $general-padding;
 	}
-	.post-photo-gallery {
-		padding-top: 5px;
-		padding-bottom: 5px;
-		padding-left : $general-padding;
-		padding-right: $general-padding;
-		.post-photo {
-			
-		}
-	}
-	.likes {
+	.post-likes {
 		margin-top: 5px;
 		padding-top: 5px;
 		padding-bottom: 5px;
@@ -113,7 +104,7 @@
 			
 		}
 	}
-	.comments {
+	.post-comments {
 		font-size: 0.9em;
 		padding-left : 45px;
 		padding-right: $general-padding;

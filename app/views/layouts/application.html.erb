@@ -72,11 +72,8 @@
 				  </ul>
 
 					<%= form_tag(search_keyword_path, method: "get", class: "navbar-form navbar-right") do %>
-				    <div class="form-group">
-				      <%= text_field_tag(:keyword, "", { placeholder: "Recherche", class: 'form-control', autocomplete: 'off' }) %>
-							
-				    </div>
-				  <% end %>
+						<%= text_field_tag(:keyword, "", placeholder: "Rechercher", size: 10, class: 'form-control ', autocomplete: 'off') %>
+					<% end %>
 
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->

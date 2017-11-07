@@ -20,8 +20,6 @@
             <% end %>
           </div>
 
-          
-
           <%= profile_picture(post.user) %>
           
           <div class="user-name">
@@ -38,12 +36,17 @@
         <% end %>
 
         <% if post.attachments.present? %>
-          <div class="post-photo-gallery"> 
-            <% post.attachments.each do |a| %><%= image_tag a.image(:medium), class:"img-thumbnail" %><% end %>
+          <div class="post-message row text-center"> 
+            <% post.attachments.each_with_index do |a, i| %>
+              <div class="col-xs-6">
+                <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+              </div>
+              <% "</div><div class='row'>" if ((i % 2) == 0) %>
+            <% end %>
           </div>
         <% end %>
           
-        <div class="likes">
+        <div class="post-likes">
           <%= react_component "UpVote", 
                 render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
                 {style: "display:inline-block"} %>
@@ -54,7 +57,7 @@
           <% end %>
         </div>
 
-        <div class="comments collapse" id="comments-post-<%= post.id %>">
+        <div class="post-comments collapse" id="comments-post-<%= post.id %>">
           <div class="comments-list">
             <% post.comments.each do |comment| %>
               <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
