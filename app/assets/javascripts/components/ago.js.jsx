@@ -31,9 +31,11 @@ var Ago = React.createClass({
 		var mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 		var val = this.state.delta;
 		var ajd = new Date(this.props.since*1000);
-		var d = (ajd.getDate()  < 10) ? "0"+ajd.getDate()  : ajd.getDate();
-		var m = mois[ajd.getMonth()];
-		var title = "Le "+d+" "+m+" "+ajd.getFullYear()+", à "+ajd.getHours()+"h"+ajd.getMinutes();
+		var day = (ajd.getDate()  < 10) ? "0"+ajd.getDate()    : ajd.getDate();
+		var hour = ajd.getHours();
+		var minutes = (ajd.getMinutes()  < 10) ? "0"+ajd.getMinutes() : ajd.getMinutes();
+		var month = mois[ajd.getMonth()];
+		var title = "Le "+day+" "+month+" "+ajd.getFullYear()+", à "+hour+"h"+minutes;
 	
 		/* Moins de une minute */
 		if (val < 60) {
@@ -44,14 +46,14 @@ var Ago = React.createClass({
 			if (val < 3600) {
 				tmp = Math.floor(val / 60);
 				text = "Il y a "+tmp+ " minute";
-				if (tmp >= 2) { text += "s" }
+				if (tmp > 1) { text += "s" }
 			}
 			else {
 				/* Moins de 5 heures */
 				if (val < (5*3600) ) {
 					tmp = Math.floor(val / 3600);
 					text = "Il y a "+tmp+" heure";
-					if (tmp >= 2) { text += "s" }
+					if (tmp > 1) { text += "s" }
 				}
 				else {
 					/* Vérification si le timestamp est encore d'aujourd'hui ou plus ancien */
@@ -64,20 +66,19 @@ var Ago = React.createClass({
 					
 					/* C'est encore aujourd'hui */
 					if (ajd > minuit) {
-						tmp = new Date(val * 1000);
-						text = "Aujourd'hui, à "+ajd.getHours()+"h"+ajd.getMinutes();
+						text = "Aujourd'hui, à "+hour+"h"+minutes;
 					}
 					/* C'était avant minuit et donc hier */
 					else {
 						if (ajd > hier_minuit) {
-							text = "Hier, à "+ajd.getHours()+"h"+ajd.getMinutes();
+							text = "Hier, à "+hour+"h"+minutes;
 						}
 						/* C'était avant hier minuit. On peut arrondir au jour près */
 						else {
 							if (val < (7*24*3600)) {
 								tmp = Math.round(val/(3600*24));
 								text = "Il y a "+tmp+" jour";
-								if (tmp > 0) {text+= "s"; }
+								if (tmp > 1) {text+= "s"; }
 							}
 							else {
 								text = title;

@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     # Eager loading comments
-    @posts = Post.all.includes(:comments).order(updated_at: :desc).limit(30)
+    @posts = Post.all.includes(:comments).order(created_at: :desc).limit(30)
     respond_to do |format|
       format.html
       format.atom
