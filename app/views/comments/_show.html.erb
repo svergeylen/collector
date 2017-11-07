@@ -7,7 +7,7 @@
 			<%= comment.user.name %>
 		</span>
 		
-		<%= comment.message %>
+		<%= sanitize comment.message %>
 		
 		<%= react_component "Ago", { since: comment.created_at.to_i}, style:"display:inline-block" %>
 

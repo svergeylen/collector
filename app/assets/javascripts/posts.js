@@ -1,7 +1,8 @@
 
 /* Remplace dan le texte tous les URL par des liens <a> */
-function replaceURL(text, exp) {
-    return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+function replaceURL(text) {
+    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+	return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
 }
 
 

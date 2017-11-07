@@ -30,7 +30,7 @@
         </div>
         
         <div class="post-message">
-          <%= post.message.html_safe %>
+          <%= sanitize post.message %>
         </div>
 
         <% if post.preview_url %>  
