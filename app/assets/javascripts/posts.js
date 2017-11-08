@@ -38,8 +38,6 @@ document.addEventListener("turbolinks:load", function() {
 			if (elements && (elements.length > 0) ) {
 				var url = elements[0];
 				console.log("Requete Ajax Preview. url="+url);
-				/* On enlève l'URL du texte de l'utilisateur */
-				$("#post_message").val( $("#post_message").val().replace(url, "") );
 
 				/* On affiche le div qui contiendra le preview */ 
 				$('#live-preview').show();
@@ -50,6 +48,8 @@ document.addEventListener("turbolinks:load", function() {
 		        	data: { url: url },
 		        	success: function(data, textStatus, jqXHR) {
 		          		$("#live-preview").html(data);
+		          		/* On enlève l'URL du texte de l'utilisateur si le preview réussi uniquement */
+						$("#post_message").val( $("#post_message").val().replace(url, "") );
 		        	},
 		        	error: function() { 
 		        		console.log("Erreur requete Ajax URL Preview"); 
@@ -57,7 +57,7 @@ document.addEventListener("turbolinks:load", function() {
 		        	}
 		      	}); 
 	      	}
-	     }, 500);
+	     }, 1000);
 
 	});
 
