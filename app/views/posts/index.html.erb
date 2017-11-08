@@ -7,25 +7,9 @@
 
 
     <% @posts.each do |post| %>
-      <div class="post <%= old_post(post, current_user) %> ">
+      <div class="post rounded-box <%= old_post(post, current_user) %> ">
 
-        <div class="post-header">
-          <div class="pull-right">
-
-            <%= react_component "Ago", { since: post.created_at.to_i}, style:"display:inline-block" %>
-
-            <% if post.user_id == current_user.id %>
-              <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
-              <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
-            <% end %>
-          </div>
-
-          <%= profile_picture(post.user) %>
-          
-          <div class="user-name">
-            <%= link_to post.user.name, post.user %>
-          </div>
-        </div>
+        <%= render partial: "post_header", locals: {post: post} %>
         
         <div class="post-message">
           <%= sanitize post.message %>
@@ -39,34 +23,16 @@
           <div class="post-message row text-center"> 
             <% post.attachments.each_with_index do |a, i| %>
               <div class="col-xs-6">
-                <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+                <%= link_to post_path(post, slide_id: i) do %>
+                  <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+                <% end %>
               </div>
               <% "</div><div class='row'>" if ((i % 2) == 0) %>
             <% end %>
           </div>
         <% end %>
           
-        <div class="post-likes">
-          <%= react_component "UpVote", 
-                render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
-                {style: "display:inline-block"} %>
-          
-          <%= button_tag type: "button", class:"btn #{old_comment(post.last_commented_at, current_user)}", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
-            <%= post.comments.count if post.comments.present? %>
-            <span class="glyphicon glyphicon-comment"></span>
-          <% end %>
-        </div>
-
-        <div class="post-comments collapse" id="comments-post-<%= post.id %>">
-          <div class="comments-list">
-            <% post.comments.each do |comment| %>
-              <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
-            <% end %>
-          </div>
-          <div class="comment-add">
-            <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
-          </div>
-        </div>
+       <%= render partial: "post_comments", locals: {post: post} %>
 
       </div>
     <% end #  posts.each %>

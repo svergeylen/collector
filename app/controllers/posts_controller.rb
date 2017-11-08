@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:edit, :delete_attachment, :update, :destroy, :upvote]
+  before_action :set_post, only: [:show, :edit, :delete_attachment, :update, :destroy, :upvote]
   before_action :check_access
 
   # GET /posts
@@ -11,6 +11,10 @@ class PostsController < ApplicationController
       format.html
       format.atom
     end
+  end
+
+  def show
+    @active_slide_id = params[:slide_id].to_i || 0
   end
 
   # GET /posts/1/edit

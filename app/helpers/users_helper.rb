@@ -10,7 +10,7 @@ module UsersHelper
 		end
 	end
 
-	# Renvoie le nom d'un item récemment ajouté
+	# Renvoie le nom d'un item avec le numéro correspondant s'il est défini
 	def name_for(item)
 		ret = item.series.name
 		ret += " (n°"+item.numero+")" if item.numero.present?

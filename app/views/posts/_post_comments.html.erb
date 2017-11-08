@@ -1,0 +1,21 @@
+<div class="post-likes">
+  <%= react_component "UpVote", 
+        render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
+        {style: "display:inline-block"} %>
+  
+  <%= button_tag type: "button", class:"btn #{old_comment(post.last_commented_at, current_user)}", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+    <%= post.comments.count if post.comments.present? %>
+    <span class="glyphicon glyphicon-comment"></span>
+  <% end %>
+</div>
+
+<div class="post-comments collapse" id="comments-post-<%= post.id %>">
+  <div class="comments-list">
+    <% post.comments.each do |comment| %>
+      <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
+    <% end %>
+  </div>
+  <div class="comment-add">
+    <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
+  </div>
+</div>

@@ -9,6 +9,7 @@
 	background-color: $box-color;
 	border: 1px solid $border-color;
 	border-radius: $border-radius;
+	margin-bottom: 20px;
 	img.profile-picture {
 		float: left;
 		margin-left: $general-padding;
@@ -65,13 +66,9 @@
 
 /* INDEX */
 .post {
-	margin-top : 10px;
+/*	margin-top : 10px;
 	margin-bottom: 10px;
-	padding-top : 20px;
-
-	background: $box-color;
-	border: 1px solid $border-color;
-	border-radius: $border-radius;
+	padding-top : 20px; */
 	.post-header {
 		padding-right : $general-padding;
 		.profile-picture {
@@ -104,53 +101,54 @@
 			
 		}
 	}
-	.post-comments {
-		font-size: 0.9em;
-		padding-left : 45px;
-		padding-right: $general-padding;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		background: rgb(246, 247, 249);
+}
 
-		.comment {
-			clear: both;
-			margin-top: 5px;
-			margin-bottom : 10px;
-			.profile-picture {
-				float : left;
-			}
-			.comment-message {
-				float : left;
-				width: 75%;
-				padding-top : 8px;
-				margin-left : 50px;
-				.comment-username {
-					font-weight: 700;
-				}
-			}
-			div.comment-upvote {
-				display : inline-block;
-				float: right;
-				padding-right : $general-padding;
-				padding-top : $general-padding;
+/* COMMENTS */
+.post-comments {
+	font-size: 0.9em;
+	/* padding-left : 45px; */
+	padding-right: $general-padding;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background: rgb(246, 247, 249);
+
+	.comment {
+		clear: both;
+		margin-top: 5px;
+		margin-bottom : 10px;
+		img.profile-picture {
+			float : left;
+		}
+		.comment-message {
+			float : left;
+			/* width: 75%; */
+			padding-top : 8px;
+			margin-left : 50px;
+			.comment-username {
+				font-weight: 700;
 			}
 		}
-		.comment-add {
-			clear:both;
-			margin-top: 5px;
-			margin-bottom: 5px;
-			.profile-picture {
-				float : left;
-			}
-			.comment-add-textarea {
-				margin-left : 50px;
-				input {
-					width : 100%;
-				}
+		div.comment-upvote {
+			display : inline-block;
+			float: right;
+			padding-right : $general-padding;
+			padding-top : $general-padding;
+		}
+	}
+	.comment-add {
+		clear:both;
+		margin-top: 5px;
+		margin-bottom: 5px;
+		.profile-picture {
+			float : left;
+		}
+		.comment-add-textarea {
+			margin-left : 50px;
+			input {
+				width : 100%;
 			}
 		}
 	}
-	
 }
 
 /* PREVIEW */

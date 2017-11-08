@@ -1,0 +1,32 @@
+<!-- Carousel -->
+<div id="itemCarousel" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+  	<% attachments.each_with_index do |attachment, i| %>
+	  	<div class="item <%=  "active" if i==active_slide_id %>">
+	      <%= image_tag attachment.image.url %>
+	      <div class="carousel-caption">
+	      	<%= long_date(attachment.image_updated_at) %>
+	      </div>
+	    </div>			      
+	    <% content_for :carousel_indicators do %>
+	    	<li data-target="#itemCarousel" data-slide-to=<%= i.to_s %> class="<%= "active" if i==active_slide_id %>"></li>
+	    <% end %>
+    <% end %>
+  </div>
+
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <%= yield :carousel_indicators %>
+  </ol>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#itemCarousel" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left"></span>
+    <span class="sr-only">Précédent</span>
+  </a>
+  <a class="right carousel-control" href="#itemCarousel" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right"></span>
+    <span class="sr-only">Suivant</span>
+  </a>
+</div>
+<!-- End of Carousel -->
