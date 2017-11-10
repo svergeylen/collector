@@ -35,7 +35,7 @@ class ItemsController < ApplicationController
 			@item.series.touch
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
-			redirect_to @item.series, notice: 'Item créé'
+			redirect_to @item, notice: 'Elément ajouté'
     else
 			render :new 
     end
@@ -56,7 +56,7 @@ class ItemsController < ApplicationController
         }
       end
 
-      redirect_to edit_item_path(@item), notice: 'Item mis à jour'
+      redirect_to @item, notice: 'Elément mis à jour'
     else
       render :edit 
     end
@@ -83,7 +83,7 @@ class ItemsController < ApplicationController
   def destroy
 		@item.series.touch
     @item.destroy
-    redirect_to @item.series, notice: 'Item supprimé'
+    redirect_to @item.series, notice: 'Elément supprimé'
   end
 
 

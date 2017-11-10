@@ -113,8 +113,10 @@ class Item < ApplicationRecord
 
 	# Associe l'item à un auteur exitant ou crée un nouvel auteur
 	def tags_list=(names)
-		self.tags = names.split(",").map do |n|
-		  Tag.where(name: n.strip.downcase, category_id: self.series.category_id).first_or_create!
+		if names.present?
+			self.tags = names.split(",").map do |n|
+			  Tag.where(name: n.strip.downcase, category_id: self.series.category_id).first_or_create!
+			end
 		end
 	end
 
