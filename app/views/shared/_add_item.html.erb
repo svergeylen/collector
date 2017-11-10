@@ -6,11 +6,9 @@
 <ul>
 	<% Item.find(data[:item_ids]).each do |item| %>
 		<li>
-			<%= link_to series_path(item.series) do %>
-				<%= item.series.name %>
-				<%= "(n°"+friendly(item.number).to_s+")" if item.number %>
-		 		: <%= item.name %>
-		 	<% end %>
+			<%= link_to item.series.name, series_path(item.series) %>
+			<%= "(n°"+friendly(item.number).to_s+")" if item.number %> : 
+		 	<%= link_to item.name, item %>
 		</li>
 	<% end %>
 </ul>
