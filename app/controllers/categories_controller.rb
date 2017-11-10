@@ -31,7 +31,7 @@ class CategoriesController < ApplicationController
 		end
 
 		# Derniers ajouts
-		@latest_items =  @category.items.order(created_at: :desc).limit(7)
+		@latest_items =  @category.items.order(updated_at: :desc).limit(10)
 		end
 
 	def new
