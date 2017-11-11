@@ -25,6 +25,8 @@
 # Paperclip Attachments
 public/system/*
 
-# fichier natif svg, word, excel, utilié pour construire le site
+# fichiers natif svg, word, excel, utilisés pour construire le site
 native-files
 
+# Backups sous forme de data.yml
+/db/data.yml*
