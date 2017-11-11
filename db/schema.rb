@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20171111114932) do
     t.string "memory"
   end
 
-  create_table "ownertags", id: false, force: :cascade do |t|
+  create_table "ownertags", force: :cascade do |t|
     t.integer "tag_id"
     t.integer "owner_id"
     t.string "owner_type", default: "Item"
