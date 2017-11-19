@@ -17,14 +17,24 @@ class CronController < ApplicationController
 
 				jobs = Job.where(done: false).where(user_id: user_id).where(action: action).order(created_at: :asc)
 				if jobs.present?
-					logger.debug "------------->>"+ jobs.inspect
+					#logger.debug "------------->>"+ jobs.inspect
 
 					# On vérifie que le dernier job a été ajouté il y a un certain temps (sinon on attend)
 					if (jobs.last.created_at + 15.minutes < Time.now )
+						user = User.find(user_id)
+						item_ids = []
+						# On élimine les items qui auraient déjà été supprimés depuis la création du job.
+						jobs.each { |job|
+						 	if Item.exists?(job.element_id) 
+							 	item_ids << job.element_id
+							end
+						 }
+						items = Item.find( item_ids )
 						
 						data = { jobs: jobs,
-								 item_ids: jobs.map(&:element_id),
-								 user_id: user_id }
+								 items: items,
+								 user: user }
+						
 						message = render_to_string partial: "shared/#{action}", locals: { data: data} 
 						post = Post.create!(message: message, user_id: user_id, updated_at: jobs.last.updated_at, created_at: jobs.last.created_at)
 						
