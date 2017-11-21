@@ -3,7 +3,7 @@
         render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
         {style: "display:inline-block"} %>
   
-  <%= button_tag type: "button", class:"btn #{old_comment(post.last_commented_at, current_user)}", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+  <%= button_tag type: "button", class:"btn #{( post.comments.present? && (current_user.displayed_la_une < post.updated_at)) ? 'btn-primary' : 'btn-secondary'} ", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
     <%= post.comments.count if post.comments.present? %>
     <span class="glyphicon glyphicon-comment"></span>
   <% end %>

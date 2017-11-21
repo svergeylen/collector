@@ -14,7 +14,7 @@
   <div class="form-group">
     <%= form.label :number, "Numéro", class:"control-label col-sm-2" %>
     <div class="col-sm-3">
-      <%= form.text_field :number, id: :item_number, value: friendly(item.number), class: "form-control", placeholder:"Entier ou décimal avec un point", autocomplete: :off %>
+      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"Entier ou décimal avec un point", autocomplete: :off %>
     </div>
     <div class="col-sm-3">
       <span class="help-block"> Série :  <%= link_to @series.name, @series %> </span>    

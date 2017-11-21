@@ -21,7 +21,7 @@
 		</div>
 		<div class="col-md-4">
 			<h4>
-				<%= "n°"+friendly(@item.number).to_s+" - " if @item.number %>
+				<%= "n°"+@item.friendly_number+" - " if @item.number %>
 				<%= @item.name %>
 			</h4>
 			<% if @item.tags.present? %>

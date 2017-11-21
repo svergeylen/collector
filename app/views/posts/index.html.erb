@@ -5,9 +5,8 @@
   
     <%= render partial: "new" , locals: { post: Post.new }  %>
 
-
     <% @posts.each do |post| %>
-      <div class="post rounded-box <%= old_post(post, current_user) %> ">
+      <div class="post rounded-box <%= (current_user.displayed_la_une < post.updated_at) ? 'post-new' : 'post-old' %> ">
 
         <%= render partial: "post_header", locals: {post: post} %>
         
@@ -40,9 +39,7 @@
   </div>
   <div class="col-sm-3">
     <h4>Archives</h4>
-
-    <!-- <p>User last_sign_in_at : <%= current_user.last_sign_in_at.strftime("%d/%m/%Y %Hh%M:%S") if current_user.present? %> </p> -->
-
+    
   </div>
 </div> 
 

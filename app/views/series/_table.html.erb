@@ -22,7 +22,7 @@
 				<tr class="not-owned-by-user">
 			<% end %>
 				
-				<td class="text-center"><%= friendly(item.number) %></td>
+				<td class="text-center"><%= item.friendly_number %></td>
 				
 				<td>
 					<%= link_to item.name, item %></a>
@@ -53,7 +53,7 @@
 
 		<tr>
 			<td>
-				<%= form.text_field :number, id: :item_number, value: friendly(@new_item.number), placeholder: "n°", class: "form-control", size: 1 %>
+				<%= form.text_field :number, id: :item_number, value: @new_item.friendly_number, placeholder: "n°", class: "form-control", size: 1 %>
 			</td>
 			<td>
 				<%= form.text_field :name, id: :item_name, placeholder:"Titre", size: 36, class: "form-control" %>

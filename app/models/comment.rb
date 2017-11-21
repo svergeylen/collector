@@ -18,10 +18,7 @@ class Comment < ApplicationRecord
 
 	# Lorsqu'un commentaire est created ou updated, on met à jour la date de dernier commentaire dans le post
 	def touch_post
-		puts "Comment touch post"
-		#  self.post.updated_at ne doit pas être modifié !
-		self.post.update_column(:last_commented_at, DateTime.now) 
-		puts "Fin"
+		self.post.touch
 	end
 
 end

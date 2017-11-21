@@ -7,6 +7,13 @@ class PostsController < ApplicationController
   def index
     # Eager loading comments
     @posts = Post.all.includes(:comments).order(created_at: :desc).limit(30)
+    # Mémorise l'heure du précédent affichage
+    # Temporisation Une heure pour éviter de perdre la mise en évidence des nouveautés en raffraichissant la page
+    if (current_user.displayed_la_une < (Time.now - 3600) )
+      current_user.displayed_la_une = Time.now
+      current_user.save
+    end
+
     respond_to do |format|
       format.html
       format.atom

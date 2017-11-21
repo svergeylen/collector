@@ -71,40 +71,25 @@ class Item < ApplicationRecord
 	    return iu
 	end
 
+	# Donne le nom de l'item précédé du nom de sa série et de son numéro si présent
+	def friendly_name
+		ret = self.series.name
+		ret += " (n°"+self.friendly_number+")" if self.number.present?
+		ret += " - " + self.name
+		return ret
+	end
 
-	# Donne le total des notes pour cette series, au travers des likes de chaque item qu'elle contient
-	# def likes_count
-	# 	self.likes.sum(:note)
-	# end
-
-	# # Ajoute un like ou edite le like existant
-	# def add_or_update_like(user_id, note, remark)
-	# 	note = 1 if note.nil?
-	# 	like = self.like_from(user_id)
-	# 	if like.present?
-	# 		like.update(note: note, remark: remark)
-	# 		like.save # ?
-	# 	else
-	# 		like = self.likes.build(user_id: user_id, item_id: self.id, note: note, remark: remark)
-	# 		like.save
-	# 	end
-	# 	return like
-	# end
-	
-	# # Renvoie le like du user donné
-	# def like_from(user_id)
-	# 	return self.likes.where(user_id: user_id).first
-	# end
-
-	# # Renvoie true si l'élément est déjà marqué comme like par l'utilisateur (note >= 1)
-	# def is_liked_by?(user_id)
-	# 	like = self.likes.where(user_id: user_id).first
-	# 	if like.present? and like.note.present? and (like.note > 0) 
-	# 		return true
-	# 	else
-	# 		return false
-	# 	end		
-	# end
+	# Renvoi le string du numéro de l'item (integer ou float suivant les cas)
+	def friendly_number
+		if self.number.present?
+			if (self.number.round(0) == self.number)
+				ret = self.number.round(0).to_s
+			else
+				ret = self.number.to_s
+			end
+		end
+		return ret
+	end
 
 	# Liste les tags de l'item (auteurs, édition, mots-clés)
 	def tags_list
