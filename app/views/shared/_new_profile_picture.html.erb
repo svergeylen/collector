@@ -1,5 +1,5 @@
 <p>
-	<%= User.find(data[:user_id]).name %> vient de modifier sa photo de profil
+	<%= data[:user].name %> vient de modifier sa photo de profil
 </p>
 
-<%= image_tag User.find(data[:user_id]).avatar(:medium) %>
+<%= image_tag data[:user].avatar(:medium) %>

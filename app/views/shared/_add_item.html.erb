@@ -1,10 +1,10 @@
 
 <p>
-	<%= User.find(data[:user_id]).name %> vient d'ajouter :
+	<%= data[:user].name %> vient d'ajouter :
 </p>
 
 <ul>
-	<% Item.find(data[:item_ids]).each do |item| %>
+	<% data[:items].each do |item| %>
 		<li>
 			<%= link_to item.series.name, series_path(item.series) %>
 			<%= "(n°"+friendly(item.number).to_s+")" if item.number %> : 
