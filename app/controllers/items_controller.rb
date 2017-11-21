@@ -33,6 +33,7 @@ class ItemsController < ApplicationController
 
     if @item.save
 			@item.series.touch
+      save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
 			redirect_to @item, notice: 'Elément ajouté'
@@ -49,12 +50,7 @@ class ItemsController < ApplicationController
 		@item.series.touch
 
     if @item.update(item_params)
-      # Paperclip multiple upload of attachments on Item
-      if params[:item][:attachments]
-        params[:item][:attachments].each { |attach|
-          @item.attachments.create(image: attach, user_id: current_user.id)
-        }
-      end
+      save_attachments
 
       redirect_to @item, notice: 'Elément mis à jour'
     else
@@ -109,6 +105,16 @@ class ItemsController < ApplicationController
   end
 
   private
+    # Sauvegarde les attachments s'il y en a
+    def save_attachments
+      # Paperclip multiple upload of attachments on Item
+      if params[:item][:attachments]
+        params[:item][:attachments].each { |attach|
+          @item.attachments.create(image: attach, user_id: current_user.id)
+        }
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_item
       @item = Item.find(params[:id])
