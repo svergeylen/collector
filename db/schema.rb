@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121202555) do
+ActiveRecord::Schema.define(version: 20171122152327) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 20171121202555) do
     t.string "preview_title"
     t.text "preview_description"
     t.string "preview_image_url"
+    t.string "youtube_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

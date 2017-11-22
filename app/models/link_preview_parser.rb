@@ -1,7 +1,7 @@
 class LinkPreviewParser
 	
   def self.parse(url)
-    doc = Nokogiri::HTML(open(url))
+    doc = Nokogiri::HTML(open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE, 'User-Agent' => "Mozilla/5.0 (X11; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0" ))
     page = {}
 
   	page[:title] = 			give( doc.at('meta[property="og:title"]') )
@@ -19,7 +19,6 @@ class LinkPreviewParser
 
     return page
   end
-
 
 private
 

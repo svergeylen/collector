@@ -1,2 +1,9 @@
+/* Poste le commentaire */
 $('<%= @css_selector %> .comments-list').append('<%= j ( render partial: "comments/show", locals: {comment: @comment} ) %>')
 $('<%= @css_selector %> .comment-add input[type=text]').val("");
+
+/* Highlight les URL potentiellement contenus dans le commentaire */
+$('<%= @css_selector %> .comment-message').each(function() {
+	var modifiedHtml = replaceURL($(this).html());
+	$(this).html(modifiedHtml);
+});
