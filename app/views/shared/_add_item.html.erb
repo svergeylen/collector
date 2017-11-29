@@ -7,7 +7,7 @@
 	<% data[:items].each do |item| %>
 		<li>
 			<%= link_to item.series.name, series_path(item.series) %>
-			<%= "(n°"+friendly(item.number).to_s+")" if item.number %> : 
+			<%= "(n°"+item.friendly_number+")" if item.number %> : 
 		 	<%= link_to item.name, item %>
 		</li>
 	<% end %>
