@@ -41,7 +41,9 @@
 
 		<% if @post.preview_url %>
 			<p><%= link_to "Supprimer la vignette", remove_preview_post_path, data:  { confirm: "Etes-vous certain de supprimer cette vignette ?"} %></p>
+        	<p><%= link_to @post.preview_url, @post.preview_url %></p>
         	<%= render partial: "shared/preview_link", locals: { title: @post.preview_title, description: @post.preview_description, url: @post.preview_url, image_url: @post.preview_image_url } %>
+        	
 
         <% elsif @post.youtube_id %>  
         	<p><%= link_to "Supprimer la vignette", remove_preview_post_path, data:  { confirm: "Etes-vous certain de supprimer cette vignette ?"} %></p>

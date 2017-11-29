@@ -1,14 +1,14 @@
 
 document.addEventListener("turbolinks:load", function() {
-	var offset = 500;
-	var duration = 800;
+	var offset = 200;
+	var duration = 300;
 
 	$(window).scroll(function() {
 		if ($(this).scrollTop() > offset) {
-			$(".back-to-top").fadeIn(duration);
+			$(".back-to-top").fadeIn(700);
 		} 
 		else {
-			$(".back-to-top").fadeOut(duration);
+			$(".back-to-top").fadeOut(700);
 		}
 	});
 
