@@ -1,14 +1,14 @@
 class Item < ApplicationRecord
 	belongs_to :series
 
-	#has_many :itemtags, dependent: :delete_all
-	has_and_belongs_to_many :tags #, through: :itemtags
+	has_many :ownertags,    dependent:  :destroy, as: :owner
+	has_many :tags,         through:    :ownertags
 
 	has_many :itemusers
-	has_many :users, through: :itemusers
-	belongs_to :adder, class_name: "User"
+	has_many :users,        through:    :itemusers
+	belongs_to :adder,      class_name: "User"
 
-	has_many :attachments, as: :element, dependent: :destroy
+	has_many :attachments,  as:         :element,   dependent: :destroy
 	accepts_nested_attributes_for :attachments
 
 	acts_as_votable # les users peuvent mettre des likes sur les items

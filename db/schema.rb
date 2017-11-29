@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122152327) do
+ActiveRecord::Schema.define(version: 20171129173346) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -55,13 +55,6 @@ ActiveRecord::Schema.define(version: 20171122152327) do
     t.text "description"
   end
 
-  create_table "items_tags", id: false, force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "item_id"
-    t.index ["item_id"], name: "index_items_tags_on_item_id"
-    t.index ["tag_id"], name: "index_items_tags_on_tag_id"
-  end
-
   create_table "itemusers", force: :cascade do |t|
     t.integer "item_id"
     t.integer "user_id"
@@ -80,6 +73,14 @@ ActiveRecord::Schema.define(version: 20171122152327) do
     t.datetime "updated_at", null: false
     t.string "element_type"
     t.string "memory"
+  end
+
+  create_table "ownertags", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "owne"
+    t.string "owner_type", default: "Item"
+    t.index ["owne"], name: "index_ownertags_on_owne"
+    t.index ["tag_id"], name: "index_ownertags_on_tag_id"
   end
 
   create_table "posts", force: :cascade do |t|
