@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :delete_attachment, :update, :destroy, :upvote]
+  before_action :set_post, only: [:show, :edit, :delete_attachment, :remove_preview, :update, :destroy, :upvote]
   before_action :check_access
 
   # GET /posts
@@ -54,7 +54,7 @@ class PostsController < ApplicationController
         format.html { redirect_to posts_path, notice: 'Message posté avec succès' }
         format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
+        format.html { render :edit, alert: 'Erreur lors de la création du message' }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -113,6 +113,12 @@ class PostsController < ApplicationController
       page = LinkPreviewParser.parse(url)
       render partial: "shared/preview_link", locals: { title: page[:title], description: page[:description], url: url, image_url: page[:image] } 
     end
+  end
+
+  # Suppresion de la vignette
+  def remove_preview
+    @post.remove_preview
+    render :edit, notice: "Vignette supprimée"
   end
 
   private

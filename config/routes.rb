@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 		member do
 			post :upvote
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
+			get :remove_preview
 		end
 	end
 	post 'posts/preview'

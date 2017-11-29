@@ -23,31 +23,51 @@
 
 		    <div class="btn-group">
 		      <label class="btn btn-primary btn-file">
-		        <span class="glyphicon glyphicon-paperclip" title="Ajouter des photos"></span> Ajouter
+		        <span class="glyphicon glyphicon-paperclip" title="Ajouter des photos"></span>
 		        <%= form.file_field :attachments, multiple: true, class:"hidden" %>
 		      </label>
 
 		      <%= button_tag type: "button", class: "btn btn-primary", id: "button-emoji", title: "Ajouter une émoticône" do %>
-		        <span class="glyphicon glyphicon-star-empty"></span> Emoticone
+		        <span class="glyphicon glyphicon-star-empty"></span>
 		      <% end %>
 
 		      <%= form.button type: "submit", class: "btn btn-primary", title: "Poster le message" do %>
-		        <span class="glyphicon glyphicon-send"></span> Poster
+		        <span class="glyphicon glyphicon-send"></span>
 		      <% end %>
 		    </div>
 		</div>
 
+		<h4>Vignette</h4>
+
+		<% if @post.preview_url %>
+			<p><%= link_to "Supprimer la vignette", remove_preview_post_path, data:  { confirm: "Etes-vous certain de supprimer cette vignette ?"} %></p>
+        	<%= render partial: "shared/preview_link", locals: { title: @post.preview_title, description: @post.preview_description, url: @post.preview_url, image_url: @post.preview_image_url } %>
+
+        <% elsif @post.youtube_id %>  
+        	<p><%= link_to "Supprimer la vignette", remove_preview_post_path, data:  { confirm: "Etes-vous certain de supprimer cette vignette ?"} %></p>
+        	<%= render partial: "shared/preview_youtube", locals: { youtube_id: @post.youtube_id } %>
+
+        <% else %>
+          <p>Aucune</p>
+
+        <% end %>
+
 	  	<h4>Pièces jointes</h4>
-		  
-		<div class="attachments">
-			<% @post.attachments.each do |attachment| %>
-				<div class="attachment-thumbnail">
-					<%= image_tag attachment.image.url(:thumb) %><br />
-					<%= link_to "Supprimer", delete_attachment_post_path(@post, attachment.id), class:"attachment-delete-icon" %>
-				</div>
-			<% end %>
-		</div>
-	        
+		
+		<% if @post.attachments.present? %>
+			<div class="attachments">
+				<% @post.attachments.each do |attachment| %>
+					<div class="attachment-thumbnail">
+						<%= image_tag attachment.image.url(:thumb) %><br />
+						<%= link_to delete_attachment_post_path(@post, attachment.id), class:"attachment-delete-icon", title:"Supprimer", data: {confirm: "Etes-vous certain de supprimer cette pièce jointe ?"} do %>
+							<i class="glyphicon glyphicon-remove"></i>
+						<% end %>
+					</div>
+				<% end %>
+			</div>
+		<% else %>
+			<p>Aucune</p>
+		<% end %>    
 
 	<% end %>
 
