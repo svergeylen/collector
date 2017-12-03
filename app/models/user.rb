@@ -23,6 +23,15 @@ class User < ApplicationRecord
 		self.items.where(["quantity > ?", 0]).where(created_at: (Date.current-months_quantity.months)..Date.current).order(created_at: :desc)
 	end
 
+	# Renvoie un lien vers l'image par défaut pour les avatar parce que paperclip ne gère pas les avatar supprimés du disque (!)
+	def friendly_avatar_url
+		if self.avatar.exists?
+			return self.avatar.url(:tiny)
+		else
+			return "default-profile/tiny.png"
+		end
+	end
+
 	# Donne l'accès ou non à une ressource en fonction des droits de l'utilisateur
 	def can?(res)
 		resources = { collector: 5, une: 10 }

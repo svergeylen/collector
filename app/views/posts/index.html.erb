@@ -7,43 +7,15 @@
 
     <% @posts.each do |post| %>
       <div class="post rounded-box <%= (current_user.displayed_la_une < post.updated_at) ? 'post-new' : 'post-old' %> ">
-
-        <%= render partial: "post_header", locals: {post: post} %>
-        
-        <div class="post-message">
-          <%= sanitize post.message %>
-        </div>
-
-        <% if post.preview_url %>  
-          <%= render partial: "shared/preview_link", locals: { title: post.preview_title, description: post.preview_description, url: post.preview_url, image_url: post.preview_image_url } %>
+        <% cache post do %>
+          <%= render partial: "post_content", locals: {post: post} %>
         <% end %>
-
-        <% if post.youtube_id %>  
-          <%= render partial: "shared/preview_youtube", locals: { youtube_id: post.youtube_id } %>
-        <% end %>
-
-        <% if post.attachments.present? %>
-          <div class="post-message row text-center"> 
-            <% post.attachments.each_with_index do |a, i| %>
-              <div class="col-xs-6">
-                <%= link_to post_path(post, slide_id: i) do %>
-                  <%= image_tag a.image(:medium), class:"img-thumbnail" %>
-                <% end %>
-              </div>
-              <% "</div><div class='row'>" if ((i % 2) == 0) %>
-            <% end %>
-          </div>
-        <% end %>
-          
-       <%= render partial: "post_comments", locals: {post: post} %>
 
       </div>
-    <% end #  posts.each %>
+    <% end %>
 
   </div>
-  <div class="col-sm-3">
-    <h4>Archives</h4>
-    
+  <div class="col-sm-3">    
   </div>
 </div> 
 
