@@ -9,7 +9,7 @@
   <% end %>
 </div>
 
-<div class="post-comments collapse" id="comments-post-<%= post.id %>">
+<div class="post-comments collapse in" id="comments-post-<%= post.id %>">
   <div class="comments-list">
     <% post.comments.each do |comment| %>
       <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
