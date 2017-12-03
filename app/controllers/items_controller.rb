@@ -36,7 +36,7 @@ class ItemsController < ApplicationController
       save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
-			redirect_to @item, notice: 'Elément ajouté'
+			redirect_to @item.series, notice: 'Elément ajouté'
     else
 			render :new 
     end
