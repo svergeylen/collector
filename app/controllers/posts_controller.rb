@@ -69,7 +69,7 @@ class PostsController < ApplicationController
         if @post.update(post_params)
           save_attachments
 
-          format.html { redirect_to posts_path, notice: 'Message modifié avec succès' }
+          format.html { redirect_to posts_path(:anchor => @post.id), notice: 'Message modifié avec succès' }
           format.json { render :show, status: :ok, location: @post }
         else
           format.html { render :edit }

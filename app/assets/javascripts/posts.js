@@ -14,6 +14,11 @@ function replaceURL(text) {
 document.addEventListener("turbolinks:load", function() {
 	var timer;
 
+	/* Truc pour décaler la page vers un post donnée (posts#141) malgré la navbar fixed qui donne un offset négatif */
+	var shiftWindow = function() { scrollBy(0, -60) };
+	if (location.hash) shiftWindow();
+	window.addEventListener("hashchange", shiftWindow);
+
 	/* Pour chaque post, remplacer le contenu commencant par http par un lien vers ce site */
 	$(".post-message").each(function() {
 		var modifiedHtml = replaceURL($(this).html());
