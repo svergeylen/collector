@@ -6,7 +6,7 @@
 /* Est également appelé par comments/create.js.erb */
 function replaceURL(text) {
     var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-	return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+	return text.replace(exp,"<a href='$1' target='_blank'>Lien</a>"); 
 }
 
 
@@ -35,7 +35,9 @@ document.addEventListener("turbolinks:load", function() {
 	 
 	      	var text = $.trim($("#post_message").val());
 
-	      	/* On recherche si le texte COMMENCE (^) par un URL -> Si oui, on lance la preview*/
+	      	/* On recherche si le texte COMMENCE (^) par un URL -> Si oui, on lance la preview
+	      	var elements = text.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi);
+	      	*/
 			var elements = text.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi);
 			
 			/* On ne lance la requete Ajax vers le serveur QUE si un URL est trouvé en début de message */

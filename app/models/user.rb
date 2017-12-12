@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
 	# Donne l'accès ou non à une ressource en fonction des droits de l'utilisateur
 	def can?(res)
-		resources = { collector: 5, une: 10 }
+		resources = { collector: 5, une: 10, admin: 100 }
 		if resources.include?(res)
 			return  self.rights >= resources[res] 
 		else

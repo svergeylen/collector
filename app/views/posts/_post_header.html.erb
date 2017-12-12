@@ -4,7 +4,7 @@
 
     <%= react_component "Ago", { since: post.created_at.to_i}, style:"display:inline-block" %>
 
-    <% if post.user_id == current_user.id %>
+    <% if (post.user_id == current_user.id) || current_user.can?(:admin) %>
       <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
       <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
     <% end %>

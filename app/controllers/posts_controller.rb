@@ -26,7 +26,7 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    if (@post.user_id != current_user.id)
+    if (@post.user_id != current_user.id) && !current_user.can?(:admin)
       redirect_to posts_url, alert: 'Ce post ne vous appartient pas'
     end
   end
@@ -35,6 +35,7 @@ class PostsController < ApplicationController
   def delete_attachment
     if @post.attachments.exists?(params[:attachment_id])
       @post.attachments.find(params[:attachment_id]).destroy
+      @post.touch # Induit la purge du cache de ce post
       redirect_to edit_post_path(@post), notice: 'Pièce jointe supprimée' 
     else
       redirect_to edit_post_path(@post), alert: 'Erreur lors de la suppression de la pièce jointe' 
@@ -63,7 +64,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
-    if (@post.user_id == current_user.id)
+    if (@post.user_id == current_user.id) || current_user.can?(:admin)
       respond_to do |format|
         if @post.update(post_params)
           save_attachments
@@ -83,7 +84,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-    if (@post.user_id == current_user.id)
+    if (@post.user_id == current_user.id) || current_user.can?(:admin)
       @post.destroy
       respond_to do |format|
         format.html { redirect_to posts_url, notice: 'Message supprimé avec succès' }
@@ -96,6 +97,7 @@ class PostsController < ApplicationController
 
   # Gestion des votes sur les posts
   def upvote
+    @post.touch # Induit la purge du cache de ce post
     if current_user.voted_for? @post
       current_user.unvote_for @post
     else
@@ -127,6 +129,7 @@ class PostsController < ApplicationController
     def save_attachments
       # Paperclip multiple upload of attachments on Post
       if params[:post][:attachments]
+        @post.touch # induit la purge du cache pour ce post
         params[:post][:attachments].each { |attach|
           @post.attachments.create(image: attach, user_id: current_user.id)
         }

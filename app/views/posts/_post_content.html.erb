@@ -1,29 +1,31 @@
 
+<%# Pas de cache car l'en-tête depend de current_user pour le bouton modifier et supprimer %>
 <%= render partial: "post_header", locals: {post: post} %>
-      
-<div class="post-message">
-  <%= sanitize post.message %>
-</div>
-
-<% if post.preview_url %>  
-  <%= render partial: "shared/preview_link", locals: { title: post.preview_title, description: post.preview_description, url: post.preview_url, image_url: post.preview_image_url } %>
-<% end %>
-
-<% if post.youtube_id %>  
-  <%= render partial: "shared/preview_youtube", locals: { youtube_id: post.youtube_id } %>
-<% end %>
-
-<% if post.attachments.present? %>
-  <div class="post-message row text-center"> 
-    <% post.attachments.each_with_index do |a, i| %>
-      <div class="col-xs-6">
-        <%= link_to post_path(post, slide_id: i) do %>
-          <%= image_tag a.image(:medium), class:"img-thumbnail" %>
-        <% end %>
-      </div>
-      <% "</div><div class='row'>" if ((i % 2) == 0) %>
-    <% end %>
+        
+<% cache post do %>
+  <div class="post-message">
+    <%= sanitize post.message %>
   </div>
+
+  <% if post.preview_url %>  
+    <%= render partial: "shared/preview_link", locals: { title: post.preview_title, description: post.preview_description, url: post.preview_url, image_url: post.preview_image_url } %>
+  <% end %>
+
+  <% if post.youtube_id %>  
+    <%= render partial: "shared/preview_youtube", locals: { youtube_id: post.youtube_id } %>
+  <% end %>
+
+  <% if post.attachments.present? %>
+    <div class="post-message row text-center"> 
+      <% post.attachments.each_with_index do |a, i| %>
+        <div class="col-xs-6">
+          <%= link_to post_path(post, slide_id: i) do %>
+            <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+          <% end %>
+        </div>
+        <% "</div><div class='row'>" if ((i % 2) == 0) %>
+      <% end %>
+    </div>
+  <% end %>
+
 <% end %>
-  
-<%= render partial: "post_comments", locals: {post: post} %>
