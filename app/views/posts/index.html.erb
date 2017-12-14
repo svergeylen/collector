@@ -2,24 +2,17 @@
 <div class="row">
   <div class="col-sm-1"></div>
   <div class="col-sm-8">
-  
-    <%= render partial: "new" , locals: { post: Post.new }  %>
+  	<div id="posts">
+	    <%= render partial: "new" , locals: { post: Post.new }  %>
+	    <%= render partial: "posts", locals: {posts: @posts, next_page: @next_page } %>
+	</div>
 
-    <% @posts.each do |post| %>
-      <div class="post rounded-box <%= (current_user.displayed_la_une < post.updated_at) ? 'post-new' : 'post-old' %> ">
-
-
-       
-        <%= render partial: "post_content", locals: {post: post} %>
-        
-
-        <%= render partial: "post_comments", locals: {post: post} %>
-
-      </div>
-    <% end %>
+	<div class="next_posts">
+		<p><%= link_to "Afficher les précédents messages", "#", class: "load_next_posts" %></p>
+	</div>
 
   </div>
-  <div class="col-sm-3">    
+  <div class="col-sm-3">
   </div>
 </div> 
 

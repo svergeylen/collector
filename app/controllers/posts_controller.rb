@@ -5,8 +5,13 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
+
     # Eager loading comments
-    @posts = Post.all.includes(:comments).order(created_at: :desc).limit(30)
+    # Pagination avec will_paginate
+    @posts = Post.all.includes(:comments).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
+    @current_page = params[:page].present? ? params[:page].to_s : "1"
+    @next_page = (@current_page.to_i + 1).to_s
+
     # Mémorise l'heure du précédent affichage
     # Temporisation Une heure pour éviter de perdre la mise en évidence des nouveautés en raffraichissant la page
     if (current_user.displayed_la_une < (Time.now - 3600) )
@@ -16,6 +21,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.js 
       format.atom
     end
   end

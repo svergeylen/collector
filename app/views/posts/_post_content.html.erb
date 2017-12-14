@@ -1,6 +1,24 @@
-<%# Pas de cache car l'en-tête depend de current_user pour le bouton modifier et supprimer %>
-<%= render partial: "post_header", locals: {post: post} %>
-        
+ <%# Pas de cache car l'en-tête depend de current_user pour le bouton modifier et supprimer %>
+<%# render partial: "post_header", locals: {post: post} %>
+<a name="<%= post.id %>"></a>
+<div class="post-header">
+  <div class="pull-right">
+
+    <%= react_component "Ago", { since: post.created_at.to_i}, style:"display:inline-block" %>
+
+    <% if (post.user_id == current_user.id) || current_user.can?(:admin) %>
+      <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
+      <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
+    <% end %>
+  </div>
+
+  <%= profile_picture(post.user) %>
+  
+  <div class="user-name">
+    <%= link_to post.user.name, post.user %>
+  </div>
+</div>
+
 <% cache post do %>
   <div class="post-message">
     <%= sanitize post.message %>

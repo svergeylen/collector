@@ -4,6 +4,7 @@ document.addEventListener("turbolinks:load", function() {
 	var duration = 300;
 
 	$(window).scroll(function() {
+		/* Bouton Back to top */
 		if ($(this).scrollTop() > offset) {
 			$(".back-to-top").fadeIn(700);
 		} 
