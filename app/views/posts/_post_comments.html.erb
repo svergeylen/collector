@@ -1,8 +1,13 @@
 <div class="post-likes">
-  <%= react_component "UpVote", 
+  <%# react_component "UpVote", 
         render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
         {style: "display:inline-block"} %>
   
+  <%= link_to upvote_post_path(post), remote: true, class:"btn btn-default", role:"button", id: "upvote-#{post.id}" do %>
+    <span class="total_upvotes"><%= post.total_upvotes %></span>
+    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+  <% end %>
+
   <%= button_tag type: "button", class:"btn btn-default", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
     <%= post.comments.count if post.comments.present? %>
     <span class="glyphicon glyphicon-comment"></span>

@@ -103,12 +103,8 @@ class PostsController < ApplicationController
 
   # Gestion des votes sur les posts
   def upvote
-    @post.touch # Induit la purge du cache de ce post
-    if current_user.voted_for? @post
-      current_user.unvote_for @post
-    else
-      current_user.up_votes @post
-    end
+    @post.increment_vote(current_user)
+    @post.touch # purge du cache
   end
 
   # Génération d'une vignette pour les URL copiés/collés dans le formulaire post/new

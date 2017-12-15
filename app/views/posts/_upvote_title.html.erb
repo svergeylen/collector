@@ -1,0 +1,8 @@
+<div>
+	<p>Applaudissements : <%= post.total_upvotes %></p>
+	<ul>
+		<% post.votes_for.includes(:voter).each do |vote| %>
+ 			<li><%= vote.voter.name %> : <%= vote.vote_weight %>x (<%= vote.updated_at.strftime("%d/%m/%y") %>) </li>
+		<% end %>
+	</ul>
+</div>
