@@ -1,17 +1,23 @@
-<div class="post-likes">
-  <%# react_component "UpVote", 
-        render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
-        {style: "display:inline-block"} %>
+<div class="post-likes row">
   
-  <%= link_to upvote_post_path(post), remote: true, class:"btn btn-default", role:"button", id: "upvote-#{post.id}" do %>
-    <span class="total_upvotes"><%= post.total_upvotes %></span>
-    <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-  <% end %>
+  
+  <div class="col-xs-9">
+    <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
+  </div>
 
-  <%= button_tag type: "button", class:"btn btn-default", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
-    <%= post.comments.count if post.comments.present? %>
-    <span class="glyphicon glyphicon-comment"></span>
-  <% end %>
+  <div class="col-xs-2">
+    <%= link_to upvote_post_path(post), remote: true, class:"btn btn-default applause-height", role:"button", id: "upvote-#{post.id}" do %>
+      <span class="total_upvotes"><%= post.total_upvotes %></span>
+      <%= image_tag "applause.svg" %>
+    <% end %>
+  </div>
+  <div class="col-xs-1">
+    <%= button_tag type: "button", class:"btn btn-default applause-height", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+      <%= post.comments.count if post.comments.present? %>
+      <span class="glyphicon glyphicon-comment"></span>
+    <% end %>
+  </div>
+
 </div>
 
 <div class="post-comments collapse in" id="comments-post-<%= post.id %>">
@@ -19,8 +25,5 @@
     <% post.comments.each do |comment| %>
       <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
     <% end %>
-  </div>
-  <div class="comment-add">
-    <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
   </div>
 </div>

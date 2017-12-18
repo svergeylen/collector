@@ -1,8 +1,5 @@
 
 
-<%= profile_picture(current_user) %>
-
-
 <%= form_with(model: comment) do |form| %>
   <% if comment.errors.any? %>
     <div id="error_explanation">
@@ -16,11 +13,11 @@
     </div>
   <% end %>
 
-  <div class="comment-add-textarea">
-    <%= form.text_field :message, id: :comment_message, placeholder: "Votre commentaire..." %>
-    <%= form.hidden_field :post_id, id: :comment_post_id %>
-    <%= form.hidden_field :user_id, id: :comment_user_id %>
-    <%# form.submit "Ajouter" %>
-  </div>
+  <%= profile_picture(current_user) %>
+
+  <%= form.text_field :message, id: :comment_message, placeholder: "Votre commentaire...", class:"form-control" %>
+  <%= form.hidden_field :post_id, id: :comment_post_id %>
+  <%= form.hidden_field :user_id, id: :comment_user_id %>
 
 <% end %>
+

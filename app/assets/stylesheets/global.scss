@@ -68,6 +68,7 @@ table.table-extra-condensed tbody tr td {
 	vertical-align: middle;
 }
 
+/* Bouton remonter en haut de la page */
 .back-to-top {
 	background: none;
 	margin: 0;
@@ -81,5 +82,11 @@ table.table-extra-condensed tbody tr td {
 	text-decoration: none;
 	i {
 	  font-size: 3em;
+	}
+}
+.applause-height {
+	height: 40px;
+	img {
+		height: 25px;
 	}
 }
