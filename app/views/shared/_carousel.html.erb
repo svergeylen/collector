@@ -1,5 +1,5 @@
 <!-- Carousel -->
-<div id="itemCarousel" class="carousel slide" data-ride="carousel">
+<div id="itemCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
   <div class="carousel-inner">
   	<% attachments.each_with_index do |attachment, i| %>
 	  	<div class="item <%=  "active" if i==active_slide_id %>">

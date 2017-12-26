@@ -3,12 +3,11 @@
 
 /* Item/show */
 #itemCarousel {
+	min-height : 100px;
 	.carousel-inner {
 		.item {
 			img {
 				width: auto;
-				height: 550px;
-				max-height: 550px;
 				margin : auto;
 			}
 		}
