@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122152327) do
+ActiveRecord::Schema.define(version: 20171218171617) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -82,15 +82,23 @@ ActiveRecord::Schema.define(version: 20171122152327) do
     t.string "memory"
   end
 
+  create_table "ownertags", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "owne"
+    t.string "owner_type", default: "Item"
+    t.index ["owne"], name: "index_ownertags_on_owne"
+    t.index ["tag_id"], name: "index_ownertags_on_tag_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.text "message"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "preview_url"
+    t.text "preview_url"
     t.string "preview_title"
     t.text "preview_description"
-    t.string "preview_image_url"
+    t.text "preview_image_url"
     t.string "youtube_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
