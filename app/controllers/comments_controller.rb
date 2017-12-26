@@ -12,25 +12,22 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    if (params[:comment][:user_id] == current_user.id.to_s)
-
-      @comment = Comment.new(comment_params)
-      @css_selector = "#comments-post-"+params[:comment][:post_id].to_s
-      
-      respond_to do |format|
-        if @comment.save
-          format.html { redirect_to posts_path, notice: 'Commentaire créé avec succès' }
-          format.json { render :show, status: :created, location: @comment }
-          format.js
-        else
-          format.html { render :new }
-          format.json { render json: @comment.errors, status: :unprocessable_entity }
-          format.js
-        end
+    @comment = Comment.new(comment_params)
+    @comment.user = current_user
+    @css_selector = "#comments-post-"+@comment.post_id.to_s
+    
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to posts_path, notice: 'Commentaire créé avec succès' }
+        format.json { render :show, status: :created, location: @comment }
+        format.js
+      else
+        format.html { render :new }
+        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.js
       end
-    else
-      redirect_to posts_path, alert: 'Identifiant utilisateur erroné' 
     end
+    
   end
 
   # PATCH/PUT /comments/1

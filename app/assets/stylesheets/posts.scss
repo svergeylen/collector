@@ -82,10 +82,6 @@
 	padding-top : 20px; */
 	.post-header {
 		padding-right : $general-padding;
-		.profile-picture {
-			float: left;
-			margin-left: $general-padding;
-		}
 		.user-name {
 			margin-left : 60px;
 			padding-top : 5px;
@@ -102,11 +98,22 @@
 		padding-right: $general-padding;
 	}
 	.post-likes {
-		margin-top: 5px;
+		margin-top: 25px;
 		padding-top: 5px;
 		padding-bottom: 5px;
 		padding-right : $general-padding;
 		width: 100%;		
+	}
+	form.form-inline input {
+		width: 100%;
+		margin-left: $general-padding;
+		height: 40px;
+	}
+	.applause-height {
+		height: 40px;
+		img {
+			height: 25px;
+		}
 	}
 }
 
