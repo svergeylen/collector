@@ -1,0 +1,28 @@
+<%= form_with model: tag, local: true, class: "form-horizontal" do |form| %>
+
+ <% if tag.errors.any? %>
+    <div id="error_explanation">
+        <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de cet auteur :
+      <ul>
+        <% tag.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="tag_name">Nom</label>
+    <div class="col-sm-3">
+      <%= form.text_field :name, id: "tag_name", class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-3">
+      <%= form.submit submit_text, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+<% end %>

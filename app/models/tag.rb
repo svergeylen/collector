@@ -5,7 +5,7 @@ class Tag < ApplicationRecord
 	has_many :parent_tags,        through: :ownertags_as_tag, source: :owner, source_type: 'Tag'
 	has_many :tags,               through: :ownertags_as_owner
 
-	validates :name, presence: true
+	validates :name, presence: true, uniqueness: true
 
 	accepts_nested_attributes_for :ownertags_as_owner
 	accepts_nested_attributes_for :ownertags_as_tag

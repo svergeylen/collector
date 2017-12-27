@@ -6,15 +6,16 @@
 		 	<span class="caret"></span></button>
 			<ul class="dropdown-menu dropdown-menu-right">
 				<li><%= link_to "Nouveau tag", new_tag_path  %></li>
-			    <li><%= link_to "Modifier le tag", edit_tag_path(@tag)  %></li>
-			    <li><%= link_to "Supprimer le tag", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } %>
 			    </li>
 		  	</ul>
 		</div>				
 	</div>
 
+	<h1>Tags#index</h1>
 
-	<h1><%= @tag.name %></h1>
-
-	
+	<ul>
+	<% @tags.each do |tag| %>
+		<li><%= link_to tag.name, tag %></li>
+	<% end %>
+	</ul>	
 </div>
