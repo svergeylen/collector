@@ -9,15 +9,5 @@ class Tag < ApplicationRecord
 
 	accepts_nested_attributes_for :ownertags_as_owner
 	accepts_nested_attributes_for :ownertags_as_tag
-
-	# Renvoie les tags reliés au travers des items
-	def related
-		related_ids = self.items.collect { |item| item.tag_ids }.flatten.uniq
-	    related_ids = related_ids - [self.id]
-	    if related_ids
-	    	return Tag.find(related_ids).sort_by{ |t| t.name}
-	  	else
-	  		return nil
-	  	end
-	end
+	
 end

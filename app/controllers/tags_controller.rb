@@ -7,19 +7,11 @@ class TagsController < ApplicationController
 
   def show
     @tag = Tag.find(params[:id])
-    @series = Series.find( @tag.items.collect(&:series_id).uniq ).sort_by{ |s| s.name }
-    @related_tags = @tag.related
-  end
-
-  def create
+    @items = @tag.items
   end
 
   def new
     @tag = Tag.new
-  end
-
-  def edit
-    @tag = Tag.find(params[:id])
   end
 
   def create
@@ -32,13 +24,17 @@ class TagsController < ApplicationController
     end
   end
 
+  def edit
+    @tag = Tag.find(params[:id])
+  end
+
   def update
     @tag = Tag.find(params[:id])
    
     if @tag.update(tag_params)
       redirect_to @tag, notice: 'Tag modifié'
     else
-      render 'edit'
+      render :edit
     end
   end
 
@@ -49,10 +45,10 @@ class TagsController < ApplicationController
 
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-    def set_tag
-      @tag = Tag.find(params[:id])
-    end
+  
+  def set_tag
+    @tag = Tag.find(params[:id])
+  end
 
   def tag_params
     params.require(:tag).permit(:name)

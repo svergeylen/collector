@@ -15,6 +15,20 @@
 
 
 	<h1><%= @tag.name %></h1>
+	<p><%= breadcrumbs_for(@tag) %> </p>
 
-	
+	<h3>Enfants</h3>
+	<ul>
+		<% @tag.tags.each do |tag| %>
+			<li><%= link_to tag.name, tag %></li>
+		<% end %>
+	</ul>
+
+	<h3>Items</h3>
+	<ul>
+		<% @items.each do |item| %>
+			<li><%= link_to item.name, item %></li>
+		<% end %>
+	</ul>
+
 </div>
