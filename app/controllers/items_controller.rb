@@ -26,6 +26,8 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
 		@item.tags_list = params[:item][:tags_list]
+    @series = Series.find(@item.series_id) if params[:item][:series_id]
+
     # L'utilisateur courant a ajouté l'élément
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
@@ -36,7 +38,7 @@ class ItemsController < ApplicationController
       save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
-			redirect_to @item, notice: 'Elément ajouté'
+			redirect_to @item.series, notice: 'Elément ajouté'
     else
 			render :new 
     end

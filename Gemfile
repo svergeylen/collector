@@ -62,6 +62,9 @@ gem "paperclip", "~> 5.0.0"
 # Fetch page from URL
 gem 'nokogiri'
 
+# Pagination
+gem 'will_paginate', '~> 3.1.0'
+
 
 group :development, :test do
   

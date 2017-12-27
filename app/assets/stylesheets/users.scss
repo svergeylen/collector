@@ -1,8 +1,17 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import 'colors';
 
 .profile-picture {
+	float: left;
 	border-radius : 50%;
-	margin-right: 5px;
+}
+
+/* Padding spécifique dans les posts */
+#posts .profile-picture {
+	margin-left: $general-padding;
+	margin-right: $general-padding;
+}
+/* Padding spécifique dans la navbar */
+nav .profile-picture {
+	margin-right: 10px;
 }

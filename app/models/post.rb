@@ -19,6 +19,25 @@ class Post < ApplicationRecord
 		self.save
 	end
 
+	# Incrémente le vote pour l'utiliateur donné
+	def increment_vote(user)
+		# Recherche d'un vote existant
+	    vote = self.find_votes_for(voter: user)
+	    if vote.blank?
+	      # Si c'est le premier vote, création d'un vote "1"
+	      self.vote_by(voter: user, vote_weight: 1)
+	    else
+	      # Si c'est le second vote (ou plus), on incrémente le weight du vote existant
+	      next_score = vote.first.vote_weight + 1
+	      self.vote_by(voter: user, vote_weight: next_score)
+	    end
+	end
+
+	# Donne le nombre de votes total posotifs
+	def total_upvotes
+		self.get_upvotes.sum(:vote_weight)
+	end
+
 	private
 
 	def check_user_exists

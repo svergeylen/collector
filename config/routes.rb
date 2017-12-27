@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 	# La Une
 	resources :posts do
 		member do
-			post :upvote
+			get :upvote
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
 			get :remove_preview
 		end

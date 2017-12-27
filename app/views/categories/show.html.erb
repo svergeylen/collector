@@ -10,6 +10,7 @@
 					<ul class="dropdown-menu dropdown-menu-right">
 						<li><%= link_to "Nouvelle catégorie", new_category_path  %></li>
 					    <li><%= link_to "Modifier \"#{@category.name}\"", edit_category_path(@category)  %></li>
+					    <li><%= link_to "Supprimer \"#{@category.name}\"", @category, method: :delete, data: {confirm: "ATTENTION\n\nSupprimer la catégorie va entrainer la suppression en cascade de toutes les séries et de tous les éléments associés.\nEtes-vous vraiment sûr ?\nCeci est irréversible." } %></li>
 					    <li class="divider"></li>
 					    <li><%= link_to "Nouvelle série", new_series_path %></li>
 				  	</ul>

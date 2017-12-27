@@ -1,0 +1,3 @@
+ 
+$("#upvote-<%= @post.id %> span.total_upvotes").html("<%= @post.total_upvotes %>"); 
+$("#upvote-<%= @post.id %>").prop('title', "<%= escape_javascript(render partial: 'upvote_title.html.erb', locals: { post: @post } ) %>");

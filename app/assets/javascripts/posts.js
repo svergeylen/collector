@@ -1,18 +1,37 @@
 
-/* Mémorisation si la preview a déjà été réalisée */
-// var preview_done = false;
+var timer;
+var is_loading_posts = false;
+var current_page = 1;
 
 /* Remplace dan le texte tous les URL par des liens <a> */
 /* Est également appelé par comments/create.js.erb */
 function replaceURL(text) {
     var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-	return text.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
+	return text.replace(exp," <a href='$1' target='_blank'>Lien</a> "); 
 }
 
+/* Charge les posts de la page suivante s'il n'y a pas de chargement déjà en cours (is_loading_posts) */
+function load_next_posts() {
+	if (!is_loading_posts) {
+		current_page += 1;
+		console.log("Chargement de la page suivante :"+current_page);
+		is_loading_posts = true;
+		$("#posts").append("<div class='load_next_posts_spinner'><i class='fa fa-refresh fa-spin fa-2x fa-fw preview-spinner'></i><div>");
+		$.ajax({
+			url: "posts.js",
+			data: { page: current_page},
+			dataType: "script" /* Ceci implique que le script de index.js.erb soit exécuté */
+		});
+	}
+}
 
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
-	var timer;
+
+	/* Truc pour décaler la page vers un post donné (posts#141) malgré la navbar fixed qui donne un offset négatif */
+	var shiftWindow = function() { scrollBy(0, -60) };
+	if (location.hash) shiftWindow();
+	window.addEventListener("hashchange", shiftWindow);
 
 	/* Pour chaque post, remplacer le contenu commencant par http par un lien vers ce site */
 	$(".post-message").each(function() {
@@ -35,7 +54,7 @@ document.addEventListener("turbolinks:load", function() {
 	 
 	      	var text = $.trim($("#post_message").val());
 
-	      	/* On recherche si le texte COMMENCE (^) par un URL -> Si oui, on lance la preview*/
+	      	/* On recherche si le texte COMMENCE (^) par un URL -> Si oui, on lance la preview */
 			var elements = text.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi);
 			
 			/* On ne lance la requete Ajax vers le serveur QUE si un URL est trouvé en début de message */
@@ -68,7 +87,7 @@ document.addEventListener("turbolinks:load", function() {
 		        		  },
 		        	success: function(data, textStatus, jqXHR) {
 		          		$("#live-preview").html(data);
-		          		/* On enlève l'URL du texte de l'utilisateur si le preview réussi uniquement */
+		          		/* On enlève l'URL du texte de l'utilisateur uniquement si le preview a réussi */
 						$("#post_message").val( $("#post_message").val().replace(url, "") );
 		        	},
 		        	error: function() { 
@@ -81,4 +100,16 @@ document.addEventListener("turbolinks:load", function() {
 
 	});
 
+	/* Associe au lien "Charger plus" la même action que le scrolling en bas de l'écran */
+	$(".load_next_posts").click( function(event) {
+		event.preventDefault();
+		load_next_posts();
+	});
+
+	/* Chargement des posts suivants lorsqu'on scrolle jusqu'en bas de la page (tolérance de xxx pixels) */
+	$(window).scroll(function() {
+		if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+            load_next_posts();
+        }
+	});
 });

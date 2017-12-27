@@ -4,6 +4,17 @@
 
 @import 'colors';
 	
+.post-old {
+	background: $box-color-dimmed;
+}
+
+.time {
+	color : $color-text-dimmed;
+	font-size: 0.8em;
+	font-weight: normal;
+	padding-right : 5px;
+}
+
 /* NEW */	
 #post-new {
 	background-color: $box-color;
@@ -70,11 +81,8 @@
 	margin-bottom: 10px;
 	padding-top : 20px; */
 	.post-header {
+		margin-top : 20px;
 		padding-right : $general-padding;
-		.profile-picture {
-			float: left;
-			margin-left: $general-padding;
-		}
 		.user-name {
 			margin-left : 60px;
 			padding-top : 5px;
@@ -91,61 +99,45 @@
 		padding-right: $general-padding;
 	}
 	.post-likes {
-		margin-top: 5px;
+		margin-top: 25px;
 		padding-top: 5px;
 		padding-bottom: 5px;
 		padding-right : $general-padding;
+		width: 100%;		
+	}
+	form.form-inline input {
 		width: 100%;
-		text-align:right;
-		.new-comments {
-			
+		margin-left: $general-padding;
+		height: 40px;
+	}
+	.applause-height {
+		height: 40px;
+		img {
+			height: 25px;
 		}
 	}
 }
 
+
 /* COMMENTS */
+
 .post-comments {
 	font-size: 0.9em;
-	/* padding-left : 45px; */
 	padding-right: $general-padding;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	background: rgb(246, 247, 249);
 
 	.comment {
 		clear: both;
 		margin-top: 5px;
-		margin-bottom : 10px;
+		margin-bottom : 15px;
 		img.profile-picture {
 			float : left;
 		}
 		.comment-message {
-			float : left;
-			/* width: 75%; */
-			padding-top : 8px;
 			margin-left : 50px;
 			.comment-username {
 				font-weight: 700;
-			}
-		}
-		div.comment-upvote {
-			display : inline-block;
-			float: right;
-			padding-right : $general-padding;
-			padding-top : $general-padding;
-		}
-	}
-	.comment-add {
-		clear:both;
-		margin-top: 5px;
-		margin-bottom: 5px;
-		.profile-picture {
-			float : left;
-		}
-		.comment-add-textarea {
-			margin-left : 50px;
-			input {
-				width : 100%;
 			}
 		}
 	}
@@ -185,13 +177,9 @@
 }
 
 
-.post-old {
-	background: $box-color-dimmed;
-}
-
-.time {
-	color : $color-text-dimmed;
-	font-size: 0.8em;
-	font-weight: normal;
-	padding-right : 5px;
+/* PAGINATE */
+.load_next_posts_spinner {
+	min-height : 100px;
+	padding-top: 30px;
+	text-align : center;
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129173346) do
+ActiveRecord::Schema.define(version: 20171218171617) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -88,10 +88,10 @@ ActiveRecord::Schema.define(version: 20171129173346) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "preview_url"
+    t.text "preview_url"
     t.string "preview_title"
     t.text "preview_description"
-    t.string "preview_image_url"
+    t.text "preview_image_url"
     t.string "youtube_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end

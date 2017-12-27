@@ -1,0 +1,7 @@
+/* Autorise le chargement des posts suivant car la requete est terminée */
+is_loading_posts = false;
+/* Supprimer le potentiel message "waiting" */
+$(".load_next_posts_spinner").remove();
+
+/* Ajoute les posts dans la page */
+$("#posts").append("<%= escape_javascript(render partial: 'posts', locals: { posts: @posts, next_page: @next_page } ) %>");

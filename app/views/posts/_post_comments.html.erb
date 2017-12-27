@@ -1,21 +1,31 @@
-<div class="post-likes">
-  <%= react_component "UpVote", 
-        render(template: 'posts/_post.json.jbuilder', locals: {post: post}),  
-        {style: "display:inline-block"} %>
+<div class="post-likes row">
   
-  <%= button_tag type: "button", class:"btn #{( post.comments.present? && (current_user.displayed_la_une < post.updated_at)) ? 'btn-primary' : 'btn-secondary'} ", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
-    <%= post.comments.count if post.comments.present? %>
-    <span class="glyphicon glyphicon-comment"></span>
-  <% end %>
+ <div class="col-xs-9">
+   <%= form_with(model: Comment.new, class:"form-inline", html: {autocomplete: "off"} ) do |form| %>
+      <%= form.hidden_field :post_id, name: "comment[post_id]", value: post.id %>
+        <%# profile_picture(current_user) %>
+        <%= form.text_field :message, name: "comment[message]", placeholder: "Votre commentaire...", class:"form-control applause-height" %>
+    <% end %>
+  </div>
+  <div class="col-xs-3">
+    <%= link_to upvote_post_path(post), remote: true, class:"btn btn-default applause-height", role:"button", id: "upvote-#{post.id}" do %>
+      <span class="total_upvotes"><%= post.total_upvotes %></span>
+      <%= image_tag "applause.svg" %>
+    <% end %>
+
+    <%= button_tag type: "button", class:"btn btn-default applause-height", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+      <%= post.comments.count if post.comments.present? %>
+      <span class="glyphicon glyphicon-comment"></span>
+    <% end %>
+  </div>
+
+
 </div>
 
-<div class="post-comments collapse" id="comments-post-<%= post.id %>">
+<div class="post-comments collapse in" id="comments-post-<%= post.id %>">
   <div class="comments-list">
     <% post.comments.each do |comment| %>
       <%= render partial: "comments/show", locals: { comment: comment, post:post } %>
     <% end %>
-  </div>
-  <div class="comment-add">
-    <%= render partial: "comments/form", locals: { comment: Comment.new(user_id: current_user.id, post_id: post.id)} %>
   </div>
 </div>
