@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
 
 	validates :name, presence: true, uniqueness: true
 
-	accepts_nested_attributes_for :ownertags_as_owner
-	accepts_nested_attributes_for :ownertags_as_tag
+	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
+	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
 end

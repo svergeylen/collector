@@ -20,7 +20,7 @@
 	<h3>Enfants</h3>
 	<ul>
 		<% @tag.tags.each do |tag| %>
-			<li><%= link_to tag.name, tag %></li>
+			<li><%= link_to tag.name, tag_path(tag, a: get_tag_list(tag.id) )  %></li>
 		<% end %>
 	</ul>
 

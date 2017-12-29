@@ -1,4 +1,6 @@
 class Item < ApplicationRecord
+	enum rails_view: [ :general, :bd]
+
 	belongs_to :series
 
 	has_many :ownertags,    dependent:  :destroy, as: :owner

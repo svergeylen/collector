@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+	# Renvoie la collection de tags qui ont amenés l'utilisateur à la page
+	def get_tag_list(new_tag)
+		existing = params[:a] || []
+		return existing + [ new_tag ]
+	end
+
 	# Affiche le nom de la dernière catégorie choisie (current)
 	def link_to_current_category
 		if (session[:category]) 
