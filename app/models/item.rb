@@ -19,6 +19,11 @@ class Item < ApplicationRecord
 	validates :series_id, presence: true
 	validates :adder_id, presence: true
 
+  # Renvoie les Items correspondants à l'array de tags donné
+  def self.having_tags(ar_tags)
+    Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+  end
+
 	# Renvoie les id des items précédents et suivants dans la serie triée (sorted_items)
 	def next_and_previous_ids
 		# Chargement de la série en entier pour connaitre les éléments de la liste par numéro
