@@ -2,12 +2,26 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tags = Tag.all
+    # Appliquer le filtre si la variable "a" est définie
+    if params[:a].present?
+      a = params[:a].split(",")
+      id = a.last
+      @tag = Tag.find(id)
+      @title  = @tag.name
+      @tags = @tag.tags.order(name: :asc)
+      @items = @tag.sorted_items
+    else
+      # Sinon, renvoyer les tag racines 
+      @title  = "Collector"
+      @tags = Tag.where(root_tag: true).order(name: :asc)
+    end
+
+    # Formulaire d'ajout d'item en bas de page
+    @new_item = Item.new
   end
 
   def show
-    @tag = Tag.find(params[:id])
-    @items = @tag.items
+    logger.debug "Tag#show is not implement"
   end
 
   def new

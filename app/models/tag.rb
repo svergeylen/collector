@@ -10,4 +10,7 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
+	def sorted_items
+		self.items.includes(:users).limit(300).sort_by{ |a| [a.number.to_f, a.name] }
+	end
 end
