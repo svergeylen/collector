@@ -5,29 +5,19 @@
 				<span class="glyphicon glyphicon-cog"></span>
 		 	<span class="caret"></span></button>
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><%= link_to "Nouveau tag", new_tag_path  %></li>
+				<li><%= link_to "Nouveau dossier", new_tag_path  %></li>
 			    </li>
 		  	</ul>
 		</div>				
 	</div>
 
-	<h1><%= @title %></h1>
-	<p><%= breadcrumbs_for(params[:a]) %> </p>
-
-	<% if @tags.present? %>
+	<h1>Collector</h1>
+	
+	<% if @children.present? %>
 		<ul>
-		<% @tags.each do |tag| %>
-			<li><%= get_tag_path(params[:a], tag)  %></li>
+		<% @children.each do |tag| %>
+			<li><%= get_tag_path(tag)  %></li>
 		<% end %>
 		</ul>
 	<%end %>
-
-	<% if @items.present? %>
-		<% if false %>
-			<%= render partial: "gallery", locals: {items: @items } %>
-		<% else %>
-			<%= render partial: "table", locals: { items: @items } %>
-		<% end %>
-	<% end %>
-
 </div>

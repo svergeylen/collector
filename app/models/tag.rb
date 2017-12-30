@@ -11,6 +11,22 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
 	def sorted_items
-		self.items.includes(:users).limit(300).sort_by{ |a| [a.number.to_f, a.name] }
+		self.items.includes(:users).limit(100).sort_by{ |a| [a.number.to_f, a.name] }
 	end
+
+	# Remplace tous les tags parents par ceux donnés. 
+	# Place root_tag=true si aucun parent n'est donné
+	def update_parent_tags(new_tag_ids)
+		# On retire l'élément vide envoyé d'office par Rails pour les champ select multiple
+		new_tag_ids = new_tag_ids - [""]
+
+		# Si le tag ne possède plus de parent, on assigne root_tag et inversément
+		self.root_tag = new_tag_ids.empty? ? true : false
+
+		# On assigne les ids uniquement. Rails s'occupe de supprimer les relations qui ne sont plus dans la sélection
+		self.parent_tag_ids = new_tag_ids.collect { |x| x.to_i }
+
+		self.save # ?
+	end
+
 end

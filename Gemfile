@@ -65,6 +65,9 @@ gem 'nokogiri'
 # Pagination
 gem 'will_paginate', '~> 3.1.0'
 
+# Sélection de tags dans un champ input (multiple select/deselect)
+gem 'chosen-rails'
+
 
 group :development, :test do
   

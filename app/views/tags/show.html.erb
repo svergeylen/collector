@@ -5,9 +5,9 @@
 				<span class="glyphicon glyphicon-cog"></span>
 		 	<span class="caret"></span></button>
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><%= link_to "Nouveau tag", new_tag_path  %></li>
-			    <li><%= link_to "Modifier le tag", edit_tag_path(@tag)  %></li>
-			    <li><%= link_to "Supprimer le tag", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } %>
+				<li><%= link_to "Nouveau dossier", new_tag_path %></li>
+			    <li><%= link_to "Modifier le dossier", edit_tag_path(@tag)  %></li>
+			    <li><%= link_to "Supprimer le dossier", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce dossier et tout ce qu\'il contient ?' } %>
 			    </li>
 		  	</ul>
 		</div>				
@@ -15,20 +15,23 @@
 
 
 	<h1><%= @tag.name %></h1>
-	<p><%= breadcrumbs_for(@tag) %> </p>
+	<p><%= breadcrumbs_for(session[:a]) %> </p>
 
-	<h3>Enfants</h3>
-	<ul>
-		<% @tag.tags.each do |tag| %>
-			<li><%= link_to tag.name, tag_path(tag, a: get_tag_list(tag.id) )  %></li>
+	<% if @children.present? %>
+		<ul>
+		<% @children.each do |tag| %>
+			<li><%= get_tag_path(tag)  %></li>
 		<% end %>
-	</ul>
+		</ul>
+	<%end %>
 
-	<h3>Items</h3>
-	<ul>
-		<% @items.each do |item| %>
-			<li><%= link_to item.name, item %></li>
+	<% if @items.present? %>
+		<% if false %>
+			<%= render partial: "gallery", locals: {items: @items } %>
+		<% else %>
+			<%= render partial: "table", locals: { items: @items } %>
 		<% end %>
-	</ul>
+	<% end %>
+
 
 </div>

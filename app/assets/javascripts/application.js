@@ -17,4 +17,5 @@
 //= require react
 //= require react_ujs
 //= require components
+//= require chosen-jquery
 //= require_tree .
