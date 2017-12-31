@@ -1,8 +1,19 @@
 
-<% if false && Rails.env == "development" %>
+<% if true && Rails.env == "development" %>
 	<div class="rounded-box">
-		<h4>Developpement</h4>
 		<p>Session[:a] = <%= session[:a].inspect %></p>
+		
+		<h4>Tag</h4>
+		<% if @tag.present? %>
+			<p>Tags parents de "<%= @tag.name %>" = <%= @tag.parent_tags.collect{ |t| t.name }.inspect %></p>
+			<%= @tag.parent_tags.map(&:id) %>
+		<% end %>
+
+		<h4>Item</h4>
+		<% if @item.present? %>
+			<p>Item : <%= @item.inspect %></p>
+			
+		<% end %>
 
 
 

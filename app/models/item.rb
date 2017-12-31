@@ -16,7 +16,7 @@ class Item < ApplicationRecord
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
 	validates :name, presence: true
-	validates :series_id, presence: true
+	#validates :series_id, presence: true
 	validates :adder_id, presence: true
 
   # Renvoie les Items correspondants à l'array de tags donné

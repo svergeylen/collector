@@ -12,8 +12,18 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = Item.new(series_id: params[:series_id])
-    @series = Series.find(@item.series_id) if params[:series_id]
+    @item = Item.new
+    
+    # Redirection vers la vue spécifique en fonction du type souhaité
+    case params[:view]
+    when "bd"
+      @tag_series = Tag.find_by(name: "Séries")
+      @series = @tag_series.children
+      #@item.series_id = params[:parent_tag_id]
+      render "items/new_#{params[:view]}"
+    else
+      render "new"
+    end
   end
 
   # GET /items/1/edit
@@ -25,16 +35,12 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-		@item.tags_list = params[:item][:tags_list]
-    @series = Series.find(@item.series_id) if params[:item][:series_id]
-
-    # L'utilisateur courant a ajouté l'élément
+		@item.tags_list = params[:item][:tags]
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
 
     if @item.save
-			@item.series.touch
       save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       

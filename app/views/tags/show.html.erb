@@ -5,10 +5,12 @@
 				<span class="glyphicon glyphicon-cog"></span>
 		 	<span class="caret"></span></button>
 			<ul class="dropdown-menu dropdown-menu-right">
-				<li><%= link_to "Nouveau dossier", new_tag_path %></li>
-			    <li><%= link_to "Modifier le dossier", edit_tag_path(@tag)  %></li>
-			    <li><%= link_to "Supprimer le dossier", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce dossier et tout ce qu\'il contient ?' } %>
+				<li><%= link_to 'Nouveau dossier', new_tag_path %></li>
+			    <li><%= link_to "Modifier \"#{@tag.name}\"", edit_tag_path(@tag)  %></li>
+			    <li><%= link_to "Supprimer \"#{@tag.name}\"", tag_path(@tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce dossier et tout ce qu\'il contient ?' } %>
 			    </li>
+			    <li class="divider"></li>
+			    <li><%= link_to "Nouvelle BD", new_item_path(view: :bd, parent_tag_id: @tag.id) %></li>
 		  	</ul>
 		</div>				
 	</div>

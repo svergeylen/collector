@@ -10,6 +10,13 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
+
+	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre
+	def children
+		return self.tags.order(name: :asc)
+	end
+
+	# Renvoie la liste des items contenues dans ce tag
 	def sorted_items
 		self.items.includes(:users).limit(100).sort_by{ |a| [a.number.to_f, a.name] }
 	end

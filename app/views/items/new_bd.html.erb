@@ -1,4 +1,4 @@
-<h1>Nouvel Item</h1>
+<h1>Nouvelle BD</h1>
 
 <%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
   <% if @item.errors.any? %>
@@ -14,6 +14,19 @@
   <% end %>
 
   <div class="form-group">
+    <%= form.label :series, "Série", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.select :series, 
+        options_from_collection_for_select(@series, :id, :name, [params[:parent_tag_id]] ), 
+        { include_blank: true },
+        { multiple: true,  class: 'chosen-select' }
+      %>
+
+       <%# form.text_field :series, id: :item_series, class: "form-control", autocomplete: :off %>
+    </div>
+  </div>
+
+  <div class="form-group">
     <%= form.label :name, "Titre", class:"control-label col-sm-2" %>
     <div class="col-sm-1">
       <%= form.text_field :number, id: :item_number, value: @item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
@@ -25,16 +38,23 @@
   
  
   <div class="form-group">
-    <%= form.label :tags, "Tags", class:"control-label col-sm-2" %>
+    <%= form.label :auteurs, "Auteurs", class:"control-label col-sm-2" %>
     <div class="col-sm-6">
-       <%= form.select 'parent_tags', 
-        options_from_collection_for_select(Tag.all.order(name: :asc), :id, :name, [] ), 
-        { include_blank: true },
-        { multiple: true,  class: 'chosen-select' }
-      %>
+       <%= form.text_field :auteurs, id: :item_auteurs, class: "form-control", autocomplete: :off %>
     </div>
   </div>
-  
+  <div class="form-group">
+    <%= form.label :editions, "Editions", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+       <%= form.text_field :editions, id: :item_editions, class: "form-control", autocomplete: :off %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= form.label :rangement, "Rangement", class:"control-label col-sm-2" %>
+    <div class="col-sm-6">
+       <%= form.text_field :series, id: :item_rangement, class: "form-control", autocomplete: :off %>
+    </div>
+  </div>
 
   <%= render partial: "attachement_form", locals: { form: form, item: @item } %>
 
