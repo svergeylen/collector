@@ -16,26 +16,26 @@ class ItemsController < ApplicationController
     
     # Redirection vers la vue spécifique en fonction du type souhaité
     case params[:view]
+    # Vue spécifique pour la création d'un item "BD"
     when "bd"
       @tag_series = Tag.find_by(name: "Séries")
       @series = @tag_series.children
-      #@item.series_id = params[:parent_tag_id]
       render "items/new_#{params[:view]}"
     else
+      # Vue par défaut pour la création de tout type d'item
       render "new"
     end
   end
 
   # GET /items/1/edit
   def edit
-    @series = @item.series
   end
 
   # POST /items
   # POST /items.json
   def create
     @item = Item.new(item_params)
-		@item.tags_list = params[:item][:tags]
+		@item.update_tag_ids(params[:item][:tag_ids])
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
@@ -130,6 +130,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :series_id, :description, :attachments)
+      params.require(:item).permit(:number, :name, :description, :attachments)
     end
 end

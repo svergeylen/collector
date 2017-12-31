@@ -1,6 +1,6 @@
 class Series < ApplicationRecord
 	belongs_to :category
-	has_many :items, dependent: :destroy
+	has_many :items
 
 	has_and_belongs_to_many :users
 

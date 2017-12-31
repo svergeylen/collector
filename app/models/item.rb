@@ -1,8 +1,6 @@
 class Item < ApplicationRecord
 	enum rails_view: [ :general, :bd]
 
-	belongs_to :series
-
 	has_many :ownertags,    dependent:  :destroy, as: :owner
 	has_many :tags,         through:    :ownertags
 
@@ -16,13 +14,18 @@ class Item < ApplicationRecord
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
 	validates :name, presence: true
-	#validates :series_id, presence: true
 	validates :adder_id, presence: true
 
-  # Renvoie les Items correspondants à l'array de tags donné
-  def self.having_tags(ar_tags)
-    Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
-  end
+  	# Renvoie les Items correspondants à l'array de tags donné
+  	def self.having_tags(ar_tags)
+    	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+  	end
+
+  	# Màj les tag de l'item (devrait être géré par rails, mais unpermitted parameters systématiquement)
+  	def update_tag_ids(tag_ids)
+  		self.tag_ids = tag_ids
+  	end
+
 
 	# Renvoie les id des items précédents et suivants dans la serie triée (sorted_items)
 	def next_and_previous_ids
@@ -96,20 +99,6 @@ class Item < ApplicationRecord
 			end
 		end
 		return ret
-	end
-
-	# Liste les tags de l'item (auteurs, édition, mots-clés)
-	def tags_list
-		self.tags.map(&:name).join(", ")
-	end
-
-	# Associe l'item à un auteur exitant ou crée un nouvel auteur
-	def tags_list=(names)
-		if names.present?
-			self.tags = names.split(",").map do |n|
-			  Tag.where(name: n.strip.downcase, category_id: self.series.category_id).first_or_create!
-			end
-		end
 	end
 
 	# Recherche les items contenant le mot clé donné
