@@ -14,6 +14,18 @@ class TagsController < ApplicationController
     @children = @tag.tags.order(name: :asc)
     @items = @tag.sorted_items
 
+    # Choix de la vue 
+    if params[:view].present?
+      @view = params[:view]
+    else
+      if @tag.default_view.blank?
+        @view = "list"
+      else
+        @view = @tag.default_view if @tag.default_view != "none"
+      end
+    end
+
+
     # Formulaire d'ajout d'item en bas de page
     @new_item = Item.new
 
@@ -79,7 +91,7 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :root_tag, :fixture, :optional)
+    params.require(:tag).permit(:name, :root_tag, :fixture, :optional, :letter, :default_view)
   end
 
 end

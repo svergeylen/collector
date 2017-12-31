@@ -1,8 +1,8 @@
 <div class="rounded-box">
 	<div class="pull-right">
 		<div class="btn-group">
-			<%= get_link(@previous_id, "left", "Précédent") %>
-			<%= get_link(@next_id, "right", "Suivant") %>
+			<%# get_link(@previous_id, "left", "Précédent") %>
+			<%# get_link(@next_id, "right", "Suivant") %>
 			<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  <span class="caret"></span>
 			</button>
@@ -13,7 +13,7 @@
 		</div>
 	</div>
 
-	<h3><%= link_to @item.series.name, @item.series %> : <%= @item.name %></h3>
+	<h3><%= @item.name %></h3>
 
 	<div class="row">
 		<div class="col-md-8">
@@ -25,7 +25,7 @@
 				<%= @item.name %>
 			</h4>
 			<% if @item.tags.present? %>
-				<p><%= @item.series.category.tag_name %> : <%= @item.tags_list %></p>
+				<p><%= @item.tags.collect {|t| t.name }.join(", ") %></p>
 			<% end %>
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171229155127) do
+ActiveRecord::Schema.define(version: 20171231144447) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -124,6 +124,8 @@ ActiveRecord::Schema.define(version: 20171229155127) do
     t.boolean "fixture", default: false
     t.boolean "optional", default: false
     t.boolean "root_tag", default: false
+    t.string "default_view"
+    t.string "letter"
   end
 
   create_table "users", force: :cascade do |t|

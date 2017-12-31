@@ -19,6 +19,12 @@
     </div>
   </div>
   <div class="form-group">
+    <label class="control-label col-sm-2" for="series_letter">Classement à la lettre </label>
+    <div class="col-sm-5">
+      <%= form.text_field :letter, id: :series_letter, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
     <label class="control-label col-sm-2" for="parent_tags">Parent(s)</label>
     <div class="col-sm-5">
       <%= form.select 'parent_tags', 
@@ -29,9 +35,15 @@
     </div>
   </div>
   <div class="form-group">
+    <label class="control-label col-sm-2" for="tag_default_view">Affichages des items</label>
+    <div class="col-sm-3">
+      <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"], ["Masquer", "none"] ], @tag.default_view), class: "form-control" ) %>
+    </div>
+  </div>
+  <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <%= form.label :optional do %>
-        <%= form.check_box :optional, id: :tag_optional %> Optional
+        <%= form.check_box :optional, id: :tag_optional %> Optionnel
       <% end %>
       (non significatif pour le filtrage, sert uniquement pour le classement)
     </div>
@@ -41,8 +53,8 @@
       <% end %>
       (nécessaire pour les vues et donc non supprimable)
     </div>
-    
   </div>
+
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <%= form.submit submit_text, class: "btn btn-primary" %>

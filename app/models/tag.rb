@@ -18,7 +18,7 @@ class Tag < ApplicationRecord
 
 	# Renvoie la liste des items contenues dans ce tag
 	def sorted_items
-		self.items.includes(:users).limit(100).sort_by{ |a| [a.number.to_f, a.name] }
+		self.items.includes(:users).sort_by{ |a| [a.number.to_f, a.name] }
 	end
 
 	# Remplace tous les tags parents par ceux donnés. 
