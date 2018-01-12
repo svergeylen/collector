@@ -10,6 +10,7 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
+	before_destroy :check_is_fixture
 
 	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre
 	def children
@@ -34,6 +35,13 @@ class Tag < ApplicationRecord
 		self.parent_tag_ids = new_tag_ids.collect { |x| x.to_i }
 
 		self.save # ?
+	end
+
+	private
+
+	# Empeche la suppression de Tags nécessaires au bon fonctionnement de l'application Rails (self.fixture = true)
+	def check_is_fixture
+		throw(:abort) if self.fixture
 	end
 
 end

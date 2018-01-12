@@ -79,8 +79,11 @@ class TagsController < ApplicationController
     # On supprime de la session l'id de ce tag pour éviter un breadcrumb insensé
     set_session_tags(  (session[:a].split(",") - [ @tag.id.to_s ]).join(",")  )
 
-    @tag.destroy
-    redirect_to path, notice: "Dossier supprimé"
+    if @tag.destroy
+      redirect_to path, notice: "Dossier supprimé"
+    else
+      redirect_to path, alert: "Ce dossier ne peut pas être supprimé (fixture)"
+    end
   end
 
 
