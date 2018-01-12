@@ -37,6 +37,15 @@ class Tag < ApplicationRecord
 		self.save # ?
 	end
 
+	# Renvoie une liste de tags qui contiennent le mot clé donné
+	def self.search(keyword)
+		if keyword.present?
+			where('name LIKE ?', "%#{keyword}%").order(name: :asc)
+		else
+		 	all
+		end
+	end
+
 	private
 
 	# Empeche la suppression de Tags nécessaires au bon fonctionnement de l'application Rails (self.fixture = true)

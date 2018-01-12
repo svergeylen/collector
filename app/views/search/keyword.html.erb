@@ -2,16 +2,16 @@
 	<h2>Recherche de "<%= @keyword %>"</h2>
 
 
-	<% if @series.present? %>
-		<h4><%= pluralize( @series.count, "série trouvée", "séries trouvées", locale: :fr) %> : </h4>
+	<% if @tags.present? %>
+		<h4><%= pluralize( @tags.count, "dossier trouvé", "dossiers trouvés", locale: :fr) %> : </h4>
 		<ul>
-		<% @series.each do |serie| %>
-			<li><%= link_to serie.name, series_path(serie), class:"results" %> (<%= serie.category.name %>) </li>
+		<% @tags.each do |tag| %>
+			<li><%= link_to tag.name, tag_path(tag), class:"results" %> </li>
 		<% end %>
 		</ul>
 	<% else %>
-		<p>Pas de série trouvée.</p>
-		<p><%= link_to "Créer la série \"#{@keyword}\"", new_series_path(name: @keyword) %></p>
+		<p>Pas de dossier trouvé.</p>
+		<p><%= link_to "Créer le dossier \"#{@keyword}\"", new_tag_path(name: @keyword) %></p>
 	<% end %>
 
 	<% if @items.present? %>
@@ -19,7 +19,7 @@
 
 		<ul>
 		<% @items.each do |item| %>
-			<li><%= link_to item.name, series_path(item.series) %> (<%= item.series.name %>) </li>
+			<li><%= link_to item.name, item %> </li>
 		<% end %>
 		</ul>
 	<% else %>
