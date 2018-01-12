@@ -3,11 +3,9 @@ document.addEventListener("turbolinks:load", function() {
 
 	/* Sélection du premier élément de la liste des résultats de search */
 	$("a.results:first").focus();
-	/* ou du champ recherche par série */
-	$("#series_keyword").focus();
 	
 	/* Envoie une requete ajax lorsqu'on tape dan le champ recherche (dans la page category#show) */
-	$("#series_keyword").keyup(function() {
+	/*$("#series_keyword").keyup(function() {
 		var thekeyword = $('#series_keyword').val();
 		var thecategory_id = $('#category_id').val();
 		if (thekeyword.length >= 2) {
@@ -20,7 +18,7 @@ document.addEventListener("turbolinks:load", function() {
 			    	var ret = "";
 
 			    	/* Si il y a des résultats de recharce, les trier et les lister */
-					if (data.series.length > 0) {
+					/* if (data.series.length > 0) {
 				    	data.series.sort(function(a,b){
 						   return (a.name==b.name) ? 0 : (a.name > b.name) ? 1 : -1;
 						});
@@ -32,7 +30,7 @@ document.addEventListener("turbolinks:load", function() {
 				        ret+= "</ul>";
 				    }
 				    /* Sinon, proposer un lien pour créer la série */
-				    else {
+				    /* else {
 				    	ret = "<p>Aucun résultat. <a href='/series/new?name="+data.keyword+"&category_id="+data.category_id+"'>Créer la série \""+data.keyword+"\"</a></p>"
 				    }
 
@@ -43,6 +41,6 @@ document.addEventListener("turbolinks:load", function() {
 		else {
 			$('#search_results').html("");
 		}
-	});
+	}); */
 
 });

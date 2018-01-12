@@ -15,4 +15,15 @@ document.addEventListener("turbolinks:load", function() {
 	    width: "100%"
 	});
 
+	/* Filtrage des tags enfants lorsqu'on tape dans le champ input "filter" */
+	$('input#tag_filter').keyup(function(){
+		var searchText = $(this).val().toLowerCase();
+
+        $('ul.children_tags > li').each(function(){
+            currentLiText = $(this).text().toLowerCase();
+            showCurrentLi = currentLiText.indexOf(searchText) !== -1;
+            $(this).toggle(showCurrentLi, "slow");
+        });     
+    });
+
 });

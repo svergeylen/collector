@@ -14,19 +14,31 @@ module TagsHelper
 	end
 
 	# Fait le rendu complet des breadcrumb pour un tag donné
-	def breadcrumbs_for(tag_string)
+	def breadcrumbs_for(tag_string, children_quantity)
+		children_quantity ||= 0
+
 		if tag_string.present?
 			arr = tag_string.split(",")
 			intermediate_tag_string = []
 			tmp = '<ol class="breadcrumb">'
-			# On parcourt la liste de tags (et PAS les tags qui ne sont pas renvoyés dans le même ordre par MySQL) 
+			# On parcourt le tagstring (et PAS les objects "tags" car ils ne sont pas renvoyés dans le bon ordre par MySQL) 
 			# en mémorisant le tag_string au fur et à mesure pour la génération des urls
-			arr.each do |str| 
+			arr.each_with_index do |str, index| 
 				id = str.to_i
+				highlight_last = (index == (arr.size-1)) ? "last" : ""
 				intermediate_tag_string << id
 				tag = Tag.find(id)
-				tmp += '<li class="breadcrumb-item">'+one_tag_path(tag, intermediate_tag_string)+'</li>'
+				tmp += '<li class="breadcrumb-item '+ highlight_last + '">' + one_tag_path(tag, intermediate_tag_string)+'</li>'
 			end
+
+		# Affichage du champ "filtre" si plus de 20 tags enfants
+		if children_quantity > 20
+			tmp += '<form action="#" method="get" class="inline-form form-in-breadcrumbs">'
+			tmp += text_field_tag(:tag_filter, "", { placeholder: "Filtrer", class: 'form-control input-sm', autocomplete: 'off'})	
+			tmp += '</form>'
+	  	end
+
+
 			tmp += '</ol>'
 			return tmp.html_safe
 		else

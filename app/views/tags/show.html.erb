@@ -18,37 +18,21 @@
 
 
 	<h1><%= @tag.name %></h1>
-	<p><%= breadcrumbs_for(session[:a]) %> </p>
+	<%= breadcrumbs_for(session[:a], @children.count) %> 	
 
 	<% if @children.present? %>
-		<ul>
-		<% @children.each do |tag| %>
-			<li><%= get_tag_path(tag)  %></li>
-		<% end %>
+		<ul class="children_tags">
+			<% @children.each do |tag| %>
+				<li><%= get_tag_path(tag)  %></li>
+			<% end %>
 		</ul>
 	<%end %>
 
 	<% if @items.present? %>
-		<% if @items.count > 100 %>
-			<div class="btn-group header-letters">
-				<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"].each do |letter| %>
-					<%= link_to letter, tag_path(@tag, letter: letter), role: "button", class: "btn btn-default btn-xs #{"active" if (params[:letter]==letter)}" %>
-				<% end %>
-			</div>
-
-			<%= form_tag(search_keyword_path, method: "get") do %>
-		    	<div class="form-group">
-		    		<%= text_field_tag(:series_keyword, "", { placeholder: "Recherche", class: 'form-control', autocomplete: 'off'}) %>
-		    		<%= hidden_field_tag(:tag_id, @tag.id) %>
-		    	</div>
-		  	<% end %>
-		<% end %>
-
-
 		<% if @view.present? %>
 			<%= render partial: @view, locals: {items: @items } %>
 		<% else %>
-			<p>Ce dossier contient également <%= @items.count %> items.</p>
+			<p>Ce dossier contient <%= @items.count %> items.</p>
 		<% end %>
 	<% end %>
 
