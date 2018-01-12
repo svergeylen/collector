@@ -28,6 +28,9 @@ function load_next_posts() {
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
+	// On confirme qu'aucun poste n'est en cours de chargement quand on recharge la page (nécéssaire lorqu'on utilise la fonction "back")
+	is_loading_posts = false;
+
 	/* Truc pour décaler la page vers un post donné (posts#141) malgré la navbar fixed qui donne un offset négatif */
 	var shiftWindow = function() { scrollBy(0, -60) };
 	if (location.hash) shiftWindow();
@@ -98,12 +101,6 @@ document.addEventListener("turbolinks:load", function() {
 	      	}
 	     }, 1000);
 
-	});
-
-	/* Associe au lien "Charger plus" la même action que le scrolling en bas de l'écran */
-	$(".load_next_posts").click( function(event) {
-		event.preventDefault();
-		load_next_posts();
 	});
 
 	/* Chargement des posts suivants lorsqu'on scrolle jusqu'en bas de la page (tolérance de xxx pixels) */
