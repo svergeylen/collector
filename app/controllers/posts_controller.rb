@@ -8,7 +8,7 @@ class PostsController < ApplicationController
 
     # Eager loading comments
     # Pagination avec will_paginate
-    @posts = Post.all.includes(:comments).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
+    @posts = Post.all.includes(:comments).order(updated_at: :desc).paginate(page: params[:page], per_page: 5)
     @current_page = params[:page].present? ? params[:page].to_s : "1"
     @next_page = (@current_page.to_i + 1).to_s
 
