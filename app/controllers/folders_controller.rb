@@ -5,7 +5,10 @@ class FoldersController < ApplicationController
   def index
     @title  = "Collector"
     set_session_breadcrumbs([])
-    @children = Folder.where(root_folder: true).order(name: :asc)
+    @root_folders = Folder.where(root_folder: true).order(name: :asc)
+
+    # Recherche de dossiers potentiellement orphelins (suppression de leur parent ou erreur database)
+
   end
 
   # Affichage d'un seul folder, de ses folders enfants, et des items qu'il contient
@@ -35,8 +38,15 @@ class FoldersController < ApplicationController
       bc = params[:bc].split(",")
       set_session_breadcrumbs(bc)
     else
-      if session[:bc].empty?
-        set_session_breadcrumbs([ @folder.id ])
+      # On n'a pas de breadcrumbs imposées
+      bc = get_session_breadcrumbs
+      if bc.empty?
+        # On initialise les breadcrumbs au folder en cours
+        set_session_breadcrumbs([ @folder.id.to_s ])
+      else 
+        # On complète la liste des breadcrumbs avec le folder courant (sauf si enditique = page refresh )
+        bc << @folder.id if !bc.include? @folder.id.to_s
+        set_session_breadcrumbs(bc)
       end
     end    
   end
@@ -48,7 +58,7 @@ class FoldersController < ApplicationController
     # proposal = Folder.where(id: get_session_breadcrumbs).where(optional: false).map(&:id)
     # On propose uniquement le premier parent pour éviter la confusion...
     # sinon, on se retrouve avec l'item à tous les niveaux de la hiérarchie (c'est nul)
-    @folder.parent_folder_ids = [ params[:parent_folder] ]
+    @folder.parent_folder_ids = [ params[:parent_folder].to_s ]
   end
 
   def create
@@ -60,6 +70,7 @@ class FoldersController < ApplicationController
       redirect_to folder_path(get_session_breadcrumbs.last), notice: 'Dossier créé' 
     else
       render :new 
+      # ICI BUG : lorsqu'il y a une erreur de validation, on perd la valeur de @folder.parent_folder_ids ???
     end
   end
 
@@ -79,11 +90,16 @@ class FoldersController < ApplicationController
   end
 
   def destroy
-    # On mémorise le chemin de retour vers le premier folder parent 
-    path = @folder.parent_folders.present? ? folder_path(@folder.parent_folders.first) : folders_path
+    
+    # On supprime le dernier folder de la liste des breadcrumb
+    bc = get_session_breadcrumbs
+    bc.pop
+    set_session_breadcrumbs( bc )
 
-    # On supprime de la session l'id de ce folder pour éviter un breadcrumb insensé
-    set_session_folders(  (session[:a].split(",") - [ @folder.id.to_s ]).join(",")  )
+    # On mémorise le chemin de retour vers le premier folder parent (selon les breadcrumbs)
+    path = bc.size > 0 ? folder_path(bc.last) : folders_path
+
+    # BUG : Il faut prévoir le déplacement des folders enfants qui deviennent orphelins vers root_folder=true
 
     if @folder.destroy
       redirect_to path, notice: "Dossier supprimé"

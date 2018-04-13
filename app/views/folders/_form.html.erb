@@ -28,7 +28,7 @@
     <label class="control-label col-sm-2" for="parent_folders">Parent(s)</label>
     <div class="col-sm-5">
       <%= form.select 'parent_folders', 
-        options_from_collection_for_select(Folder.all, :id, :name, folder.parent_folders.map(&:id) ), 
+        options_from_collection_for_select(Folder.all, :id, :name, folder.parent_folder_ids ), 
         { include_blank: true },
         { multiple: true,  class: 'chosen-select' }
       %>

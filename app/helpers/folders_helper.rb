@@ -22,19 +22,26 @@ module FoldersHelper
 		if bc.present?
 			arr = bc
 			intermediate_folder_string = []
-			tmp = '<ol class="breadcrumb">'
-			# On parcourt la liste "a" (et PAS les objects "folders" car ils ne sont pas renvoyés dans le bon ordre par MySQL) 
-			# en mémorisant la liste "a" au fur et à mesure pour la génération des urls
+			tmp = '<ol class="breadcrumb"><li>'
+			tmp+= link_to "Collector", folders_path
+			tmp+= '</li>'
+
+			# On parcourt la liste bc pour générer la liste de breadcrumb de chaque folder intermédiaire
 			arr.each_with_index do |str, index| 
 				id = str.to_i
 				highlight_last = (index == (arr.size-1)) ? "last" : ""
 				intermediate_folder_string << id
-				folder = Folder.find(id)
-				tmp += '<li class="breadcrumb-item '+ highlight_last + '">' + one_folder_path(folder, intermediate_folder_string)+'</li>'
+				if Folder.exists?(id)
+					folder = Folder.find(id)
+					tmp += '<li class="breadcrumb-item '+ highlight_last + '">' + one_folder_path(folder, intermediate_folder_string)+'</li>'
+				else
+					tmp += '<li class="breadcrumb-item>??</li>'
+				end
+
 			end
 
 			# Affichage du champ "filtre" si plus de 2 folders enfants
-			if children_quantity > 2
+			if children_quantity > 20
 				tmp += '<form action="#" method="get" class="inline-form form-in-breadcrumbs">'
 				tmp += text_field_tag(:folder_filter, "", { placeholder: "Filtrer", class: 'form-control input-sm', autocomplete: 'off'})	
 				tmp += '</form>'

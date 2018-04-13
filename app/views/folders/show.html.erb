@@ -23,7 +23,7 @@
 	<% if @children.present? %>
 		<ul class="children_folders">
 			<% @children.each do |folder| %>
-				<li><%= get_folder_path(folder)  %></li>
+				<li><%= link_to folder.name, folder  %></li>
 			<% end %>
 		</ul>
 	<%end %>

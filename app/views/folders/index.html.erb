@@ -13,11 +13,21 @@
 
 	<h1>Collector</h1>
 	
-	<% if @children.present? %>
+	<% if @root_folders.present? %>
 		<ul>
-		<% @children.each do |folder| %>
+		<% @root_folders.each do |folder| %>
 			<li><%= link_to folder.name, folder_path(folder)  %></li>
 		<% end %>
 		</ul>
 	<%end %>
+
+	<%if @orphans.present? %>
+		<h2>Dossiers orphelins</h2>
+		<ul>
+			<% @orphans.each do |folder| %>
+			<li><%= folder.id %> - <%= link_to folder.name, folder %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
 </div>
