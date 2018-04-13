@@ -24,7 +24,7 @@ class SeriesController < ApplicationController
 			@new_item.number = 1
 		end
 		
-    @new_item.tags_list = @items.last.tags_list if @items.last.present?
+    @new_item.folders_list = @items.last.folders_list if @items.last.present?
 
     # Vue en liste ou en galerie ?
     @gallery_view = params[:view].present? ? (params[:view] == "gallery") : (@series.category.default_view == "gallery")

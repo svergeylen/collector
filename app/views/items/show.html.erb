@@ -24,8 +24,8 @@
 				<%= "n°"+@item.friendly_number+" - " if @item.number %>
 				<%= @item.name %>
 			</h4>
-			<% if @item.tags.present? %>
-				<p><%= @item.tags.collect {|t| t.name }.join(", ") %></p>
+			<% if @item.folders.present? %>
+				<p><%= @item.folders.collect {|t| t.name }.join(", ") %></p>
 			<% end %>
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			

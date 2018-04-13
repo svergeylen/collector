@@ -1,10 +1,10 @@
-<%= form_with model: tag, local: true, class:"form-horizontal" do |form| %>
+<%= form_with model: folder, local: true, class:"form-horizontal" do |form| %>
 
- <% if tag.errors.any? %>
+ <% if folder.errors.any? %>
     <div id="error_explanation">
-        <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de cet auteur :
+        <%= pluralize(folder.errors.count, "erreur") %> bloquent la création de cet auteur :
       <ul>
-        <% tag.errors.full_messages.each do |msg| %>
+        <% folder.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
@@ -13,9 +13,9 @@
 
 
   <div class="form-group">
-    <label class="control-label col-sm-2" for="tag_name">Nom</label>
+    <label class="control-label col-sm-2" for="folder_name">Nom</label>
     <div class="col-sm-5">
-      <%= form.text_field :name, id: "tag_name", class: "form-control", autocomplete: :off, autofocus: true %>
+      <%= form.text_field :name, id: "folder_name", class: "form-control", autocomplete: :off, autofocus: true %>
     </div>
   </div>
   <div class="form-group">
@@ -25,31 +25,31 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label col-sm-2" for="parent_tags">Parent(s)</label>
+    <label class="control-label col-sm-2" for="parent_folders">Parent(s)</label>
     <div class="col-sm-5">
-      <%= form.select 'parent_tags', 
-        options_from_collection_for_select(Tag.all, :id, :name, tag.parent_tags.map(&:id) ), 
+      <%= form.select 'parent_folders', 
+        options_from_collection_for_select(Folder.all, :id, :name, folder.parent_folders.map(&:id) ), 
         { include_blank: true },
         { multiple: true,  class: 'chosen-select' }
       %>
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label col-sm-2" for="tag_default_view">Affichages des items</label>
+    <label class="control-label col-sm-2" for="folder_default_view">Affichages des items</label>
     <div class="col-sm-3">
-      <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"], ["Masquer", "none"] ], @tag.default_view), class: "form-control" ) %>
+      <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"], ["Masquer", "none"] ], @folder.default_view), class: "form-control" ) %>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <%= form.label :optional do %>
-        <%= form.check_box :optional, id: :tag_optional %> Optionnel
+        <%= form.check_box :optional, id: :folder_optional %> Optionnel
       <% end %>
       (non significatif pour le filtrage, sert uniquement pour le classement)
     </div>
     <div class="col-sm-offset-2 col-sm-10">
       <%= form.label :fixture do %>
-        <%= form.check_box :fixture, id: :tag_fixture %> Fixture
+        <%= form.check_box :fixture, id: :folder_fixture %> Fixture
       <% end %>
       (nécessaire pour les vues et donc non supprimable)
     </div>

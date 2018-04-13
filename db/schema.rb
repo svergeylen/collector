@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171231144447) do
+ActiveRecord::Schema.define(version: 20180413122847) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 20171231144447) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "folders", force: :cascade do |t|
+    t.string "name"
+    t.boolean "fixture", default: false
+    t.boolean "optional", default: false
+    t.boolean "root_folder", default: false
+    t.string "default_view"
+    t.string "letter"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.integer "series_id"
@@ -56,11 +65,11 @@ ActiveRecord::Schema.define(version: 20171231144447) do
     t.integer "rails_view", default: 0
   end
 
-  create_table "items_tags", id: false, force: :cascade do |t|
-    t.integer "tag_id"
+  create_table "items_folders", id: false, force: :cascade do |t|
+    t.integer "folder_id"
     t.integer "item_id"
-    t.index ["item_id"], name: "index_items_tags_on_item_id"
-    t.index ["tag_id"], name: "index_items_tags_on_tag_id"
+    t.index ["folder_id"], name: "index_items_folders_on_folder_id"
+    t.index ["item_id"], name: "index_items_folders_on_item_id"
   end
 
   create_table "itemusers", force: :cascade do |t|
@@ -83,12 +92,12 @@ ActiveRecord::Schema.define(version: 20171231144447) do
     t.string "memory"
   end
 
-  create_table "ownertags", force: :cascade do |t|
-    t.integer "tag_id"
+  create_table "ownerfolders", force: :cascade do |t|
+    t.integer "folder_id"
     t.integer "owner_id"
     t.string "owner_type", default: "Item"
-    t.index ["owner_id"], name: "index_ownertags_on_owner_id"
-    t.index ["tag_id"], name: "index_ownertags_on_tag_id"
+    t.index ["folder_id"], name: "index_ownerfolders_on_folder_id"
+    t.index ["owner_id"], name: "index_ownerfolders_on_owner_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -117,15 +126,6 @@ ActiveRecord::Schema.define(version: 20171231144447) do
     t.integer "series_id"
     t.index ["series_id"], name: "index_series_users_on_series_id"
     t.index ["user_id"], name: "index_series_users_on_user_id"
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string "name"
-    t.boolean "fixture", default: false
-    t.boolean "optional", default: false
-    t.boolean "root_tag", default: false
-    t.string "default_view"
-    t.string "letter"
   end
 
   create_table "users", force: :cascade do |t|

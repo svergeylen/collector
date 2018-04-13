@@ -11,14 +11,13 @@ class ApplicationController < ActionController::Base
 		session[:category_name] = cat.name
 	end
 
-	# Mémorise le dernier chemin de tags suivi par l'utilisateur pour le rediriger au même endroit quand nécessaire
-	def set_session_tags(a)
-		session[:a] = a
+	# Mémorise le dernier chemin de folders suivi par l'utilisateur pour le rediriger au même endroit quand nécessaire
+	def set_session_breadcrumbs(bc)
+		session[:bc] = bc
 	end
 
-	# Renvoie le chemin de tags sous forme d'array
-	def get_session_tags
-		return session[:a].split(",")
+	def get_session_breadcrumbs
+		return session[:bc]
 	end
 
 	protected

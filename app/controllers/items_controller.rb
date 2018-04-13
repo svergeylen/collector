@@ -18,8 +18,8 @@ class ItemsController < ApplicationController
     case params[:view]
     # Vue spécifique pour la création d'un item "BD"
     when "bd"
-      @tag_series = Tag.find_by(name: "Séries")
-      @series = @tag_series.children
+      @folder_series = Folder.find_by(name: "Séries")
+      @series = @folder_series.children
       render "items/new_#{params[:view]}"
     else
       # Vue par défaut pour la création de tout type d'item
@@ -35,7 +35,7 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     @item = Item.new(item_params)
-		@item.update_tag_ids(params[:item][:tag_ids])
+		@item.update_folder_ids(params[:item][:folder_ids])
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
@@ -53,7 +53,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-		@item.tags_list = params[:item][:tags_list] if params[:item][:tags_list]
+		@item.folders_list = params[:item][:folders_list] if params[:item][:folders_list]
     @item.adder = current_user if @item.adder.blank?
 		@item.series.touch
 

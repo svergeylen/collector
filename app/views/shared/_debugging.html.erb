@@ -1,12 +1,13 @@
 
-<% if false && Rails.env == "development" %>
+<% if true && Rails.env == "development" %>
 	<div class="rounded-box">
-		<p>Session[:a] = <%= session[:a].inspect %></p>
+		<p>session[:bc] = <%= session[:bc].inspect %></p>
 		
-		<h4>Tag</h4>
-		<% if @tag.present? %>
-			<p>Tags parents de "<%= @tag.name %>" = <%= @tag.parent_tags.collect{ |t| t.name }.inspect %></p>
-			<%= @tag.parent_tags.map(&:id) %>
+		<h4>Folder</h4>
+		<% if @folder.present? %>
+			<p>Dossiers parents de "<%= @folder.name %>" = <%= @folder.parent_folders.collect{ |t| t.name }.inspect %></p>
+		<% else %>
+			Folder inexistant
 		<% end %>
 
 		<h4>Item</h4>
@@ -15,7 +16,8 @@
 			
 		<% end %>
 
-
+		<h4>Params</h4>
+		<%= params.inspect %>
 
 	</div>
 <% end %>
