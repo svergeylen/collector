@@ -60,7 +60,7 @@
 			<div class="attachments">
 				<% @post.attachments.each do |attachment| %>
 					<div class="attachment-thumbnail">
-						<%= image_tag attachment.image.url(:thumb) %><br />
+						<%= image_tag "/" + attachment.image.url(:thumb) %><br />
 						<%= link_to delete_attachment_post_path(@post, attachment.id), class:"attachment-delete-icon", title:"Supprimer", data: {confirm: "Etes-vous certain de supprimer cette pièce jointe ?"} do %>
 							<i class="glyphicon glyphicon-remove"></i>
 						<% end %>
