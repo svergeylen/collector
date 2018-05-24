@@ -8,8 +8,8 @@
 
 
 
-user1 = User.create(name: "Luc", email:"vergeylen@vergeylen.eu", password:"d", :password_confirmation => 'd')
-user2 = User.create(name: "Stéphane", email:"stephane@vergeylen.eu", password:"d", :password_confirmation => 'd')
+user1 = User.create(name: "Luc", email:"vergeylen@vergeylen.eu", password:"dringgdringg", password_confirmation: "dringgdringg", rights: 10)
+user2 = User.create(name: "Stéphane", email:"stephane@vergeylen.eu", password:"dringgdringg", password_confirmation: "dringgdringg", rights: 100)
 
 c1 = Category.create(name: "Bandes dessinées", default_view: "list")
 c2 = Category.create(name: "Livres", default_view: "list")
