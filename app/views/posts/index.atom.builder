@@ -21,7 +21,7 @@
           whole_content += "<div class=post-photo-gallery'> "
           post.attachments.each do |a|
             entry.attachements do |attachment|
-                whole_content += image_tag a.image(:thumb) 
+                whole_content += image_tag "/" + a.image(:thumb)
                 whole_content += " &nbsp; "
             end  
           end

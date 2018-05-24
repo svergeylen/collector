@@ -3,7 +3,7 @@
   <div class="carousel-inner">
   	<% attachments.each_with_index do |attachment, i| %>
 	  	<div class="item <%=  "active" if i==active_slide_id %>">
-	      <%= image_tag attachment.image.url %>
+	      <%= image_tag "/" + attachment.image.url %>
 	      <div class="carousel-caption">
 	      	<%= long_date(attachment.image_updated_at) %>
 	      </div>

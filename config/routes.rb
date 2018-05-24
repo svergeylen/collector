@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
-  
+  # Attachment
+  get "attachment/:attachment_id/:style.:extension", to: "attachments#download", as: "download_attachment"
 
 	# Users
 	devise_for :users, controllers: {
@@ -13,8 +14,6 @@ Rails.application.routes.draw do
 			get :favorites
 		end
 	end
-	
-
 
 	# La Une
 	resources :posts do
@@ -30,8 +29,6 @@ Rails.application.routes.draw do
 			post :upvote
 		end
 	end
-	
-
 
 	# Collector
 	get 'welcome/index'
@@ -50,7 +47,7 @@ Rails.application.routes.draw do
 		end
 	end
 	resources :folders
-	
+
 	# Cron /!\ Pas d'authentification
 	get 'cron/jobs'
 	get 'cron/run'

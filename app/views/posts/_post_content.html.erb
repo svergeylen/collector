@@ -19,7 +19,7 @@
       <% post.attachments.each_with_index do |a, i| %>
         <div class="col-xs-6">
           <%= link_to post_path(post, slide_id: i) do %>
-            <%= image_tag a.image(:medium), class:"img-thumbnail" %>
+            <%= image_tag "/" + a.image.url(:medium), class:"img-thumbnail" %>
           <% end %>
         </div>
         <% "</div><div class='row'>" if ((i % 2) == 0) %>
