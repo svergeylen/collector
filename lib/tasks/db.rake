@@ -1,62 +1,90 @@
 namespace :db do
-  desc "Conversion des BD depuis l'ancien site BD vers le site Collector"
-  task load_sitebd: :environment do
-  	puts "Script pour la Conversion des BD depuis l'ancien site BD vers le site Collector <3"
-  	
-    userL = User.where(name: "Luc").first
-    userS = User.where(name: "Stéphane").first
-    userV = User.where(name: "Vincent").first
-    category_id = Category.where(name: "Bandes dessinées").first.id
-
-  	puts "Suppression de tous les éléments"
-  	Series.destroy_all
-  	Author.delete_all
+  desc "Conversion des données site Collector"
 
 
-    puts "Import en cours"
-  	# Séries
-  	Serie.all.each do |s|
-  		STDOUT.flush
-      print "."
 
-  		new_series = Series.create!(name: s.nom, category_id: category_id, letter: s.lettre)
+  task convert_bd: :environment do
+	livres              = Folder.create(name: "Livres", root_folder: true, default_view: "none")
+		bd          	= Folder.create(name: "Bandes dessinées", default_view: "none")
+			auteurs		= Folder.create(name: "Auteurs", default_view: "none")
+			themes	  	= Folder.create(name: "Thèmes", default_view: "none")
+			  sf = Folder.create(name: "Science-Fiction", default_view: "list")
+			  hs = Folder.create(name: "Histoire", default_view: "list")
+			  ph = Folder.create(name: "Philosophie", default_view: "list")
+			  so = Folder.create(name: "Space opera", default_view: "list")
+			  th = Folder.create(name: "Thriller", default_view: "list")
+			  themes.folders << [sf, hs, ph, so, th]
+			series		= Folder.create(name: "Séries", default_view: "none")
+	livres.folders << bd
+	bd.folders << [auteurs, themes, series]
 
-  		# BDs
-  		Bd.where(sid: s.sid).each do |bd|
-	  		
-        begin
+	generic("Bandes dessinées", 1, series.id)
 
-  	  		creation_date = Time.at(bd.datedajout)
-          bd.titre = "unknown title" if bd.titre.blank?
-  	  		new_item = Item.create!(name: bd.titre, numero: bd.numero, series_id: new_series.id, created_at: creation_date)
-  	  		
-  	  		# Auteurs
-  	  		new_auteurs = bd.auteurs.map{ |a| a.nom }.join(", ")
-  	  		new_item.authors_list=new_auteurs
-
-          # Possession
-          # Luc uid = 1 
-          if bd.is_owned_by(1)
-            new_item.itemusers.create!(user_id: userL.id, quantity: 1)
-          end
-          # Stéphane uid = 2
-          if bd.is_owned_by(2)
-            new_item.itemusers.create!(user_id: userS.id, quantity: 1)
-          end
-          # Vincent uid =  9 
-          if bd.is_owned_by(9)
-            new_item.itemusers.create!(user_id: userV.id, quantity: 1)
-          end
-
-  	  		# puts "   "+bd.numero.to_s+") "+bd.titre+" ("+new_auteurs+") ajouté le "+creation_date.to_s
-
-        rescue ActiveRecord::RecordInvalid => invalid
-          puts "ERROR : " + invalid.record.errors.inspect
-        end
-
-	  	end
-  	end
-    puts "Fini !"
-
+	# Association de tous les folders existants (ex-tags auteurs) dans le nouveau folder "Auteurs"
+	Folder.where(category_id: 1).each do |folder|
+		auteurs.folders << folder
+	end
   end
+
+
+  task convert_romans: :environment do
+	id = Folder.where(name: "Livres").first.id
+	generic("Romans", 2, id)
+  end
+
+  task convert_bonsais: :environment do
+	generic("Bonsais", 4, nil)
+  end
+
+  task convert_livres: :environment do
+	id = Folder.where(name: "Livres").first.id
+	generic("Didactiques", 6, id)
+  end
+
+  task convert_ludo: :environment do
+	generic("Ludothèque", 8, nil)
+  end
+
+ task convert_voyage: :environment do
+	id = Folder.where(name: "Livres").first.id
+	generic("Voyage", 10, id)
+  end
+
+ task convert_modelisme: :environment do
+	generic("Modélisme", 12, nil)
+  end
+	
+
+private
+
+	def generic(folder_name, category_id, parent_folder_id)
+		puts "Generic Convert for category_id="+category_id.to_s+" to folder name='"+folder_name+"'"
+
+		if Folder.where(name: folder_name).exists?
+			parent_folder		= Folder.where(name: folder_name).first
+		else
+			if 	parent_folder_id.present?
+				parent_folder		= Folder.create(name: folder_name, default_view: "none") 
+				parent_folder.parent_folders << Folder.find(parent_folder_id.to_i)
+			else
+				parent_folder		= Folder.create(name: folder_name, default_view: "none", root_folder: true) 
+			end
+		end
+
+		Series.where(category_id: category_id).each do |serie|
+			puts "  - "+serie.name+" ("+serie.items.count.to_s+" items)"
+			if Folder.where(name: serie.name).exists?
+				current_folder  = Folder.where(name: serie.name).first
+			else
+				current_folder = Folder.create(name: serie.name, letter: serie.letter, default_view: "list" )
+			end
+			parent_folder.folders << current_folder
+			serie.items.each do |item|
+				item.folders << [current_folder, parent_folder]
+			end
+			
+		end
+		puts "Done :-)"
+	end
+
 end

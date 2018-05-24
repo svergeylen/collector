@@ -34,6 +34,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'mysql2'
+
+gem 'psych', '~> 2.2.1' # necessary because bug in yaml_db on 24/05/2018
 gem 'yaml_db'
 
 

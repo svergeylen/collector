@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180413122847) do
+ActiveRecord::Schema.define(version: 20180524100026) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20180413122847) do
     t.boolean "root_folder", default: false
     t.string "default_view"
     t.string "letter"
+    t.integer "category_id"
   end
 
   create_table "items", force: :cascade do |t|

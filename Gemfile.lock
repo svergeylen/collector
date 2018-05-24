@@ -135,6 +135,7 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (~> 0.3.0)
+    psych (2.2.4)
     public_suffix (3.0.1)
     puma (3.11.0)
     rack (2.0.3)
@@ -253,6 +254,7 @@ DEPENDENCIES
   mysql2
   nokogiri
   paperclip (~> 5.0.0)
+  psych (~> 2.2.1)
   puma (~> 3.7)
   rails (~> 5.1.4)
   rails-assets-classnames!
@@ -270,4 +272,4 @@ DEPENDENCIES
   yaml_db
 
 BUNDLED WITH
-   1.14.4
+   1.16.2
