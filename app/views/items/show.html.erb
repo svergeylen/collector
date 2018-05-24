@@ -34,12 +34,14 @@
 			
 			<% if @item.description.present? %>
 				<h4>Description</h4>
-				<%= @item.description %>
+				<%= sanitize @item.description %>
 			<% end %>
 
-			<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: @item}) , class: "upvote-in-table" %>
-			
-			
+
+			<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
+		      <%= form.file_field :attachments, multiple: true %>
+		      <%= form.submit "Envoyer", class:"btn btn-primary" %>
+			<% end %>
 		</div>
 	</div>
 	
