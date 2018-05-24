@@ -9,7 +9,7 @@
 				<div class="panel-heading">
 					<%= link_to item do %>
 						<% if item.attachments.present? && item.attachments.last.image.exists? %>
-							<%= image_tag item.attachments.last.image(:medium), class:"img-responsive" %>
+							<%= image_tag "/" + item.attachments.last.image(:medium), class:"img-responsive" %>
 						<% else %>
 							<%= image_tag "no-image.png", class:"img-responsive img-rounded" %>
 						<% end %>
