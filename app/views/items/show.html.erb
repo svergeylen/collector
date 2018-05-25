@@ -30,7 +30,7 @@
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			
 					
-			<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item:  @item })  %>
+			<%# react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item:  @item })  %>
 			
 			<% if @item.description.present? %>
 				<h4>Description</h4>

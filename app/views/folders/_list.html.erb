@@ -25,10 +25,10 @@
 					<%= link_to item.name, item %></a>
 				</td>
 				<td>
-					<%= react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
+					<%# react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>
 			 	</td>
 			 	<td>
-					<%= react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table" %>
+					<%# react_component "UpVote", render(template: 'items/_item.json.jbuilder', locals: {item: item}) , class: "upvote-in-table" %>
 				</td>
 				<td>
 			  		<%= link_to edit_item_path(item) do %>

@@ -45,13 +45,6 @@ gem 'jquery-rails'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 
-# React : rails routes in React
-gem 'js-routes'
-gem 'react-rails'
-source 'https://rails-assets.org' do
-  gem 'rails-assets-classnames'
-end
-
 # Icones
 gem "font-awesome-rails"
 

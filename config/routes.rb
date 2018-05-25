@@ -33,8 +33,13 @@ Rails.application.routes.draw do
 	# Collector
 	get 'welcome/index'
 	get 'search/keyword'
-	resources :categories
-	resources :series do
+	#resources :categories
+	#resources :series do
+	#	member do
+	#		get :star
+	#	end
+	#end
+	resources :folders do
 		member do
 			get :star
 		end
@@ -46,7 +51,7 @@ Rails.application.routes.draw do
 			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end
 	end
-	resources :folders
+	
 
 	# Cron /!\ Pas d'authentification
 	get 'cron/jobs'

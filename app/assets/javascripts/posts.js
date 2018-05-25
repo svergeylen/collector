@@ -25,6 +25,16 @@ function load_next_posts() {
 	}
 }
 
+/* Surveillance du défilement de la page pour charger les posts suivants. Appelé dans la view "post" */
+function monitor_page_scroll() {
+	/* Chargement des posts suivants lorsqu'on scrolle jusqu'en bas de la page (tolérance de xxx pixels) */
+	$(window).scroll(function() {
+		if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
+            load_next_posts();
+        }
+	});
+}
+
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
@@ -103,10 +113,4 @@ document.addEventListener("turbolinks:load", function() {
 
 	});
 
-	/* Chargement des posts suivants lorsqu'on scrolle jusqu'en bas de la page (tolérance de xxx pixels) */
-	$(window).scroll(function() {
-		if ($(window).scrollTop() + $(window).height() + 100 >= $(document).height()) {
-            load_next_posts();
-        }
-	});
 });
