@@ -31,8 +31,8 @@ class FoldersController < ApplicationController
       end
     end
 
-	# Récupération des items seulement s'il faut les afficher
-	@items = @folder.sorted_items if @view.present?
+		# Récupération des items seulement s'il faut les afficher
+		@items = @folder.sorted_items if @view.present?
 
     # Formulaire d'ajout d'item en bas de page
     @new_item = Item.new
@@ -49,8 +49,8 @@ class FoldersController < ApplicationController
         # On initialise les breadcrumbs au folder en cours
         set_session_breadcrumbs([ @folder.id.to_s ])
       else 
-        # On complète la liste des breadcrumbs avec le folder courant (sauf si enditique = page refresh )
-        bc << @folder.id if !bc.include? @folder.id.to_s
+        # On complète la liste des breadcrumbs avec le folder courant (sauf si identique = page refresh )
+        bc << @folder.id if !bc.include? @folder.id
         set_session_breadcrumbs(bc)
       end
     end    
@@ -112,7 +112,7 @@ class FoldersController < ApplicationController
 
     if @folder.destroy
       redirect_to path, notice: "Dossier supprimé"
-    else
+    elseapp/controllers/application_controller.rb
       redirect_to path, alert: "Ce dossier ne peut pas être supprimé (fixture)"
     end
   end
