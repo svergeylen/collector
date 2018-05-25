@@ -41,6 +41,11 @@
     </div>
   </div>
   <div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+      <%= form.label :view_alphabet do %>
+        <%= form.check_box :view_alphabet, id: :folder_view_alphabet %> Afficher la barre Alphabet
+      <% end %>
+    </div>
     <div class="col-sm-offset-2 col-sm-10">
       <%= form.label :optional do %>
         <%= form.check_box :optional, id: :folder_optional %> Optionnel

@@ -18,6 +18,42 @@
 }
 
 
+$internal-padding: 5px;
+
+.item-gallery {
+	.panel {
+		text-align: center;
+		
+		.panel-heading {
+			padding: $internal-padding;
+			position: relative;
+
+			.panel-overlay {
+				position: absolute;
+				top : 20px;
+				left : $internal-padding;
+				padding: 5px 10px 5px 10px;
+				background: $light-background-opactity;
+				display: none;
+				span {
+					color: black;
+				}
+			}
+
+		}
+		.panel-heading:hover .panel-overlay {
+			display: block;
+		}
+		img {
+			border-radius: 3px;
+		}
+	}
+	.panel:hover {
+		box-shadow: 3px 3px 15px #CCC;
+	}
+}
+
+
 
 /* Pièces jointes aux items (item/edit) */
 .attachment-thumbnail {

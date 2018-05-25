@@ -8,15 +8,18 @@ class FoldersController < ApplicationController
     @root_folders = Folder.where(root_folder: true).order(name: :asc)
 
     # Recherche de dossiers potentiellement orphelins (suppression de leur parent ou erreur database)
+		all_folders = Folder.where(root_folder: false).map(&:id)
+		all_folders_with_parent = Ownerfolder.where(owner_type: "Folder").map(&:folder_id)
+		orphan_ids = all_folders - all_folders_with_parent
+		@orphans = Folder.find(orphan_ids)
 
   end
 
-  # Affichage d'un seul folder, de ses folders enfants, et des items qu'il contient
+  # Affichage d'un seul folder, de ses subfolders, et des items qu'il contient
   def show
     @folder = Folder.find(params[:id])
     @children = @folder.children
-    @items = @folder.sorted_items
-
+    
     # Choix de la vue 
     if params[:view].present?
       @view = params[:view]
@@ -28,6 +31,8 @@ class FoldersController < ApplicationController
       end
     end
 
+	# Récupération des items seulement s'il faut les afficher
+	@items = @folder.sorted_items if @view.present?
 
     # Formulaire d'ajout d'item en bas de page
     @new_item = Item.new
@@ -66,8 +71,12 @@ class FoldersController < ApplicationController
     
     if @folder.save
       @folder.update_parent_folders(params[:folder][:parent_folders])
-      # Redirection vers le parent du folder créé (comme pour la création de dossier sur pc)
-      redirect_to folder_path(get_session_breadcrumbs.last), notice: 'Dossier créé' 
+			if @folder.root_folder?
+				redirect_to folders_path, notice: "Dossier créé"
+			else
+				# Redirection vers le parent du folder créé (comme pour la création de dossier sur pc)
+				redirect_to folder_path(get_session_breadcrumbs.last), notice: 'Dossier créé' 
+			end
     else
       render :new 
       # ICI BUG : lorsqu'il y a une erreur de validation, on perd la valeur de @folder.parent_folder_ids ???
@@ -116,7 +125,7 @@ class FoldersController < ApplicationController
   end
 
   def folder_params
-    params.require(:folder).permit(:name, :root_folder, :fixture, :optional, :letter, :default_view)
+    params.require(:folder).permit(:name, :root_folder, :fixture, :optional, :letter, :default_view, :view_alphabet)
   end
 
 end

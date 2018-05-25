@@ -1,9 +1,15 @@
 class Folder < ApplicationRecord
+	
+	# Un folder peut avoir plusieurs parents (au-dessus de lui) ou zéro (orphan)
 	has_many :ownerfolders_as_folder,   dependent: :destroy, class_name: "Ownerfolder"
-	has_many :ownerfolders_as_owner, dependent: :destroy, class_name: "Ownerfolder", as: :owner
-	has_many :items,              	 through: :ownerfolders_as_folder, source: :owner, source_type: 'Item'
-	has_many :parent_folders,        through: :ownerfolders_as_folder, source: :owner, source_type: 'Folder'
-	has_many :folders,               through: :ownerfolders_as_owner
+	has_many :parent_folders,        	through: :ownerfolders_as_folder, source: :owner, source_type: 'Folder'
+
+	# Un folder peut contenir plusieurs sub-folders (hiérarchie de dossiers)
+	has_many :ownerfolders_as_owner, 	dependent: :destroy, class_name: "Ownerfolder", as: :owner
+	has_many :folders,               	through: :ownerfolders_as_owner
+
+	# Un folder contient des items (bd, livres, jeux, bonsais, ...)
+	has_many :items,              	 	through: :ownerfolders_as_folder, source: :owner, source_type: 'Item'
 
 	validates :name, presence: true, uniqueness: true
 

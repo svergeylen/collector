@@ -22,10 +22,10 @@
 	<%end %>
 
 	<%if @orphans.present? %>
-		<h2>Dossiers orphelins</h2>
+		<h3>Dossiers orphelins</h3>
 		<ul>
 			<% @orphans.each do |folder| %>
-			<li><%= folder.id %> - <%= link_to folder.name, folder %></li>
+			<li><%= link_to folder.name, folder %></li>
 			<% end %>
 		</ul>
 	<% end %>
