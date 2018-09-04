@@ -23,10 +23,10 @@
   
  
   <div class="form-group">
-    <%= form.label :folder_ids, "Dossier(s)", class:"control-label col-sm-2" %>
+    <%= form.label :tag_ids, "Dossier(s)", class:"control-label col-sm-2" %>
     <div class="col-sm-6">
-       <%= form.select :folder_ids, 
-        options_from_collection_for_select(Tag.all.order(name: :asc), :id, :name, item.folder_ids ), 
+       <%= form.select :tag_ids, 
+        options_from_collection_for_select(Tag.all.order(name: :asc), :id, :name, item.tag_ids ), 
         { include_blank: true },
         { multiple: true,  class: 'chosen-select' }
       %>

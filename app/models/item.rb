@@ -1,8 +1,8 @@
 class Item < ApplicationRecord
 	enum rails_view: [ :general, :bd]
 
-	has_many :ownerfolders,    dependent:  :destroy, as: :owner
-	has_many :folders,         through:    :ownerfolders
+	has_many :ownertags,    dependent:  :destroy, as: :owner
+	has_many :tags,         through:    :ownertags
 
 	has_many :itemusers
 	has_many :users,        through:    :itemusers
@@ -16,14 +16,14 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
-  	# Renvoie les Items correspondants à l'array de folders donné
-  	def self.having_folders(ar_folders)
-    	Item.where(id: Ownerfolder.where(folder_id: ar_folders, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_folders.size }.keys)
+  	# Renvoie les Items correspondants à l'array de tags donné
+  	def self.having_tags(ar_tags)
+    	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
   	end
 
-  	# Màj les folder de l'item (devrait être géré par rails, mais unpermitted parameters systématiquement)
-  	def update_folder_ids(folder_ids)
-  		self.folder_ids = folder_ids
+  	# Màj les tag de l'item (devrait être géré par rails, mais unpermitted parameters systématiquement)
+  	def update_tag_ids(tag_ids)
+  		self.tag_ids = tag_ids
   	end
 
 

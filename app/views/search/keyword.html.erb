@@ -2,20 +2,20 @@
 	<h2>Recherche de "<%= @keyword %>"</h2>
 
 
-	<% if @folders.present? %>
-		<h4><%= pluralize( @folders.count, "dossier trouvé", "dossiers trouvés", locale: :fr) %> : </h4>
+	<% if @tags.present? %>
+		<h4><%= pluralize( @tags.count, "tag trouvé", "tags trouvés", locale: :fr) %> : </h4>
 		<ul>
-		<% @folders.each do |folder| %>
-			<li><%= link_to folder.name, folder_path(folder), class:"results" %> </li>
+		<% @tags.each do |tag| %>
+			<li><%= link_to tag.name, tag_path(tag), class:"results" %> </li>
 		<% end %>
 		</ul>
 	<% else %>
-		<p>Pas de dossier trouvé.</p>
-		<p><%= link_to "Créer le dossier \"#{@keyword}\"", new_folder_path(name: @keyword) %></p>
+		<p>Pas de tag trouvé.</p>
+		<p><%= link_to "Créer le tag \"#{@keyword}\"", new_tag_path(name: @keyword) %></p>
 	<% end %>
 
 	<% if @items.present? %>
-		<h4><%= pluralize( @items.count, "élément trouvé", "éléments trouvés", locale: :fr) %> : </h4>
+		<h4><%= pluralize( @items.count, "item trouvé", "items trouvés", locale: :fr) %> : </h4>
 
 		<ul>
 		<% @items.each do |item| %>

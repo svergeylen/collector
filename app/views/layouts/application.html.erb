@@ -34,7 +34,7 @@
 				  	<% if user_signed_in? && current_user.can?(:une) %>
 				  		<li><%= link_to "La Une", posts_path, class:"white-link" %></li>
 				  	<% end %>
-			    	<li><%= link_to "Collector", folders_path, class:"white-link" %></li>
+			    	<li><%= link_to "Collector", tags_path, class:"white-link" %></li>
 			    	<% if session[:category_id].present? %>
 		            	<li><%= link_to session[:category_name], category_path(session[:category_id]), class:"white-link" %></li>
 		            <% end %>

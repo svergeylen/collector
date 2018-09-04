@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 	#		get :star
 	#	end
 	#end
-	resources :folders do
+	resources :tags do
 		member do
 			get :star
 		end

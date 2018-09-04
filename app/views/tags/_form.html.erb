@@ -1,0 +1,57 @@
+<%= form_with model: tag, local: true, class:"form-horizontal" do |form| %>
+
+ <% if tag.errors.any? %>
+    <div id="error_explanation">
+        <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de cet auteur :
+      <ul>
+        <% tag.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="tag_name">Nom</label>
+    <div class="col-sm-5">
+      <%= form.text_field :name, id: "tag_name", class: "form-control", autocomplete: :off, autofocus: true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="series_letter">Classement à la lettre </label>
+    <div class="col-sm-5">
+      <%= form.text_field :letter, id: :series_letter, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="parent_tags">Parent(s)</label>
+    <div class="col-sm-5">
+      <%= form.select 'parent_tags', 
+        options_from_collection_for_select(Tag.all, :id, :name, tag.parent_tag_ids ), 
+        { include_blank: true },
+        { multiple: true,  class: 'chosen-select' }
+      %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="tag_default_view">Affichages des items</label>
+    <div class="col-sm-3">
+      <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"], ["Masquer", "none"] ], @tag.default_view), class: "form-control" ) %>
+    </div>
+  </div>
+  <div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+      <%= form.label :view_alphabet do %>
+        <%= form.check_box :view_alphabet, id: :tag_view_alphabet %> Afficher la barre Alphabet
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= form.submit submit_text, class: "btn btn-primary" %>
+    </div>
+  </div>
+
+<% end %>

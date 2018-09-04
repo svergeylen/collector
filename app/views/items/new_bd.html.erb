@@ -17,7 +17,7 @@
     <%= form.label :series, "Série", class:"control-label col-sm-2" %>
     <div class="col-sm-6">
       <%= form.select :series, 
-        options_from_collection_for_select(@series, :id, :name, [params[:parent_folder_id]] ), 
+        options_from_collection_for_select(@series, :id, :name, [params[:parent_tag_id]] ), 
         { include_blank: true },
         { multiple: true,  class: 'chosen-select' }
       %>
