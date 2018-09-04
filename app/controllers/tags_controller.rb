@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   # Uniquement les root tags
   def index
     @title  = "Collector"
-    set_session_breadcrumbs([])
+    set_active_tag_ids([])
     @root_tags = Tag.where(root_tag: true).order(name: :asc)
 
     # Recherche de dossiers potentiellement orphelins (suppression de leur parent ou erreur database)
@@ -15,45 +15,59 @@ class TagsController < ApplicationController
 
   end
 
-  # Affichage d'un seul tag, de ses subtags, et des items qu'il contient
+  # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
-    @tag = Tag.find(params[:id])
-    @children = @tag.children
     
-    # Choix de la vue 
-    if params[:view].present?
-      @view = params[:view]
-    else
-      if @tag.default_view.blank?
-        @view = "list"
-      else
-        @view = @tag.default_view if @tag.default_view != "none"
+    @tag = Tag.find(params[:id])
+
+    if @tag 
+      # Ajout du tag actif dans la liste
+      add_active_tag_id(params[:id])
+      @active_tags = get_active_tags
+
+      @children = @tag.children
+
+      # Si le tag a des enfants, il faut afficher les tags enfants (navigation)
+      # Si le tag n'a plus d'enfant, on peut afficher les items.
+      if @children.empty?
+
+        @items = Item.having_tags(get_active_tag_ids)
+
+        # Choix de la vue 
+        if params[:view].present?
+          @view = params[:view]
+        else
+          if @tag.default_view.blank?
+            @view = "list"
+          else
+            @view = @tag.default_view if @tag.default_view != "none"
+          end
+        end
+
       end
-    end
 
-		# Récupération des items seulement s'il faut les afficher
-		@items = @tag.sorted_items if @view.present?
-
-    # Formulaire d'ajout d'item en bas de page
-    @new_item = Item.new
+      # Formulaire d'ajout d'item en bas de page
+      @new_item = Item.new
 
     # Breadcrumbs : Si un chemin de tags est donné en parametre, l'utiliser et le mémoriser
     # Permet de forcer la navigation vers un Tag avec un chemin particulier
-    if params[:bc].present?
-      bc = params[:bc].split(",")
-      set_session_breadcrumbs(bc)
-    else
-      # On n'a pas de breadcrumbs imposées
-      bc = get_session_breadcrumbs
-      if bc.empty?
-        # On initialise les breadcrumbs au tag en cours
-        set_session_breadcrumbs([ @tag.id.to_s ])
-      else 
-        # On complète la liste des breadcrumbs avec le tag courant (sauf si identique = page refresh )
-        bc << @tag.id if !bc.include? @tag.id
-        set_session_breadcrumbs(bc)
-      end
-    end    
+    # if params[:bc].present?
+    #   bc = params[:bc].split(",")
+    #   set_session_breadcrumbs(bc)
+    # else
+    #   # On n'a pas de breadcrumbs imposées
+    #   bc = get_session_breadcrumbs
+    #   if bc.empty?
+    #     # On initialise les breadcrumbs au tag en cours
+    #     set_session_breadcrumbs([ @tag.id.to_s ])
+    #   else 
+    #     # On complète la liste des breadcrumbs avec le tag courant (sauf si identique = page refresh )
+    #     bc << @tag.id if !bc.include? @tag.id
+    #     set_session_breadcrumbs(bc)
+    #   end
+    # end    
+
+    end  #if @tag
   end
 
   def new

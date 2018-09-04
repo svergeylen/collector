@@ -3,6 +3,7 @@ class Item < ApplicationRecord
 
 	has_many :ownertags,    dependent:  :destroy, as: :owner
 	has_many :tags,         through:    :ownertags
+	accepts_nested_attributes_for :tags
 
 	has_many :itemusers
 	has_many :users,        through:    :itemusers
@@ -15,6 +16,13 @@ class Item < ApplicationRecord
 	
 	validates :name, presence: true
 	validates :adder_id, presence: true
+
+	# Renvoie les tags de l'item après avoir soustrait les active tags
+	def different_tags(active_tag_ids)
+		logger.debug "--------> "+active_tag_ids.inspect
+		ids = self.tag_ids - active_tag_ids
+		return Tag.find(ids)
+	end
 
   	# Renvoie les Items correspondants à l'array de tags donné
   	def self.having_tags(ar_tags)

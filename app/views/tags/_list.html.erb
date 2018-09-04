@@ -6,6 +6,7 @@
 		    <th></th>
 		    
 		    <th>Titre</th>
+			<th>Tags</th>
 			<th></th>
 			<th></th>
 			<th></th>
@@ -23,6 +24,9 @@
 				
 				<td>
 					<%= link_to item.name, item %></a>
+				</td>
+				<td>
+					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
 				</td>
 				<td>
 					<%# react_component "ItemQuantity", render(template: 'items/_quantity.json.jbuilder', locals: {item: item })  %>

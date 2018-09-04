@@ -5,13 +5,29 @@ class ApplicationController < ActionController::Base
   # Ajoute des paramètres modifiables par l'utilisateur dans Devise (strong Paramaters)
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-	# Mémorise le dernier chemin de folders suivi par l'utilisateur pour le rediriger au même endroit quand nécessaire
-	def set_session_breadcrumbs(bc)
-		session[:bc] = bc
+	# Remplace la liste des tags actifs par l'array de tags existants donné
+	def set_active_tag_ids(active_tag_ids)
+		session[:active_tags] = active_tag_ids
 	end
-
-	def get_session_breadcrumbs
-		return session[:bc]
+	# Ajoute un tag actif à la liste, sans ajouter de doublon
+	def add_active_tag_id(active_tag_id)
+		session[:active_tags] = session[:active_tags] + [ active_tag_id.to_i ] unless session[:active_tags].include?(active_tag_id.to_i)
+	end
+	# Renvoie les ids de tags actifs
+	def get_active_tag_ids
+		return session[:active_tags]
+	end
+	# Renvoie les  tags actifs
+	def get_active_tags
+		return Tag.find(session[:active_tags])
+	end
+	#Renvoie le dernier tag ajouté au active tags
+	def get_last_active_tag
+		if session[:active_tags].length > 0
+			return Tag.find(session[:active_tags].last)
+		else
+			return "no active tag"
+		end
 	end
 
 	protected

@@ -29,7 +29,15 @@
 
 
 	<h1><%= @tag.name %></h1>
-	<%= breadcrumbs_for(session[:bc], @children.count) %> 	
+
+	<div class="active_tags">
+		Active_tags : 
+		<% @active_tags.each do |tag| %>
+			<span class="tag">
+				<%= link_to(tag.name, tag) %>, 
+			</span>
+		<% end %>
+	</div>
 
 	<% if @tag.view_alphabet %>
 		<div class="btn-group header-letters">

@@ -1,7 +1,7 @@
 
 <% if true && Rails.env == "development" %>
 	<div class="rounded-box">
-		<p>session[:bc] = <%= session[:bc].inspect %></p>
+		<p>Active tags = <%= session[:active_tags].inspect %></p>
 		
 		<h4>Tag</h4>
 		<% if @tag.present? %>
