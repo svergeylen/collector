@@ -26,6 +26,7 @@ class Item < ApplicationRecord
 
   	# Renvoie les Items correspondants à l'array de tags donné
   	def self.having_tags(ar_tags)
+    	#Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
     	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
   	end
 

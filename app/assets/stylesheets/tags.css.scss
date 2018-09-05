@@ -1,14 +1,15 @@
 
-ol.breadcrumb {
+/*ol.breadcrumb {
 	padding-top: 4px !important;
 	padding-bottom: 4px !important;
 	margin-bottom: 20px !important;
-}
+}*/
 
 .header-letters {
 	margin-bottom: 20px;
 }
 
+/*
 .form-in-breadcrumbs {
 	display : inline-block;
 	margin-left: 20px;
@@ -17,4 +18,13 @@ ol.breadcrumb {
 		margin: 0;
 	}
 	
+}
+*/
+
+/* DIV de recherche principal, sur la page d'accueil collector */
+.collector-search {
+	padding-top: 4em;
+	padding-bottom: 6em;
+	clear:both;
+	text-align: center;
 }

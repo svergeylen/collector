@@ -11,7 +11,11 @@ class ApplicationController < ActionController::Base
 	end
 	# Ajoute un tag actif à la liste, sans ajouter de doublon
 	def add_active_tag_id(active_tag_id)
-		session[:active_tags] = session[:active_tags] + [ active_tag_id.to_i ] unless session[:active_tags].include?(active_tag_id.to_i)
+		if session[:active_tags].nil?
+			session[:active_tags] = [ active_tag_id.to_i ]
+		else
+			session[:active_tags] = session[:active_tags] + [ active_tag_id.to_i ] unless session[:active_tags].include?(active_tag_id.to_i)
+		end
 	end
 	# Renvoie les ids de tags actifs
 	def get_active_tag_ids
