@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   # Uniquement les root tags
   def index
     @title  = "Collector"
-    set_active_tag_ids([])
+    session[:active_tags] = []
     @root_tags = Tag.where(root_tag: true).order(name: :asc)
 
     # Recherche de dossiers potentiellement orphelins (suppression de leur parent ou erreur database)
@@ -21,9 +21,14 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id])
 
     if @tag 
-      # Ajout du tag actif dans la liste
-      add_active_tag_id(params[:id])
-      @active_tags = get_active_tags
+      # Ajout du tag actif dans la liste sans faire de doublon
+      if session[:active_tags].nil?
+        session[:active_tags] = [ @tag.id ]
+      else
+        session[:active_tags] = session[:active_tags] + [ @tag.id ] unless session[:active_tags].include?(@tag.id)
+      end
+
+      @active_tags = Tag.find(session[:active_tags])
 
       @children = @tag.children
 
@@ -31,7 +36,7 @@ class TagsController < ApplicationController
       # Si le tag n'a plus d'enfant, on peut afficher les items.
       if @children.empty?
 
-        @items = Item.having_tags(get_active_tag_ids)
+        @items = Item.having_tags(session[:active_tags])
 
         # Choix de la vue 
         if params[:view].present?
@@ -40,8 +45,8 @@ class TagsController < ApplicationController
           if @tag.default_view.blank?
             @view = "list"
           else
-            @view = @tag.default_view if @tag.default_view != "none"
-          end
+            @view = @tag.default_view
+          end 
         end
 
       end
@@ -86,10 +91,9 @@ class TagsController < ApplicationController
     if @tag.save
       @tag.update_parent_tags(params[:tag][:parent_tags])
 			if @tag.root_tag?
-				redirect_to tags_path, notice: "Dossier créé"
+				redirect_to tags_path, notice: "Tag créé"
 			else
-				# Redirection vers le parent du tag créé (comme pour la création de dossier sur pc)
-				redirect_to tag_path(get_session_breadcrumbs.last), notice: 'Dossier créé' 
+				redirect_to @tag, notice: 'Tag créé' 
 			end
     else
       render :new 
@@ -113,21 +117,11 @@ class TagsController < ApplicationController
   end
 
   def destroy
-    
-    # On supprime le dernier tag de la liste des breadcrumb
-    bc = get_session_breadcrumbs
-    bc.pop
-    set_session_breadcrumbs( bc )
-
-    # On mémorise le chemin de retour vers le premier tag parent (selon les breadcrumbs)
-    path = bc.size > 0 ? tag_path(bc.last) : tags_path
-
     # BUG : Il faut prévoir le déplacement des tags enfants qui deviennent orphelins vers root_tag=true
-
     if @tag.destroy
-      redirect_to path, notice: "Dossier supprimé"
-    elseapp/controllers/application_controller.rb
-      redirect_to path, alert: "Ce dossier ne peut pas être supprimé (fixture)"
+      redirect_to tags_path, notice: "Tag supprimé"
+    else
+      redirect_to tags_path, alert: "Ce Tag ne peut pas être supprimé"
     end
   end
 

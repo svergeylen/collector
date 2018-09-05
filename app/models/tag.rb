@@ -16,7 +16,6 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
-	before_destroy :check_is_fixture
 
 	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre
 	def children
@@ -25,7 +24,7 @@ class Tag < ApplicationRecord
 
 	# Renvoie la liste des items contenues dans ce tag
 	def sorted_items
-		self.items.includes(:users).sort_by{ |a| [a.number.to_f, a.name] }
+		self.items.includes(:users).sort_by{ |a| [a.number.to_f, a.name] }.limit (200)
 	end
 
 	# Remplace tous les tags parents par ceux donnés. 
@@ -51,12 +50,5 @@ class Tag < ApplicationRecord
 		 	all
 		end
 	end
-
-	# private
-
-	# Empeche la suppression de Tag nécessaires au bon fonctionnement de l'application Rails (self.fixture = true)
-	# def check_is_fixture
-	# 	throw(:abort) if self.fixture
-	# end
 
 end
