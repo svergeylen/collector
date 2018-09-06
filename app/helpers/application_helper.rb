@@ -1,19 +1,5 @@
 module ApplicationHelper
 
-	# Affiche le nom de la dernière catégorie choisie (current)
-	def link_to_current_category
-		if (session[:category]) 
-			begin
-				cat = Category.find(session[:category])
-			rescue ActiveRecord::RecordNotFound => e
-				return ""
-			end
-			return link_to(cat.name, category_path(cat), class: "white" )
-		else
-			return ""
-		end
-	end
-
 	# Renvoie une date courte en français
 	def long_date(mydate) 
 		

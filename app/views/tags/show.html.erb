@@ -36,7 +36,10 @@
 		Active_tags : 
 		<% @active_tags.each do |tag| %>
 			<span class="tag">
-				<%= link_to(tag.name, tag) %>, 
+				<%= link_to(tag.name, tag) %> 
+				<%= link_to remove_tag_path(remove_id: tag.id) do %>
+					<span class="glyphicon glyphicon-trash"></span>
+				<% end %> &nbsp;
 			</span>
 		<% end %>
 	</div>
@@ -50,7 +53,7 @@
 	<% end %>
 
 	<% if @children.present? %>
-		<h2>Children</h2>
+		<p>Navigation :</p>
 		<ul class="children_tags">
 			<% @children.each do |tag| %>
 				<li><%= link_to tag.name, tag  %></li>
@@ -59,7 +62,6 @@
 	<%end %>
 
 	<% if @items.present? %>
-		<h2>Items</h2>
 		<% if @view.present? %>
 			<%= render partial: @view, locals: {items: @items } %>
 		<% else %>

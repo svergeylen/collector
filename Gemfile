@@ -42,7 +42,7 @@ gem 'yaml_db'
 gem 'devise'
 
 gem 'jquery-rails'
-gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap', '~> 4.1.3'
 gem 'autoprefixer-rails'
 
 # Icones
@@ -51,7 +51,7 @@ gem "font-awesome-rails"
 # "Likes" and votes on items, posts, comments
 gem 'acts_as_votable', '~> 0.10.0'
 
-# Attchment for image uploads
+# Attachment for image uploads
 gem "paperclip", "~> 5.0.0"
 
 # Fetch page from URL

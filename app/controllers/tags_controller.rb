@@ -17,11 +17,10 @@ class TagsController < ApplicationController
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
-    
     @tag = Tag.find(params[:id])
 
-    if @tag 
-      # Ajout du tag actif dans la liste sans faire de doublon
+    if @tag
+      # Ajout du tag actif dans la liste de tags actifs sans faire de doublon
       if session[:active_tags].nil?
         session[:active_tags] = [ @tag.id ]
       else
@@ -36,6 +35,7 @@ class TagsController < ApplicationController
       # Si le tag n'a plus d'enfant, on peut afficher les items.
       if @children.empty?
 
+        # Recherche des items qui possèdent tous les tags actifs
         @items = Item.having_tags(session[:active_tags])
 
         # Choix de la vue 
@@ -53,24 +53,6 @@ class TagsController < ApplicationController
 
       # Formulaire d'ajout d'item en bas de page
       @new_item = Item.new
-
-    # Breadcrumbs : Si un chemin de tags est donné en parametre, l'utiliser et le mémoriser
-    # Permet de forcer la navigation vers un Tag avec un chemin particulier
-    # if params[:bc].present?
-    #   bc = params[:bc].split(",")
-    #   set_session_breadcrumbs(bc)
-    # else
-    #   # On n'a pas de breadcrumbs imposées
-    #   bc = get_session_breadcrumbs
-    #   if bc.empty?
-    #     # On initialise les breadcrumbs au tag en cours
-    #     set_session_breadcrumbs([ @tag.id.to_s ])
-    #   else 
-    #     # On complète la liste des breadcrumbs avec le tag courant (sauf si identique = page refresh )
-    #     bc << @tag.id if !bc.include? @tag.id
-    #     set_session_breadcrumbs(bc)
-    #   end
-    # end    
 
     end  #if @tag
   end
@@ -125,6 +107,34 @@ class TagsController < ApplicationController
     end
   end
 
+  # Permet de supprimer un tag actif de la liste
+  def remove
+    @tag = Tag.find(params[:id])
+    remove_id = params[:remove_id].to_i
+
+    if remove_id && session[:active_tags].include?(remove_id)
+      session[:active_tags] = session[:active_tags] - [ remove_id ]
+      
+      # Si l'utilisateur vient de supprimer le tag actif qui égale la page qu'il veut afficher
+      if remove_id == @tag.id 
+        if session[:active_tags].empty?
+          # Tous les tags actifs ont été supprimés par l'utilisateur
+          redirect_to tags_path, notice: "Vous avez supprimé tous les tags acitfs"
+        else
+          # Il reste au moins un tag actif dans la liste, on choisit le dernier tag de la liste
+          @tag = Tag.find(session[:active_tags].last)
+          redirect_to @tag, notice: "Tag retiré des tags actifs et redirection vers #{@tag.name}"
+        end
+      else
+        redirect_to @tag, notice: "Tag retiré des tags actifs"
+      end
+      
+      
+    else
+      redirect_to @tag, alert: "Ce tag ne se trouve pas dans la liste des tags actifs"
+    end
+    
+  end
 
   private
   
