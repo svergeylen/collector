@@ -33,12 +33,7 @@ Rails.application.routes.draw do
 	# Collector
 	get 'welcome/index'
 	get 'search/keyword'
-	#resources :categories
-	#resources :series do
-	#	member do
-	#		get :star
-	#	end
-	#end
+	post 'search/tag'
 	resources :tags do
 		member do
 			get 'star'
