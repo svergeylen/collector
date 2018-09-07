@@ -1,15 +1,4 @@
 <div class="rounded-box">
-	<div class="pull-right">
-		<div class="dropdown">
-			<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-				<span class="glyphicon glyphicon-cog"></span>
-		 	<span class="caret"></span></button>
-			<ul class="dropdown-menu dropdown-menu-right">
-				<li><%= link_to "Nouveau tag", new_tag_path  %></li>
-			    </li>
-		  	</ul>
-		</div>				
-	</div>
 
 	<h1>Collector</h1>
 
@@ -17,7 +6,6 @@
 		Recherche...
 	</div>
 
-	
 	<% if @root_tags.present? %>
 		<div class="container-fluid">
 			<% @root_tags.each_with_index do |tag, index| %>
@@ -25,24 +13,23 @@
 					<div class="row">
 				<% end %>
 					<div class="col-md-4">
-						<div class="panel panel-primary ">
-							
-							<div class="panel-heading">
-								<%= link_to tag.name, tag_path(tag), class: "white"  %>
-							</div>
-							<table class="table">
-								<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
-								    <tr>
-								    	<td><%= link_to item.name, item %></td>
-								    	<td><%= link_to item.adder.name, item.adder %>, le 
-								    		<%= short_date(item.created_at) %></td>
-								    </tr>
-							    <% end %>
-							</table>
-						</div>
-					</div>
+
+						<div class="card card-latest">
+						  <div class="card-header bg-major">
+						    <%= link_to tag.name, tag_path(tag), class:'text-light' %>
+						  </div>
+						  <ul class="list-group list-group-flush">
+						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
+						    	<li class="list-group-item">
+						    		<%= link_to item.name, item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
+						    	</li>
+						    <% end %>
+						  </ul>
+						</div> <!-- card -->
+
+					</div> <!-- col -->
 				<% if (index % 3 == 2) %>
-					</div>
+					</div> <!-- row -->
 				<% end %>
 			<% end %>
 		</div>

@@ -6,21 +6,12 @@ $box-color-dimmed: #F5F5F5;
 $color-text-dimmed: #888;
 $high-color:rgb(66,103,178);
 $high-color-hover:rgb(96,133,208);
-$light-background-opactity: rgba(255, 255, 255, 0.70);
+$light-background-opacity: rgba(255, 255, 255, 0.70);
 
 $border-radius: 4px;
-
 $general-padding : 15px;
 
-.grey {
-	color: #aaa;
-}
-.green {
-	color: green;
-}
-.white, .white:hover {
-	color: white;
-}
-table.vertical-center tr td  {
-    vertical-align: middle;
+.bg-major {
+	background-color : $high-color;
+	color : $color-text-dimmed;
 }

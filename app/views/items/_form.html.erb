@@ -11,8 +11,9 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :name, "Titre", class:"control-label col-sm-2" %>
+
+  <div class="form-group row">
+    <label for="tag_name" class="col-sm-2 col-form-label">Titre</label>
     <div class="col-sm-1">
       <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
     </div>
@@ -22,23 +23,36 @@
   </div>
   
  
-  <div class="form-group">
-    <%= form.label :tag_ids, "Dossier(s)", class:"control-label col-sm-2" %>
+  <div class="form-group row">
+    <label for="tag_ids" class="control-label col-sm-2">Tags</label>
     <div class="col-sm-6">
        <%= form.select :tag_ids, 
         options_from_collection_for_select(Tag.all.order(name: :asc), :id, :name, item.tag_ids ), 
         { include_blank: true },
-        { multiple: true,  class: 'chosen-select' }
+        { multiple: true,  class: 'chosen-select form-control' }
       %>
-      <span class="help-block">Indiquer dans ce champ tous les dossiers où l'item doit être visible (au minimum 1)</span>
     </div>
   </div>
   
+  <div class="form-group row">
+    <label class="control-label col-sm-2">Images</label>
+    <div class="col-sm-10">
+      <%= form.file_field :attachments, multiple: true %>
 
-  <%= render partial: "attachement_form", locals: { form: form, item: item } %>
+      <% item.attachments.each do |attachment| %>
+        <div class="attachment-thumbnail">
+          <%= link_to delete_attachment_item_path(item, attachment.id), data: { confirm: "Etes-vous sûr de supprimer cette pièce jointe ?" } do %>
+            <span class="glyphicon glyphicon-remove", title="Supprimer"></span>
+          <% end %>
+          <%= image_tag "/" + attachment.image.url(:thumb) %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
 
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-1">
+    <div class="offset-sm-2 col-sm-2">
       <%= form.submit submit_text, class:"btn btn-primary" %>
     </div>
   </div>

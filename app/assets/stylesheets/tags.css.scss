@@ -1,25 +1,7 @@
 
-/*ol.breadcrumb {
-	padding-top: 4px !important;
-	padding-bottom: 4px !important;
-	margin-bottom: 20px !important;
-}*/
-
 .header-letters {
 	margin-bottom: 20px;
 }
-
-/*
-.form-in-breadcrumbs {
-	display : inline-block;
-	margin-left: 20px;
-	width: 150px;
-	input {
-		margin: 0;
-	}
-	
-}
-*/
 
 /* DIV de recherche principal, sur la page d'accueil collector */
 .collector-search {
@@ -27,4 +9,17 @@
 	padding-bottom: 6em;
 	clear:both;
 	text-align: center;
+}
+
+.card-latest {
+	margin-top : 0;
+	padding : 0; /* cancel padding from devise on .card */
+	ul {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		li {
+		padding : 5px 20px;
+		font-size : 0.9em;
+		}
+	}
 }

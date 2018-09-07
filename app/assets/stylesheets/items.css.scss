@@ -18,40 +18,31 @@
 }
 
 
-$internal-padding: 5px;
-
-.item-gallery {
-	.panel {
-		text-align: center;
-		
-		.panel-heading {
-			padding: $internal-padding;
-			position: relative;
-
-			.panel-overlay {
-				position: absolute;
-				top : 20px;
-				left : $internal-padding;
-				padding: 5px 10px 5px 10px;
-				background: $light-background-opactity;
-				display: none;
-				span {
-					color: black;
-				}
-			}
-
+/* Gallerie d'item */
+.item-card {
+	padding : 0;  /* cancels devise padding */
+	margin-top : 0;
+	position: relative;
+	.panel-overlay {
+		position: absolute;
+		top : 20px;
+		left : 0px;
+		padding: 5px 10px 5px 10px;
+		background: $light-background-opacity;
+		display: none;
+		span {
+			color: black;
 		}
-		.panel-heading:hover .panel-overlay {
-			display: block;
-		}
-		img {
-			border-radius: 3px;
-		}
-	}
-	.panel:hover {
-		box-shadow: 3px 3px 15px #CCC;
 	}
 }
+/* Affichage du numéro de l'item lorsque l'utilisateur passe au-dessus de la card */
+.item-card:hover .panel-overlay {
+	display: block;
+}
+.item-card:hover {
+	box-shadow: 3px 3px 15px #CCC;
+}
+
 
 
 
