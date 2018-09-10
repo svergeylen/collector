@@ -2,13 +2,9 @@
 
 	<h1>Collector</h1>
 
-	<div class="collector-search">
-		<%= form_tag({controller: 'search', action: 'tag'}, method: "post", remote: true) do %>
-			<%= text_field_tag :keyword, nil, placeholder: 'Recherche...', autocomplete: :off %>
-		<% end %>
-		<div id="search_results"></div>
+	<div class="pt-5 pb-5 text-center">
+		<%= render partial: "search/form_tags" %>
 	</div>
-	
 
 	<% if @root_tags.present? %>
 		<div class="container-fluid">

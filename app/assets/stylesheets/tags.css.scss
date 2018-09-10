@@ -4,14 +4,6 @@
 	margin-bottom: 20px;
 }
 
-/* DIV de recherche principal, sur la page d'accueil collector */
-.collector-search {
-	padding-top: 4em;
-	padding-bottom: 6em;
-	clear:both;
-	text-align: center;
-}
-
 .card-latest {
 	margin-top : 0;
 	padding : 0; /* cancel padding from devise on .card */
@@ -26,6 +18,7 @@
 }
 
 .tag {
+	white-space: nowrap;
 	font-size : 0.9em;
 	padding : 10px;
 	margin-right: 10px;
@@ -39,3 +32,4 @@
 .tag:hover {
 	background-color: $high-color-hover;
 }
+

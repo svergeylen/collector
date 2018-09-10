@@ -31,16 +31,21 @@
 
 	<h1><%= @tag.name %></h1>
 
-	<div class="active_tags">
-		Active_tags : 
+	<div class="mt-3 mb-3">
+		Tags  :  
 		<% @active_tags.each do |tag| %>
 			<span class="tag">
 				<%= link_to(tag.name, tag) %> 
 				<%= link_to remove_tag_path(remove_id: tag.id) do %>	<%= fa_icon 'times' %><% end %>
 			</span>
 		<% end %>
+		<div style="display:inline-block;">
+			<%= render partial: "search/form_tags" %>
+		</div>
 	</div>
 
+	
+	
 	<% if @tag.view_alphabet %>
 		<div class="btn-group header-letters">
 			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"].each do |letter| %>

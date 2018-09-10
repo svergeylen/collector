@@ -1,0 +1,5 @@
+
+<%= form_tag({controller: 'search', action: 'tag'}, method: "post", remote: true) do %>
+	<%= text_field_tag :keyword, nil, placeholder: 'Recherche...', autocomplete: :off %>
+<% end %>
+<div id="search_results"></div>
