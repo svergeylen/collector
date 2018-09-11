@@ -1,7 +1,9 @@
 
-<div class="youtube_preview">
-	<iframe src="https://www.youtube.com/embed/<%= youtube_id %>?rel=0" frameborder="0" allowfullscreen>
-	</iframe>
+<div class="youtube-wrap">
+	<div class="youtube_preview">
+		<iframe src="https://www.youtube.com/embed/<%= youtube_id %>?rel=0" frameborder="0" allowfullscreen>
+		</iframe>
+	</div>
 </div>
 
 <%= hidden_field_tag 'post[youtube_id]', youtube_id %>

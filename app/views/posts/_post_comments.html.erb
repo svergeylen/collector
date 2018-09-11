@@ -1,28 +1,28 @@
 <div class="post-likes row">
   
- <div class="col-xs-9">
+ <div class="col-9">
    <%= form_with(model: Comment.new, class:"form-inline", html: {autocomplete: "off"} ) do |form| %>
       <%= form.hidden_field :post_id, name: "comment[post_id]", value: post.id %>
-        <%# profile_picture(current_user) %>
-        <%= form.text_field :message, name: "comment[message]", placeholder: "Votre commentaire...", class:"form-control applause-height" %>
+      <%# profile_picture(current_user) %>
+      <%= form.text_field :message, name: "comment[message]", placeholder: "Votre commentaire...", class:"form-control applause-height" %>
     <% end %>
   </div>
-  <div class="col-xs-3">
-    <%= link_to upvote_post_path(post), remote: true, class:"btn btn-default applause-height", role:"button", id: "upvote-#{post.id}" do %>
+  <div class="col-3">
+    <%= link_to upvote_post_path(post), remote: true, class:"btn btn-light applause-height", role:"button", id: "upvote-#{post.id}" do %>
       <span class="total_upvotes"><%= post.total_upvotes %></span>
       <%= image_tag "applause.svg" %>
     <% end %>
 
-    <%= button_tag type: "button", class:"btn btn-default applause-height", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
+    <%= button_tag type: "button", class:"btn btn-light applause-height", data: {toggle: "collapse", target: "#comments-post-#{post.id}" } do %>
       <%= post.comments.count if post.comments.present? %>
-      <span class="glyphicon glyphicon-comment"></span>
+      <%= fa_icon("comments")  %>
     <% end %>
   </div>
 
 
 </div>
 
-<div class="post-comments collapse in" id="comments-post-<%= post.id %>">
+<div class="post-comments collapse show" id="comments-post-<%= post.id %>">
   <div class="comments-list">
     <% post.comments.each do |comment| %>
       <%= render partial: "comments/show", locals: { comment: comment, post:post } %>

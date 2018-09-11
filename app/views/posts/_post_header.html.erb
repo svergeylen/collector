@@ -2,11 +2,13 @@
 <div class="post-header">
   <div class="pull-right">
 
-    <%= react_component "Ago", { since: post.created_at.to_i}, style:"display:inline-block" %>
+    <span class="time">
+      <%= long_date post.created_at %>
+    </span>
 
     <% if (post.user_id == current_user.id) || current_user.can?(:admin) %>
-      <%= link_to edit_post_path(post) do %><span class="glyphicon glyphicon-edit"></span><% end %>
-      <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
+      <%= link_to edit_post_path(post) do fa_icon("edit") end %>
+      <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do fa_icon("trash") end %>
     <% end %>
   </div>
 

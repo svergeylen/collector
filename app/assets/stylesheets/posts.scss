@@ -1,7 +1,3 @@
-// Place all the styles related to the posts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 @import 'colors';
 	
 .post-old {
@@ -103,7 +99,7 @@
 		padding-top: 5px;
 		padding-bottom: 5px;
 		padding-right : $general-padding;
-		width: 100%;		
+		width: 100%;
 	}
 	form.form-inline input {
 		width: 100%;
@@ -120,7 +116,6 @@
 
 
 /* COMMENTS */
-
 .post-comments {
 	font-size: 0.9em;
 	padding-right: $general-padding;
@@ -150,6 +145,9 @@
 	margin: 10px 30px 10px 30px;
 	box-shadow: 3px 3px 15px #CCC;
 	color: black;
+	img {
+		max-width: 100%;
+	}
 }
 /* container pour la génération de la vignette pendant l'écriture du post*/
 #live-preview {
@@ -157,18 +155,26 @@
 	padding : 15px;
 	.preview-spinner {
 		text-align : center;
-		color:#ccc;
+		color: #ccc;
 		width : 100%;
 		padding: 30px;
 	}
 }
+
+/* Responsive Youtbe integration : https://coolestguidesontheplanet.com/videodrome/youtube  */
+.youtube-wrap {
+	width : 100%;
+	max-width : 480px;
+	margin: auto;
+}
 .youtube_preview {
 	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 25px;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
 	height: 0;
+	overflow: hidden;
 }
-.youtube_preview iframe {
+.youtube_preview iframe, .youtube_preview object, .youtube_preview embed {
 	position: absolute;
 	top: 0;
 	left: 0;

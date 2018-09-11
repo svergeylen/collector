@@ -9,11 +9,13 @@
 		
 		<%= sanitize comment.message %>
 		
-		<%= react_component "Ago", { since: comment.created_at.to_i}, style:"display:inline-block" %>
+		<span class="time">
+      		<%= long_date(comment.created_at) %>
+    	</span>
 
 		<% if current_user.id == comment.user.id %>
-			<%= link_to edit_comment_path(comment) do %><span class="glyphicon glyphicon-edit"></span><% end %>
-			<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' } do %><span class="glyphicon glyphicon-trash"></span><% end %>
+			<%= link_to edit_comment_path(comment) do fa_icon("edit") end %>
+			<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' } do fa_icon("trash") end %>
 		<% end %>           
 	</div>
 
