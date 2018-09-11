@@ -46,6 +46,14 @@
       <% end %>
     </div>
   </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= form.label :filter_items do %>
+        <%= form.check_box :filter_items, id: :tag_filter_items %> Filtre les items. <small>Si coché (true), les items seront filtrés pour n'afficher que les items liés explicitement à ce tag. Décoché (false), ce tag ne sert pas à filtrer les items et n'est utile qu'à la navigation, au classement.</small>
+      <% end %>
+    </div>
+
+  </div>
 
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">

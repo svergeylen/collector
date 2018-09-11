@@ -1,6 +1,6 @@
 
 <p>
 <% tags.each do |tag| %>
-	<span class="tag text-light"><%= link_to tag.name, tag %></span>
+	<%= render_tag(tag) %>
 <% end %>
 </p>

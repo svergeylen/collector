@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:show, :edit, :update, :destroy]
+  before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy]
 
   # Uniquement les root tags
   def index
@@ -17,14 +17,20 @@ class TagsController < ApplicationController
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
-    @tag = Tag.find(params[:id])
 
     if @tag
       # Ajout du tag actif dans la liste de tags actifs sans faire de doublon
       if session[:active_tags].nil?
         session[:active_tags] = [ @tag.id ]
       else
-        session[:active_tags] = session[:active_tags] + [ @tag.id ] unless session[:active_tags].include?(@tag.id)
+        if session[:active_tags].include?(@tag.id)
+          # Le tag est dans la liste et l'utilisateur reclique dessus -> on le déplace à la fin de l'array
+          # De cette faon, le titre affiché correspond toujours au dernier tags de l'array (plus lisible)
+          session[:active_tags] = session[:active_tags] - [ @tag.id ] 
+        end
+        # Dans les deux cas, on ajoute le tag sélectionné en fin d'array
+        session[:active_tags] = session[:active_tags] + [ @tag.id ] 
+        
       end
 
       @active_tags = Tag.find(session[:active_tags])
@@ -84,11 +90,9 @@ class TagsController < ApplicationController
   end
 
   def edit
-    @tag = Tag.find(params[:id])
   end
 
   def update
-    @tag = Tag.find(params[:id])
     @tag.update_parent_tags(params[:tag][:parent_tags])
     
     if @tag.update(tag_params)
@@ -99,7 +103,7 @@ class TagsController < ApplicationController
   end
 
   def destroy
-    # BUG : Il faut prévoir le déplacement des tags enfants qui deviennent orphelins vers root_tag=true
+    # BUG : Il faut prévoir le déplacement des tags enfants qui deviennent orphelins vers ?? (root_tag=true ?)
     if @tag.destroy
       redirect_to tags_path, notice: "Tag supprimé"
     else
@@ -107,9 +111,8 @@ class TagsController < ApplicationController
     end
   end
 
-  # Permet de supprimer un tag actif de la liste
+  # Permet de supprimer un tag actif de la liste des active_tags (en session utilisateur)
   def remove
-    @tag = Tag.find(params[:id])
     remove_id = params[:remove_id].to_i
 
     if remove_id && session[:active_tags].include?(remove_id)
@@ -143,7 +146,7 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :root_tag, :fixture, :optional, :letter, :default_view, :view_alphabet)
+    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :view_alphabet, :filter_items)
   end
 
 end

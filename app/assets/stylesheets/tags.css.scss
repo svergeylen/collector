@@ -1,9 +1,11 @@
 @import 'colors';
 
-.header-letters {
+/* .header-letters {
 	margin-bottom: 20px;
 }
+*/
 
+/* Blocs utilisés en page d'accueil pour afficher les dernières nouveautés */
 .card-latest {
 	margin-top : 0;
 	padding : 0; /* cancel padding from devise on .card */
@@ -17,19 +19,36 @@
 	}
 }
 
+/* Tag général */
 .tag {
 	white-space: nowrap;
 	font-size : 0.9em;
 	padding : 10px;
 	margin-right: 10px;
-	line-height : 3em;
+	line-height : 2.5em;
 	border-radius: 0.5em;
-	background-color : $high-color;
 	a, a:hover {
 		color : $light-color;
 	}
 }
-.tag:hover {
-	background-color: $high-color-hover;
+/* Tag servant à filter les items listés */
+.tag-filter {
+	background-color : $high-color;
+	&:hover {
+		background-color: $high-color-hover;
+	}
+	a, a:hover {
+		color : white;
+	}
+}
+/* Tag ne servant pas à filter les items listés (uniquement navigation) */
+.tag-nofilter  {
+	background-color : $light-color;
+	&:hover {
+		background-color: $light-color-hover;
+	}
+	a, a:hover {
+		color : $dark-color;
+	}
 }
 

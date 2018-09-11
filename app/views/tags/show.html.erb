@@ -34,10 +34,7 @@
 	<div class="mt-3 mb-3">
 		Tags  :  
 		<% @active_tags.each do |tag| %>
-			<span class="tag">
-				<%= link_to(tag.name, tag) %> 
-				<%= link_to remove_tag_path(remove_id: tag.id) do %>	<%= fa_icon 'times' %><% end %>
-			</span>
+			<%= render_tag(tag) %>
 		<% end %>
 		<div style="display:inline-block;">
 			<%= render partial: "search/form_tags" %>

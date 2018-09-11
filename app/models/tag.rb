@@ -4,7 +4,7 @@ class Tag < ApplicationRecord
 	has_many :ownertags_as_tag,   dependent: :destroy, class_name: "Ownertag"
 	has_many :parent_tags,        	through: :ownertags_as_tag, source: :owner, source_type: 'Tag'
 
-	# Un tag peut contenir plusieurs sub-tags (hiérarchie de dossiers)
+	# Un tag peut contenir plusieurs sub-tags (hiérarchie de tags)
 	has_many :ownertags_as_owner, 	dependent: :destroy, class_name: "Ownertag", as: :owner
 	has_many :tags,               	through: :ownertags_as_owner
 

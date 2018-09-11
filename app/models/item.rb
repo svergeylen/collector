@@ -19,7 +19,6 @@ class Item < ApplicationRecord
 
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)
-		logger.debug "--------> "+active_tag_ids.inspect
 		ids = self.tag_ids - active_tag_ids
 		return Tag.find(ids)
 	end
@@ -27,6 +26,7 @@ class Item < ApplicationRecord
   	# Renvoie les Items correspondants à l'array de tags donné
   	def self.having_tags(ar_tags)
     	#Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+    	# DANIEL -> ICI : ajouter .where(tag.filter_items = true)
     	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
   	end
 
