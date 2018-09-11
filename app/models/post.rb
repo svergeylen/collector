@@ -38,6 +38,26 @@ class Post < ApplicationRecord
 		self.get_upvotes.sum(:vote_weight)
 	end
 
+	# Renvoie une liste de posts qui contiennent le mot clé donné
+	def self.search(keyword)
+		if keyword.present?
+			posts = where('message LIKE ?', "%#{keyword}%").order(created_at: :desc)
+		else
+		 	posts = all
+		end
+
+		# Suppression de tous les champs HTML et liens pour éviter des faux positifs dans la recherche
+		ret = []
+		posts.each do |post| 
+			msg = ActionController::Base.helpers.sanitize(post.message, tags: %w(a), attributes: %w(href))
+			post.message = msg
+			if msg.include?(keyword)
+				ret << post 
+			end
+		end
+		return ret
+	end
+
 	private
 
 	def check_user_exists

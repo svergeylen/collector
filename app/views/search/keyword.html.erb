@@ -6,12 +6,11 @@
 		<h4><%= pluralize( @tags.count, "tag trouvé", "tags trouvés", locale: :fr) %> : </h4>
 		<ul>
 		<% @tags.each do |tag| %>
-			<li><%= link_to tag.name, tag_path(tag), class:"results" %> </li>
+			<li><%= link_to tag.name, tag_path(tag) %> </li>
 		<% end %>
 		</ul>
 	<% else %>
-		<p>Pas de tag trouvé.</p>
-		<p><%= link_to "Créer le tag \"#{@keyword}\"", new_tag_path(name: @keyword) %></p>
+		<p>Pas de tag correspondant.</p>
 	<% end %>
 
 	<% if @items.present? %>
@@ -19,11 +18,35 @@
 
 		<ul>
 		<% @items.each do |item| %>
-			<li><%= link_to item.name, item %> </li>
+			<li><%= link_to item.name, item, title: "Créé le #{long_date(item.created_at)} par #{item.adder.name if item.adder.present?}"  %> </li>
 		<% end %>
 		</ul>
 	<% else %>
-		<p>Pas d'élément trouvé.</p>
+		<p>Pas d'item correspondant.</p>
+	<% end %>
+
+	<% if @posts.present? %>
+		<h4><%= pluralize( @posts.count, "message trouvé", "messages trouvés", locale: :fr) %> : </h4>
+
+		<ul>
+		<% @posts.each do |post| %>
+			<li><%= link_to excerpt(post.message, @keyword, separator: ' ', radius: 8), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %> </li>
+		<% end %>
+		</ul>
+	<% else %>
+		<p>Pas de message correspondant.</p>
+	<% end %>
+
+	<% if @comments.present? %>
+		<h4><%= pluralize( @comments.count, "commentaire trouvé", "commentaires trouvés", locale: :fr) %> : </h4>
+
+		<ul>
+		<% @comments.each do |comment| %>
+			<li><%= link_to excerpt(comment.message, @keyword, separator: ' ', radius: 8), comment.post, title: "Posté le #{long_date(comment.created_at)} par #{comment.user.name}"  %> </li>
+		<% end %>
+		</ul>
+	<% else %>
+		<p>Pas de commentaire correspondant.</p>
 	<% end %>
 
 </div>
