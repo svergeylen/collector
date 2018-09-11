@@ -20,7 +20,7 @@
 
 			<ul>
 			<% @items.each do |item| %>
-				<li><%= link_to( item.friendly_name, item.series) %> 
+				<li><%= link_to item.name, item %> 
 					<small>, le <%= long_date(item.created_at) %> </small></li>
 			<% end %>	
 			</ul>

@@ -32,7 +32,7 @@ module ApplicationHelper
 				mois = "inconnu"
 			end
 
-		return mydate.strftime("%d") + " " + mois.capitalize + " " + mydate.strftime("%y %Hh%M")
+		return mydate.strftime("%d") + " " + mois.capitalize + " " + mydate.strftime("%y, %Hh%M")
 	end
 
 	def short_date(mydate) 
