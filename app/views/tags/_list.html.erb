@@ -1,6 +1,6 @@
 <%= form_with(model: @new_item, local: true, class:"form-horizontal") do |form| %>
 
-	<table class="table table-condensed">
+	<table class="table table-sm">
 	  <thead>
 		  <tr>
 		    <th></th>
@@ -16,20 +16,19 @@
 			<%else %>
 				<tr class="not-owned-by-user">
 			<% end %>
-				
-				<td class="text-center">
-					<%= item.friendly_number %>
-				</td>
-				<td>
-					<%= link_to item.name, item %></a>
-				</td>
-				<td>
-					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
-				</td>
-				<td>
-					<%= item.users.map{ |user| link_to user.name, user }.join(", ").html_safe %>
-				</td>
-			</tr>
+					<td class="text-center">
+						<%= item.friendly_number %>
+					</td>
+					<td>
+						<%= link_to item.name, item %></a>
+					</td>
+					<td>
+						<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
+					</td>
+					<td>
+						<%= item.users.map{ |user| link_to user.name, user }.join(", ").html_safe %>
+					</td>
+				</tr>
 		<% end %>
 
 		<tr>

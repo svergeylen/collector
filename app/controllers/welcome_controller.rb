@@ -2,6 +2,8 @@ class WelcomeController < ApplicationController
 
 	skip_before_action :authenticate_user!
 
+	# Accueil du site vergeylen.eu
+	# PAS d'authentificationr requise
 	def index
 		month = Time.now.strftime('%m')
 		case month
@@ -14,5 +16,12 @@ class WelcomeController < ApplicationController
 		end
 
 		render template: "welcome/index", layout: false
+	end
+
+	# Accueil du Collector
+	# PAS d'authentificationr requise
+	def collector
+	    session[:active_tags] = []
+	    @root_tags = Tag.where(root_tag: true).order(name: :asc)
 	end
 end

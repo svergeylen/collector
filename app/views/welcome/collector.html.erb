@@ -1,0 +1,47 @@
+<div class="rounded-box">
+
+	<h1>Collector</h1>
+
+	<div class="pt-5 pb-5 text-center">
+		<%= render partial: "search/form_tags" %>
+	</div>
+
+	<% if @root_tags.present? %>
+		<div class="container-fluid">
+			<% @root_tags.each_with_index do |tag, index| %>
+				<% if (index % 3 == 0) %>
+					<div class="row">
+				<% end %>
+					<div class="col-md-4">
+
+						<div class="card card-latest">
+						  <div class="card-header bg-major">
+						    <%= link_to tag.name, tag_path(tag), class:'text-light' %>
+						  </div>
+						  <ul class="list-group list-group-flush">
+						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
+						    	<li class="list-group-item">
+						    		<%= link_to item.name, item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
+						    	</li>
+						    <% end %>
+						  </ul>
+						</div> <!-- card -->
+
+					</div> <!-- col -->
+				<% if (index % 3 == 2) %>
+					</div> <!-- row -->
+				<% end %>
+			<% end %>
+		</div>
+	<%end %>
+
+	<%if @orphans.present? %>
+		<h3>Dossiers orphelins</h3>
+		<ul>
+			<% @orphans.each do |tag| %>
+			<li><%= link_to tag.name, tag %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
+</div>

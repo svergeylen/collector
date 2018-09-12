@@ -44,7 +44,7 @@ class ItemsController < ApplicationController
       save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
-			redirect_to @item.series, notice: 'Elément ajouté'
+			redirect_to @item, notice: 'Elément ajouté'
     else
 			render :new 
     end
@@ -65,14 +65,6 @@ class ItemsController < ApplicationController
     end
   end
 
-  # Gestion des votes sur les comments
-  def upvote
-    if current_user.voted_for? @comment
-      current_user.unvote_for @comment
-    else
-      current_user.up_votes @comment
-    end
-  end
 
   # Gestion des quantités (Composant React ItemQuantity)
   def quantity
@@ -102,15 +94,6 @@ class ItemsController < ApplicationController
   end
 
 
-  # Gestion des votes "like" sur les items
-  def upvote
-    if current_user.voted_for? @item
-      current_user.unvote_for @item
-    else
-      current_user.up_votes @item
-    end
-  end
-
   private
     # Sauvegarde les attachments s'il y en a
     def save_attachments
@@ -129,6 +112,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :description, :attachments)
+      params.require(:item).permit(:number, :name, :description, :attachments, tag_attributes: [:id, :name])
     end
 end

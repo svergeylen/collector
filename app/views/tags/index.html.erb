@@ -1,38 +1,44 @@
 <div class="rounded-box">
 
-	<h1>Collector</h1>
+	<h1>Tags</h1>
 
-	<div class="pt-5 pb-5 text-center">
-		<%= render partial: "search/form_tags" %>
+	<div class=" pb-3 text-center">
+		<%# render partial: "search/form_tags" %>
 	</div>
 
-	<% if @root_tags.present? %>
-		<div class="container-fluid">
-			<% @root_tags.each_with_index do |tag, index| %>
-				<% if (index % 3 == 0) %>
-					<div class="row">
-				<% end %>
-					<div class="col-md-4">
 
-						<div class="card card-latest">
-						  <div class="card-header bg-major">
-						    <%= link_to tag.name, tag_path(tag), class:'text-light' %>
-						  </div>
-						  <ul class="list-group list-group-flush">
-						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
-						    	<li class="list-group-item">
-						    		<%= link_to item.name, item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
-						    	</li>
-						    <% end %>
-						  </ul>
-						</div> <!-- card -->
+	<div class="btn-group mb-4">
+		<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#", "vide"].each do |letter| %>
+			<%= link_to letter, tags_path(letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
+		<% end %>
+	</div>
+	
+	<% if @tag_counter.present? %>
+		<p>Il y a <%= @tag_counter.to_s %> tags dans la base de données.</p>
+	<% end %>
 
-					</div> <!-- col -->
-				<% if (index % 3 == 2) %>
-					</div> <!-- row -->
-				<% end %>
+	<% if @tags.present? %>
+		<table class="table table-sm">
+			<tr>
+				<th>Nom</th>
+				<th>Items</th>
+				<th>Actions</th>
+			</tr>
+			<% @tags.each do |tag| %>
+				<tr>
+					<td>
+						<%= link_to tag.name, tag %>
+					</td>
+					<td>
+						<%= tag.items.present? ? tag.items.count.to_s : "0" %>
+					</td>
+					<td>
+						<%= link_to edit_tag_path(tag) do fa_icon "edit" end %>
+						<%= link_to tag_path(tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } do fa_icon "trash" end %>
+					</td>
+				</tr>
 			<% end %>
-		</div>
+		</table>
 	<%end %>
 
 	<%if @orphans.present? %>

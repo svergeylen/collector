@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   # Attachment
   get "attachment/:attachment_id/:style.:extension", to: "attachments#download", as: "download_attachment"
 
+	# Accueil
+	get 'welcome/index'
+
 	# Users
 	devise_for :users, controllers: {
     	sessions: 'users/sessions',
@@ -11,29 +14,23 @@ Rails.application.routes.draw do
 	resources :users, only: [:show] do
 		member do
 			get 'delete_profile_picture', as: "delete_profile_picture"
-			get 'favorites'
 		end
 	end
 
 	# La Une
 	resources :posts do
 		member do
-			get 'upvote'
 			get 'delete_attachment/:attachment_id', to: "posts#delete_attachment", as: "delete_attachment"
 			get 'remove_preview'
 		end
 	end
 	post 'posts/preview'
-	resources :comments do
-		member do
-			post 'upvote'
-		end
-	end
+	resources :comments
 
 	# Collector
-	get 'welcome/index'
-	get 'search/keyword'
-	post 'search/tag'
+	get 'welcome/collector'
+	get 'search/keyword'	# recherche globale (haut à droite)
+	post 'search/tag' 		# recherche ajax dans les tags (navigation)
 	resources :tags do
 		member do
 			get 'star'
@@ -42,7 +39,6 @@ Rails.application.routes.draw do
 	end
 	resources :items do
 		member do
-			post 'upvote'
 			post 'quantity'
 			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end

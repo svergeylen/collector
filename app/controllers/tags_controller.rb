@@ -3,9 +3,21 @@ class TagsController < ApplicationController
 
   # Uniquement les root tags
   def index
-    @title  = "Collector"
-    session[:active_tags] = []
-    @root_tags = Tag.where(root_tag: true).order(name: :asc)
+    logger.debug params[:letter]
+    case params[:letter]
+      when "A".."Z"
+        logger.debug "---> Lettre"
+        @tags = Tag.where(letter: params[:letter]).order(name: :asc)
+      when "#"
+        logger.debug "---> Chiffre"
+        @tags = Tag.where(letter: 0..9999999).order(name: :asc)
+      when "vide"
+        logger.debug "---> Ni lettre, ni chiffre"
+        @tags = Tag.where("letter is NULL OR letter is ''").order(name: :asc)
+      else
+        # pas d'action. @tags = nil
+        @tag_counter = Tag.all.count 
+    end
 
     # Recherche de dossiers potentiellement orphelins (suppression de leur parent ou erreur database)
 		all_tags = Tag.where(root_tag: false).map(&:id)
