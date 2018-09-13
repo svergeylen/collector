@@ -4,14 +4,13 @@
   <div class="col-sm-8">
   	<div id="posts">
 	    <%= render partial: "new" , locals: { post: Post.new }  %>
-	    <%= render partial: "posts", locals: {posts: @posts, next_page: @next_page } %>
+	    <%= render partial: "posts", locals: {posts: @posts} %>
 	</div>
 
 	<div class="next_posts">
 		<p><%= link_to "Afficher les précédents messages", "javascript:load_next_posts()", class: "" %></p>
 	</div>
 	
-
   </div>
   <div class="col-sm-3">
   </div>

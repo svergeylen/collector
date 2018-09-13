@@ -41,7 +41,7 @@ class Post < ApplicationRecord
 	# Renvoie une liste de posts qui contiennent le mot clé donné
 	def self.search(keyword)
 		if keyword.present?
-			posts = where('message LIKE ?', "%#{keyword}%").order(created_at: :desc)
+			posts = where('message LIKE ? OR preview_description LIKE ? OR preview_url LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%").order(created_at: :desc)
 		else
 		 	posts = all
 		end
@@ -50,8 +50,8 @@ class Post < ApplicationRecord
 		ret = []
 		posts.each do |post| 
 			msg = ActionController::Base.helpers.sanitize(post.message, tags: %w(a), attributes: %w(href))
-			post.message = msg
-			if msg.include?(keyword)
+			if msg.include?(keyword) or post.preview_description.include?(keyword) or post.preview_url.include?(keyword)
+				post.message = msg
 				ret << post 
 			end
 		end

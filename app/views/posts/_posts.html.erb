@@ -1,7 +1,4 @@
 
 <% posts.each do |post| %>
-  <div class="post rounded-box <%= (current_user.displayed_la_une < post.updated_at) ? 'post-new' : 'post-old' %> ">
-    <%= render partial: "post_content", locals: {post: post} %>
-    <%= render partial: "post_comments", locals: {post: post} %>
-  </div>
+    <%= render partial: "post", locals: {post: post} %>
 <% end %>
