@@ -50,7 +50,9 @@ class Post < ApplicationRecord
 		ret = []
 		posts.each do |post| 
 			msg = ActionController::Base.helpers.sanitize(post.message, tags: %w(a), attributes: %w(href))
-			if msg.include?(keyword) or post.preview_description.include?(keyword) or post.preview_url.include?(keyword)
+			if msg.include?(keyword) or 
+				(post.preview_description.present? and post.preview_description.include?(keyword)) or
+				(post.preview_url.present? and post.preview_url.include?(keyword))
 				post.message = msg
 				ret << post 
 			end
