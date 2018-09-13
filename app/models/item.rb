@@ -98,7 +98,7 @@ class Item < ApplicationRecord
 		return ret
 	end
 
-	# Renvoi le string du numéro de l'item (integer ou float suivant les cas)
+	# Renvoie le string du numéro de l'item (integer ou float suivant les cas)
 	def friendly_number
 		if self.number.present?
 			if (self.number.round(0) == self.number)

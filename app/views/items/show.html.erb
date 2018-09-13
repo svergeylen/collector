@@ -27,8 +27,10 @@
 			<% end %>
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			
-			<h4>Notes</h4>
-			<%= sanitize @item.description %>
+			<% if @item.description.present? %>
+				<h4>Notes</h4>
+				<%= sanitize @item.description %>
+			<% end %>
 			
 
 	<% if @attachments.present? %>
@@ -37,9 +39,9 @@
 	<% end %>
 
 	
-	<h4>Ajouter une image</h4>
-		<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
-      	<%= form.file_field :attachments, multiple: true %>
+	
+	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
+      	Ajouter une image : <%= form.file_field :attachments, multiple: true %>
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
 	
