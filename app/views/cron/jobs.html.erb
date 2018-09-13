@@ -24,7 +24,7 @@
 				<td><%= job.user_id %> </td>
 				<td><%= job.memory.to_s %></td>
 				<td><%= job.done %></td>
-				<td><%= job.created_at %></td>
+				<td><%= long_date(job.created_at) %></td>
 			</tr>
 		<% end %>
 	</tbody>

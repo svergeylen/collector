@@ -6,9 +6,8 @@
 <ul>
 	<% data[:items].each do |item| %>
 		<li>
-			<%= link_to item.series.name, series_path(item.series) %>
-			<%= "(n°"+item.friendly_number+")" if item.number %> : 
-		 	<%= link_to item.name, item %>
+			<%= link_to item.name, item %> 
+			(<%= raw item.tags.map{ |tag| raw link_to(tag.name, tag) }.join(", ") %>)
 		</li>
 	<% end %>
 </ul>

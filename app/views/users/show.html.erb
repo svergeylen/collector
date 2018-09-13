@@ -1,6 +1,9 @@
 <div class="row">
 	<div class="col-sm-8">
 		<div class="rounded-box">
+			<div class="pull-right">
+				<%= link_to 'Modifier mon profil', edit_user_registration_path %>
+			</div>
 			<h2><%= @user.name %></h2>
 
 			<p>Courriel : <%= @user.email %></p>

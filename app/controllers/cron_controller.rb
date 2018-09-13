@@ -56,6 +56,6 @@ class CronController < ApplicationController
 
 	# Liste les jobs dans la table
 	def jobs
-		@jobs = Job.all
+		@jobs = Job.all.order(created_at: :desc)
 	end
 end
