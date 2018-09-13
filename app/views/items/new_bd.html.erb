@@ -13,7 +13,7 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group row">
     <%= form.label :series, "Série", class:"control-label col-sm-2" %>
     <div class="col-sm-6">
       <%= form.select :series, 
@@ -26,8 +26,8 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :name, "Titre", class:"control-label col-sm-2" %>
+  <div class="form-group row">
+    <%= form.label :name, "Titre", class:"col-form-label col-sm-2" %>
     <div class="col-sm-1">
       <%= form.text_field :number, id: :item_number, value: @item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
     </div>
@@ -37,20 +37,20 @@
   </div>
   
  
-  <div class="form-group">
-    <%= form.label :auteurs, "Auteurs", class:"control-label col-sm-2" %>
+  <div class="form-group row">
+    <%= form.label :auteurs, "Auteurs", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
        <%= form.text_field :auteurs, id: :item_auteurs, class: "form-control", autocomplete: :off %>
     </div>
   </div>
-  <div class="form-group">
-    <%= form.label :editions, "Editions", class:"control-label col-sm-2" %>
+  <div class="form-group row">
+    <%= form.label :editions, "Editions", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
        <%= form.text_field :editions, id: :item_editions, class: "form-control", autocomplete: :off %>
     </div>
   </div>
-  <div class="form-group">
-    <%= form.label :rangement, "Rangement", class:"control-label col-sm-2" %>
+  <div class="form-group row">
+    <%= form.label :rangement, "Rangement", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
        <%= form.text_field :series, id: :item_rangement, class: "form-control", autocomplete: :off %>
     </div>
@@ -58,7 +58,7 @@
 
   <%= render partial: "attachement_form", locals: { form: form, item: @item } %>
 
-  <div class="form-group">
+  <div class="form-group row">
     <div class="col-sm-offset-2 col-sm-1">
       <%= form.submit "Sauver", class:"btn btn-primary" %>
     </div>

@@ -27,7 +27,7 @@ class ItemsController < ApplicationController
     case params[:view]
     # Vue spécifique pour la création d'un item "BD"
     when "bd"
-      @tag_series = Folder.find_by(name: "Séries")
+      @tag_series = Tag.find_by(name: "Séries")
       @series = @tag_series.children
       render "items/new_bd"
     else
