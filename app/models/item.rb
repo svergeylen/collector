@@ -27,7 +27,10 @@ class Item < ApplicationRecord
   	def self.having_tags(ar_tags)
     	#Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
     	# DANIEL -> ICI : ajouter .where(tag.filter_items = true)
+    	
     	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+
+    	# Item.includes(:tags).where(tags: {name: ar_tags, filter_items: false})
   	end
 
   	# Màj les tag de l'item (devrait être géré par rails, mais unpermitted parameters systématiquement)
