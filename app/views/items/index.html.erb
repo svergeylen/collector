@@ -1,0 +1,38 @@
+<div class="rounded-box">
+	<h1>Items</h1>
+
+	<div class="btn-group mb-4">
+		<% ["Tous", "Orphelins"].each do |mode| %>
+			<%= link_to mode, items_path(mode: mode), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:mode]==mode)}" %>
+		<% end %>
+	</div>
+
+	<% if @items.present? %>
+		<%= will_paginate @items, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+		<table class="table table-sm">
+			<tr>
+				<th>Nom</th>
+				<th>Tags</th>
+				<th>Actions</th>
+			</tr>
+			<% @items.each do |item| %>
+				<tr>
+					<td>
+						<%= link_to item.name, item %>
+					</td>
+					<td>
+						<%if item.tags.present? %>
+							<%= raw item.tags.map { |tag| raw link_to(tag.name, tag) }.join(", ") %>
+						<% end %>
+					</td>
+					<td>
+						<%= link_to edit_item_path(item) do fa_icon "edit" end %>
+						<%= link_to item_path(item), method: :delete, data: { confirm: 'Etes-vous certain de supprimer cet item ?' } do fa_icon "trash" end %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+		<%= will_paginate @items, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+	<%end %>
+
+</div>

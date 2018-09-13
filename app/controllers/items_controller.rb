@@ -1,12 +1,21 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy, :upvote, :plus, :minus]
 
+  # Liste des items pour gestion banque de données
+  def index
+    per_page = 40
+    case params[:mode]
+      when "Orphelins"
+        item_ids_having_tags = Ownertag.all.group(:owner_id).where(owner_type: 'Item').pluck(:owner_id)
+        @items = Item.where.not(id: item_ids_having_tags).order(:name).paginate(page: params[:page], per_page: per_page)
+      else
+        @items = Item.includes(:tags).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+    end
+  end
+
   # GET /items/1
   # GET /items/1.json
   def show
-    # h = @item.next_and_previous_ids
-    # @next_id = h[:next]
-    # @previous_id = h[:previous]
     @attachments = @item.attachments
   end
 
@@ -20,7 +29,7 @@ class ItemsController < ApplicationController
     when "bd"
       @tag_series = Folder.find_by(name: "Séries")
       @series = @tag_series.children
-      render "items/new_#{params[:view]}"
+      render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
       render "new"
@@ -76,9 +85,8 @@ class ItemsController < ApplicationController
   # DELETE /items/1
   # DELETE /items/1.json
   def destroy
-		@item.series.touch
     @item.destroy
-    redirect_to @item.series, notice: 'Elément supprimé'
+    redirect_back fallback_location: welcome_collector_path, notice: 'Elément supprimé'
   end
 
 

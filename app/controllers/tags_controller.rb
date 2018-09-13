@@ -1,9 +1,8 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy]
 
-  # Uniquement les root tags
+  # Liste des tags pour gestion banque de données
   def index
-    logger.debug params[:letter]
     per_page = 40
     case params[:letter]
       when "A".."W"
@@ -24,9 +23,6 @@ class TagsController < ApplicationController
         # pas d'action. @tags = nil
         @tag_counter = Tag.all.count 
     end
-
-    
-
   end
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
