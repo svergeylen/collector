@@ -8,7 +8,7 @@
 
 
 	<div class="btn-group mb-4">
-		<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#", "vide"].each do |letter| %>
+		<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "#", "vide", "orphelins"].each do |letter| %>
 			<%= link_to letter, tags_path(letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
 		<% end %>
 	</div>
@@ -18,6 +18,7 @@
 	<% end %>
 
 	<% if @tags.present? %>
+		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 		<table class="table table-sm">
 			<tr>
 				<th>Nom</th>
@@ -39,15 +40,7 @@
 				</tr>
 			<% end %>
 		</table>
+		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 	<%end %>
-
-	<%if @orphans.present? %>
-		<h3>Dossiers orphelins</h3>
-		<ul>
-			<% @orphans.each do |tag| %>
-			<li><%= link_to tag.name, tag %></li>
-			<% end %>
-		</ul>
-	<% end %>
 
 </div>

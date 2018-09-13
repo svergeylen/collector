@@ -32,7 +32,7 @@
 	<h1><%= @tag.name %></h1>
 
 	<div class="mt-3 mb-3">
-		Tags  :  
+		Tags actifs :  
 		<% @active_tags.each do |tag| %>
 			<%= render_tag(tag) %>
 		<% end %>
@@ -52,7 +52,7 @@
 	<% end %>
 
 	<% if @child_tags.present? %>
-		<p>Navigation :</p>
+		<p>Enfants :</p>
 		<ul class="children_tags">
 			<% @child_tags.each do |tag| %>
 				<li><%= link_to tag.name, tag  %></li>
