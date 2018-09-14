@@ -29,17 +29,18 @@ class TagsController < ApplicationController
   def show
 
     if @tag
-      # Ajout du tag actif dans la liste de tags actifs sans faire de doublon
+      # Si la liste est vide, on initialise la liste avec l'unique tag sélectionné
       if session[:active_tags].nil?
         session[:active_tags] = [ @tag.id ]
       else
+        # Si on clique sur un tag qui est déjà dans la liste, on ne garde que les tags amont à ce tag dans la liste (navigation breadcrumbs)
         if session[:active_tags].include?(@tag.id)
-          # Le tag est dans la liste et l'utilisateur reclique dessus -> on le déplace à la fin de l'array
-          # De cette faon, le titre affiché correspond toujours au dernier tags de l'array (plus lisible)
-          session[:active_tags] = session[:active_tags] - [ @tag.id ] 
+          i = session[:active_tags].index(@tag.id)
+          session[:active_tags] = session[:active_tags][0..i]
+        else
+          # Sinon, on ajoute le tag sélectionné en fin de liste
+          session[:active_tags] = session[:active_tags] + [ @tag.id ] 
         end
-        # Dans les deux cas, on ajoute le tag sélectionné en fin d'array
-        session[:active_tags] = session[:active_tags] + [ @tag.id ] 
         
       end
 
@@ -75,11 +76,7 @@ class TagsController < ApplicationController
 
   def new
     @tag = Tag.new
-    
-    # Cherche des tags à proposer pour populer le champ parent_tags
-    # proposal = Tag.where(id: get_session_breadcrumbs).where(optional: false).map(&:id)
-    # On propose uniquement le premier parent pour éviter la confusion...
-    # sinon, on se retrouve avec l'item à tous les niveaux de la hiérarchie (c'est nul)
+    # Reherche des tags à proposer pour populer le champ parent_tags
     @tag.parent_tag_ids = [ params[:parent_tag].to_s ]
   end
 
@@ -132,7 +129,7 @@ class TagsController < ApplicationController
       if remove_id == @tag.id 
         if session[:active_tags].empty?
           # Tous les tags actifs ont été supprimés par l'utilisateur
-          redirect_to tags_path, notice: "Vous avez supprimé tous les tags acitfs"
+          redirect_to tags_path, notice: "Vous avez supprimé tous les tags actifs"
         else
           # Il reste au moins un tag actif dans la liste, on choisit le dernier tag de la liste
           @tag = Tag.find(session[:active_tags].last)

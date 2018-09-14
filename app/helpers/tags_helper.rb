@@ -9,7 +9,7 @@ module TagsHelper
 			ret += 'tag-nofilter'
 		end
 		ret += " '>"
-		ret += link_to(tag.name, tag)
+		ret += link_to tag.name, tag 
 		ret += " "
 		ret += link_to (fa_icon 'times').html_safe, remove_tag_path(id: tag.id, remove_id: tag.id)
 		ret += "</span>"
