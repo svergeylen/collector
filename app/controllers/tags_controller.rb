@@ -45,12 +45,12 @@ class TagsController < ApplicationController
 
       @active_tags = Tag.find(session[:active_tags])
 
-      @child_tags = @tag.children
-
       # Si le tag a des enfants, il faut afficher les tags enfants (navigation)
-      # Si le tag n'a plus d'enfant, on peut afficher les items.
-      if @child_tags.empty?
+      if @tag.tags.present?
+        @child_tags = @tag.children.paginate(page: params[:page], per_page: 50)
 
+      # Si le tag n'a plus d'enfant, on peut afficher les items.
+      else
         # Recherche des items qui possèdent tous les tags actifs
         @items = Item.having_tags(session[:active_tags])
 
