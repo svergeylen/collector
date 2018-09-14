@@ -17,6 +17,10 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
+	# Temporaire pour la migration de l'ancien site.
+	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
+	has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
+
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)
 		ids = self.tag_ids - active_tag_ids

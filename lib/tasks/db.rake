@@ -2,85 +2,87 @@ namespace :db do
   desc "Conversion des données site Collector"
 
 
-
   task convert_bd: :environment do
-	livres              = Folder.create(name: "Livres", root_folder: true, default_view: "none")
-		bd          	= Folder.create(name: "Bandes dessinées", default_view: "none")
-			auteurs		= Folder.create(name: "Auteurs", default_view: "none")
-			themes	  	= Folder.create(name: "Thèmes", default_view: "none")
-			  sf = Folder.create(name: "Science-Fiction", default_view: "list")
-			  hs = Folder.create(name: "Histoire", default_view: "list")
-			  ph = Folder.create(name: "Philosophie", default_view: "list")
-			  so = Folder.create(name: "Space opera", default_view: "list")
-			  th = Folder.create(name: "Thriller", default_view: "list")
-			  themes.folders << [sf, hs, ph, so, th]
-			series		= Folder.create(name: "Séries", default_view: "none")
-	livres.folders << bd
-	bd.folders << [auteurs, themes, series]
+		bd          	= Tag.create(name: "Bandes dessinées", root_tag: true)
+			auteurs		= Tag.create(name: "Auteurs", default_view: "none")
+			themes	  	= Tag.create(name: "Thèmes", default_view: "none")
+			  sf = Tag.create(name: "Science-Fiction", default_view: "list")
+			  hs = Tag.create(name: "Histoire", default_view: "list")
+			  ph = Tag.create(name: "Philosophie", default_view: "list")
+			  so = Tag.create(name: "Space opera", default_view: "list")
+			  th = Tag.create(name: "Thriller", default_view: "list")
+			  themes.tags << [sf, hs, ph, so, th]
+			series		= Tag.create(name: "Séries", default_view: "none")
+		bd.tags << [auteurs, themes, series]
 
-	generic("Bandes dessinées", 1, series.id)
+		generic("Bandes dessinées", 1, series.id)
 
-	# Association de tous les folders existants (ex-tags auteurs) dans le nouveau folder "Auteurs"
-	Folder.where(category_id: 1).each do |folder|
-		auteurs.folders << folder
-	end
+		# Déplacement de tous les auteurs dans le tag "Auteurs"
+		Tag.where(category_id: 1).each do |tag|
+			auteurs.tags << tag
+		end
   end
 
 
-  task convert_romans: :environment do
-	id = Folder.where(name: "Livres").first.id
-	generic("Romans", 2, id)
+  task convert_livres: :environment do
+  	livre = Tag.create(name: "Livres", root_tag: true)
+		id = livre.id
+		generic("Livres", 2, id) # Fusion des romans dans livres
+		generic("Livres", 6, id) # Fusion des livres techniques dans Livres
+		generic("Voyage", 10, id) # On garde un sous-dossier voyage dans Livres
   end
 
   task convert_bonsais: :environment do
-	generic("Bonsais", 4, nil)
-  end
-
-  task convert_livres: :environment do
-	id = Folder.where(name: "Livres").first.id
-	generic("Didactiques", 6, id)
+  	livre = Tag.create(name: "Bonsais", root_tag: true)
+		generic("Bonsais", 4, nil)
   end
 
   task convert_ludo: :environment do
-	generic("Ludothèque", 8, nil)
+		generic("Ludothèque", 8, nil)
   end
 
- task convert_voyage: :environment do
-	id = Folder.where(name: "Livres").first.id
-	generic("Voyage", 10, id)
-  end
-
- task convert_modelisme: :environment do
-	generic("Modélisme", 12, nil)
+	task convert_modelisme: :environment do
+		generic("Modélisme", 12, nil)
   end
 	
+	# Passe certains tag en vue gallerie par défaut ou lieu de vue en liste
+	task activate_gallery: :environment do 
+		bonsais = Tag.where(name:"Bonsais").first
+		bonsais.tags.update_all(default_view: "gallery")
+		ludo = Tag.where(name:"Ludothèque").first
+		ludo.tags.update_all(default_view: "gallery")
+		modelisme = Tag.where(name:"Modélisme").first
+		modelisme.tags.update_all(default_view: "gallery")
+	end
 
 private
 
-	def generic(folder_name, category_id, parent_folder_id)
-		puts "Generic Convert for category_id="+category_id.to_s+" to folder name='"+folder_name+"'"
+	def generic(tag_name, category_id, parent_tag_id)
+		puts "Generic Convert for category_id="+category_id.to_s+" to tag name='"+tag_name+"'"
 
-		if Folder.where(name: folder_name).exists?
-			parent_folder		= Folder.where(name: folder_name).first
+		# Recherche du tag parent (souvent un root_tag)
+		if Tag.where(name: tag_name).exists?
+			parent_tag		= Tag.where(name: tag_name).first
 		else
-			if 	parent_folder_id.present?
-				parent_folder		= Folder.create(name: folder_name, default_view: "none") 
-				parent_folder.parent_folders << Folder.find(parent_folder_id.to_i)
+			if 	parent_tag_id.present?
+				parent_tag		= Tag.create(name: tag_name, default_view: "list") 
+				parent_tag.parent_tags << Tag.find(parent_tag_id.to_i)
 			else
-				parent_folder		= Folder.create(name: folder_name, default_view: "none", root_folder: true) 
+				parent_tag		= Tag.create(name: tag_name, default_view: "list", root_tag: true) 
 			end
 		end
 
 		Series.where(category_id: category_id).each do |serie|
 			puts "  - "+serie.name+" ("+serie.items.count.to_s+" items)"
-			if Folder.where(name: serie.name).exists?
-				current_folder  = Folder.where(name: serie.name).first
+			if Tag.where(name: serie.name).exists?
+				current_tag  = Tag.where(name: serie.name).first
 			else
-				current_folder = Folder.create(name: serie.name, letter: serie.letter, default_view: "list" )
+				current_tag = Tag.create(name: serie.name, letter: serie.letter, default_view: "list" )
 			end
-			parent_folder.folders << current_folder
+			parent_tag.tags << current_tag
 			serie.items.each do |item|
-				item.folders << [current_folder, parent_folder]
+				item.tags << [current_tag, parent_tag] # Ex-serie convertie en tag et root_tag
+				item.tags << item.old_tags # anciens auteurs de la table items_tags
 			end
 			
 		end
