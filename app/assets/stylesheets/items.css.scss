@@ -1,6 +1,11 @@
 
 @import 'colors';
 
+/* Selectize Bootstrap 4 theme : https://github.com/const-se/selectize-bootstrap4-theme */
+// Your variable overrides
+// $selectize-input-bg: #111;
+// @import "selectise.bootstrap4";
+
 /* Item/show */
 #itemCarousel {
 	min-height : 100px;

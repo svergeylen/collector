@@ -37,9 +37,23 @@ class Item < ApplicationRecord
     	# Item.includes(:tags).where(tags: {name: ar_tags, filter_items: false})
   	end
 
-  	# Màj les tag de l'item (devrait être géré par rails, mais unpermitted parameters systématiquement)
-  	def update_tag_ids(tag_ids)
-  		self.tag_ids = tag_ids
+  	# Ajoute les tags donnés comme liste de strings séparés par des virgules et/ou crée les nouveaux tags
+  	def add_tags_by_name(tag_names, parent_tag_name = nil)
+  		# Recherche du tag parent s'il existe
+  		parent_tag = Tag.find_or_create_by(name: parent_tag_name) if parent_tag_name.present? 
+  		# Pour chaque tags séparé par une virgule :
+  		tag_names.split(",").each do |tag_name|
+  			# Recherche d'un tag existatn sur base du nom string donné (ou création)
+  			tag = Tag.find_or_create_by(name: tag_name)
+  			# Si un parent est indique, on relie ces nouveaux tags au parent_tag
+			if parent_tag.present?
+				tag.parent_tags << parent_tag unless tag.parent_tags.include?(parent_tag)
+				tag.save
+			end
+			# Association des tags à l'item, sans faire de doublon
+			self.tags << tag unless self.tags.include?(tag)
+  		end
+  		
   	end
 
 

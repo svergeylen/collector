@@ -62,7 +62,8 @@ gem 'will_paginate', '~> 3.1.0'
 gem 'will_paginate-bootstrap4'
 
 # Sélection de tags dans un champ input (multiple select/deselect)
-gem 'chosen-rails'
+#gem 'chosen-rails'
+#gem "selectize-rails"
 
 
 group :development, :test do

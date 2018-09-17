@@ -15,5 +15,5 @@
 //= require popper
 //= require turbolinks
 //= require bootstrap
-//= require chosen-jquery
+//= require selectize.js-master/dist/js/standalone/selectize
 //= require_tree .

@@ -1,8 +1,8 @@
 
-<% if true && Rails.env == "development" %>
+<% if false && Rails.env == "development" %>
 	<div class="rounded-box">
 		<p>Active tags = <%= session[:active_tags].inspect %></p>
-		
+		<p>@series_prefilled_ids = <%= @series_prefilled_ids.inspect if @series_prefilled_ids.present? %>
 		<h4>Tag</h4>
 		<% if @tag.present? %>
 			<p>Tag : <%= @tag.inspect %></p>
@@ -17,5 +17,7 @@
 		<h4>Params</h4>
 		<%= params.inspect %>
 
+		<h4>Divers</h4>
+		<%# Rails.application.config.assets.paths.to_s %>
 	</div>
 <% end %>

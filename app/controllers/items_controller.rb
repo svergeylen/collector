@@ -27,8 +27,20 @@ class ItemsController < ApplicationController
     case params[:view]
     # Vue spécifique pour la création d'un item "BD"
     when "bd"
-      @tag_series = Tag.find_by(name: "Séries")
-      @series = @tag_series.children
+      # Champ séries
+      tag_bd = Tag.where(name: "Bandes dessinées").first
+      @series = tag_bd.nil? ? Tag.all : tag_bd.children
+      @series_prefilled_ids = [ tag_bd.id ] + session[:active_tags]
+      @series_prefilled_ids.uniq!
+      # Champ Auteurs
+      tag_auteurs = Tag.where(name:"Auteurs").first
+      @auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
+      @auteurs_prefilled_ids = []
+      # Champ Rangement
+      tag_rangement = Tag.where(name: "Rangement").first
+      @rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
+      @rangements_prefilled_ids = []
+    
       render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
@@ -63,7 +75,6 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
 		@item.tags_list = params[:item][:tags_list] if params[:item][:tags_list]
-    @item.adder = current_user if @item.adder.blank?
 
     if @item.update(item_params)
       save_attachments

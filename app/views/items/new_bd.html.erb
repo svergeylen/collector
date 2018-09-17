@@ -14,15 +14,13 @@
   <% end %>
 
   <div class="form-group row">
-    <%= form.label :series, "Série", class:"control-label col-sm-2" %>
+    <%= form.label :series, "Série", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
       <%= form.select :series, 
-        options_from_collection_for_select(@series, :id, :name, [params[:parent_tag_id]] ), 
+        options_from_collection_for_select(@series, :id, :name, @series_prefilled_ids), 
         { include_blank: true },
-        { multiple: true,  class: 'chosen-select' }
+        { multiple: true,  id: 'selectize-series' }
       %>
-
-       <%# form.text_field :series, id: :item_series, class: "form-control", autocomplete: :off %>
     </div>
   </div>
 
@@ -40,19 +38,21 @@
   <div class="form-group row">
     <%= form.label :auteurs, "Auteurs", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
-       <%= form.text_field :auteurs, id: :item_auteurs, class: "form-control", autocomplete: :off %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <%= form.label :editions, "Editions", class:"col-form-label col-sm-2" %>
-    <div class="col-sm-6">
-       <%= form.text_field :editions, id: :item_editions, class: "form-control", autocomplete: :off %>
+      <%= form.select :auteurs, 
+        options_from_collection_for_select(@auteurs, :id, :name, @auteurs_prefilled_ids), 
+        { include_blank: true },
+        { multiple: true,  id: 'selectize-auteurs' }
+      %>
     </div>
   </div>
   <div class="form-group row">
     <%= form.label :rangement, "Rangement", class:"col-form-label col-sm-2" %>
     <div class="col-sm-6">
-       <%= form.text_field :series, id: :item_rangement, class: "form-control", autocomplete: :off %>
+      <%= form.select :rangement, 
+        options_from_collection_for_select(@rangements, :id, :name, @rangements_prefilled_ids), 
+        { include_blank: true },
+        { multiple: true,  id: 'selectize-rangement' }
+      %>
     </div>
   </div>
 

@@ -76,7 +76,7 @@ class TagsController < ApplicationController
 
   def new
     @tag = Tag.new
-    # Reherche des tags à proposer pour populer le champ parent_tags
+    # Reherche des tags à proposer pour populer le(s) champ(s) parent_tags
     @tag.parent_tag_ids = [ params[:parent_tag].to_s ]
   end
 
