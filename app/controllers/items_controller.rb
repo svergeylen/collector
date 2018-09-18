@@ -22,44 +22,44 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-    
-    # Redirection vers la vue spécifique en fonction du type souhaité
+  
     case params[:view]
-    # Vue spécifique pour la création d'un item "BD"
+    # Vue spécifique un item "BD"
     when "bd"
-      # Champ séries
-      tag_bd = Tag.where(name: "Bandes dessinées").first
-      @series = tag_bd.nil? ? Tag.all : tag_bd.children
-      @series_prefilled_ids = [ tag_bd.id ] + session[:active_tags]
-      @series_prefilled_ids.uniq!
-      # Champ Auteurs
-      tag_auteurs = Tag.where(name:"Auteurs").first
-      @auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
-      @auteurs_prefilled_ids = []
-      # Champ Rangement
-      tag_rangement = Tag.where(name: "Rangement").first
-      @rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
-      @rangements_prefilled_ids = []
-    
+      special_bd    
       render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
-      render "new"
+      render "items/new"
     end
   end
 
+
   # GET /items/1/edit
   def edit
+
+    case params[:view]
+    # Vue spécifique un item "BD"
+    when "bd"
+      special_bd
+      render "items/edit_bd"
+    else
+      render "items/edit"
+    end
   end
 
   # POST /items
   # POST /items.json
   def create
     @item = Item.new(item_params)
-		@item.update_tag_ids(params[:item][:tag_ids])
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
+
+    # Création des tags
+    @item.update_tags_with_parent(params[:item_series], Tag.where(name:"Séries").first)
+    @item.update_tags_with_parent(params[:item_auteurs], Tag.where(name:"Auteurs").first)
+    @item.update_tags_with_parent(params[:item_rangement], Tag.where(name:"Rangement").first)
 
     if @item.save
       save_attachments
@@ -74,7 +74,9 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-		@item.tags_list = params[:item][:tags_list] if params[:item][:tags_list]
+		@item.update_tags_with_parent(params[:item_series], Tag.where(name:"Séries").first)
+    @item.update_tags_with_parent(params[:item_auteurs], Tag.where(name:"Auteurs").first)
+    @item.update_tags_with_parent(params[:item_rangement], Tag.where(name:"Rangement").first)
 
     if @item.update(item_params)
       save_attachments
@@ -122,6 +124,23 @@ class ItemsController < ApplicationController
           @item.attachments.create(image: attach, user_id: current_user.id)
         }
       end
+    end
+
+    # Méthodes utilisées par les 2 formulaires spécifiques aux BD : new + edit
+    def special_bd
+      # Séries
+      tag_series = Tag.where(name: "Séries").first
+      @series = tag_series.nil? ? Tag.all : tag_series.children
+      @item_series = @item.tags_with_parent(tag_series).map{ |t| t.name }.join(",")
+      # Auteurs
+      tag_auteurs = Tag.where(name:"Auteurs").first
+      @auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
+      @item_auteurs = @item.tags_with_parent(tag_auteurs).map{ |t| t.name }.join(",")
+      # Rangement
+      tag_rangement = Tag.where(name: "Rangement").first
+      rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
+      @options_rangements =  rangements
+      @item_rangements = @item.tags_with_parent(tag_rangement).map{ |t| t.name }.join(",")
     end
 
     # Use callbacks to share common setup or constraints between actions.

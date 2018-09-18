@@ -1,0 +1,68 @@
+<%= form_with(model: item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
+  <% if item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+      <% item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :series, "Série", class:"col-form-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.select :series, 
+        options_from_collection_for_select(@series, :id, :name, @series_prefilled_ids), 
+        { include_blank: true },
+        { multiple: true, id: 'select-series', data: { selected: @item_series } }
+      %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :name, "Titre", class:"col-form-label col-sm-2" %>
+    <div class="col-sm-1">
+      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
+    </div>
+    <div class="col-sm-5">
+      <%= form.text_field :name, id: :item_name, class: "form-control", placeholder:"Titre", autocomplete: :off %>
+    </div>
+  </div>
+  
+ 
+  <div class="form-group row">
+    <%= form.label :auteurs, "Auteurs", class:"col-form-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.select :auteurs, 
+        options_from_collection_for_select(@auteurs, :id, :name, @auteurs_prefilled_ids), 
+        { include_blank: true },
+        { multiple: true,  id: 'select-auteurs', data: { selected: @item_auteurs } }
+      %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <%= form.label :rangement, "Rangement", class:"col-form-label col-sm-2" %>
+    <div class="col-sm-6">
+      <%= form.select :rangement, 
+        options_from_collection_for_select(@options_rangements, :id, :name, @item_rangements), 
+        { include_blank: true },
+        { multiple: true,  id: 'select-rangement', data: { selected: @item_rangements } }
+      %>
+      <%# form.text_field :rangement, id:"selectize-rangement", value: @item_rangements, data: {options: @options_rangements } %>
+    </div>
+  </div>
+
+  <%= render partial: "attachement_form", locals: { form: form, item: item } %>
+
+  <div class="form-group row">
+    <div class="col-sm-offset-2 col-sm-1">
+      <%= form.hidden_field :view, {value: "bd"} %>
+      <%= form.submit "Sauver", class:"btn btn-primary" %>
+    </div>
+  </div>
+
+<% end %>
+

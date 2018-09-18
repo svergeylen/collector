@@ -37,15 +37,40 @@ class Item < ApplicationRecord
     	# Item.includes(:tags).where(tags: {name: ar_tags, filter_items: false})
   	end
 
+
+
+  	# Renvoie seulement les tags d'un item pour un parent spécifique donné
+  	def tags_with_parent(parent_tag)
+		return self.tags.select { |t| t.parent_tags.include?(parent_tag) }
+  	end
+
+  	# Met à jour les tags de l'item, mais uniquement les tags qui sont dans le parent donné
+  	def update_tags_with_parent(input_string, parent_tag)
+  		#logger.debug "UPDATE TAGS WITH PARENT : "+input_string+ " - Parent : "+parent_tag.inspect
+  		# On crée deux listes de string contenant les tags à comparer
+  		current_tag_names   = self.tags_with_parent(parent_tag).map(&:name)
+  		#logger.debug "Current tag names : "+current_tag_names.inspect
+  		new_tag_names		= input_string.split(",").map{ |el| el.strip }
+		#logger.debug "New tag names : "+new_tag_names.inspect
+
+  		# On réalise la différence entre les tags existants et nouveauw --> à ajouter
+  		names_to_create = new_tag_names - current_tag_names
+  		#logger.debug "To create  : "+names_to_create.inspect
+		self.add_tags_by_name(names_to_create, parent_tag)
+  		
+  		# On réalise la différence entre les tags existants et plus dans la liste --> à supprimer
+  		names_to_destroy = current_tag_names - new_tag_names
+  		#logger.debug "To destroy : "+names_to_destroy.inspect
+  		self.tags.destroy(Tag.where(name: names_to_destroy))
+
+  	end
+
   	# Ajoute les tags donnés comme liste de strings séparés par des virgules et/ou crée les nouveaux tags
-  	def add_tags_by_name(tag_names, parent_tag_name = nil)
-  		# Recherche du tag parent s'il existe
-  		parent_tag = Tag.find_or_create_by(name: parent_tag_name) if parent_tag_name.present? 
-  		# Pour chaque tags séparé par une virgule :
-  		tag_names.split(",").each do |tag_name|
-  			# Recherche d'un tag existatn sur base du nom string donné (ou création)
+  	def add_tags_by_name(tag_names, parent_tag = nil)
+  		tag_names.each do |tag_name|
+  			# Recherche d'un tag existant sur base du nom string donné (ou création)
   			tag = Tag.find_or_create_by(name: tag_name)
-  			# Si un parent est indique, on relie ces nouveaux tags au parent_tag
+  			# Si un parent_tag est donné, on relie ces nouveaux tags au parent_tag
 			if parent_tag.present?
 				tag.parent_tags << parent_tag unless tag.parent_tags.include?(parent_tag)
 				tag.save
@@ -53,27 +78,7 @@ class Item < ApplicationRecord
 			# Association des tags à l'item, sans faire de doublon
 			self.tags << tag unless self.tags.include?(tag)
   		end
-  		
   	end
-
-
-	# Renvoie les id des items précédents et suivants dans la serie triée (sorted_items)
-	def next_and_previous_ids
-		# Chargement de la série en entier pour connaitre les éléments de la liste par numéro
-		items = self.series.sorted_items
-		
-		# Récupération de l'index dans la collection correspondant à l'item self
-		my_index = items.index { |item| item.id == self.id }
-		
-		# Récupération des index puis des ID correspondants  dans la collection
-		previous_index = (my_index <= 0) ? nil : my_index - 1
-		previous_id = items.at(previous_index).id if !previous_index.nil?
-		
-		next_index = (my_index >= (items.length-1) )? nil : my_index + 1
-		next_id = items.at(next_index).id if !next_index.nil?
-
-		return { previous: previous_id, next: next_id }
-	end
 
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)
@@ -109,14 +114,6 @@ class Item < ApplicationRecord
 	      	end
 	    end
 	    return iu
-	end
-
-	# Donne le nom de l'item précédé du nom de sa série et de son numéro si présent
-	def friendly_name
-		ret = self.series.name
-		ret += " (n°"+self.friendly_number+")" if self.number.present?
-		ret += " - " + self.name
-		return ret
 	end
 
 	# Renvoie le string du numéro de l'item (integer ou float suivant les cas)
