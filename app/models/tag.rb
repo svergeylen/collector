@@ -23,7 +23,7 @@ class Tag < ApplicationRecord
 	end
 
 	# Crée des tags subordonnés au tag self, sur base de l'array de tags (array de string)
-	# Renvoie un array de tags reprennant tous les tags donnés dans le string
+	# Renvoie un array de tags reprennant tous les tags correspondants à tag_names
 	def create_children(tag_names)
 		created_tags = []
 		if tag_names.present?

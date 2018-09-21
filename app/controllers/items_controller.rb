@@ -26,8 +26,8 @@ class ItemsController < ApplicationController
     case params[:view]
     # Vue spécifique un item "BD"
     when "bd"
-      special_bd    
-      @item_series = params[:series]
+      #special_bd    
+      #@selected_series = params[:series]
       render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
@@ -42,7 +42,8 @@ class ItemsController < ApplicationController
     case params[:view]
     # Vue spécifique un item "BD"
     when "bd"
-      special_bd
+      #special_bd
+      #@selected_series = @item.tags_series
       render "items/edit_bd"
     else
       render "items/edit"
@@ -52,16 +53,7 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-
-    # Création des tags
-    series_tags = Tag.where(name:"Séries").first.create_children(params[:series])
-    # params[:item].delete(:series)
-    auteurs_tags = Tag.where(name:"Auteurs").first.create_children(params[:auteurs])
-    logger.debug ("------ auteurs_tags ---> "+auteurs_tags.inspect)
-    # params[:item].delete(:auteurs)
-    rangement_tags = Tag.where(name:"Rangement").first.create_children(params[:rangement])
-    # params[:item].delete(:rangement)
-    # params[:item].delete(:view)
+    params[:item].delete(:view)
 
     # Création de l'item
     @item = Item.new(item_params)
@@ -69,12 +61,8 @@ class ItemsController < ApplicationController
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
 
-    # Association des tags à l'item
-    @item.tags << series_tags
-    @item.tags << auteurs_tags
-    @item.tags << rangement_tags
-
     if @item.save
+
       save_attachments
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
       
@@ -87,9 +75,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-		@item.update_tags_with_parent(params[:item_series], Tag.where(name:"Séries").first)
-    @item.update_tags_with_parent(params[:item_auteurs], Tag.where(name:"Auteurs").first)
-    @item.update_tags_with_parent(params[:item_rangement], Tag.where(name:"Rangement").first)
+    params[:item].delete(:view)
 
     if @item.update(item_params)
       save_attachments
@@ -142,18 +128,17 @@ class ItemsController < ApplicationController
     # Méthodes utilisées par les 2 formulaires spécifiques aux BD : new + edit
     def special_bd
       # Séries
-      tag_series = Tag.where(name: "Séries").first
-      @series = tag_series.nil? ? Tag.all : tag_series.children
-      @item_series = @item.tags_with_parent(tag_series).map{ |t| t.name }.join(",")
+      @series = Tag.where(name: "Séries").first_or_create!
+      #@item_series = @item.tags_with_parent(tag_series).map{ |t| t.name }.join(",")
       # Auteurs
-      tag_auteurs = Tag.where(name:"Auteurs").first
-      @auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
-      @item_auteurs = @item.tags_with_parent(tag_auteurs).map{ |t| t.name }.join(",")
+      #tag_auteurs = Tag.where(name:"Auteurs").first_or_create!
+      #@auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
+      #@item_auteurs = @item.tags_with_parent(tag_auteurs).map{ |t| t.name }.join(",")
       # Rangement
-      tag_rangement = Tag.where(name: "Rangement").first
-      rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
-      @options_rangements =  rangements
-      @item_rangements = @item.tags_with_parent(tag_rangement).map{ |t| t.name }.join(",")
+      #tag_rangement = Tag.where(name: "Rangement").first_or_create!
+      #rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
+      #@options_rangements =  rangements
+      #@item_rangements = @item.tags_with_parent(tag_rangement).map{ |t| t.name }.join(",")
     end
 
     # Use callbacks to share common setup or constraints between actions.
@@ -163,6 +148,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :description, :attachments, tag_ids: [])
+      params.require(:item).permit(:number, :name, :description, :attachments, :view, :series, tag_ids: [])
     end
 end

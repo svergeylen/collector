@@ -6,6 +6,7 @@
 	    </button>
 	    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
 	    	<%= link_to 'Modifier l\'item', edit_item_path(@item), class:'dropdown-item' %>
+	    	<%= link_to 'Modifier l\'item BD', edit_item_path(@item, view: "bd"), class:'dropdown-item' %>
 	    	<%= link_to 'Supprimer l\'item', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'élément ?' } %> 
 	    </div>
 	  </div>

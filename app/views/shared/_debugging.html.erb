@@ -1,8 +1,7 @@
 
-<% if true && Rails.env == "development" %>
+<% if false && Rails.env == "development" %>
 	<div class="rounded-box">
 		<p>Active tags = <%= session[:active_tags].inspect %></p>
-		<p>@series_prefilled_ids = <%= @series_prefilled_ids.inspect if @series_prefilled_ids.present? %>
 		
 		<% if @tag.present? %>
 			<h4>Tag</h4>
@@ -14,7 +13,7 @@
 			<h4>Item</h4>
 			<p>Item : <%= @item.inspect %></p>
 			<p>Item tags <%= @item.tags.map{ |t| {id: t.id, name: t.name } }.inspect %></p>
-			<p>Rangement : <%= @item_rangement.inspect %></p>
+			<p>@tags_series : <%= @item.tags_series.inspect %></p>
 		<% end %>
 
 		<h4>Params</h4>

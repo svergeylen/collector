@@ -22,15 +22,10 @@
     </div>
   </div>
   
- 
-  <div class="form-group row">
-    <label for="tag_ids" class="col-form-label col-sm-2">Tags</label>
+ <div class="form-group row">
+    <label for="series" class="col-sm-2 col-form-label">Tags</label>
     <div class="col-sm-6">
-       <%= form.select :tags, 
-        options_from_collection_for_select(Tag.all.order(name: :asc), :id, :name, item.tag_ids ), 
-        { include_blank: true },
-        { multiple: true,  id: 'select-tags' }
-      %>
+      <%= form.text_field :series, class: "form-control", placeholder:"?", autocomplete: :off %>
     </div>
   </div>
   
