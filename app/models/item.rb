@@ -21,6 +21,10 @@ class Item < ApplicationRecord
 	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
 	has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
 
+	attr_accessor :series
+	attr_accessor :auteurs
+	attr_accessor :rangement
+
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)
 		ids = self.tag_ids - active_tag_ids
@@ -29,15 +33,37 @@ class Item < ApplicationRecord
 
   	# Renvoie les Items correspondants à l'array de tags donné
   	def self.having_tags(ar_tags)
-    	#Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+  		# Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+  		# Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
+   
     	# DANIEL -> ICI : ajouter .where(tag.filter_items = true)
-    	
-    	Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
-
+    	# Item.where(id: Ownertag.where(tag_id: ar_tags, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= ar_tags.size }.keys)
     	# Item.includes(:tags).where(tags: {name: ar_tags, filter_items: false})
+    	# Item.includes(:tags).where(tags: {id: ar_tags, filter_items: false})
+    	# Je pense que c'est filter_items: true car c'est true par défaut et false pour le tag "Séries"
+    	# Item.includes(:tags).where(tags: {id: ar_tags, filter_items: true})
+
+    	# Tentatives St :
+    	# applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
+    	# Item.includes(:tags).where(tags: {id: applicable_tag_ids})
+    	# ne fonctionne pas car il renvoie tous les items qui sont bd OU qui sont Thorgal, alors qu'on veut un AND
+    	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
+    	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
+    	Item.where(id: ownertags.keys)
+    	
   	end
 
 
+  	# def series
+  	# 	series_tag = Tag.where(name:"Séries").first
+  	# 	return self.tags.select { |t| t.parent_tags.include?(series_tag) }
+  	# end
+
+  	# def auteurs
+  	# end
+
+  	# def rangement
+  	# end
 
   	# Renvoie seulement les tags d'un item pour un parent spécifique donné
   	def tags_with_parent(parent_tag)
@@ -46,39 +72,33 @@ class Item < ApplicationRecord
 
   	# Met à jour les tags de l'item, mais uniquement les tags qui sont dans le parent donné
   	def update_tags_with_parent(input_string, parent_tag)
-  		#logger.debug "UPDATE TAGS WITH PARENT : "+input_string+ " - Parent : "+parent_tag.inspect
   		# On crée deux listes de string contenant les tags à comparer
   		current_tag_names   = self.tags_with_parent(parent_tag).map(&:name)
-  		#logger.debug "Current tag names : "+current_tag_names.inspect
-  		new_tag_names		= input_string.split(",").map{ |el| el.strip }
-		#logger.debug "New tag names : "+new_tag_names.inspect
-
-  		# On réalise la différence entre les tags existants et nouveauw --> à ajouter
-  		names_to_create = new_tag_names - current_tag_names
-  		#logger.debug "To create  : "+names_to_create.inspect
-		self.add_tags_by_name(names_to_create, parent_tag)
+  		new_tag_names = input_string.present? ? input_string.split(",").map{ |el| el.strip } : []
   		
-  		# On réalise la différence entre les tags existants et plus dans la liste --> à supprimer
+  		# On réalise la différence entre les tags existants et nouveaux --> à ajouter
+  		names_to_create = new_tag_names - current_tag_names
+		parent_tag.create_children(names_to_create)
+  		
+  		# On réalise la différence entre les tags existants et ceux retirés dans la liste --> à supprimer
   		names_to_destroy = current_tag_names - new_tag_names
-  		#logger.debug "To destroy : "+names_to_destroy.inspect
   		self.tags.destroy(Tag.where(name: names_to_destroy))
-
   	end
 
-  	# Ajoute les tags donnés comme liste de strings séparés par des virgules et/ou crée les nouveaux tags
-  	def add_tags_by_name(tag_names, parent_tag = nil)
-  		tag_names.each do |tag_name|
-  			# Recherche d'un tag existant sur base du nom string donné (ou création)
-  			tag = Tag.find_or_create_by(name: tag_name)
-  			# Si un parent_tag est donné, on relie ces nouveaux tags au parent_tag
-			if parent_tag.present?
-				tag.parent_tags << parent_tag unless tag.parent_tags.include?(parent_tag)
-				tag.save
-			end
-			# Association des tags à l'item, sans faire de doublon
-			self.tags << tag unless self.tags.include?(tag)
-  		end
-  	end
+  	# # Ajoute les tags donnés comme liste de strings séparés par des virgules et/ou crée les nouveaux tags
+  	# def add_tags_by_name(tag_names, parent_tag = nil)
+  	# 	tag_names.each do |tag_name|
+  	# 		# Recherche d'un tag existant sur base du nom string donné (ou création)
+  	# 		tag = Tag.find_or_create_by(name: tag_name)
+  	# 		# Si un parent_tag est donné, on relie ces nouveaux tags au parent_tag
+			# if parent_tag.present?
+			# 	tag.parent_tags << parent_tag unless tag.parent_tags.include?(parent_tag)
+			# 	tag.save
+			# end
+			# # Association des tags à l'item, sans faire de doublon
+			# self.tags << tag unless self.tags.include?(tag)
+  	# 	end
+  	# end
 
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)

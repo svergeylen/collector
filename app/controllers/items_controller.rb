@@ -27,6 +27,7 @@ class ItemsController < ApplicationController
     # Vue spécifique un item "BD"
     when "bd"
       special_bd    
+      @item_series = params[:series]
       render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
@@ -51,15 +52,27 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
+
+    # Création des tags
+    series_tags = Tag.where(name:"Séries").first.create_children(params[:series])
+    # params[:item].delete(:series)
+    auteurs_tags = Tag.where(name:"Auteurs").first.create_children(params[:auteurs])
+    logger.debug ("------ auteurs_tags ---> "+auteurs_tags.inspect)
+    # params[:item].delete(:auteurs)
+    rangement_tags = Tag.where(name:"Rangement").first.create_children(params[:rangement])
+    # params[:item].delete(:rangement)
+    # params[:item].delete(:view)
+
+    # Création de l'item
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
 
-    # Création des tags
-    @item.update_tags_with_parent(params[:item_series], Tag.where(name:"Séries").first)
-    @item.update_tags_with_parent(params[:item_auteurs], Tag.where(name:"Auteurs").first)
-    @item.update_tags_with_parent(params[:item_rangement], Tag.where(name:"Rangement").first)
+    # Association des tags à l'item
+    @item.tags << series_tags
+    @item.tags << auteurs_tags
+    @item.tags << rangement_tags
 
     if @item.save
       save_attachments
@@ -99,7 +112,7 @@ class ItemsController < ApplicationController
   # DELETE /items/1.json
   def destroy
     @item.destroy
-    redirect_back fallback_location: welcome_collector_path, notice: 'Elément supprimé'
+    redirect_to welcome_collector_path, notice: 'Elément supprimé'
   end
 
 

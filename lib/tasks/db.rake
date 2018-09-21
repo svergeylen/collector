@@ -3,15 +3,15 @@ namespace :db do
 
 	task convert_bd: :environment do
 	bd          	= Tag.create(name: "Bandes dessinées", root_tag: true)
-		auteurs		= Tag.create(name: "Auteurs", default_view: "none")
-		themes	  	= Tag.create(name: "Thèmes", default_view: "none")
+		auteurs		= Tag.create(name: "Auteurs", default_view: "list")
+		themes	  	= Tag.create(name: "Thèmes", default_view: "list", filter_items: false)
 		  sf = Tag.create(name: "Science-Fiction", default_view: "list")
 		  hs = Tag.create(name: "Histoire", default_view: "list")
 		  ph = Tag.create(name: "Philosophie", default_view: "list")
 		  so = Tag.create(name: "Space opera", default_view: "list")
 		  th = Tag.create(name: "Thriller", default_view: "list")
 		  themes.tags << [sf, hs, ph, so, th]
-		series		= Tag.create(name: "Séries", default_view: "none")
+		series		= Tag.create(name: "Séries", default_view: "list", filter_items: false)
 	bd.tags << [auteurs, themes, series]
 
 	generic("Bandes dessinées", 1, series.id)

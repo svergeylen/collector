@@ -22,6 +22,27 @@ class Tag < ApplicationRecord
 		return self.tags.order(name: :asc)
 	end
 
+	# Crée des tags subordonnés au tag self, sur base de l'array de tags (array de string)
+	# Renvoie un array de tags reprennant tous les tags donnés dans le string
+	def create_children(tag_names)
+		created_tags = []
+		if tag_names.present?
+			tag_names.each do |tag_name|
+				tag_name = tag_name.strip
+				next if tag_name == ""
+	  			# Recherche d'un tag existant sur base du nom string donné (ou création)
+	  			tag = Tag.find_or_create_by(name: tag_name)
+	  			logger.debug ("----> Tag trouvé ou crée : "+tag.inspect)
+	  			# Association des tags créés comme enfants de self, sans faire de doublon
+				unless self.tags.include?(tag)
+					self.tags << tag 
+				end
+				created_tags << tag
+	  		end
+	  	end
+  		return created_tags
+	end
+
 	# Renvoie la liste des items contenues dans ce tag
 	def sorted_items
 		self.items.includes(:users).sort_by{ |a| [a.number.to_f, a.name] }.limit (200)
