@@ -1,7 +1,7 @@
 
 /* Instantiation de selectize sur un champ <select> 
    et ajout des elements listés dans data-selected comme valeurs prédéfinies */
-function create_selectize(select_id) {
+function create_selectize(id) {
 
 	var default_options = {
 		delimiter: ',',
@@ -28,16 +28,25 @@ function create_selectize(select_id) {
 	    },
 		create: function(input) {
             return { name  : input }
-	    },
+	    }
 	};
-
-	console.log(select_id);
-	var j = $("#"+select_id);
+	
+	console.log(id);
+	var j = $("#"+id);
 	if (j.length) {
-		var s = j.selectize(default_options);
+		
 
-		/* Ajout des tags déja existants dans la liste */
-		var data = j.data("selected");
+		$i = j.selectize(default_options);
+		var selectize = $i[0].selectize;
+
+		h = j.data("tag-list").map( function(current) {
+			return {name: current}
+		});
+		selectize.addOption(h);
+		
+
+		/* Ajout des tags déja existants dans la liste jQuery.extend(*/
+	/*	var data = j.data("selected");
 		console.log(data);
 		if (data.length > 0) {
 			selectize = j[0].selectize;
@@ -45,7 +54,7 @@ function create_selectize(select_id) {
 				console.log("ajout : "+value);
 				selectize.addItem(value);
 			});
-		}
+		} */
 	}
 }
 
@@ -54,10 +63,10 @@ function create_selectize(select_id) {
 document.addEventListener("turbolinks:load", function() {
 
 	// New item
-	create_selectize("select-tags");
+	create_selectize("tag_names");
 	// New item (BD)
-	create_selectize("select-series");
-	create_selectize("select-auteurs");
-	create_selectize("select-rangement");
+	//create_selectize("select-series");
+	//create_selectize("select-auteurs");
+	//create_selectize("select-rangement");
 
 });

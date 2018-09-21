@@ -21,34 +21,28 @@ class Item < ApplicationRecord
 	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
 	has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
 
+	# --------------------- TAGS ---------------------------------------------------------------------------
 
-	attr_writer :series
-	before_save :save_series
+	attr_writer :tag_names
+	before_save :save_tags
 
-	def series
-		@series || tags.pluck(:name).join(",")
+	# Donne la liste de tags de l'item au format string séparé par une virgule
+	def tag_names
+		@tag_names || tags.pluck(:name).join(", ")
 	end
 
-	def save_series
-		if @series
-			self.tags = @series.split(",").map{ |name| Tag.where(name: name).first_or_create! }
+	# Before_save : Sauvegarde les tags donnés dans une liste de string séparée par des virgule en objets Tag
+	def save_tags
+		if @tag_names
+			tags = []
+			@tag_names.split(",").each do |name| 
+				name = name.strip
+				next if name==""
+				tags << Tag.where(name: name).first_or_create!
+			end
+			self.tags = tags
 		end
 	end
-
-	# before_save :save_tags_series
-
-	# def tags_series
-	# 	logger.debug "--- item.tags_series"
- #    @tags_series || self.tags_with_parent(Tag.find_by(name: "Séries")).pluck(:name).join(", ")
- #  end
-  
- #  def tags_series=(array_tag_names)
- #    #self.update_tags_with_parent(array_tag_names, Tag.find_by(name: "Séries"))
- #    logger.debug "-----> tags_series=("+array_tag_names.inspect+")"
- #    array_tag_names.each do |tag_name| 
- #    	self.tags << Tag.first_or_create!(name: tag_name)
- #    end
- #  end
 
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)
@@ -97,12 +91,14 @@ class Item < ApplicationRecord
 	end
 
 
+	# ------------------ POSSESSION de l'ITEM ----------------------------------------------------------------
+
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)
 		return self.itemusers.collect(&:user_id).include?(user_id)
 	end
 
-	# Renvoie le Itemuser de l'utiliateur donné
+	# Renvoie le Itemuser de l'utilisateur donné
 	def iu(user_id)
 		return self.itemusers.where(user_id: user_id).limit(1).first
 	end
@@ -133,6 +129,9 @@ class Item < ApplicationRecord
     return iu
 	end
 
+
+	# --------------------  CHAMPS de l'ITEM -------------------------------------------------------------
+
 	# Renvoie le string du numéro de l'item (integer ou float suivant les cas)
 	def friendly_number
 		if self.number.present?
@@ -144,6 +143,9 @@ class Item < ApplicationRecord
 		end
 		return ret
 	end
+
+
+	# --------------------------- RECHERCHE -------------------------------------------------------------
 
 	# Recherche les items contenant le mot clé donné
 	def self.search(keyword)

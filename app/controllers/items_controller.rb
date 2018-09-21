@@ -22,6 +22,7 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+
   
     case params[:view]
     # Vue spécifique un item "BD"
@@ -31,6 +32,7 @@ class ItemsController < ApplicationController
       render "items/new_bd"
     else
       # Vue par défaut pour la création de tout type d'item
+      @tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/new"
     end
   end
@@ -46,6 +48,7 @@ class ItemsController < ApplicationController
       #@selected_series = @item.tags_series
       render "items/edit_bd"
     else
+      @tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/edit"
     end
   end
@@ -148,6 +151,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :description, :attachments, :view, :series, tag_ids: [])
+      params.require(:item).permit(:number, :name, :description, :attachments, :view, :tag_names, tag_ids: [])
     end
 end
