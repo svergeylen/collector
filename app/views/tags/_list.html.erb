@@ -1,14 +1,6 @@
 <%= form_with(model: @new_item) do |form| %>
 
 	<table class="table table-sm">
-	  <!--<thead>
-		  <tr>
-		    <th></th>
-		    <th>Titre</th>
-			<th>Tags</th>
-			<th>Utilisateurs</th>
-		  </tr>
-	  </thead>-->
 	  <tbody>
 		<% items.each do |item| %>
 			<% if item.is_owned_by?(current_user.id) %>

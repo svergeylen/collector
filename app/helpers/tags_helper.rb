@@ -1,17 +1,18 @@
 module TagsHelper
 
 	# Réalise le rendu d'un seul tag vers HTML, contenant le lien vers le tag et vers la suppression des tags actifs
-	def render_tag(tag) 
-		ret = "<span class='tag "
+	def render_tag(tag, with_delete_option = false) 
+		ret = "<span class='collector-tag "
 		if tag.filter_items? 
-			ret += 'tag-filter' 
+			ret += "collector-tag-filter'>"
 		else
-			ret += 'tag-nofilter'
+			ret += "collector-tag-nofilter' title='Tag non-filtrant'>"
 		end
-		ret += " '>"
 		ret += link_to tag.name, tag 
-		ret += " "
-		ret += link_to (fa_icon 'times').html_safe, remove_tag_path(id: tag.id, remove_id: tag.id)
+		ret += "  "
+		if with_delete_option
+			ret += link_to (fa_icon 'times').html_safe, remove_tag_path(id: tag.id, remove_id: tag.id)
+		end
 		ret += "</span>"
 		return ret.html_safe
 	end

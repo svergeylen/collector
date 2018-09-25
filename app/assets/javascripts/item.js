@@ -15,14 +15,14 @@ function create_selectize(id) {
     	render: {
     		/* item = dans le champ input text */
 	        item: function(item, escape) {
-	            return '<div>' +
-	                '<span class="name">' + escape(item.name) + '</span>' +
+	            return '<div class="collector-tag collector-tag-fitler"> ' +
+	                '' + escape(item.name) + '' +
 	            '</div>';
 	        },
 	        /* option = dans la liste déroulante */
 	        option: function(item, escape) {
 	            return '<div>' +
-	                '<span class="name">' + escape(item.name) + '</span>'  +
+	                '<span>' + escape(item.name) + '</span>'  +
 	            '</div>';
 	        }
 	    },
@@ -34,27 +34,15 @@ function create_selectize(id) {
 	console.log(id);
 	var j = $("#"+id);
 	if (j.length) {
-		
-
+		/* Initialisation de selectize et variable selectize pour appel ultérieur */
 		$i = j.selectize(default_options);
 		var selectize = $i[0].selectize;
 
+		/* Ajout des options dans la liste, provenant de l'attribut "data-tag-list" donnée par le serveur */
 		h = j.data("tag-list").map( function(current) {
 			return {name: current}
 		});
 		selectize.addOption(h);
-		
-
-		/* Ajout des tags déja existants dans la liste jQuery.extend(*/
-	/*	var data = j.data("selected");
-		console.log(data);
-		if (data.length > 0) {
-			selectize = j[0].selectize;
-			$.each( data.split(","), function(index, value) {
-				console.log("ajout : "+value);
-				selectize.addItem(value);
-			});
-		} */
 	}
 }
 

@@ -20,35 +20,40 @@
 }
 
 /* Tag général */
-.tag {
+.collector-tag {
 	white-space: nowrap;
 	font-size : 0.9em;
-	padding : 10px;
+	padding : 5px 10px;
 	margin-right: 10px;
-	line-height : 2.5em;
-	border-radius: 0.5em;
-	a, a:hover {
-		color : $light-color;
-	}
+	border-radius: 0.5em !important;
 }
-/* Tag servant à filter les items listés */
-.tag-filter {
-	background-color : $high-color;
+
+/* Tag filtrant */
+.collector-tag-filter,
+.selectize-input > div {
+	background : $tag-color-light !important;
+	border : 1px solid $high-color !important;
+	color : $high-color !important;
 	&:hover {
-		background-color: $high-color-hover;
+		background : $tag-color-white !important;
 	}
 	a, a:hover {
-		color : white;
+		color : $high-color;
+		text-decoration : none;
 	}
 }
+
 /* Tag ne servant pas à filter les items listés (uniquement navigation) */
-.tag-nofilter  {
-	background-color : $light-color;
+.collector-tag-nofilter  {
+	background : white !important;
+	border : 1px solid $high-color !important;
+	color : $dark-color !important;
 	&:hover {
-		background-color: $light-color-hover;
+		background : $tag-color-white !important;
 	}
 	a, a:hover {
-		color : $dark-color;
+		color : $high-color;
+		text-decoration : none;
 	}
 }
 

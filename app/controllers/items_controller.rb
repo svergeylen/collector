@@ -79,6 +79,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1.json
   def update
     params[:item].delete(:view)
+    @item.adder_id = current_user.id if @item.adder_id.blank?
 
     if @item.update(item_params)
       save_attachments

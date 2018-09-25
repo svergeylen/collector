@@ -24,7 +24,10 @@
 
 			<p>Numéro : <%= @item.friendly_number if @item.number %></p>
 			<% if @item.tags.present? %>
-				<p>Tags : <%= @item.tags.collect {|t| link_to(t.name, t) }.join(", ").html_safe %></p>
+				<p><% @item.tags.each do |t| %>
+				<%= render_tag(t) %>
+				<% end %>
+				</p>
 			<% end %>
 			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
 			

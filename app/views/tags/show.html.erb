@@ -36,7 +36,7 @@
 	<div class="mt-3 mb-3">
 		Tags actifs :  
 		<% @active_tags.each do |tag| %>
-			<%= render_tag(tag) %>
+			<%= render_tag(tag, true) %>
 		<% end %>
 		<div style="display:inline-block;">
 			<%= render partial: "search/form_tags" %>

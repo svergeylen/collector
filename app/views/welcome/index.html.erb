@@ -33,15 +33,17 @@
 		<p class="alert alert-danger"><%= alert %></p>
 	<% end %>
 	
-	<div class="logo">
+	<div class="mt-5 mb-5 text-center">
 		<%= image_tag @image_name %>
 	</div>
-	<div class="direct">
+	<div class="mt-5">
 		<%= link_to "La Une", posts_path, class:"btn btn-primary" %> 
 		<%= link_to "Collector", welcome_collector_path, class:"btn btn-primary" %> 
-		<%= link_to "Stedan", "http://stedan.be", class:"btn btn-primary" %> 
-		<%= link_to "Place2be", "https://place2be.io", class:"btn btn-primary" %>
-		<%= link_to "Sigmadelta", "https://sigmadelta.io", class:"btn btn-primary" %>
+	</div>
+	<div class="mt-5">
+		<%= link_to "Stedan", "http://stedan.be", class:"btn btn-outline-primary" %> 
+		<%= link_to "Place2be", "https://place2be.io", class:"btn btn-outline-primary" %>
+		<%= link_to "Sigmadelta", "https://sigmadelta.io", class:"btn btn-outline-primary" %>
 	</div>
 </body>
 </html>
