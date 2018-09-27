@@ -24,7 +24,21 @@
   <div class="form-group row">
     <label for="tag_series" class="col-sm-2 col-form-label">Série</label>
     <div class="col-sm-6">
-      <%= form.text_field :tag_series, id: "tag_series", class: "form-control", placeholder:"?", autocomplete: :off, data: { tag_list: @series_list } %>
+      <%= form.text_field :tag_series, id: "tag_series", class: "form-control", autocomplete: :off, data: { tag_list: @series_list } %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="tag_auteurs" class="col-sm-2 col-form-label">Auteurs</label>
+    <div class="col-sm-6">
+      <%= form.text_field :tag_auteurs, id: "tag_auteurs", class: "form-control", autocomplete: :off, data: { tag_list: @auteurs_list } %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="tag_rangements" class="col-sm-2 col-form-label">Rangement</label>
+    <div class="col-sm-6">
+      <%= form.text_field :tag_rangements, id: "tag_rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
     </div>
   </div>
  

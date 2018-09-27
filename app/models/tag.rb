@@ -31,7 +31,7 @@ class Tag < ApplicationRecord
 		end
 	end
 
-	# Crée des tags subordonnés au tag self, sur base de l'array de tags (array de string)
+	# Crée des tags subordonnés au tag self, sur base de l'array tag_names donné (array de string)
 	# Renvoie un array de tags reprennant tous les tags correspondants à tag_names
 	def create_children(tag_names)
 		created_tags = []
@@ -41,7 +41,6 @@ class Tag < ApplicationRecord
 				next if tag_name == ""
 	  			# Recherche d'un tag existant sur base du nom string donné (ou création)
 	  			tag = Tag.find_or_create_by(name: tag_name)
-	  			logger.debug ("----> Tag trouvé ou crée : "+tag.inspect)
 	  			# Association des tags créés comme enfants de self, sans faire de doublon
 				unless self.tags.include?(tag)
 					self.tags << tag 

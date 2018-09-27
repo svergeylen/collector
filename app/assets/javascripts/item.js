@@ -54,7 +54,7 @@ document.addEventListener("turbolinks:load", function() {
 	create_selectize("tag_names");
 	// New item (BD)
 	create_selectize("tag_series");
-	//create_selectize("select-auteurs");
-	//create_selectize("select-rangement");
+	create_selectize("tag_auteurs");
+	create_selectize("tag_rangements");
 
 });
