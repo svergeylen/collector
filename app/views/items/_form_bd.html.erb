@@ -21,15 +21,17 @@
     </div>
   </div>
   
-  <%= form.label :series, "Série" %>
-  <%= form.text_field :series %>
-  
+  <div class="form-group row">
+    <label for="tag_series" class="col-sm-2 col-form-label">Série</label>
+    <div class="col-sm-6">
+      <%= form.text_field :tag_series, id: "tag_series", class: "form-control", placeholder:"?", autocomplete: :off, data: { tag_list: @series_list } %>
+    </div>
+  </div>
  
-  <%# render partial: "attachement_form", locals: { form: form, item: item } %>
+  <%= render partial: "attachement_form", locals: { form: form, item: item } %>
 
   <div class="form-group row">
     <div class="col-sm-offset-2 col-sm-1">
-      <%# form.hidden_field :view, {value: "bd"} %>
       <%= form.submit "Sauver", class:"btn btn-primary" %>
     </div>
   </div>

@@ -1,9 +1,13 @@
 @import 'colors';
 
-/* .header-letters {
+/* Liste des lettres pour filtrer la liste des tags en tete de page */ 
+.header-letters {
 	margin-bottom: 20px;
+	a.btn {
+		color : black;
+	}
 }
-*/
+
 
 /* Blocs utilisés en page d'accueil pour afficher les dernières nouveautés */
 .card-latest {

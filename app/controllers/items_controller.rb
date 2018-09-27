@@ -42,14 +42,14 @@ class ItemsController < ApplicationController
   def edit
 
     case params[:view]
-    # Vue spécifique un item "BD"
-    when "bd"
-      #special_bd
-      #@selected_series = @item.tags_series
-      render "items/edit_bd"
-    else
-      @tag_list = Tag.order(name: :asc).pluck(:name)
-      render "items/edit"
+      when "bd"
+        @series_list = Tag.with_parent("Séries").pluck(:name)
+        @auteurs_list = Tag.with_parent("Auteurs").pluck(:name)
+        @rangements_list = Tag.with_parent("Rangements").pluck(:name)
+        render "items/edit_bd"
+      else
+        @tag_list = Tag.order(name: :asc).pluck(:name)
+        render "items/edit"
     end
   end
 
@@ -78,7 +78,7 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    params[:item].delete(:view)
+    # params[:item].delete(:view)
     @item.adder_id = current_user.id if @item.adder_id.blank?
 
     if @item.update(item_params)
@@ -152,6 +152,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :description, :attachments, :view, :tag_names, tag_ids: [])
+      params.require(:item).permit(:number, :name, :description, :attachments, :view, :tag_names, :tag_series, :tag_auteurs, :tag_rangements)
     end
 end

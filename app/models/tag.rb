@@ -1,25 +1,34 @@
 class Tag < ApplicationRecord
 	
-	# Un tag peut avoir plusieurs parents (au-dessus de lui) ou zéro (orphan)
+	# Un tag est relié à des tags et/ou des items via la table Ownertag
 	has_many :ownertags_as_tag,   dependent: :destroy, class_name: "Ownertag"
-	has_many :parent_tags,        	through: :ownertags_as_tag, source: :owner, source_type: 'Tag'
+	# Un tag possède de multiples parents (filtrage de Ownertag sur le type "Tag")
+	has_many :parent_tags,        through: :ownertags_as_tag, source: :owner, source_type: 'Tag'
+	# Un tag possède de multiples items (filtrage de Ownertag sur le type "Item")
+	has_many :items,              through: :ownertags_as_tag, source: :owner, source_type: 'Item'
 
-	# Un tag peut contenir plusieurs sub-tags (hiérarchie de tags)
-	has_many :ownertags_as_owner, 	dependent: :destroy, class_name: "Ownertag", as: :owner
-	has_many :tags,               	through: :ownertags_as_owner
-
-	# Un tag contient des items (bd, livres, jeux, bonsais, ...)
-	has_many :items,              	 	through: :ownertags_as_tag, source: :owner, source_type: 'Item'
-
-	validates :name, presence: true, uniqueness: true
+	# Un tag peut contenir plusieurs enfants 
+	has_many :ownertags_as_owner, dependent: :destroy, class_name: "Ownertag", as: :owner
+	has_many :tags,               through: :ownertags_as_owner
 
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
+	validates :name, presence: true, uniqueness: true
 
-	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre
-	def children
+
+	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre alphabétique
+	def children()
 		return self.tags.order(name: :asc)
+	end
+
+	# Renvoie la liste des tags enfants au tag parent donné comme string
+	def self.with_parent(parent_name)
+		if parent_name.present? && Tag.exists?(name: parent_name)
+			return Tag.find_by(name: parent_name).children
+		else
+			return Tag.all.order(name: :asc)
+		end
 	end
 
 	# Crée des tags subordonnés au tag self, sur base de l'array de tags (array de string)

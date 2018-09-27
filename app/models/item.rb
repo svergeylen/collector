@@ -21,7 +21,9 @@ class Item < ApplicationRecord
 	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
 	has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
 
-	# --------------------- TAGS ---------------------------------------------------------------------------
+
+	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
+
 
 	attr_writer :tag_names
 	before_save :save_tags
@@ -44,31 +46,75 @@ class Item < ApplicationRecord
 		end
 	end
 
+
+	attr_writer :tag_series
+	before_save :save_series
+
+	# Donne la liste de series de l'item au format string séparé par une virgule
+	def tag_series
+		@tag_series || tags_with_parent("Séries").pluck(:name).join(", ")
+	end
+	
+	# Before_save : Sauvegarde les series donnés dans une liste de string séparée par des virgule en objets Tag
+	def save_series
+		if @tag_series
+			harcoded_parent_tag_name = "Séries"
+			harcoded_parent_tag = Tag.find_by(name: harcoded_parent_tag_name)
+			item_tags = []
+			@tag_series.split(",").each do |name| 
+				name = name.strip
+				next if name==""
+				logger.debug "--> save_series : Parent=>" + harcoded_parent_tag_name.to_s + ". Name=>"+name.to_s
+				new_tag = Tag.where(name: name).first_or_create!
+				item_tags << new_tag
+				# Subordination du nouveau tag dans Séries
+				new_tag.parent_tags << harcoded_parent_tag
+			end
+			# Ajout/Suppression de tags à l'item /!\ en tenant compte du parent Séries
+			self.tags = item_tags # TODO : à filtrer sur Séries
+		end
+	end
+
+
+	# --------------------- TAGS ---------------------------------------------------------------------------
+
+
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)
 		ids = self.tag_ids - active_tag_ids
 		return Tag.find(ids)
 	end
 
+
 	# Renvoie les Items correspondants à l'array de tag_ids donné
 	def self.having_tags(ar_tags)
-  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
-  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
-  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
-  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
-  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
-  	# On charge les items correspondants aux lignes trouvées dans ownertags
-  	Item.where(id: ownertags.keys)  	
+	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
+	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
+	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
+	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
+	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
+	  	# On charge les items correspondants aux lignes trouvées dans ownertags
+	  	Item.where(id: ownertags.keys)  	
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
-	def tags_with_parent(parent_tag)
-		# TODO Performance moyenne : boucle sur chaque tag avec un sous requete... a améliorer
-		return self.tags.select { |t| t.parent_tags.include?(parent_tag) }
+	def tags_with_parent(parent_name)
+		# TODO Performance moyenne : O(n²)
+		# return self.tags.select { |t| t.parent_tags.pluck(:name).include?(parent_tag) }
+		
+		# Essai en O(n)... c'est moche mais ca marche
+		if Tag.exists?(name: parent_name)
+			parent = Tag.find_by(name: parent_name)
+			ids = Ownertag.where(tag_id: self.tag_ids).where(owner_id: parent.id).where(owner_type: "Tag").pluck(:tag_id)
+			return Tag.find(ids)
+		else
+			return nil
+		end
 	end
 
 	# Met à jour les tags de l'item, mais uniquement les tags qui sont dans le parent donné
 	def update_tags_with_parent(array_tag_names, parent_tag)
+		logger.debug ("----> update_tags_with_parent : arrayn_tag_names="+array_tag_names.inspect+"  parent_tag="+parent_tag.inspect)
 		# On crée deux listes de string contenant les tags à comparer
 		current_tag_names   = self.tags_with_parent(parent_tag).map(&:name)
 		
@@ -77,14 +123,14 @@ class Item < ApplicationRecord
 		# On réalise la différence entre les tags existants et nouveaux --> à ajouter à l'item
 		names_to_create = new_tag_names - current_tag_names
 		created_tags = parent_tag.create_children(names_to_create)
-		logger.debug ("---created_tags -->" + created_tags.inspect)
+		logger.debug ("-----> created_tags -->" + created_tags.inspect)
 		self.tags << created_tags
 		
 		# On réalise la différence entre les tags existants et ceux retirés dans la liste --> à supprimer de l'item
 		names_to_destroy = current_tag_names - new_tag_names
-		logger.debug (" current_tag_names --->"+current_tag_names.inspect)
-		logger.debug (" new_tag_names --->"+new_tag_names.inspect)
-		logger.debug (" names_to_destroy --->"+names_to_destroy.inspect)
+		logger.debug ("-----> current_tag_names --->"+current_tag_names.inspect)
+		logger.debug ("-----> new_tag_names --->"+new_tag_names.inspect)
+		logger.debug ("-----> names_to_destroy --->"+names_to_destroy.inspect)
 		self.tags.destroy(Tag.where(name: names_to_destroy))
 		# names_to_destroy automatiquement désassociés de l'item via le destroy
 
@@ -92,6 +138,7 @@ class Item < ApplicationRecord
 
 
 	# ------------------ POSSESSION de l'ITEM ----------------------------------------------------------------
+
 
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)
@@ -131,6 +178,7 @@ class Item < ApplicationRecord
 
 
 	# --------------------  CHAMPS de l'ITEM -------------------------------------------------------------
+
 
 	# Renvoie le string du numéro de l'item (integer ou float suivant les cas)
 	def friendly_number

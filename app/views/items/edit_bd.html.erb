@@ -1,3 +1,7 @@
+<div class="pull-right">
+  <%= link_to "Voir le form normal", edit_item_path(@item) %>
+</div>
+
 <h1>Modification d'un item BD</h1>
 
 <%= render partial: "form_bd", locals: { item: @item, submit_text: "Sauver"} %>

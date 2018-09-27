@@ -48,7 +48,19 @@ class TagsController < ApplicationController
 
       # Si le tag a des enfants, il faut afficher les tags enfants (navigation)
       if @tag.tags.present?
-        @child_tags = @tag.children.paginate(page: params[:page], per_page: 50)
+        per_page = 40
+        case params[:letter]
+          when "A".."W"
+            @tags = @tag.children.where(letter: params[:letter]).paginate(page: params[:page], per_page: per_page)
+          when "XYZ"
+            @tags = @tag.children.where(letter: "X".."Z").paginate(page: params[:page], per_page: per_page)
+          when "#"
+            @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: per_page)
+          when "vide"
+            @tags = @tag.children.where("letter is NULL OR letter is ''").paginate(page: params[:page], per_page: per_page)
+          else
+            @tags = @tag.children.paginate(page: params[:page], per_page: per_page)
+        end
 
       # Si le tag n'a plus d'enfant, on peut afficher les items.
       else

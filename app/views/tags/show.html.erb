@@ -47,17 +47,17 @@
 	
 	<% if @tag.view_alphabet %>
 		<div class="btn-group header-letters">
-			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"].each do |letter| %>
-				<%= link_to letter, tag_path(@tag, letter: letter), role: "button", class: "btn btn-default btn-xs #{"active" if (params[:letter]==letter)}" %>
+			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
+				<%= link_to letter, tag_path(@tag, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
 			<% end %>
 		</div>
 	<% end %>
 
 	
-	<% if @child_tags.present? %>
-		<%= will_paginate @child_tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+	<% if @tags.present? %>
+		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 		<ul class="children_tags">
-			<% @child_tags.each do |tag| %>
+			<% @tags.each do |tag| %>
 				<li><%= link_to tag.name, tag  %></li>
 			<% end %>
 		</ul>
