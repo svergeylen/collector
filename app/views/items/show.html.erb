@@ -13,7 +13,8 @@
 	</div>
 
 	<h3><%= @item.name %></h3>
-
+	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
+	
 	<% if @attachments.present? %>
 		<div class="row">
 			<div class="col-md-8">
@@ -22,19 +23,23 @@
 			<div class="col-md-4">
 	<% end %>
 
-			<p>Numéro : <%= @item.friendly_number if @item.number %></p>
-			<% if @item.tags.present? %>
-				<p><% @item.tags.each do |t| %>
-				<%= render_tag(t) %>
-				<% end %>
-				</p>
-			<% end %>
-			<p>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></p>
-			
-			<% if @item.description.present? %>
-				<h4>Notes</h4>
-				<%= sanitize @item.description %>
-			<% end %>
+	<p>Numéro : <%= @item.friendly_number if @item.number %></p>
+	<% if @item.tags.present? %>
+		<% if true  %>
+			<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
+			<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
+			<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
+		<% else %>
+			<%= render_tags(@item.tags) %>
+		<% end %>
+	<% end %>
+	
+
+	
+	<% if @item.description.present? %>
+		<h4>Notes</h4>
+		<%= sanitize @item.description %>
+	<% end %>
 			
 
 	<% if @attachments.present? %>

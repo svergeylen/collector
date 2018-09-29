@@ -10,6 +10,7 @@ class Comment < ApplicationRecord
 
 	# Renvoie une liste de comments qui contiennent le mot clé donné
 	def self.search(keyword)
+		keyword = keyword.downcase
 		if keyword.present?
 			comments = where('message LIKE ?', "%#{keyword}%").order(created_at: :desc)
 		else
@@ -22,7 +23,7 @@ class Comment < ApplicationRecord
 		comments.each do |comment| 
 			msg = ActionController::Base.helpers.sanitize(comment.message, tags: %w(a), attributes: %w(href))
 			comment.message = msg
-			if msg.include?(keyword)
+			if msg.downcase.include?(keyword)
 				ret << comment 
 			end
 		end

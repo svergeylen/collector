@@ -1,4 +1,4 @@
-<div class="rounded-box">
+<div class="rounded-box search_results">
 	<h2>Recherche de "<%= @keyword %>"</h2>
 
 
@@ -6,7 +6,7 @@
 		<h4><%= pluralize( @tags.count, "tag trouvé", "tags trouvés", locale: :fr) %> : </h4>
 		<ul>
 		<% @tags.each do |tag| %>
-			<li><%= link_to tag.name, tag_path(tag) %> </li>
+			<li><%= link_to highlight(tag.name, @keyword, highlighter: '<strong>\1</strong>'), tag_path(tag) %> </li>
 		<% end %>
 		</ul>
 	<% else %>
@@ -18,7 +18,7 @@
 
 		<ul>
 		<% @items.each do |item| %>
-			<li><%= link_to item.name, item, title: "Créé le #{long_date(item.created_at)} par #{item.adder.name if item.adder.present?}"  %> </li>
+			<li><%= link_to highlight(item.name, @keyword, highlighter: '<strong>\1</strong>'), item, title: "Créé le #{long_date(item.created_at)} par #{item.adder.name if item.adder.present?}"  %> </li>
 		<% end %>
 		</ul>
 	<% else %>
@@ -27,10 +27,22 @@
 
 	<% if @posts.present? %>
 		<h4><%= pluralize( @posts.count, "message trouvé", "messages trouvés", locale: :fr) %> : </h4>
-
 		<ul>
 		<% @posts.each do |post| %>
-			<li><%= link_to excerpt(post.message, @keyword, separator: ' ', radius: 8), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %> </li>
+			<li><%= short_date(post.created_at) %> : 
+				<% if excerpt(post.message, @keyword).present? %>
+					<%= link_to highlight(excerpt(post.message, @keyword, separator: ' ', radius: 8), @keyword, highlighter: '<strong>\1</strong>'), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %>
+				<% end %>
+				<% if excerpt(post.preview_title, @keyword).present? %>
+					<%= link_to highlight(excerpt(post.preview_title, @keyword, separator: ' ', radius: 8), @keyword, highlighter: '<strong>\1</strong>'), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %>
+				<% end %>
+				<% if excerpt(post.preview_description, @keyword).present? %>
+					<%= link_to highlight(excerpt(post.preview_description, @keyword, separator: ' ', radius: 8), @keyword, highlighter: '<strong>\1</strong>'), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %>
+				<% end %>
+				<% if excerpt(post.preview_url, @keyword).present? %>
+					<%= link_to highlight(post.preview_url, @keyword, highlighter: '<strong>\1</strong>'), post, title: "Posté le #{long_date(post.created_at)} par #{post.user.name}" %>
+				<% end %>
+			</li>
 		<% end %>
 		</ul>
 	<% else %>
@@ -42,7 +54,8 @@
 
 		<ul>
 		<% @comments.each do |comment| %>
-			<li><%= link_to excerpt(comment.message, @keyword, separator: ' ', radius: 8), comment.post, title: "Posté le #{long_date(comment.created_at)} par #{comment.user.name}"  %> </li>
+			<li><%= short_date(comment.created_at) %> : 
+				<%= link_to highlight(excerpt(comment.message, @keyword, separator: ' ', radius: 8), @keyword, highlighter: '<strong>\1</strong>'), comment.post, title: "Posté le #{long_date(comment.created_at)} par #{comment.user.name}"  %> </li>
 		<% end %>
 		</ul>
 	<% else %>

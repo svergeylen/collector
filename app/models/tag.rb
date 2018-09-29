@@ -73,6 +73,7 @@ class Tag < ApplicationRecord
 
 	# Renvoie une liste de tags qui contiennent le mot clé donné
 	def self.search(keyword)
+		keyword = keyword.downcase
 		if keyword.present?
 			where('name LIKE ?', "%#{keyword}%").order(name: :asc)
 		else

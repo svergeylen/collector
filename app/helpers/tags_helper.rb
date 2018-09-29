@@ -1,5 +1,18 @@
 module TagsHelper
 
+	# Réalise le rendu d'une liste de tag
+	def render_tags(tags, with_delete_option = false)
+		ret = ""
+		if tags.present?
+			tags.each do |tag|
+				ret += render_tag(tag, with_delete_option)
+			end
+		else
+			ret += "-"
+		end
+		return ret.html_safe
+	end
+
 	# Réalise le rendu d'un seul tag vers HTML, contenant le lien vers le tag et vers la suppression des tags actifs
 	def render_tag(tag, with_delete_option = false) 
 		ret = "<span class='collector-tag "

@@ -205,6 +205,7 @@ class Item < ApplicationRecord
 
 	# Recherche les items contenant le mot clé donné
 	def self.search(keyword)
+		keyword = keyword.downcase
 		if keyword.present?
 		  where('name LIKE ?', "%#{keyword}%").order(name: :asc)
 		else

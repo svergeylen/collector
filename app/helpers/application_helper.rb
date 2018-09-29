@@ -36,7 +36,11 @@ module ApplicationHelper
 	end
 
 	def short_date(mydate) 
-		return mydate.strftime("%d/%m")
+		if mydate.strftime("%Y") == Time.now.strftime("%Y")
+			return mydate.strftime("%d/%m")
+		else
+			return mydate.strftime("%d/%m/%y")
+		end
 	end
 
 end
