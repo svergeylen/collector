@@ -15,7 +15,7 @@ function create_selectize(id) {
     	render: {
     		/* item = dans le champ input text */
 	        item: function(item, escape) {
-	            return '<div class="collector-tag collector-tag-fitler"> ' +
+	            return '<div class="collector-tag collector-tag-filter"> ' +
 	                '' + escape(item.name) + '' +
 	            '</div>';
 	        },

@@ -16,22 +16,18 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    @attachments = @item.attachments
   end
 
   # GET /items/new
   def new
     @item = Item.new
-
-  
+    
     case params[:view]
-    # Vue spécifique un item "BD"
     when "bd"
-      #special_bd    
-      #@selected_series = params[:series]
+      new_or_edit_bd
+      @item.tag_series = params[:series] if params[:series]
       render "items/new_bd"
     else
-      # Vue par défaut pour la création de tout type d'item
       @tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/new"
     end
@@ -43,9 +39,7 @@ class ItemsController < ApplicationController
 
     case params[:view]
       when "bd"
-        @series_list = Tag.with_parent("Séries").pluck(:name)
-        @auteurs_list = Tag.with_parent("Auteurs").pluck(:name)
-        @rangements_list = Tag.with_parent("Rangements").pluck(:name)
+        new_or_edit_bd
         render "items/edit_bd"
       else
         @tag_list = Tag.order(name: :asc).pluck(:name)
@@ -56,13 +50,17 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    params[:item].delete(:view)
-
-    # Création de l'item
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
+
+    # Si l'item est une BD (form BD), alors on lui ajoute ce tag "BD" d'office
+    # if params[:view] == "bd"
+    #   logger.debug "---------> Ajout Tag Bandes dessinées d'office"
+    #   @item.tags << Tag.first_or_create!(name: "Bandes dessinées")
+    # end
+    params.delete(:view)
 
     if @item.save
 
@@ -130,19 +128,10 @@ class ItemsController < ApplicationController
     end
 
     # Méthodes utilisées par les 2 formulaires spécifiques aux BD : new + edit
-    def special_bd
-      # Séries
-      @series = Tag.where(name: "Séries").first_or_create!
-      #@item_series = @item.tags_with_parent(tag_series).map{ |t| t.name }.join(",")
-      # Auteurs
-      #tag_auteurs = Tag.where(name:"Auteurs").first_or_create!
-      #@auteurs = tag_auteurs.nil? ? Tag.all : tag_auteurs.children
-      #@item_auteurs = @item.tags_with_parent(tag_auteurs).map{ |t| t.name }.join(",")
-      # Rangement
-      #tag_rangement = Tag.where(name: "Rangement").first_or_create!
-      #rangements = tag_rangement.nil? ? Tag.all : tag_rangement.children
-      #@options_rangements =  rangements
-      #@item_rangements = @item.tags_with_parent(tag_rangement).map{ |t| t.name }.join(",")
+    def new_or_edit_bd
+      @series_list = Tag.with_parent("Séries").pluck(:name)
+      @auteurs_list = Tag.with_parent("Auteurs").pluck(:name)
+      @rangements_list = Tag.with_parent("Rangements").pluck(:name)
     end
 
     # Use callbacks to share common setup or constraints between actions.

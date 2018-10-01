@@ -15,17 +15,17 @@
 	<h3><%= @item.name %></h3>
 	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
 	
-	<% if @attachments.present? %>
+	<% if @item.attachments.present? %>
 		<div class="row">
 			<div class="col-md-8">
-				<%= render partial: "shared/carousel", locals: {attachments: @attachments, active_slide_id: 0 } %>
+				<%= render partial: "shared/carousel", locals: {attachments: @item.attachments, active_slide_id: 0 } %>
 			</div>
 			<div class="col-md-4">
 	<% end %>
 
 	<p>Numéro : <%= @item.friendly_number if @item.number %></p>
 	<% if @item.tags.present? %>
-		<% if true  %>
+		<% if params[:view] == "bd"  %>
 			<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
 			<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
 			<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>

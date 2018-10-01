@@ -21,7 +21,7 @@
 						  <ul class="list-group list-group-flush">
 						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
 						    	<li class="list-group-item" title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
-						    		<span class="pull-right" >le <%= short_date(item.created_at) %>	</span>
+						    		<span class="pull-right text-secondary" >le <%= short_date(item.created_at) %>	</span>
 						    		<%= link_to item.name, item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
 						    	</li>
 						    <% end %>

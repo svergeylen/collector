@@ -74,11 +74,9 @@
             <li class="list-group-item">Aucun parent</li>
           <% end %>
         </ul>
-        <%= form.select 'parent_tags', 
-          options_from_collection_for_select(Tag.all, :id, :name, tag.parent_tag_ids ), 
-          { include_blank: true },
-          { multiple: true,  class: 'chosen-select' }
-        %>
+        <div class="form-group">
+          <%= form.text_field :parent_tag_names, id: "parent_tag_names", class: "form-control", placeholder:"Ajouter un parent", autocomplete: :off, data: { tag_list: @tag_list } %>
+        </div>
       </div>
       <div class="col-sm-3">
         <div class="pull-left pr-2 pt-3"><%= fa_icon "arrow-right" %></div>
@@ -98,7 +96,9 @@
                 <%= link_to(tag.name, edit_tag_path(tag)) %>
               </li>
             <% end %>
-            <%= '<li class="list-group-item">...</li>' if @tag.tags.count > 20 %>
+            <% if @tag.tags.count > 20 %>
+              <li class="list-group-item">... et <%= (@tag.tags.count-20).to_s %> autres tags enfants</li>  
+            <% end %>
           <% end %>
           <% if @tag.items.present? %>
             <li class="list-group-item">

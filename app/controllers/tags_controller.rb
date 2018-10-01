@@ -81,7 +81,7 @@ class TagsController < ApplicationController
       end
 
       # Formulaire d'ajout d'item en bas de page
-      @new_item = Item.new
+      #@new_item = Item.new
 
     end  #if @tag
   end
@@ -109,10 +109,11 @@ class TagsController < ApplicationController
   end
 
   def edit
+    @tag_list = Tag.order(name: :asc).pluck(:name)
   end
 
   def update
-    @tag.update_parent_tags(params[:tag][:parent_tags])
+    # @tag.update_parent_tags(params[:tag][:parent_tags])
     
     if @tag.update(tag_params)
       redirect_to @tag, notice: 'Tag mis à jour'
@@ -165,7 +166,7 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :view_alphabet, :filter_items)
+    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :view_alphabet, :filter_items, :parent_tag_names)
   end
 
 end

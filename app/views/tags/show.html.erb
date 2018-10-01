@@ -1,8 +1,8 @@
 <div class="rounded-box">
 	<div class="pull-right">
 		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-			<%= link_to star_tag_path(@tag), remote: true, class:"btn btn-light", role:'button' do %>
-				<%= fa_icon("star") %>
+			<%= link_to new_item_path(view: 'bd', series: @tag.name), class:"btn btn-light", role:'button' do %>
+				<%= fa_icon("plus") %>
 			<% end %>
 			<% if @view == "list" %>
 				<%= link_to tag_path(@tag, view: "gallery"), class:"btn btn-light", role:'button' do %>
@@ -34,12 +34,9 @@
 	<h1><%= @tag.name %></h1>
 
 	<div class="mt-3 mb-3">
-		Tags actifs :  
-		<% @active_tags.each do |tag| %>
-			<%= render_tag(tag, true) %>
-		<% end %>
+		<%= render_tags(@active_tags, true) %>
 		<div style="display:inline-block;">
-			<%= render partial: "search/form_tags" %>
+			<%# render partial: "search/form_tags" %>
 		</div>
 	</div>
 

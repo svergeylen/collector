@@ -17,6 +17,32 @@ class Tag < ApplicationRecord
 	validates :name, presence: true, uniqueness: true
 
 
+# --------------------- TAGS PARENTS ---------------------------------------------------------------------------
+
+	attr_writer :parent_tag_names 	# list de tags parents
+	before_save :save_parent_tags
+	
+	# Donne les tags parents, au format string séparé par une virgule
+	def parent_tag_names
+		@parent_tag_names || parent_tags.pluck(:name).join(", ")
+	end
+
+	# Before_save : Sauvegarde les tags parents donnés dans une liste de string séparée par des virgule en objets Tag
+	def save_parent_tags
+		if @parent_tag_names
+			parent_tags = []
+			@parent_tag_names.split(",").each do |name| 
+				name = name.strip
+				next if name==""
+				parent_tags << Tag.where(name: name).first_or_create!
+			end
+			logger.debug "----------> Modification des tags parents vers : "+parent_tags.inspect
+			self.parent_tags = parent_tags
+		end
+	end
+
+# ------------------------- TAGS ENFANTS -----------------------------------------------------------------------
+
 	# Renvoie la liste des tags enfants de ce tag, classés dans l'ordre alphabétique
 	def children()
 		return self.tags.order(name: :asc)

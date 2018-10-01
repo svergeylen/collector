@@ -32,7 +32,7 @@
 	border-radius: 0.5em !important;
 }
 
-/* Tag filtrant */
+/* Tags filtrants et n'importe quelle div dans un champ "selectize.js" */
 .collector-tag-filter,
 .selectize-input > div {
 	background : $tag-color-light !important;
@@ -47,7 +47,7 @@
 	}
 }
 
-/* Tag ne servant pas à filter les items listés (uniquement navigation) */
+/* Tags ne servant pas à filter les items listés (uniquement navigation) */
 .collector-tag-nofilter  {
 	background : white !important;
 	border : 1px solid $high-color !important;
