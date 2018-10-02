@@ -12,13 +12,10 @@ class PostsController < ApplicationController
     @current_page = params[:page].present? ? params[:page].to_s : "1"
     @next_page = (@current_page.to_i + 1).to_s
 
-    # Mémorise l'heure du précédent affichage
-    # Temporisation Une heure pour éviter de perdre la mise en évidence des nouveautés en raffraichissant la page
-    if current_user.displayed_la_une.nil? or (current_user.displayed_la_une < (Time.now - 3600) )
-      current_user.displayed_la_une = Time.now
-      current_user.save
-    end
-
+    # Mémorise l'heure de l'affichage de La Une pour le compteur de posts/comments en première page
+    current_user.displayed_la_une = Time.now
+    current_user.save
+    
     respond_to do |format|
       format.html
       format.js 

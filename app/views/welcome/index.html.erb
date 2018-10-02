@@ -1,49 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vergeylen.eu</title>
-    <%= favicon_link_tag 'favicon.png', type: 'image/png' %>
-    <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-	<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-	
-	<style>
-		body.welcome {
-			background: white !important;
-			text-align : center;
-		}
-		.logo {
-			padding : 80px 0;
-		}
-		.direct {
-			margin-top : 40px;
-		}
-	</style>
-</head>
 
-<body class="welcome">
+<style>
+body {
+	/* Hack pour avoir un fond blanc sur la page d'accueil ... */
+	background : white !important;
+}
+</style>
 
-	<% if notice %>
-		<p class="alert alert-success"><%= notice %></p>
-	<% end %>
-	<% if alert %>
-		<p class="alert alert-danger"><%= alert %></p>
-	<% end %>
-	
-	<div class="mt-5 mb-5 text-center">
-		<%= image_tag @image_name %>
+<div class="text-center">
+	<%= image_tag @image_name, class:"welcome-logo img-fluid" %>
+
+	<div class="text-center mt-4 mb-4">
+		<%= link_to posts_path, class:"btn btn-primary" do %> 
+			La Une 
+			<% if @counter_la_une > 0 %>
+				<span class="badge badge-danger"> <%= @counter_la_une.to_s %> </span>
+			<% end %>
+		<% end %>
+		<%= link_to welcome_collector_path, class:"btn btn-primary" do %> 
+			Collector
+			<% if @counter_collector > 0 %>
+			 	<span class="badge badge-danger"> <%= @counter_collector.to_s %> </span>
+			<% end %>
+		<% end %>
 	</div>
-	<div class="mt-5">
-		<%= link_to "La Une", posts_path, class:"btn btn-primary" %> 
-		<%= link_to "Collector", welcome_collector_path, class:"btn btn-primary" %> 
-	</div>
-	<div class="mt-5">
+	<div class="text-center mt-4 mb-4">
 		<%= link_to "Stedan", "http://stedan.be", class:"btn btn-outline-primary" %> 
 		<%= link_to "Place2be", "https://place2be.io", class:"btn btn-outline-primary" %>
 		<%= link_to "Sigmadelta", "https://sigmadelta.io", class:"btn btn-outline-primary" %>
 	</div>
-</body>
-</html>
+</div>

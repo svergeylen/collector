@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180914083125) do
+ActiveRecord::Schema.define(version: 20181002083730) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20180914083125) do
     t.datetime "avatar_updated_at"
     t.integer "rights"
     t.datetime "displayed_la_une"
+    t.datetime "displayed_collector"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
