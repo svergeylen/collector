@@ -1,6 +1,6 @@
 <%= form_with(model: item, local: true, :html => { :multipart => true } ) do |form| %>
   <% if item.errors.any? %>
-    <div id="error_explanation">
+    <div class="alert alert-danger" role="alert">
       <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
 
       <ul>

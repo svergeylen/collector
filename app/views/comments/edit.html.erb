@@ -3,7 +3,7 @@
 
 <%= form_with(model: @comment) do |form| %>
   <% if @comment.errors.any? %>
-    <div id="error_explanation">
+    <div class="alert alert-danger" role="alert">
       <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
 
       <ul>

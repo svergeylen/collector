@@ -1,7 +1,7 @@
 <%= form_with model: tag, local: true, class:"form-horizontal" do |form| %>
 
  <% if tag.errors.any? %>
-    <div id="error_explanation">
+    <div class="alert alert-danger" role="alert">
         <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de cet auteur :
       <ul>
         <% tag.errors.full_messages.each do |msg| %>
@@ -11,17 +11,16 @@
     </div>
   <% end %>
 
-
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="tag_name">Nom</label>
     <div class="col-sm-4">
-      <%= form.text_field :name, id: "tag_name", class: "form-control", placeholder: "Nom ?",autocomplete: :off %>
+      <%= form.text_field :name, id: "tag_name", class: "form-control",autocomplete: :off %>
     </div>
     <div class="col-sm-2">
       <label class="col-form-label col-sm-2" for="tag_letter">Classement</label>
     </div>
     <div class="col-sm-2">
-      <%= form.text_field :letter, id: :tag_letter, class: "form-control", placeholder: "?", autocomplete: :off %>
+      <%= form.text_field :letter, id: :tag_letter, class: "form-control", autocomplete: :off %>
     </div>
   </div>
 

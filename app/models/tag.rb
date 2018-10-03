@@ -14,7 +14,7 @@ class Tag < ApplicationRecord
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	
-	validates :name, presence: true, uniqueness: true
+	validates :name, presence: true, uniqueness: {:case_sensitive => false}
 
 
 # --------------------- TAGS PARENTS ---------------------------------------------------------------------------

@@ -67,7 +67,7 @@ class TagsController < ApplicationController
         # Recherche des items qui possèdent tous les tags actifs
         @items = Item.having_tags(session[:active_tags])
 
-        # Choix de la vue 
+        # Choix de la vue pour l'affichage des items
         if params[:view].present?
           @view = params[:view]
         else
@@ -88,6 +88,7 @@ class TagsController < ApplicationController
 
   def new
     @tag = Tag.new
+    new_and_edit_actions
     # Reherche des tags à proposer pour populer le(s) champ(s) parent_tags
     @tag.parent_tag_ids = [ params[:parent_tag].to_s ]
   end
@@ -96,7 +97,6 @@ class TagsController < ApplicationController
     @tag = Tag.new(tag_params)
     
     if @tag.save
-      @tag.update_parent_tags(params[:tag][:parent_tags])
 			if @tag.root_tag?
 				redirect_to tags_path, notice: "Tag créé"
 			else
@@ -104,17 +104,14 @@ class TagsController < ApplicationController
 			end
     else
       render :new 
-      # ICI BUG : lorsqu'il y a une erreur de validation, on perd la valeur de @tag.parent_tag_ids ???
     end
   end
 
   def edit
-    @tag_list = Tag.order(name: :asc).pluck(:name)
+    new_and_edit_actions
   end
 
-  def update
-    # @tag.update_parent_tags(params[:tag][:parent_tags])
-    
+  def update 
     if @tag.update(tag_params)
       redirect_to @tag, notice: 'Tag mis à jour'
     else
@@ -163,6 +160,10 @@ class TagsController < ApplicationController
   
   def set_tag
     @tag = Tag.find(params[:id])
+  end
+
+  def new_and_edit_actions
+    @tag_list = Tag.order(name: :asc).pluck(:name)
   end
 
   def tag_params

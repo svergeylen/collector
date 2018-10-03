@@ -6,7 +6,7 @@
 	<%= form_with(model: @post, local: true) do |form| %>
 
 		<% if @post.errors.any? %>
-		  <div id="error_explanation">
+		  <div class="alert alert-danger" role="alert">
 		    <h4><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h4>
 		    <ul>
 		    <% @post.errors.full_messages.each do |message| %>
