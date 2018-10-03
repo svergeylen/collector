@@ -1,6 +1,7 @@
 
 /* Instantiation de selectize sur un champ <select> 
-   et ajout des elements listés dans data-selected comme valeurs prédéfinies */
+   et ajout des elements listés dans data-selected comme valeurs prédéfinies 
+   Renvoie l'instance selectize crée */
 function create_selectize(id) {
 
 	var default_options = {
@@ -8,6 +9,8 @@ function create_selectize(id) {
 		persist: false,
 		maxItems: 30,
 		createOnBlur: true,
+		hideSelected: true,
+		placeholder: "?",
 		closeAfterSelect: true,
 		valueField: 'name',
     	labelField: 'name',
@@ -31,30 +34,52 @@ function create_selectize(id) {
 	    }
 	};
 	
-	console.log(id);
+	var selectize;
 	var j = $("#"+id);
+	// console.log(j);
 	if (j.length) {
 		/* Initialisation de selectize et variable selectize pour appel ultérieur */
 		$i = j.selectize(default_options);
-		var selectize = $i[0].selectize;
+		selectize = $i[0].selectize;
 
 		/* Ajout des options dans la liste, provenant de l'attribut "data-tag-list" donnée par le serveur */
 		h = j.data("tag-list").map( function(current) {
 			return {name: current}
 		});
-		selectize.addOption(h);
+		selectize.addOption(h);		
 	}
+
+	return selectize;
 }
 
+/* Mémorisation des instances selectize pour éviter d'en créer de nouvelles en cas de back/forward du navigateur */
+// var tag_names;
+// var tag_series;
+// var tag_auteurs;
+// var tag_rangements;
+// var parent_tag_names;
 
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
-	// New item
-	create_selectize("tag_names");
-	// New item (BD)
-	create_selectize("tag_series");
-	create_selectize("tag_auteurs");
-	create_selectize("tag_rangements");
+	// New,Edit item
+	// if (tag_names == undefined) {
+		tag_names = create_selectize("tag_names");
+	// }
+	// // New,Edit item (BD)
+	// if (tag_series == undefined) {
+		tag_series = create_selectize("tag_series");
+	// }
+	// if (tag_auteurs == undefined) {
+		tag_auteurs = create_selectize("tag_auteurs");
+	// }
+	// if (tag_rangements == undefined) {
+		tag_rangements = create_selectize("tag_rangements");
+	// }
+
+	// // New,Edit Tag
+	// if (parent_tag_names == undefined) {
+		parent_tag_names = create_selectize("parent_tag_names");
+	// }
 
 });

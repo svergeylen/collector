@@ -9,15 +9,15 @@
       </span>
 
       <% if (post.user_id == current_user.id) || current_user.can?(:admin) %>
-        <%= link_to edit_post_path(post) do fa_icon("edit") end %>
-        <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' } do fa_icon("trash") end %>
+        <%= link_to edit_post_path(post), class:"high-color" do fa_icon("edit") end %>
+        <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' }, class:"high-color" do fa_icon("trash") end %>
       <% end %>
     </div>
 
     <%= profile_picture(post.user) %>
     
     <div class="user-name">
-      <%= link_to post.user.name, post.user %>
+      <%= link_to post.user.name, post.user, class:"high-color" %>
     </div>
   </div>
 

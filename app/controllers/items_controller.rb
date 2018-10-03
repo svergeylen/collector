@@ -55,18 +55,10 @@ class ItemsController < ApplicationController
     # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
     @item.itemusers.build(user_id: current_user.id, quantity: 1)
 
-    # Si l'item est une BD (form BD), alors on lui ajoute ce tag "BD" d'office
-    # if params[:view] == "bd"
-    #   logger.debug "---------> Ajout Tag Bandes dessinées d'office"
-    #   @item.tags << Tag.first_or_create!(name: "Bandes dessinées")
-    # end
-    params.delete(:view)
-
     if @item.save
-
+      add_bd_tag if params[:view] == "bd"
       save_attachments
-      Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)
-      
+      Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)      
 			redirect_to @item, notice: 'Elément ajouté'
     else
 			render :new 
@@ -78,6 +70,8 @@ class ItemsController < ApplicationController
   def update
     # params[:item].delete(:view)
     @item.adder_id = current_user.id if @item.adder_id.blank?
+
+    add_bd_tag if params[:view] == "bd"
 
     if @item.update(item_params)
       save_attachments
@@ -129,9 +123,20 @@ class ItemsController < ApplicationController
 
     # Méthodes utilisées par les 2 formulaires spécifiques aux BD : new + edit
     def new_or_edit_bd
-      @series_list = Tag.with_parent("Séries").pluck(:name)
-      @auteurs_list = Tag.with_parent("Auteurs").pluck(:name)
-      @rangements_list = Tag.with_parent("Rangements").pluck(:name)
+      tag_series = Tag.find_or_create_by(name: "Séries")
+      @series_list = tag_series.children.pluck(:name)
+
+      tag_auteurs = Tag.find_or_create_by(name: "Auteurs")
+      @auteurs_list = tag_auteurs.children.pluck(:name)
+
+      tag_rangement = Tag.find_or_create_by(name: "Rangements")
+      @rangements_list = tag_rangement.children.pluck(:name)
+    end
+
+    # Ajout du tag BD à l'item (à appeler si le formulaire BD a été utilisé)
+    def add_bd_tag
+      bd = Tag.find_or_create_by!(name: "Bandes dessinées")
+      @item.tags << bd unless @item.tags.include?(bd)
     end
 
     # Use callbacks to share common setup or constraints between actions.

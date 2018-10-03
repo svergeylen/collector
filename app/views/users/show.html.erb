@@ -2,17 +2,19 @@
 	<div class="col-sm-8">
 		<div class="rounded-box">
 			<div class="pull-right">
-				<%= link_to 'Modifier mon profil', edit_user_registration_path %>
+				<%= link_to 'Modifier mon profil', edit_user_registration_path, class:"high-color" %>
 			</div>
 			<h2><%= @user.name %></h2>
 
-			<p>Courriel : <%= @user.email %></p>
-			<p>Dernière connexion : <%= long_date(@user.last_sign_in_at) %></p>
+			<p>
+				Courriel : <%= @user.email %><br />
+				Dernière connexion : <%= long_date(@user.last_sign_in_at) %>
+			</p>
 
 			<% if current_user.can?(:une) %>
 				<h3>Dernier message</h3>
 				<% if @last_post.present? %>
-					<p><small>Posté le <%= long_date(@last_post.updated_at) %></small></p>
+					<p><small>Posté le <%= link_to long_date(@last_post.updated_at), @last_post,  class:"high-color" %></small></p>
 					<p><%= @last_post.message %></p>
 				<% else %>
 					<p>Aucun message posté</p>

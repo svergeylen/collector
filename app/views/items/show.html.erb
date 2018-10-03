@@ -13,7 +13,7 @@
 	</div>
 
 	<h3><%= @item.name %></h3>
-	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder) if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
+	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder, class:"high-color") if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
 	
 	<% if @item.attachments.present? %>
 		<div class="row">
@@ -34,14 +34,10 @@
 		<% end %>
 	<% end %>
 	
-
-	
 	<% if @item.description.present? %>
-		<h4>Notes</h4>
 		<%= sanitize @item.description %>
 	<% end %>
 			
-
 	<% if @attachments.present? %>
 			</div>
 		</div>
