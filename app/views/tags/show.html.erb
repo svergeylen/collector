@@ -72,21 +72,15 @@
 		<% end %>
 
 		<div class="mt-3 mb-3">
-			<p>Actions :</p>
-			
-			<ul>
-				<li><%= submit_tag "Ajouter", name: 'add_to_collection' %></li>
-				<li><%= submit_tag "Enlever", name: 'remove_from_collection' %></li>
-				<li>Déplacer vers ...
-					<%#	 form.text_field :tag_rangements, id: "tag_rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
-					<%= submit_tag "Ranger", name: 'move' %>
-					</li>
-				<li>Ajouter le tag ...
-					<%= submit_tag "Ajouter", name: 'add_tag' %>
-					
-				</li>
-			</ul>
-		
+			Pour la sélection :
+			<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light" %>
+			<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light" %><br />
+			Déplacer vers ...
+				<%=	 text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
+				<%= submit_tag "Ranger", name: 'move', class:"btn btn-light" %>
+					<br />
+			Ajouter le tag ...
+				<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light" %>		
 		</div>
 
 	<% end # form_tag %>

@@ -100,29 +100,35 @@ class ItemsController < ApplicationController
   # Gestion des actions réalisées sur une liste d'items.
   # params contient la liste des item_id qu'il faut modifier
   def actions 
-    logger.debug params.inspect
-    ids = params[:item_ids]
 
     # On ajoute les items sélectionnés dans la collection de l'utilisateur courant
     if params[:add_to_collection].present?
-      ids.each do |id|
-        current_user.add_to_collection(id, 1)
+      params[:item_ids].each do |item_id|
+        current_user.add_to_collection(item_id, 1)
       end
       redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments ajoutés à ma collection'
     end
 
     # On enlève les items sélectionnés des possessions de l'utilisateur courant
     if params[:remove_from_collection].present?
-      ids.each do |id|
-        current_user.add_to_collection(id, -1)
+      params[:item_ids].each do |item_id|
+        current_user.add_to_collection(item_id, -1)
       end
       redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments enlevés de ma collection'
     end
 
-    # On modifie le rangement des items donnés vers le(s) nouveaux tag(s) donné(s)
+    # On écrase le rangement des items donnés vers le(s) nouveaux rangement(s) donné(s)
     if params[:move].present?
-
-      redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Rangement modifié pour les items sélectionnés'
+      result = true
+      params[:item_ids].each do |item_id|
+        i = Item.find(item_id)
+        result = i.update_tags_with_parent(params[:rangements].split(","), "Rangements") && result
+      end
+      if result
+        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Rangement modifié pour les items sélectionnés'
+      else
+        redirect_to tag_path(params[:tag_id], view: params[:view]), alert: 'Erreur lors de la modification du rangement'
+      end
     end
 
     # On ajoute le(s) tag(s) donné(s) aux items sélectionnés

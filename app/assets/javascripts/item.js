@@ -52,34 +52,19 @@ function create_selectize(id) {
 	return selectize;
 }
 
-/* Mémorisation des instances selectize pour éviter d'en créer de nouvelles en cas de back/forward du navigateur */
-// var tag_names;
-// var tag_series;
-// var tag_auteurs;
-// var tag_rangements;
-// var parent_tag_names;
-
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
 	// New,Edit item
-	// if (tag_names == undefined) {
-		tag_names = create_selectize("tag_names");
-	// }
-	// // New,Edit item (BD)
-	// if (tag_series == undefined) {
-		tag_series = create_selectize("tag_series");
-	// }
-	// if (tag_auteurs == undefined) {
-		tag_auteurs = create_selectize("tag_auteurs");
-	// }
-	// if (tag_rangements == undefined) {
-		tag_rangements = create_selectize("tag_rangements");
-	// }
+	tag_names = create_selectize("tag_names");
+	tag_series = create_selectize("tag_series");
+	tag_auteurs = create_selectize("tag_auteurs");
+	tag_rangements = create_selectize("tag_rangements");
 
-	// // New,Edit Tag
-	// if (parent_tag_names == undefined) {
-		parent_tag_names = create_selectize("parent_tag_names");
-	// }
+	// New,Edit Tag
+	parent_tag_names = create_selectize("parent_tag_names");
+
+	// Show tag : actions en bas de page : modification du rangement de plusieurs items sélectionnés
+	rangements = create_selectize("rangements");
 
 });

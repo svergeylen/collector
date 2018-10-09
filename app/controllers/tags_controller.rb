@@ -78,6 +78,9 @@ class TagsController < ApplicationController
           end 
         end
 
+        # Options pour les actions en bas de page (selectize)
+        @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
+
       end
 
       # Formulaire d'ajout d'item en bas de page
