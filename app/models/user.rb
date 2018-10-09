@@ -42,4 +42,23 @@ class User < ApplicationRecord
 		end
 	end
 
+	# Ajout l'item à la collection de l'utilisateur
+	# Si l'increment est négatif, la quantité d'item possédée est décrémentée
+	def add_to_collection(item_id, increment = 1)
+		increment = increment.to_i
+		iu = self.itemusers.where(item_id: item_id).first
+	
+	    if iu.present?
+	    	iu.quantity = [ (iu.quantity + increment), 0].max
+	      	iu.save
+	    else
+	    	# Si l'utilisateur n'a pas encore l'item et que la quantité à ajouter est positive
+	    	if (increment > 0)
+	      		iu = self.itemusers.create(item_id: item_id, quantity: increment)
+	      	end
+	      	# Si l'utilisateur n'a pas l'item ET la quantité est nétagive... autant ne rien faire
+	    end
+    	return iu
+	end
+
 end

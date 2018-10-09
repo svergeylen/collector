@@ -1,48 +1,27 @@
-<%# form_with(model: @new_item) do |form| %>
 
-	<table class="table table-sm">
-	  <tbody>
-		<% items.each do |item| %>
-			<% if item.is_owned_by?(current_user.id) %>
-				<tr class="owned-by-user">
-			<%else %>
-				<tr class="not-owned-by-user">
-			<% end %>
-					<td class="text-center align-middle">
-						<%= item.friendly_number %>
-					</td>
-					<td class="align-middle">
-						<%= link_to item.name, item %></a>
-					</td>
-					<td class="align-middle">
-						<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
-					</td>
-					<td class="align-middle">
-						<% item.users.each do |user| %>
-							<%= link_to user do %>
-								<%= profile_picture(user) %>
-							<% end %>
-						<% end %>
-					</td>
-				</tr>
-		<% end %>
-
-		<tr>
-			<td>
-				<%# form.text_field :number, id: :item_number, value: "", placeholder: "n°", class: "form-control", size: 1 %>
-			</td>
-			<td>
-				<%# form.text_field :name, id: :item_name, placeholder:"Titre", class: "form-control" %>
-			</td>
-			<td>
-	      		<%# form.text_field :item_tags, id: :item_tags, placeholder:"Tags", class: "form-control" %>
-			</td>
-			<td>
-				<%# form.submit "Ajouter", class:"btn btn-light" %>
-			</td>
-		</tr>
-
-	  </tbody>
-	</table>
-
-<%# end %>
+<ul class="list-group">
+	<% items.each do |item| %>
+		<li class="list-group-item">
+			<%# item.is_owned_by?(current_user.id) ? "list-group-item-success" : "" %>
+			<div class="row">
+				<!-- etonnement, col-xs-1 ne passe pas... -->
+				<div class="col-1">	
+					<%= item.friendly_number %>
+				</div>
+				<!-- étonnement, col-11 ne passe pas même si le total fait bien 12...  -->
+				<div class="col-9 col-md-4">
+					<%= link_to item.name, item %>
+				</div>
+				<div class="col-md-4 d-none d-md-block">
+					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
+				</div>
+				<div class="col-md-2 d-none d-md-block">
+					<%= render_users(item) %>
+				</div>
+				<div class="col-1">	
+					<%= check_box_tag( 'item_ids[]', item.id) %>
+				</div>
+			</div>
+		</li>
+	<% end %>
+</ul>

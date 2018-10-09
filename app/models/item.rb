@@ -105,8 +105,8 @@ class Item < ApplicationRecord
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
 	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
-	  	# On charge les items correspondants aux lignes trouvées dans ownertags
-	  	Item.where(id: ownertags.keys)  	
+	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
+	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
@@ -147,43 +147,20 @@ class Item < ApplicationRecord
 
 	# ------------------ POSSESSION de l'ITEM ----------------------------------------------------------------
 
-
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)
-		return self.itemusers.collect(&:user_id).include?(user_id)
-	end
-
-	# Renvoie le Itemuser de l'utilisateur donné
-	def iu(user_id)
-		return self.itemusers.where(user_id: user_id).limit(1).first
+		return (self.quantity_for(user_id) > 0)
 	end
 
 	# Renvoie le nombre d'items identiques possédés par l'utilisateur donné
 	def quantity_for(user_id)
-		iu = self.iu(user_id)
+		iu = self.itemusers.where(user_id: user_id).first
 		if iu.present?
 			return iu.quantity
 		else
 			return 0
 		end
 	end
-
-	# Modifie la quantité posédée par l'utilisateur donné
-	def update_quantity(value, user_id)
-		delta = value.to_i
-		iu = self.iu(user_id)
-    if iu.present?
-      iu.quantity = [ (iu.quantity + delta), 0].max
-      iu.save
-    else
-    	# Si l'utilisateur n'a pas l'item ET que l'on veut diminuer la quantité... autant ne rien faire
-    	if (delta > 0)
-      		iu = Itemuser.create!(item_id: self.id, user_id: user_id, quantity: delta)
-      	end
-    end
-    return iu
-	end
-
 
 	# --------------------  CHAMPS de l'ITEM -------------------------------------------------------------
 

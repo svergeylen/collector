@@ -41,9 +41,10 @@ Rails.application.routes.draw do
 	resources :items do
 		member do
 			post 'quantity'
-			get 'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
+			get  'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
 		end
 	end
+	post 'items/actions'
 	
 
 	# Cron /!\ Pas d'authentification

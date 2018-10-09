@@ -1,6 +1,12 @@
 
 <% if false && Rails.env == "development" %>
 	<div class="rounded-box">
+		<div class="d-block d-sm-none">Taille XS : < 576px</div>
+		<div class="d-none d-sm-block d-md-none">Taille SM : > 576px</div>
+		<div class="d-none d-md-block d-lg-none">Taille MD : > 768px</div>
+		<div class="d-none d-lg-block d-xl-none">Taille LG : > 992px</div>
+		<div class="d-none d-xl-block">Taille XL : > 1200px</div>
+
 		<p>Active tags = <%= session[:active_tags].inspect %></p>
 		
 		<% if @tag.present? %>
@@ -13,7 +19,6 @@
 			<h4>Item</h4>
 			<p>Item : <%= @item.inspect %></p>
 			<p>Item tags <%= @item.tags.map{ |t| {id: t.id, name: t.name } }.inspect %></p>
-			<p>@tags_series : <%= @item.tags_series.inspect %></p>
 		<% end %>
 
 		<h4>Params</h4>

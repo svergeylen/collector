@@ -1,13 +1,16 @@
 module ItemsHelper
 
-	# Renvoie un lien vers un item (précédent ou suivant)
-	def get_link(id, direction, title)
-		button_text = ('<span class="glyphicon glyphicon-arrow-'+direction+'"></span>').html_safe
-		if id.present?
-			ret = link_to(button_text, item_path(id), type:"button", class:"btn btn-default btn-sm", title:title)
-		else
-			ret = link_to(button_text, '#', type:"button", class:"btn btn-default btn-sm disabled")
+	# Renvoie la liste des avatar des users qui possèdent cet item et la quantité
+	def render_users(item)
+		ret = ""
+		item.itemusers.each do |iu| 
+			if (iu.quantity > 0)
+				ret += link_to iu.user do 
+					profile_picture(iu.user, item.quantity_for(current_user.id) )
+				end
+			end
 		end
+		return ret.html_safe
 	end
 
 end
