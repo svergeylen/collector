@@ -1,9 +1,6 @@
 class WelcomeController < ApplicationController
 
-	# skip_before_action :authenticate_user!
-
 	# Accueil du site vergeylen.eu
-	# PAS d'authentificationr requise
 	def index
 		# Logo
 		month = Time.now.strftime('%m')
@@ -17,7 +14,6 @@ class WelcomeController < ApplicationController
 	end
 
 	# Accueil du Collector
-	# PAS d'authentificationr requise
 	def collector
 		# Efface tous les active tags lorsqu'on va à l'accueil du collector
 	    session[:active_tags] = []

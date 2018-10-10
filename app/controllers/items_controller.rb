@@ -52,13 +52,17 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
-    # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
-    @item.itemusers.build(user_id: current_user.id, quantity: 1)
-
+    
     if @item.save
+      # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
+      current_user.add_to_collection(@item.id)
+      # Ajout du tag BD si on a utilisé le formulaire "BD"
       add_bd_tag if params[:view] == "bd"
+      # Enregistre les pièces jointes (photos)
       save_attachments
+      # Crée un job pour l'affichage ultérieur sur La Une
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)      
+
 			redirect_to @item, notice: 'Elément ajouté'
     else
 			render :new 
@@ -94,7 +98,7 @@ class ItemsController < ApplicationController
   # DELETE /items/1.json
   def destroy
     @item.destroy
-    redirect_to welcome_collector_path, notice: 'Elément supprimé'
+    redirect_to last_tag_path, notice: 'Elément supprimé'
   end
 
   # Gestion des actions réalisées sur une liste d'items.
@@ -117,6 +121,12 @@ class ItemsController < ApplicationController
       redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments enlevés de ma collection'
     end
 
+    # On enlève les items sélectionnés des possessions de l'utilisateur courant
+    if params[:destroy].present?
+      Item.where(id: params[:item_ids]).destroy_all
+      redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments supprimés du Collector'
+    end
+
     # On écrase le rangement des items donnés vers le(s) nouveaux rangement(s) donné(s)
     if params[:move].present?
       result = true
@@ -133,8 +143,11 @@ class ItemsController < ApplicationController
 
     # On ajoute le(s) tag(s) donné(s) aux items sélectionnés
     if params[:add_tag].present?
-
-      redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag ajouté aux items sélectionnés'
+      params[:item_ids].each do |item_id|
+        i = Item.find(item_id)
+        result = i.add_tags(params[:tag_names].split(","))
+      end
+      redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag(s) ajouté(s) aux items sélectionnés'
     end
     
   end

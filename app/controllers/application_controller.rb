@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
 
+  # Renvoie un lien vers le dernier tag affiché (probablement), tout en conservant les tags actifs
+  def last_tag_path
+  	return tag_path(session[:active_tags].last)
+  end
 
 	protected
 

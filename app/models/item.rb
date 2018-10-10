@@ -48,6 +48,7 @@ class Item < ApplicationRecord
 				next if name==""
 				tags << Tag.where(name: name).first_or_create!
 			end
+			# J'écrase tous les tags existants != de add_tags qui ajoute des tags
 			self.tags = tags
 		end
 	end
@@ -91,6 +92,28 @@ class Item < ApplicationRecord
 
 	# --------------------- TAGS ---------------------------------------------------------------------------
 
+	# Ajoute l'array de tag_names à l'item sans créer de doublon. Crée les tags si inexistants.
+	# Différent de save_tags qui écrase les tags existants par les tags donnés.
+	def add_tags(tag_names_array)
+		tag_names_array.each do |tag_name|
+			tag_name = tag_name.strip
+			if tag_name!=""
+				tag = Tag.where(name: tag_name).first_or_create!
+				self.tags << tag unless self.tags.include?(tag)
+			end
+		end
+	end
+
+	# Supprime l'association entre l'item et le tableau de tag_names donné
+	def remove_tags(tag_names_array)
+		tag_names_array.each do |tag_name|
+			tag_name = tag_name.strip
+			if tag_name!=""
+				tag = Tag.find_by(name: tag_name)
+				self.tags.delete(tag) if tag.present?
+			end
+		end
+	end
 
 	# Renvoie les tags de l'item après avoir soustrait les active tags
 	def different_tags(active_tag_ids)

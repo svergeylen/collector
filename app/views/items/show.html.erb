@@ -5,9 +5,9 @@
 	      <%= fa_icon "cog" %>
 	    </button>
 	    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-	    	<%= link_to 'Modifier la BD', edit_item_path(@item, view: "bd"), class:'dropdown-item' %>
-	    	<%= link_to 'Modifier l\'item', edit_item_path(@item), class:'dropdown-item' %>
-	    	<%= link_to 'Supprimer l\'item', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'élément ?' } %> 
+	    	<%= link_to 'Modifier (BD)', edit_item_path(@item, view: "bd"), class:'dropdown-item' %>
+	    	<%= link_to 'Modifier (item)', edit_item_path(@item), class:'dropdown-item' %>
+	    	<%= link_to 'Supprimer', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'élément ?' } %> 
 	    </div>
 	  </div>
 	</div>
@@ -15,7 +15,7 @@
 	<h3><%= @item.friendly_number+") " if @item.number %> <%= @item.name %></h3>
 	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder, class:"high-color") if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
 	
-	<% if @item.attachments.present? %>
+	<% if @item.attachments.count > 0 %>
 		<div class="row">
 			<div class="col-md-8">
 				<%= render partial: "shared/carousel", locals: {attachments: @item.attachments, active_slide_id: 0 } %>
@@ -23,37 +23,39 @@
 			<div class="col-md-4">
 	<% end %>
 
-				<% if @item.tags.present? %>
-					<div class="mt-3 mb-3">
-						<% if params[:view] == "bd"  %>
-							<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
-							<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
-							<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
-						<% else %>
-							<%= render_tags(@item.tags) %>
-						<% end %>
-					</div>
-				<% end %>
-				
-				<% if @item.description.present? %>
-					<div class="mt-4 mb-4">
-						<%= sanitize @item.description %>
-					</div>
-				<% end %>
-
-				<div class="mt-4 mb-4">
+			<% if @item.tags.present? %>
+				<div class="mt-3 mb-3">
+					<% if params[:view] == "bd"  %>
+						<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
+						<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
+						<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
+					<% else %>
+						<%= render_tags(@item.tags) %>
+					<% end %>
+				</div>
+			<% end %>
+			
+				<div class="mt-3 mb-3">
 					<%= render_users(@item) %>
 				</div>
+
+			<% if @item.description.present? %>
+				<div class="mt-3 mb-3">
+					<%= sanitize @item.description %>
+				</div>
+			<% end %>
 			
-	<% if @attachments.present? %>
-			</div>
-		</div>
+	<% if @item.attachments.count > 0 %>
+			</div><!-- col -->
+		</div><!-- row -->
 	<% end %>
 
-	
+
+
 	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
       	Ajouter une image : <%= form.file_field :attachments, multiple: true %>
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
 	
-</div>
+</div><!-- rounded-box -->
+

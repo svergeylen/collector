@@ -22,8 +22,16 @@
 	}
 }
 
+/* Liste d'items */
+.collector-item-list {
+	.list-group-item {
+		padding-top : 3px;
+		padding-bottom : 3px;
+		vertical-align : middle;
+	}
+}
 
-/* Gallerie d'item */
+/* Galerie d'item */
 .item-card {
 	padding : 0;  /* cancels devise padding */
 	margin-top : 0;

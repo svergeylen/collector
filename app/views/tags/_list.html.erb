@@ -1,9 +1,9 @@
 
-<ul class="list-group">
+<ul class="list-group collector-item-list">
 	<% items.each do |item| %>
 		<li class="list-group-item">
 			<%# item.is_owned_by?(current_user.id) ? "list-group-item-success" : "" %>
-			<div class="row">
+			<div class="row align-items-center">
 				<!-- etonnement, col-xs-1 ne passe pas... -->
 				<div class="col-1">	
 					<%= item.friendly_number %>

@@ -14,7 +14,9 @@
       <% end %>
     </div>
 
-    <%= profile_picture(post.user) %>
+    <div class="float-left">
+      <%= profile_picture(post.user) %>
+    </div>
     
     <div class="user-name">
       <%= link_to post.user.name, post.user, class:"high-color" %>

@@ -59,6 +59,7 @@
 		</ul>
 	<%end %>
 
+	<!-- Actions -->
 	<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
 		<%= hidden_field_tag :tag_id, @tag.id %>
 		<%= hidden_field_tag :view, params[:view] %>
@@ -73,16 +74,18 @@
 
 		<div class="mt-3 mb-3">
 			Pour la sélection :
-			<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light" %>
-			<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light" %><br />
-			Déplacer vers ...
-				<%=	 text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
+			<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
+			<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
+			<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %><br />
+			Déplacer vers : 
+				<%=	text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
 				<%= submit_tag "Ranger", name: 'move', class:"btn btn-light" %>
 					<br />
-			Ajouter le tag ...
+			Ajouter le tag : 
+				<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
 				<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light" %>		
 		</div>
 
-	<% end # form_tag %>
+	<% end  %><!-- /Actions -->
 
 </div>
