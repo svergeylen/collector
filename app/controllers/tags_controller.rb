@@ -46,8 +46,12 @@ class TagsController < ApplicationController
 
       @active_tags = Tag.find(session[:active_tags])
 
-      # Si le tag a des enfants, il faut afficher les tags enfants (navigation)
+      # Si le tag a des enfants, il faut afficher les tags enfants (navigation), pas d'items
       if @tag.tags.present?
+
+        # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
+        @view_alphabet = (@tag.tags.count >= 40)? true : false
+          
         per_page = 40
         case params[:letter]
           when "A".."W"
@@ -61,7 +65,7 @@ class TagsController < ApplicationController
           else
             @tags = @tag.children.paginate(page: params[:page], per_page: per_page)
         end
-
+      
       # Si le tag n'a plus d'enfant, on peut afficher les items.
       else
         # Recherche des items qui possèdent tous les tags actifs
@@ -82,9 +86,6 @@ class TagsController < ApplicationController
         @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
         @tag_list = Tag.order(name: :asc).pluck(:name)
       end
-
-      # Formulaire d'ajout d'item en bas de page
-      #@new_item = Item.new
 
     end  #if @tag
   end

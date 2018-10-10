@@ -29,6 +29,7 @@ class ItemsController < ApplicationController
       render "items/new_bd"
     else
       @tag_list = Tag.order(name: :asc).pluck(:name)
+      @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
       render "items/new"
     end
   end
