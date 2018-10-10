@@ -77,13 +77,14 @@
 			<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
 			<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
 			<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %><br />
-			Déplacer vers : 
+			Rangement : 
 				<%=	text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
-				<%= submit_tag "Ranger", name: 'move', class:"btn btn-light" %>
+				<%= submit_tag "Déplacer", name: 'move', class:"btn btn-light" %>
 					<br />
-			Ajouter le tag : 
+			Tags : 
 				<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
-				<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light" %>		
+				<%= submit_tag "Ajouter ce tag", name: 'add_tag', class:"btn btn-light" %>		
+				<%= submit_tag "Enlever ce tag", name: 'remove_tag', class:"btn btn-light" %>		
 		</div>
 
 	<% end  %><!-- /Actions -->

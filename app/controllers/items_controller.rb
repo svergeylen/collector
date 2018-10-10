@@ -149,6 +149,15 @@ class ItemsController < ApplicationController
       end
       redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag(s) ajouté(s) aux items sélectionnés'
     end
+
+    # On supprimer un même tag des items sélectionnés
+    if params[:remove_tag].present?
+      params[:item_ids].each do |item_id|
+        i = Item.find(item_id)
+        result = i.remove_tags(params[:tag_names].split(","))
+      end
+      redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag(s) retirés(s) des items sélectionnés'
+    end
     
   end
 
