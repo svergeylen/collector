@@ -1,5 +1,5 @@
 
-<% if false && Rails.env == "development" %>
+<% if true && Rails.env == "development" %>
 	<div class="rounded-box">
 		<div class="d-block d-sm-none">Taille XS : < 576px</div>
 		<div class="d-none d-sm-block d-md-none">Taille SM : > 576px</div>
@@ -25,6 +25,6 @@
 		<%= params.inspect %>
 
 		<h4>Divers</h4>
-		<%# Rails.application.config.assets.paths.to_s %>
+
 	</div>
 <% end %>

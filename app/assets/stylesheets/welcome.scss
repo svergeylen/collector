@@ -25,6 +25,7 @@ $search-width-1 : 328px; /* identique à la largeur d'une card en écran de tail
 ul.ui-autocomplete.ui-menu {
 	width : $search-width-1;
     list-style-type : none;
+    background-color : white;
     padding : 3px 3px;
     li.ui-menu-item {
     	/* les résultats de la rescherche autocomplete : */
