@@ -24,7 +24,7 @@
 		    	<div class="dropdown-divider"></div>
 			    <%= link_to "Nouveau tag", new_tag_path(parent_tag: @tag.id), class:'dropdown-item'  %>
 			    <%= link_to "Modifier \"#{@tag.name}\"", edit_tag_path(@tag), class:'dropdown-item'  %>
-			    <%= link_to "Supprimer \"#{@tag.name}\"", tag_path(@tag), method: :delete, class:'dropdown-item', data: { confirm: 'Etes-vous certain de supprimer ce tag et tout ce qu\'il contient ?' } %>
+			    <%= link_to "Supprimer \"#{@tag.name}\"", tag_path(@tag), method: :delete, class:'dropdown-item', data: { confirm: "Etes-vous certain de supprimer ce tag ?\n (Les items seront conservés mais ne seront plus associés à ce tag)" } %>
 		    </div>
 		  </div>
 		</div>	

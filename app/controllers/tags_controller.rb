@@ -125,10 +125,12 @@ class TagsController < ApplicationController
 
   def destroy
     # BUG : Il faut prévoir le déplacement des tags enfants qui deviennent orphelins vers ?? (root_tag=true ?)
+    tag_id = @tag.id
     if @tag.destroy
-      redirect_back fallback_location: tags_path, notice: "Tag supprimé"
+      session[:active_tags].delete(tag_id)
+      redirect_to last_tag_path, notice: "Tag supprimé"
     else
-      redirect_back fallback_location: tags_path, alert: "Ce Tag ne peut pas être supprimé"
+      redirect_to last_tag_path, alert: "Ce Tag ne peut pas être supprimé"
     end
   end
 
