@@ -69,12 +69,12 @@
 		<div class="col-sm-10">
       <div class="form-check">
         <%= form.label :view_alphabet do %>
-          <%= form.check_box :view_alphabet, id: :tag_view_alphabet, class:"form-check-input" %> Afficher la barre Alphabet
+          <%= form.check_box :view_alphabet, id: :tag_view_alphabet, class:"form-check-input" %> Afficher la barre Alphabet (non utilisé)
         <% end %>
       </div>
       <div class="form-check">
         <%= form.label :filter_items do %>
-          <%= form.check_box :filter_items, id: :tag_filter_items, class:"form-check-input" %> <span title="Si coché (true), les items seront filtrés pour n'afficher que les items liés explicitement à ce tag. Décoché (false), ce tag ne sert pas à filtrer les items et n'est utile qu'à la navigation (classement).">Filtre les items</span>
+          <%= form.check_box :filter_items, id: :tag_filter_items, class:"form-check-input" %> <span title="Si coché (true), les items seront filtrés pour n'afficher que ceux liés explicitement à ce tag. Décoché (false), ce tag ne sert pas à filtrer les items et n'est utile qu'à la navigation (classement).">Filtre les items</span>
         <% end %>
       </div>
     </div>

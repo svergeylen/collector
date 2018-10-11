@@ -1,5 +1,59 @@
+@import 'colors';
 
+/* ==== Welcome Index ==== */
 .welcome-logo {
 	margin-top : 5em;
 	margin-bottom : 5em;
+}
+
+
+/* ==== Welcome Collector ==== */
+
+$search-width-1 : 328px; /* identique à la largeur d'une card en écran de taille XL */
+
+/* Div de recherche de tags  */
+.collector-search {
+	margin-top : 3em;
+	margin-bottom : 7em;
+	text-align : center;
+	input#collector-tag-search {
+		width : $search-width-1;
+	}
+}
+
+/* Collector-tag-search avec autocomplete (jquery-ui) */
+ul.ui-autocomplete.ui-menu {
+	width : $search-width-1;
+    list-style-type : none;
+    padding : 3px 3px;
+    li.ui-menu-item {
+    	/* les résultats de la rescherche autocomplete : */
+    	div {
+			padding : 2px 10px 2px 10px;
+			/* Elément sous la souris de autocomplete */
+    		&.ui-state-active {
+	    		border-radius : 3px;
+	    		background-color : $high-color;
+	    		border : none;
+	    		color : $light-color;
+	    		a, a:hover {
+	    			color : $light-color;
+	    		}
+    		}
+    	}
+    }
+}
+
+/* Blocs utilisés pour afficher les dernières nouveautés */
+.card-latest {
+	margin-top : 0;
+	padding : 0; /* cancel padding from devise on .card */
+	ul {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		li {
+		padding : 5px 20px;
+		font-size : 0.9em;
+		}
+	}
 }

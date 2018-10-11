@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 	# Collector
 	get 'welcome/collector'
 	get 'search/keyword'	# recherche globale (haut à droite)
-	post 'search/tag' 		# recherche ajax dans les tags (navigation)
+	get 'search/tag' 		# recherche ajax dans les tags (navigation)
 	resources :tags do
 		member do
 			get 'star'

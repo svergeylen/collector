@@ -22,6 +22,10 @@ class WelcomeController < ApplicationController
     	current_user.displayed_collector = Time.now
     	current_user.save
 
+    	# Affichage des derniers items ajoutés en page de garde
 	    @root_tags = Tag.where(root_tag: true).order(name: :asc)
+
+	    # Charge les tags pour la recherche collector-tag-search
+	    @tag_list = Tag.order(name: :asc).select(:id, :name).map{ |el| {value: el.name, label: el.name, id: el.id.to_s} }
 	end
 end

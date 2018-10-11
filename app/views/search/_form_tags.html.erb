@@ -1,5 +1,4 @@
 
-<%= form_tag({controller: 'search', action: 'tag'}, method: "post", remote: true) do %>
-	<%= text_field_tag :keyword, nil, placeholder: 'Recherche...', autocomplete: :off %>
+<%= form_tag({controller: 'search', action: 'tag'}, method: "get") do %>
+	<%= text_field_tag("collector-tag-search", nil, autocomplete: :off, placeholder: "Recherche", data: { options: @tag_list} ) %>
 <% end %>
-<div id="search_results"></div>

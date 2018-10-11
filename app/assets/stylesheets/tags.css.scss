@@ -8,21 +8,6 @@
 	}
 }
 
-
-/* Blocs utilisés en page d'accueil pour afficher les dernières nouveautés */
-.card-latest {
-	margin-top : 0;
-	padding : 0; /* cancel padding from devise on .card */
-	ul {
-		margin-top: 10px;
-		margin-bottom: 10px;
-		li {
-		padding : 5px 20px;
-		font-size : 0.9em;
-		}
-	}
-}
-
 /* Tag général */
 .collector-tag {
 	white-space: nowrap;
