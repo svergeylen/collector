@@ -10,7 +10,7 @@ function create_selectize(id) {
 		maxItems: 30,
 		createOnBlur: true,
 		hideSelected: true,
-		placeholder: "?",
+		placeholder: "",
 		closeAfterSelect: true,
 		valueField: 'name',
     	labelField: 'name',

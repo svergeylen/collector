@@ -1,4 +1,4 @@
 
-<%= form_tag({controller: 'search', action: 'tag'}, method: "get") do %>
+<%= form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
 	<%= text_field_tag("collector-tag-search", nil, autocomplete: :off, placeholder: "Recherche", data: { options: @tag_list} ) %>
 <% end %>

@@ -49,9 +49,9 @@
 /* Selectize.js - Menu déroulant */
 .selectize-dropdown {
 	.selectize-dropdown-content {
-		
+		/* padding-top : 0px !important; */
 		div {
-			padding-left : 15px;
+			padding : 5px 0px 5px 15px;
 			&.active {
 				background-color : $high-color ;
 				color : $tag-color-white;
