@@ -18,7 +18,7 @@ class Tag < ApplicationRecord
 
 	# Temporaire pour la migration de l'ancien site.
 	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
-	has_and_belongs_to_many :old_items, source: :items_tags, class_name: 'Item'
+	# has_and_belongs_to_many :old_items, source: :items_tags, class_name: 'Item'
 
 
 # --------------------- TAGS PARENTS ---------------------------------------------------------------------------
@@ -37,7 +37,8 @@ class Tag < ApplicationRecord
 			parent_tags = []
 			@parent_tag_names.split(",").each do |name| 
 				name = name.strip
-				next if name==""
+				next if name == ""
+				next if name.downcase == self.name.downcase # ignore une éventuelle récursion
 				parent_tags << Tag.where(name: name).first_or_create!
 			end
 			# Mémorisation de la caractéristique root_tag (cache)

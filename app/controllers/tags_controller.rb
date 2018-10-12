@@ -169,11 +169,11 @@ class TagsController < ApplicationController
   end
 
   def new_and_edit_actions
-    @tag_list = Tag.order(name: :asc).pluck(:name)
+    @tag_list = Tag.order(name: :asc).pluck(:name) - [ @tag.name ]
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :view_alphabet, :filter_items, :parent_tag_names)
+    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :filter_items, :parent_tag_names)
   end
 
 end

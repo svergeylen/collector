@@ -2,7 +2,7 @@
 
  <% if tag.errors.any? %>
     <div class="alert alert-danger" role="alert">
-        <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de cet auteur :
+        <%= pluralize(tag.errors.count, "erreur") %> bloquent la création de ce tag :
       <ul>
         <% tag.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -35,8 +35,8 @@
     <div class="form-group row">
       <div class="col-sm-2">Enfants</div>
       <div class="col-sm-8">
-        <%= render_tags @tag.children.limit(30) %>
-        <%= "etc." if @tag.children.count > 30 %>
+        <%= render_tags @tag.children.limit(20) %>
+        <%= "etc." if @tag.children.count > 20 %>
       </div>
     </div>
   <% end %>
@@ -45,10 +45,10 @@
     <div class="form-group row">
       <div class="col-sm-2">Items</div>
       <div class="col-sm-8">
-        <% @tag.items.order(name: :asc).limit(30).each do |item| %>
+        <% @tag.items.order(name: :asc).limit(20).each do |item| %>
           <%= link_to item.name, item, class:"high-color" %>, 
         <% end %>
-        <%= "etc." if @tag.children.count > 30 %>
+        <%= "etc." if @tag.children.count > 20 %>
       </div>
     </div>
   <% end %>
@@ -67,11 +67,6 @@
       Options
     </div>
 		<div class="col-sm-10">
-      <div class="form-check">
-        <%= form.label :view_alphabet do %>
-          <%= form.check_box :view_alphabet, id: :tag_view_alphabet, class:"form-check-input" %> Afficher la barre Alphabet (non utilisé)
-        <% end %>
-      </div>
       <div class="form-check">
         <%= form.label :filter_items do %>
           <%= form.check_box :filter_items, id: :tag_filter_items, class:"form-check-input" %> <span title="Si coché (true), les items seront filtrés pour n'afficher que ceux liés explicitement à ce tag. Décoché (false), ce tag ne sert pas à filtrer les items et n'est utile qu'à la navigation (classement).">Filtre les items</span>

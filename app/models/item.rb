@@ -19,7 +19,7 @@ class Item < ApplicationRecord
 
 	# Temporaire pour la migration de l'ancien site.
 	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
-	has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
+	# has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
 
 
 
@@ -46,9 +46,10 @@ class Item < ApplicationRecord
 			@tag_names.split(",").each do |name| 
 				name = name.strip
 				next if name==""
-				tags << Tag.where(name: name).first_or_create!
+				new_tag = Tag.where(name: name).first_or_create!
+				tags << new_tag # unless tags.include?(new_tag)
 			end
-			# J'écrase tous les tags existants != de add_tags qui ajoute des tags
+			# J'écrase tous les tags existants. C'est différent de la méthode add_tags qui ajoute des tags
 			self.tags = tags
 		end
 	end

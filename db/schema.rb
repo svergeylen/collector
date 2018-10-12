@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181002083730) do
+ActiveRecord::Schema.define(version: 20181012143214) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -26,15 +26,6 @@ ActiveRecord::Schema.define(version: 20181002083730) do
     t.index ["element_type", "element_id"], name: "index_attachments_on_element_type_and_element_id"
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.string "color"
-    t.string "default_view"
-    t.boolean "view_alphabet"
-    t.boolean "view_search"
-    t.string "tag_name", default: "Mots-clés"
-  end
-
   create_table "comments", force: :cascade do |t|
     t.text "message"
     t.integer "post_id"
@@ -47,20 +38,11 @@ ActiveRecord::Schema.define(version: 20181002083730) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
-    t.integer "series_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "adder_id"
     t.float "number"
     t.text "description"
-    t.integer "rails_view", default: 0
-  end
-
-  create_table "items_tags", id: false, force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "item_id"
-    t.index ["item_id"], name: "index_items_tags_on_item_id"
-    t.index ["tag_id"], name: "index_items_tags_on_tag_id"
   end
 
   create_table "itemusers", force: :cascade do |t|
@@ -70,6 +52,8 @@ ActiveRecord::Schema.define(version: 20181002083730) do
     t.datetime "checked_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_itemusers_on_item_id"
+    t.index ["user_id"], name: "index_itemusers_on_user_id"
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -104,29 +88,14 @@ ActiveRecord::Schema.define(version: 20181002083730) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
-  create_table "series", force: :cascade do |t|
-    t.string "name"
-    t.integer "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "letter"
-  end
-
-  create_table "series_users", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "series_id"
-    t.index ["series_id"], name: "index_series_users_on_series_id"
-    t.index ["user_id"], name: "index_series_users_on_user_id"
-  end
-
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.boolean "root_tag", default: false
     t.string "default_view"
     t.string "letter"
-    t.boolean "view_alphabet", default: false
     t.boolean "filter_items", default: true
-    t.integer "category_id"
+    t.index ["letter"], name: "index_tags_on_letter"
+    t.index ["name"], name: "index_tags_on_name"
   end
 
   create_table "users", force: :cascade do |t|
