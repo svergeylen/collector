@@ -64,6 +64,7 @@ namespace :db do
 		end
 	end
 
+
 private
 
 	def generic(tag_name, category_id, parent_tag_id)

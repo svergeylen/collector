@@ -46,3 +46,17 @@
 	}
 }
 
+/* Selectize.js - Menu déroulant */
+.selectize-dropdown {
+	.selectize-dropdown-content {
+		
+		div {
+			padding-left : 15px;
+			&.active {
+				background-color : $high-color ;
+				color : $tag-color-white;
+			}
+		}
+	}
+}
+

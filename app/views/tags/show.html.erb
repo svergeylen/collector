@@ -64,45 +64,49 @@
 		<% if @items.present? %>
 			<% if @view.present? %>
 				<%= render partial: @view, locals: {items: @items } %>
+
+				<div class="row mt-5 mb-3">
+					<div class="col-sm-2 col-form-label">
+						Pour la sélection:
+					</div>
+					<div class="col-sm-10">
+						<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
+						<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
+						<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
+					</div>
+				</div>
+				<div class="row mt-3 mb-3">
+					<div class="col-sm-2 col-form-label">
+						Rangement:
+					</div>
+					<div class="col-sm-5">
+						<%= text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
+					</div>
+					<div class="col-sm-5">
+						<%= submit_tag "Déplacer", name: 'move', class:"btn btn-light" %>
+					</div>
+				</div>
+				<div class="row mb-3 mt-3">
+					<div class="col-sm-2 col-form-label">
+						Tags:
+					</div>
+					<div class="col-sm-5">
+						<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
+					</div>
+					<div class="col-sm-5">
+						<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light mr-3" %> 
+						<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light" %>		
+					</div>
+				</div>
+
+
 			<% else %>
 				<p>Ce dossier contient <%= @items.count %> items.</p>
 			<% end %>
 		<% end %>
 
 		
-		<div class="row mt-5 mb-3">
-			<div class="col-sm-2 col-form-label">
-				Pour la sélection:
-			</div>
-			<div class="col-sm-10">
-				<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
-				<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
-				<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
-			</div>
-		</div>
-		<div class="row mt-3 mb-3">
-			<div class="col-sm-2 col-form-label">
-				Rangement:
-			</div>
-			<div class="col-sm-5">
-				<%= text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
-			</div>
-			<div class="col-sm-5">
-				<%= submit_tag "Déplacer", name: 'move', class:"btn btn-light" %>
-			</div>
-		</div>
-		<div class="row mb-3 mt-3">
-			<div class="col-sm-2 col-form-label">
-				Tags:
-			</div>
-			<div class="col-sm-5">
-				<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
-			</div>
-			<div class="col-sm-5">
-				<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light mr-3" %> 
-				<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light" %>		
-			</div>
-		</div>
+		
 
 	<% end  %><!-- /Actions -->
 

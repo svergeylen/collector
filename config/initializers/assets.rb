@@ -11,4 +11,4 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules', "lib", 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-# Rails.application.config.assets.precompile += %w( admin.js admin.css )
+Rails.application.config.assets.precompile += %w( vendor/assets/javascripts/selectize.js-master/dist/js/selectize.min.js, vendor/assets/javascripts/selectize.js-master/dist/css/selectize.css, vendor/assets/javascripts/selectize.js-master/dist/css/selectize.bootstrap4.css )
