@@ -5,6 +5,7 @@
 	      <%= fa_icon "cog" %>
 	    </button>
 	    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+	    	<%= link_to "Ajouter", new_item_path(view: @item.item_type), class:'dropdown-item' %>
 	    	<%= link_to 'Modifier', edit_item_path(@item), class:'dropdown-item' %>
 	    	<%= link_to 'Supprimer', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'élément ?' } %> 
 	    </div>

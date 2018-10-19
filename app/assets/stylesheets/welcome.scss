@@ -9,21 +9,19 @@
 
 /* ==== Welcome Collector ==== */
 
-$search-width-1 : 328px; /* identique à la largeur d'une card en écran de taille XL */
-
 /* Div de recherche de tags  */
 .collector-search {
 	margin-top : 3em;
 	margin-bottom : 7em;
 	text-align : center;
 	input#collector-tag-search {
-		width : $search-width-1;
+		width : 100%;
 	}
 }
 
 /* Collector-tag-search avec autocomplete (jquery-ui) */
 ul.ui-autocomplete.ui-menu {
-	width : $search-width-1;
+	width : 328px;
     list-style-type : none;
     background-color : white;
     padding : 3px 3px;
