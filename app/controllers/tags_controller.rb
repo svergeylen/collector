@@ -12,7 +12,7 @@ class TagsController < ApplicationController
       when "#"
         @tags = Tag.where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "vide"
-        @tags = Tag.where("letter is NULL OR letter is ''").order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.where('letter is NULL OR letter is "" ').order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "orphelins"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
         all_tags = Tag.where(root_tag: false).map(&:id)
@@ -33,15 +33,23 @@ class TagsController < ApplicationController
       if session[:active_tags].nil?
         session[:active_tags] = [ @tag.id ]
       else
-        # Si on clique sur un tag qui est déjà dans la liste, on ne garde que les tags amont à ce tag dans la liste (navigation breadcrumbs)
-        if session[:active_tags].include?(@tag.id)
-          i = session[:active_tags].index(@tag.id)
-          session[:active_tags] = session[:active_tags][0..i]
+        # Si l'option "add" est présenté, on veut ajouter ce tag aux tags actifs (ajout de critère de filtrage)
+        if params[:add].present?
+          # on ajoute le tag sélectionné en fin de liste sauf si déjà dans la liste
+          unless session[:active_tags].include?(@tag.id)
+            session[:active_tags] = session[:active_tags] + [ @tag.id ]  
+          end
+          
+        # Sinon, on veut simplement aller au tag cliqué : active tags = tag sélectionné
         else
-          # Sinon, on ajoute le tag sélectionné en fin de liste
-          session[:active_tags] = session[:active_tags] + [ @tag.id ] 
+          # Si on clique sur un tag qui est déjà dans la liste, on ne garde que les tags amont à ce tag dans la liste (navigation breadcrumbs)
+          if session[:active_tags].include?(@tag.id)
+            i = session[:active_tags].index(@tag.id)
+            session[:active_tags] = session[:active_tags][0..i]
+          else
+            session[:active_tags] = [ @tag.id ]
+          end
         end
-        
       end
 
       @active_tags = Tag.find(session[:active_tags])
@@ -55,9 +63,9 @@ class TagsController < ApplicationController
         per_page = 40
         case params[:letter]
           when "A".."W"
-            @tags = @tag.children.where(letter: params[:letter]).paginate(page: params[:page], per_page: per_page)
+            @tags = @tag.children.where(letter: params[:letter].downcase).or.where(letter: params[:letter].upcase).paginate(page: params[:page], per_page: per_page)
           when "XYZ"
-            @tags = @tag.children.where(letter: "X".."Z").paginate(page: params[:page], per_page: per_page)
+            @tags = @tag.children.where(letter: "X".."Z").or.where(letter: "x".."z").paginate(page: params[:page], per_page: per_page)
           when "#"
             @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: per_page)
           when "vide"
@@ -65,29 +73,29 @@ class TagsController < ApplicationController
           else
             @tags = @tag.children.paginate(page: params[:page], per_page: per_page)
         end
+     
+     else 
+      # Recherche des items qui possèdent tous les tags actifs
+      @items = Item.having_tags(session[:active_tags])
+    end  # if tag.tags present?
+
       
-      # Si le tag n'a plus d'enfant, on peut afficher les items.
+      # Choix de la vue pour l'affichage des items
+      if params[:view].present?
+        @view = params[:view]
       else
-        # Recherche des items qui possèdent tous les tags actifs
-        @items = Item.having_tags(session[:active_tags])
-
-        # Choix de la vue pour l'affichage des items
-        if params[:view].present?
-          @view = params[:view]
+        if @tag.default_view.blank?
+          @view = "list"
         else
-          if @tag.default_view.blank?
-            @view = "list"
-          else
-            @view = @tag.default_view
-          end 
-        end
-
-        # Options pour les actions en bas de page (selectize)
-        @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
-        @tag_list = Tag.order(name: :asc).pluck(:name)
+          @view = @tag.default_view
+        end 
       end
 
-    end  #if @tag
+      # Options pour les actions en bas de page (selectize)
+      @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
+      @tag_list = Tag.order(name: :asc).pluck(:name)
+    end
+
   end
 
   def new

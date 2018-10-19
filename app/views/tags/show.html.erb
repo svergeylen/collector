@@ -1,9 +1,6 @@
 <div class="rounded-box">
 	<div class="pull-right">
 		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-			<%# link_to new_item_path(view: 'bd', series: @tag.name), class:"btn btn-light", role:'button' do %>
-				<%# fa_icon("plus") %>
-			<%# end %>
 			<% if @view == "list" %>
 				<%= link_to tag_path(@tag, view: "gallery"), class:"btn btn-light", role:'button' do %>
 					<%= fa_icon "image" %>
@@ -19,10 +16,9 @@
 		      <%= fa_icon "cog" %>
 		    </button>
 		    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-		    	<%= link_to "Nouvelle BD", new_item_path(view: 'bd', series: @tag.name), class:'dropdown-item' %>
+		    	<%= link_to "Nouvel item BD", new_item_path(view: 'bd', series: @tag.name), class:'dropdown-item' %>
 			    <%= link_to "Nouvel item", new_item_path, class:'dropdown-item' %>
 		    	<div class="dropdown-divider"></div>
-			    <%= link_to "Nouveau tag", new_tag_path(parent_tag: @tag.id), class:'dropdown-item'  %>
 			    <%= link_to "Modifier \"#{@tag.name}\"", edit_tag_path(@tag), class:'dropdown-item'  %>
 			    <%= link_to "Supprimer \"#{@tag.name}\"", tag_path(@tag), method: :delete, class:'dropdown-item', data: { confirm: "Etes-vous certain de supprimer ce tag ?\n (Les items seront conservés mais ne seront plus associés à ce tag)" } %>
 		    </div>
@@ -33,80 +29,86 @@
 
 	<h1><%= @tag.name %></h1>
 
-	<div class="mt-3 mb-3">
+	<div class="mt-3 mb-5">
 		<%= render_tags(@active_tags, true) %>
 	</div>
-
-	
-	<% if @view_alphabet %>
-		<div class="btn-group header-letters">
-			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
-				<%= link_to letter, tag_path(@tag, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
-			<% end %>
-		</div>
-	<% end %>
-
-	
-	<% if @tags.present? %>
-		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-		<ul class="children_tags">
-			<% @tags.each do |tag| %>
-				<li><%= link_to tag.name, tag  %></li>
-			<% end %>
-		</ul>
-	<%end %>
 
 	<!-- Actions -->
 	<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
 		<%= hidden_field_tag :tag_id, @tag.id %>
 		<%= hidden_field_tag :view, params[:view] %>
 
-		<% if @items.present? %>
-			<% if @view.present? %>
-				<%= render partial: @view, locals: {items: @items } %>
+			<div class="row">
+				<div class="col-md-3">
+			
+					<% if @view_alphabet %>
+						<div class="btn-group header-letters">
+							<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
+								<%= link_to letter, tag_path(@tag, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
+							<% end %>
+						</div>
+					<% end %>
 
-				<div class="row mt-5 mb-3">
-					<div class="col-sm-2 col-form-label">
-						Pour la sélection:
-					</div>
-					<div class="col-sm-10">
-						<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
-						<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
-						<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
-					</div>
+					
+					<% if @tags.present? %>
+						<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+						<ul class="children_tags">
+							<% @tags.each do |tag| %>
+								<li><%= link_to tag.name, tag_path(tag, add: 1)  %></li>
+							<% end %>
+						</ul>
+					<%end %>
+
 				</div>
-				<div class="row mt-3 mb-3">
-					<div class="col-sm-2 col-form-label">
-						Rangement:
-					</div>
-					<div class="col-sm-5">
-						<%= text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
-					</div>
-					<div class="col-sm-5">
-						<%= submit_tag "Déplacer", name: 'move', class:"btn btn-light" %>
-					</div>
-				</div>
-				<div class="row mb-3 mt-3">
-					<div class="col-sm-2 col-form-label">
-						Tags:
-					</div>
-					<div class="col-sm-5">
-						<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
-					</div>
-					<div class="col-sm-5">
-						<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light mr-3" %> 
-						<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light" %>		
-					</div>
-				</div>
+				<div class="col-md-9">
+					
+				<% if @items.present? %>
+					<% if @view.present? %>
+						<%= render partial: @view, locals: {items: @items } %>
 
+						<div class="row mt-5 mb-3">
+							<div class="col-sm-2 col-form-label">
+								Actions :
+							</div>
+							<div class="col-sm-10">
+								<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
+								<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
+								<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
+							</div>
+						</div>
+						<div class="row mt-3 mb-3">
+							<div class="col-sm-2 col-form-label">
+								Rangement :
+							</div>
+							<div class="col-sm-5">
+								<%= text_field_tag :rangements, "", id: "rangements", class: "form-control", autocomplete: :off, data: { tag_list: @rangements_list } %>
+							</div>
+							<div class="col-sm-5">
+								<%= submit_tag "Déplacer", name: 'move', class:"btn btn-light" %>
+							</div>
+						</div>
+						<div class="row mb-3 mt-3">
+							<div class="col-sm-2 col-form-label">
+								Tags :
+							</div>
+							<div class="col-sm-5">
+								<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
+							</div>
+							<div class="col-sm-5">
+								<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light mr-3" %> 
+								<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light" %>		
+							</div>
+						</div>
 
-			<% else %>
-				<p>Ce dossier contient <%= @items.count %> items.</p>
-			<% end %>
-		<% end %>
+	
 
-		
-		
+					<% else %>
+						<p>Ce dossier contient <%= @items.count %> items.</p>
+					<% end %>
+				<% end %>
+
+			</div>
+		</div>
 
 	<% end  %><!-- /Actions -->
 

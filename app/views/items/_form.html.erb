@@ -15,7 +15,7 @@
   <div class="form-group row">
     <label for="item_name" class="col-sm-2 col-form-label">Titre</label>
     <div class="col-sm-1">
-      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
+      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off, autofocus: true %>
     </div>
     <div class="col-sm-5">
       <%= form.text_field :name, id: :item_name, class: "form-control", placeholder:"Titre", autocomplete: :off %>

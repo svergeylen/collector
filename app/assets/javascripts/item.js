@@ -8,6 +8,7 @@ function create_selectize(id) {
 		delimiter: ',',
 		persist: false,
 		maxItems: 30,
+		openOnFocus: false,
 		createOnBlur: true,
 		hideSelected: true,
 		placeholder: "",

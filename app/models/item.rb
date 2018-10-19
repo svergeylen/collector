@@ -123,7 +123,7 @@ class Item < ApplicationRecord
 	end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
-	def self.having_tags(ar_tags)
+	def self.having_tags(ar_tags, page: 1, per_page: 10)
 	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
 	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
@@ -131,6 +131,33 @@ class Item < ApplicationRecord
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
 	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
 	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
+
+	 #  	# Elimination de tags non filtrants
+	 #  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
+	 #  	#logger.debug "applicable_tag_ids : "+applicable_tag_ids.inspect
+	 #  	# Sélection des ownertags candidats a satisfaire aux multiples critères (condition OR)
+	 #  	candidates = Ownertag.where(tag_id: applicable_tag_ids)
+	 #  	#logger.debug "candidates : "+candidates.inspect
+	 #  	# Sélection des item_id uniques qui sont dans cette liste de candidats
+	 #  	item_ids = candidates.map(&:owner_id).uniq
+	 #  	#logger.debug "item_ids : "+item_ids.inspect
+	 #  	# Pour chaque item_id différent, on filtre le tableau de candidat et on compte le nombre de ligne.
+	 #  	# Si ce nombre de ligne correspond au nombre de critères attendus, on a un resultat positif.
+	 #  	result_ids = []
+	 #  	item_ids.each do |item_id|
+	 #  		#logger.debug "---------- "+item_id.to_s
+	 #  		quantity = candidates.where(owner_id: item_id).count
+	 #  		if quantity == applicable_tag_ids.length
+	 #  			#logger.debug "--> Ajout : "+item_id.to_s+ " quantité="+quantity.to_s
+	 #  			result_ids << item_id
+	 #  		else
+	 #  			#logger.debug "--> Ignoré : "+item_id.to_s+ " quantité="+quantity.to_s
+	 #  		end
+	 #  	end
+
+	 #  	# TO DO limit 24 ou paginate ? (conflit avec le paginte des tags)
+		# Item.where(id: result_ids).sort_by{ |a| [a.number.to_f, a.name] }
+		
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné

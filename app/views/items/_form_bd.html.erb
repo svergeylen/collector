@@ -11,22 +11,23 @@
     </div>
   <% end %>
 
-   <div class="form-group row">
-    <%= form.label :name, "Titre", class:"col-form-label col-sm-2" %>
-    <div class="col-sm-1">
-      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off %>
-    </div>
-    <div class="col-sm-5">
-      <%= form.text_field :name, id: :item_name, class: "form-control", placeholder:"Titre", autocomplete: :off %>
-    </div>
-  </div>
-  
   <div class="form-group row">
     <label for="tag_series" class="col-sm-2 col-form-label">Série</label>
     <div class="col-sm-6">
       <%= form.text_field :tag_series, id: "tag_series", class: "form-control", autocomplete: :off, data: { tag_list: @series_list } %>
     </div>
   </div>
+
+  <div class="form-group row">
+    <%= form.label :name, "Titre", class:"col-form-label col-sm-2" %>
+    <div class="col-sm-1">
+      <%= form.text_field :number, id: :item_number, value: item.friendly_number, class: "form-control", placeholder:"n°", autocomplete: :off, autofocus: true %>
+    </div>
+    <div class="col-sm-5">
+      <%= form.text_field :name, id: :item_name, class: "form-control", placeholder:"Titre", autocomplete: :off %>
+    </div>
+  </div>
+  
 
   <div class="form-group row">
     <label for="tag_auteurs" class="col-sm-2 col-form-label">Auteurs</label>

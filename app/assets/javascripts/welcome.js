@@ -19,6 +19,7 @@ document.addEventListener("turbolinks:load", function() {
     };
  	/* JQUERY-UI  : AUTO COMPLETE */
     $( "#collector-tag-search" ).autocomplete({
+      autoFocus: true,
       source: function( request, response ) {
       	/* Construction du regexp pour utilisation ultérieure. Insensitif à la casse */
         var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
