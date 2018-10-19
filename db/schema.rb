@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181012143214) do
+ActiveRecord::Schema.define(version: 20181019124754) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20181012143214) do
     t.integer "adder_id"
     t.float "number"
     t.text "description"
+    t.string "item_type"
   end
 
   create_table "itemusers", force: :cascade do |t|

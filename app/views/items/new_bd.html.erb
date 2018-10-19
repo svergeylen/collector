@@ -1,3 +1,7 @@
-<h1>Nouvelle BD</h1>
+<div class="pull-right">
+  <%= link_to "Voir le form item", new_item_path(@item) %>
+</div>
+
+<h1>Nouvel item BD</h1>
 
 <%= render partial: "form_bd", locals: { item: @item, submit_text: "Créer"} %>

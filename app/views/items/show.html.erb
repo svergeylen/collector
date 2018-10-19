@@ -5,14 +5,13 @@
 	      <%= fa_icon "cog" %>
 	    </button>
 	    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-	    	<%= link_to 'Modifier (BD)', edit_item_path(@item, view: "bd"), class:'dropdown-item' %>
-	    	<%= link_to 'Modifier (item)', edit_item_path(@item), class:'dropdown-item' %>
+	    	<%= link_to 'Modifier', edit_item_path(@item), class:'dropdown-item' %>
 	    	<%= link_to 'Supprimer', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'élément ?' } %> 
 	    </div>
 	  </div>
 	</div>
 
-	<h3><%= @item.friendly_number+") " if @item.number %> <%= @item.name %></h3>
+	<h3><%= @item.name %></h3>
 	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder, class:"high-color") if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
 	
 	<% if @item.attachments.count > 0 %>
@@ -25,11 +24,13 @@
 
 			<% if @item.tags.present? %>
 				<div class="mt-3 mb-3">
-					<% if params[:view] == "bd"  %>
+					<% if @item.item_type == "bd"  %>
+						<p>Numéro : <%= @item.friendly_number %></p>
 						<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
 						<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
 						<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
 					<% else %>
+						<p>Numéro : <%= @item.friendly_number %></p>
 						<%= render_tags(@item.tags) %>
 					<% end %>
 				</div>

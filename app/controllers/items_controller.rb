@@ -38,7 +38,7 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
 
-    case params[:view]
+    case @item.item_type
       when "bd"
         new_or_edit_bd
         render "items/edit_bd"
@@ -76,6 +76,8 @@ class ItemsController < ApplicationController
     # params[:item].delete(:view)
     @item.adder_id = current_user.id if @item.adder_id.blank?
 
+    #Harcodage deu type bd et du tag bd lorsqu'on utilise le formulaire BD (temporairement)
+    @item.item_type = "bd" if params[:view] == "bd"
     add_bd_tag if params[:view] == "bd"
 
     if @item.update(item_params)

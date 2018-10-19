@@ -13,7 +13,7 @@
 					<%= link_to item.name, item %>
 				</div>
 				<div class="col-md-4 d-none d-md-block">
-					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag }.join(", ").html_safe %>
+					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag_path(tag, add: 1) }.join(", ").html_safe %>
 				</div>
 				<div class="col-md-2 d-none d-md-block">
 					<%= render_users(item) %>

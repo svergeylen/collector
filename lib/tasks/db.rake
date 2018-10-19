@@ -64,6 +64,13 @@ namespace :db do
 		end
 	end
 
+	task add_item_type: :environment do
+		bd = Tag.find_by(name: "Bandes dessinées")
+		item_ids = Item.having_tags( [ bd.id ] ).map(&:id)
+		puts item_ids.inspect
+		Item.where(id: item_ids).update_all(item_type: "bd" )
+	end
+
 
 private
 
