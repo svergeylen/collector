@@ -21,6 +21,7 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+    @item.number = params[:number].to_i if (params[:number].present?)
     
     case params[:view]
     when "bd"

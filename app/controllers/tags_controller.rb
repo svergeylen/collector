@@ -77,6 +77,14 @@ class TagsController < ApplicationController
      else 
       # Recherche des items qui possèdent tous les tags actifs
       @items = Item.having_tags(session[:active_tags])
+      # Recherche du numéro suivant en cas d'ajout
+      @next_number = 1
+      @items.each do |item| 
+        if item.number.present? and item.number >= @next_number
+          @next_number = item.number + 1
+        end
+      end
+
     end  # if tag.tags present?
 
       

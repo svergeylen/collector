@@ -26,7 +26,8 @@
 		      <%= fas_icon "cog" %>
 		    </button>
 		    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-		    	<%= link_to "Ajouter", new_item_path(view: 'bd', series: @tag.name), class:'dropdown-item' %>
+		    	<%= link_to "Ajouter item (BD)", new_item_path(view: 'bd', series: @tag.name, number: @next_number), class:'dropdown-item' %>
+		    	<%= link_to "Ajouter item", new_item_path(series: @tag.name, number: @next_number), class:'dropdown-item' %>
 		    	<div class="dropdown-divider"></div>
 			    <%= link_to "Modifier \"#{@tag.name}\"", edit_tag_path(@tag), class:'dropdown-item'  %>
 			    <%= link_to "Supprimer \"#{@tag.name}\"", tag_path(@tag), method: :delete, class:'dropdown-item', data: { confirm: "Etes-vous certain de supprimer ce tag ?\n (Les items seront conservés mais ne seront plus associés à ce tag)" } %>
