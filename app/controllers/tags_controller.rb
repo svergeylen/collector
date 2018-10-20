@@ -190,6 +190,8 @@ class TagsController < ApplicationController
   
   def set_tag
     @tag = Tag.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+    redirect_to tags_path, alert: "Ce tag n'existe plus dans la banque de données"
   end
 
   def new_and_edit_actions

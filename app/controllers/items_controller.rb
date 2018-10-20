@@ -213,6 +213,8 @@ class ItemsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_item
       @item = Item.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+      redirect_to items_path, alert: "Cet item n'existe plus dans la banque de données"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

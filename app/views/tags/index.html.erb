@@ -1,5 +1,8 @@
 <div class="rounded-box">
-
+	<div class="float-right">
+		<%= render partial: "shared/collector_menu" %>
+	</div>
+	
 	<h1>Tags</h1>
 
 	<div class=" pb-3 text-center">
@@ -34,8 +37,8 @@
 						<%= tag.items.present? ? tag.items.count.to_s : "0" %>
 					</td>
 					<td>
-						<%= link_to edit_tag_path(tag) do fa_icon "edit" end %>
-						<%= link_to tag_path(tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } do fa_icon "trash" end %>
+						<%= link_to edit_tag_path(tag) do far_icon "edit" end %>
+						<%= link_to tag_path(tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } do far_icon "trash-alt" end %>
 					</td>
 				</tr>
 			<% end %>

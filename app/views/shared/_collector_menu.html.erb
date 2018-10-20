@@ -1,0 +1,16 @@
+<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+  <div class="btn-group" role="group">
+    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= fas_icon "cog" %>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+    	<%= link_to "Créer item", new_item_path(view: 'bd'), class:'dropdown-item' %>
+    	<%= link_to 'Liste des items', items_path, class:'dropdown-item' %>
+    	<div class="dropdown-divider"></div>
+    	<%= link_to "Créer tag", new_tag_path, class:'dropdown-item'	 %>
+    	<%= link_to 'Liste des tags', tags_path, class:'dropdown-item' %>
+    	<div class="dropdown-divider"></div>
+	    <%= link_to 'Liste des jobs', cron_jobs_path, class:'dropdown-item' %>
+    </div>
+  </div>
+</div>	
