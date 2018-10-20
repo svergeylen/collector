@@ -24,9 +24,9 @@
     </div>
 
     <div style="height:37px;">
-      <div class="btn-group pull-right">
+      <div class="btn-group float-right">
         <div class="btn btn-primary btn-file">
-          <label for="post_attachments" class="mb-0" title="Ajouter une photo"><%= fa_icon("paperclip") %></label>
+          <label for="post_attachments" class="mb-0" title="Ajouter une photo"><%= fas_icon("paperclip") %></label>
           <%= form.file_field :attachments, multiple: true, class:"d-none", id:"post_attachments" %>
         </div>
         <%= form.button type: "submit", class: "btn btn-primary", title: "Poster le message" do fa_icon("paper-plane") end %>

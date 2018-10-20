@@ -1,5 +1,5 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy]
+  before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy, :star]
 
   # Liste des tags pour gestion banque de données
   def index
@@ -145,10 +145,8 @@ class TagsController < ApplicationController
   # Permet de supprimer un tag actif de la liste des active_tags (en session utilisateur)
   def remove
     remove_id = params[:remove_id].to_i
-
     if remove_id && session[:active_tags].include?(remove_id)
       session[:active_tags] = session[:active_tags] - [ remove_id ]
-      
       # Si l'utilisateur vient de supprimer le tag actif qui égale la page qu'il veut afficher
       if remove_id == @tag.id 
         if session[:active_tags].empty?
@@ -162,13 +160,23 @@ class TagsController < ApplicationController
       else
         redirect_to @tag, notice: "Tag retiré des tags actifs"
       end
-      
-      
     else
       redirect_to @tag, alert: "Ce tag ne se trouve pas dans la liste des tags actifs"
     end
-    
   end
+
+  # Gestion des tags favoris
+  def star
+    # Si ce tag est déjà un favoris, il faut l'enlever
+    if current_user.tags.include?(@tag)
+      current_user.tags.delete(@tag)
+      redirect_to @tag, notice: "Tag enlevé des favoris"
+    else
+      current_user.tags << @tag
+      redirect_to @tag, notice: "Tag ajouté aux favoris"
+    end
+  end
+
 
   private
   

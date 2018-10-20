@@ -2,15 +2,15 @@
 <div class="post rounded-box">
   <a name="<%= post.id %>"></a>
   <div class="post-header">
-    <div class="pull-right">
+    <div class="float-right">
 
       <span class="time">
         <%= long_date post.created_at %>
       </span>
 
       <% if (post.user_id == current_user.id) || current_user.can?(:admin) %>
-        <%= link_to edit_post_path(post), class:"high-color" do fa_icon("edit") end %>
-        <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' }, class:"high-color" do fa_icon("trash") end %>
+        <%= link_to edit_post_path(post), class:"high-color" do far_icon("edit") end %>
+        <%= link_to post, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce message et tous les commentaires associés ?' }, class:"high-color" do far_icon("trash-alt") end %>
       <% end %>
     </div>
 

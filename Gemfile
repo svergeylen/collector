@@ -47,7 +47,8 @@ gem 'bootstrap', '~> 4.1.3'
 gem 'autoprefixer-rails'
 
 # Icones
-gem "font-awesome-rails"
+#gem "font-awesome-rails"
+gem 'fontawesome5-rails'
 
 # "Likes" and votes on items, posts, comments
 gem 'acts_as_votable', '~> 0.10.0'

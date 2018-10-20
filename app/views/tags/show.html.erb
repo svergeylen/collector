@@ -1,19 +1,29 @@
 <div class="rounded-box">
-	<div class="pull-right">
+	<div class="float-right">
 		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 			<% if @view == "list" %>
-				<%= link_to tag_path(@tag, view: "gallery"), class:"btn btn-light", role:'button' do %>
-					<%= fa_icon "image" %>
+				<%= link_to tag_path(@tag, view: "gallery"), class:"btn btn-light", role:'button', title:"Cliquer pour afficher en galerie" do %>
+					<%= far_icon "image" %>
 				<% end %>
 			<% else %>
-				<%= link_to tag_path(@tag, view: "list"), class:"btn btn-light", role:'button' do %>
-					<%= fa_icon "list-ul" %>
+				<%= link_to tag_path(@tag, view: "list"), class:"btn btn-light", role:'button', title: "Cliquer pour afficher en liste" do %>
+					<%= fas_icon "list-ul" %>
+				<% end %>
+			<% end %>
+
+			<% if current_user.tags.include?(@tag) %>
+				<%= link_to star_tag_path(@tag.id), class:"btn btn-light", role:'button', title: "Cliquer pour enlever des favoris" do %>
+					<%= fas_icon("star") %>
+				<% end %>
+			<% else %>
+				<%= link_to star_tag_path(@tag.id), class:"btn btn-light", role:'button', title: "Cliquer pour ajouter aux favoris" do %>
+					<%= far_icon("star") %>
 				<% end %>
 			<% end %>
 		 
 		  <div class="btn-group" role="group">
 		    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		      <%= fa_icon "cog" %>
+		      <%= fas_icon "cog" %>
 		    </button>
 		    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
 		    	<%= link_to "Ajouter", new_item_path(view: 'bd', series: @tag.name), class:'dropdown-item' %>

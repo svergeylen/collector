@@ -14,8 +14,8 @@
     	</span>
 
 		<% if current_user.id == comment.user.id %>
-			<%= link_to edit_comment_path(comment), class:"high-color" do fa_icon("edit") end %>
-			<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' }, class:"high-color" do fa_icon("trash") end %>
+			<%= link_to edit_comment_path(comment), class:"high-color" do far_icon("edit") end %>
+			<%= link_to comment, method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce commentaire ?' }, class:"high-color" do far_icon("trash-alt") end %>
 		<% end %>           
 	</div>
 

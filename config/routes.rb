@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 	get 'search/tag' 		# recherche ajax dans les tags (navigation)
 	resources :tags do
 		member do
-			get 'star'
+			get 'star'		# favoris
 			get 'remove/:remove_id', to: 'tags#remove', as: 'remove'
 		end
 	end
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 	get 'cron/jobs'
 	get 'cron/run'
 
-	# Page d'accueil /!\ Pas d'authentification
+	# Page d'accueil
 	root 'welcome#index'
 
 end

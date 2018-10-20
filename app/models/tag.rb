@@ -11,6 +11,10 @@ class Tag < ApplicationRecord
 	has_many :ownertags_as_owner, dependent: :destroy, class_name: "Ownertag", as: :owner
 	has_many :tags,               through: :ownertags_as_owner
 
+	# Un tag peut être ajouté comme favoris par des utilisateurs
+	has_many :favourites
+	has_many :users, through: :favourites
+
 	accepts_nested_attributes_for :ownertags_as_owner, allow_destroy: true
 	accepts_nested_attributes_for :ownertags_as_tag, allow_destroy: true
 	

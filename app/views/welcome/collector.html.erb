@@ -1,14 +1,25 @@
 <div class="rounded-box">
-	<div class="pull-right">
-		
-		<%= link_to "Ajouter", new_item_path(view: 'bd'), class:'btn btn-primary' %>
-		
+	<div class="float-right">
+		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+		  <div class="btn-group" role="group">
+		    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		      <%= fas_icon "cog" %>
+		    </button>
+		    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+		    	<%= link_to "Créer item", new_item_path(view: 'bd'), class:'dropdown-item' %>
+		    	<%= link_to 'Liste des items', items_path, class:'dropdown-item' %>
+		    	<div class="dropdown-divider"></div>
+		    	<%= link_to "Créer tag", new_tag_path, class:'dropdown-item'	 %>
+		    	<%= link_to 'Liste des tags', tags_path, class:'dropdown-item' %>
+		    	<div class="dropdown-divider"></div>
+			    <%= link_to 'Liste des jobs', cron_jobs_path, class:'dropdown-item' %>
+		    </div>
+		  </div>
+		</div>	
 	</div>
 
 	<h1>Collector</h1>
 
-
-	
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-4 offset-md-4 collector-search">
@@ -16,8 +27,8 @@
 			</div>
 		</div>
 
-		<% if @root_tags.present? %>
-			<% @root_tags.each_with_index do |tag, index| %>
+		<% if @tags.present? %>
+			<% @tags.each_with_index do |tag, index| %>
 				<% if (index % 3 == 0) %>
 					<div class="row">
 				<% end %>
@@ -30,7 +41,7 @@
 						  <ul class="list-group list-group-flush">
 						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
 						    	<li class="list-group-item" title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
-						    		<span class="pull-right text-secondary" >le <%= short_date(item.created_at) %>	</span>
+						    		<span class="float-right text-secondary" >le <%= short_date(item.created_at) %>	</span>
 						    		<%= link_to truncate(item.name, length: 40), item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
 						    	</li>
 						    <% end %>
