@@ -31,6 +31,9 @@
 		vertical-align : middle;
 	}
 }
+.collector-item-li.checked {
+	background-color : $tag-color-light;
+}
 
 /* Galerie d'item */
 .item-card {

@@ -77,6 +77,7 @@
 						Actions :
 					</div>
 					<div class="col-sm-10">
+						<%= link_to "Sélectionner tout", "#", id: "check_all", class:'mr-3', title:"Inverse la sélection actuelle des items" %>
 						<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
 						<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
 						<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>

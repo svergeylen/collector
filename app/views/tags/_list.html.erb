@@ -1,25 +1,18 @@
-
 <ul class="list-group collector-item-list">
 	<% items.each do |item| %>
-		<li class="list-group-item">
+		<li class="list-group-item collector-item-li" data-item-id="<%= item.id.to_s %>">
 			<%# item.is_owned_by?(current_user.id) ? "list-group-item-success" : "" %>
 			<div class="row align-items-center">
-				<!-- etonnement, col-xs-1 ne passe pas... -->
-				<div class="col-1">	
-					<%= item.friendly_number %>
-				</div>
-				<!-- étonnement, col-11 ne passe pas même si le total fait bien 12...  -->
-				<div class="col-9 col-md-4">
+				<div class="col-10 col-md-4">
+					<span class="pr-3"><%= item.friendly_number %></span>
 					<%= link_to item.name, item %>
 				</div>
-				<div class="col-md-4 d-none d-md-block">
+				<div class="col-md-6 d-none d-md-block">
 					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag_path(tag, add: 1) }.join(", ").html_safe %>
 				</div>
-				<div class="col-md-2 d-none d-md-block">
+				<div class="col-2 col-md-2 text-right">
 					<%= render_users(item) %>
-				</div>
-				<div class="col-1">	
-					<%= check_box_tag( 'item_ids[]', item.id) %>
+					<%= check_box_tag 'item_ids[]', item.id, false, {id: dom_id(item), style: "display:none;"} %>
 				</div>
 			</div>
 		</li>

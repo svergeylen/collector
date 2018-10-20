@@ -1,27 +1,28 @@
-
 <div class="row item-gallery pl-2 pr-2 mt-4">
 	<% items.each_with_index do |item, i| %>
 
 		<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 pr-2 pl-2" >
 
-			<div class="card item-card">
-				<%= link_to item do %>
-					<% if item.attachments.present? && item.attachments.last.image.exists? %>
-						<%= image_tag "/" + item.attachments.last.image(:medium), class:"card-img-top" %>
-					<% else %>
-						<%= image_tag "no-image.png", class:"card-img-top" %>
-					<% end %>
-					
-					<% if item.number %>
-						<div class="panel-overlay">
-							<span>n°<%= item.friendly_number %></span>
-						</div>
-					<% end %>
+			<div class="card item-card collector-item-li" data-item-id="<%= item.id.to_s %>">
+				
+				<% if item.attachments.present? && item.attachments.last.image.exists? %>
+					<%= image_tag "/" + item.attachments.last.image(:medium), class:"card-img-top" %>
+				<% else %>
+					<%= image_tag "no-image.png", class:"card-img-top" %>
 				<% end %>
+				
+				<% if item.number %>
+					<div class="panel-overlay">
+						<span>n°<%= item.friendly_number %></span>
+					</div>
+				<% end %>
+				
 			  <div class="card-body">
-			    <p class="card-text text-center">
+			    <div class="card-text text-center mb-3">
+			    	<%= check_box_tag( 'item_ids[]', item.id, false, {id: dom_id(item), style: "display:none;" }) %>
 			    	<%= link_to item.name, item %>
-			    </p>
+			    </div>
+		    	
 			  </div>
 			</div>
 
