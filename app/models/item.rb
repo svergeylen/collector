@@ -17,12 +17,6 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
-	# Temporaire pour la migration de l'ancien site.
-	# Ajout d'un lien vers l'ancienne table items_tags pour lire les auteurs des BD !
-	# has_and_belongs_to_many :old_tags, source: :items_tags, class_name: 'Tag'
-
-
-
 	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
 
 	attr_writer :tag_names 			# tags form item générique
@@ -128,36 +122,10 @@ class Item < ApplicationRecord
 	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
 	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
-	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value >= applicable_tag_ids.size }
+	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
 	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
 	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
-
-	 #  	# Elimination de tags non filtrants
-	 #  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
-	 #  	#logger.debug "applicable_tag_ids : "+applicable_tag_ids.inspect
-	 #  	# Sélection des ownertags candidats a satisfaire aux multiples critères (condition OR)
-	 #  	candidates = Ownertag.where(tag_id: applicable_tag_ids)
-	 #  	#logger.debug "candidates : "+candidates.inspect
-	 #  	# Sélection des item_id uniques qui sont dans cette liste de candidats
-	 #  	item_ids = candidates.map(&:owner_id).uniq
-	 #  	#logger.debug "item_ids : "+item_ids.inspect
-	 #  	# Pour chaque item_id différent, on filtre le tableau de candidat et on compte le nombre de ligne.
-	 #  	# Si ce nombre de ligne correspond au nombre de critères attendus, on a un resultat positif.
-	 #  	result_ids = []
-	 #  	item_ids.each do |item_id|
-	 #  		#logger.debug "---------- "+item_id.to_s
-	 #  		quantity = candidates.where(owner_id: item_id).count
-	 #  		if quantity == applicable_tag_ids.length
-	 #  			#logger.debug "--> Ajout : "+item_id.to_s+ " quantité="+quantity.to_s
-	 #  			result_ids << item_id
-	 #  		else
-	 #  			#logger.debug "--> Ignoré : "+item_id.to_s+ " quantité="+quantity.to_s
-	 #  		end
-	 #  	end
-
-	 #  	# TO DO limit 24 ou paginate ? (conflit avec le paginte des tags)
-		# Item.where(id: result_ids).sort_by{ |a| [a.number.to_f, a.name] }
-		
+	 	# TO DO limit et/ou paginate ? (attention, conflit avec le paginate des tags)
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
