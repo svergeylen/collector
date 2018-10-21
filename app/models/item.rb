@@ -17,6 +17,8 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
+	after_save :add_root_tag
+
 	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
 
 	attr_writer :tag_names 			# tags form item générique
@@ -82,6 +84,20 @@ class Item < ApplicationRecord
 		if @tag_rangements
 			self.update_tags_with_parent(@tag_rangements.split(","), "Rangements")
 		end
+	end
+
+	# Ajout d'un tag d'office à l'item, correspondant à son item_type
+	# Si le tag correspondant n'est pas trouvé, tant pis, c'est mieux que rien...
+	def add_root_tag
+      list_item_types = { "bd" => "Bandes dessinées", "bonsai" => "Bonsais", "jeu" => "Jeu de société", "livre" => "Livres", "modelisme" => "Modélisme"}
+      if self.item_type.present? and self.item_type != "item"
+      	results = Tag.where(name: list_item_types[self.item_type])
+      	if results.present?
+      		tag = results.first 
+	      	self.tags << tag unless self.tags.include?(tag)
+	    end
+	  end
+    
 	end
 
 
