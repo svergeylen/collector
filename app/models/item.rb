@@ -89,7 +89,11 @@ class Item < ApplicationRecord
 	# Ajout d'un tag d'office à l'item, correspondant à son item_type
 	# Si le tag correspondant n'est pas trouvé, tant pis, c'est mieux que rien...
 	def add_root_tag
-      list_item_types = { "bd" => "Bandes dessinées", "bonsai" => "Bonsais", "jeu" => "Jeu de société", "livre" => "Livres", "modelisme" => "Modélisme"}
+      list_item_types = { 	"bd" => "Bandes dessinées", 
+      						"bonsai" => "Bonsais", 
+      						"jeu" => "Jeu de société", 
+      						"livre" => "Livres", 
+      						"modelisme" => "Modélisme" }
       if self.item_type.present? and self.item_type != "item"
       	results = Tag.where(name: list_item_types[self.item_type])
       	if results.present?
@@ -97,7 +101,6 @@ class Item < ApplicationRecord
 	      	self.tags << tag unless self.tags.include?(tag)
 	    end
 	  end
-    
 	end
 
 
@@ -142,6 +145,7 @@ class Item < ApplicationRecord
 	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
 	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
 	 	# TO DO limit et/ou paginate ? (attention, conflit avec le paginate des tags)
+	 	# TO DO problème de performance ~30 sec pour les tags qui ont plus de 1000 items (bd, séries, etc)
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
