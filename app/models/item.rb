@@ -17,6 +17,8 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
+	after_save :add_root_tag
+
 	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
 
 	attr_writer :tag_names 			# tags form item générique
@@ -38,9 +40,12 @@ class Item < ApplicationRecord
 		if @tag_names
 			tags = []
 			@tag_names.split(",").each do |name| 
+				logger.debug "---> "+name.to_s
 				name = name.strip
 				next if name==""
 				new_tag = Tag.where(name: name).first_or_create!
+				# BUG ici si on tente de créer un tag qui porte le même nom d'auteur sans les majuscules
+				# car le tag n'est pas créé et le save foire
 				tags << new_tag # unless tags.include?(new_tag)
 			end
 			# J'écrase tous les tags existants. C'est différent de la méthode add_tags qui ajoute des tags
@@ -82,6 +87,23 @@ class Item < ApplicationRecord
 		if @tag_rangements
 			self.update_tags_with_parent(@tag_rangements.split(","), "Rangements")
 		end
+	end
+
+	# Ajout d'un tag d'office à l'item, correspondant à son item_type
+	# Si le tag correspondant n'est pas trouvé, tant pis, c'est mieux que rien...
+	def add_root_tag
+      list_item_types = { 	"bd" => "Bandes dessinées", 
+      						"bonsai" => "Bonsais", 
+      						"jeu" => "Jeu de société", 
+      						"livre" => "Livres", 
+      						"modelisme" => "Modélisme" }
+      if self.item_type.present? and self.item_type != "item"
+      	results = Tag.where(name: list_item_types[self.item_type])
+      	if results.present?
+      		tag = results.first 
+	      	self.tags << tag unless self.tags.include?(tag)
+	    end
+	  end
 	end
 
 
@@ -126,6 +148,7 @@ class Item < ApplicationRecord
 	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
 	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
 	 	# TO DO limit et/ou paginate ? (attention, conflit avec le paginate des tags)
+	 	# TO DO problème de performance ~30 sec pour les tags qui ont plus de 1000 items (bd, séries, etc)
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné

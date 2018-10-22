@@ -22,8 +22,11 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.number = params[:number].to_i if (params[:number].present?)
+    @item_types = get_item_types
+    @item.item_type = params[:item_type] if params[:item_type].present?
     
-    case params[:view]
+    # On affiche le formulaire qui dépend de l'item_type (si le type est donné en paramètre)
+    case params[:item_type]
     when "bd"
       new_or_edit_bd
       @item.tag_series = params[:series] if params[:series]
@@ -38,7 +41,11 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
+    @item_types = get_item_types
+    # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
+    @item.item_type = params[:item_type] if params[:item_type].present?
 
+    # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
     case @item.item_type
       when "bd"
         new_or_edit_bd
@@ -58,8 +65,6 @@ class ItemsController < ApplicationController
     if @item.save
       # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
       current_user.add_to_collection(@item.id)
-      # Ajout du tag BD si on a utilisé le formulaire "BD"
-      add_bd_tag if params[:view] == "bd"
       # Enregistre les pièces jointes (photos)
       save_attachments
       # Crée un job pour l'affichage ultérieur sur La Une
@@ -67,6 +72,7 @@ class ItemsController < ApplicationController
 
 			redirect_to @item, notice: 'Elément ajouté'
     else
+      @item_types = get_item_types
 			render :new 
     end
   end
@@ -74,18 +80,14 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    # params[:item].delete(:view)
-    @item.adder_id = current_user.id if @item.adder_id.blank?
-
-    #Harcodage deu type bd et du tag bd lorsqu'on utilise le formulaire BD (temporairement)
-    @item.item_type = "bd" if params[:view] == "bd"
-    add_bd_tag if params[:view] == "bd"
+    @item.adder_id = current_user.id if @item.adder_id.blank? # défensif
 
     if @item.update(item_params)
       save_attachments
 
       redirect_to @item, notice: 'Elément mis à jour'
     else
+      @item_types = get_item_types
       render :edit 
     end
   end
@@ -204,10 +206,9 @@ class ItemsController < ApplicationController
       @rangements_list = tag_rangement.children.pluck(:name)
     end
 
-    # Ajout du tag BD à l'item (à appeler si le formulaire BD a été utilisé)
-    def add_bd_tag
-      bd = Tag.find_or_create_by!(name: "Bandes dessinées")
-      @item.tags << bd unless @item.tags.include?(bd)
+    # Liste les types d'items
+    def get_item_types
+      return [["Item (générique)", "item"], ["Bande dessinée", "bd"], ["Bonsaï", "bonsai"], ["Jeu de société", "jeu"], ["Livre", "livre"],  ["Modélisme", "modelisme"] ]
     end
 
     # Use callbacks to share common setup or constraints between actions.
@@ -219,6 +220,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :description, :attachments, :tag_names, :tag_series, :tag_auteurs, :tag_rangements)
+      params.require(:item).permit(:number, :name, :item_type, :description, :attachments, :tag_names, :tag_series, :tag_auteurs, :tag_rangements)
     end
 end

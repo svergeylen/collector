@@ -12,6 +12,7 @@
   <% end %>
 
 
+
   <div class="form-group row">
     <label for="item_name" class="col-sm-2 col-form-label">Titre</label>
     <div class="col-sm-1">
@@ -19,6 +20,9 @@
     </div>
     <div class="col-sm-5">
       <%= form.text_field :name, id: :item_name, class: "form-control", placeholder:"Titre", autocomplete: :off, autofocus: true %>
+    </div>
+    <div class="col-sm-3">
+      <%= form.select(:item_type, @item_types, { selected: @item.item_type }, { id:"item_type", class:"form-control custom-select " }) %>
     </div>
   </div>
   

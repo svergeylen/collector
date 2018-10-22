@@ -71,6 +71,19 @@ namespace :db do
 		Item.where(id: item_ids).update_all(item_type: "bd" )
 	end
 
+	# Recherche les items qui ont des tags en double, supprime tous les tags et réassocie les tag_ids uniques
+	task remove_duplicate_tags_in_items: :environment do 
+		Item.all.each do |item|
+			tag_ids = item.tag_ids
+			uniq_tag_ids = tag_ids.uniq
+			if tag_ids.size != uniq_tag_ids.size
+				puts "Correction de doublons pour item_id="+item.id.to_s+" : "+item.tags.pluck(:name).inspect
+				item.tags.clear
+				item.tag_ids = uniq_tag_ids
+			end
+		end
+	end
+
 
 private
 
