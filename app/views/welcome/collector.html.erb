@@ -8,7 +8,9 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-4 offset-md-4 collector-search">
-				<%= render partial: "search/form_tags" %>
+				<%= form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
+					<%= text_field_tag("collector-tag-search", nil, placeholder: "Rechercher", data: { options: Tag.searchable_tags}, class:"form-control" ) %>
+				<% end %>
 			</div>
 		</div>
 

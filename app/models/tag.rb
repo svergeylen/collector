@@ -74,6 +74,11 @@ class Tag < ApplicationRecord
   		return created_tags
 	end
 
+	# Renvoi tous les tags pour le champ recherche de tags
+	def self.searchable_tags
+		return Tag.order(name: :asc).select(:id, :name).map{ |el| {value: el.name, label: el.name, id: el.id.to_s} }
+	end
+
 
 	# Renvoie une liste de tags qui contiennent le mot clé donné
 	def self.search(keyword)

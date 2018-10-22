@@ -24,8 +24,5 @@ class WelcomeController < ApplicationController
 
     	# Affichage des tags favoris de l'utilisateur (derniers ajouts/accès rapide)
 	    @tags = current_user.tags.order(:name)
-		
-	    # Charge tous les tags pour la recherche collector-tag-search
-	    @tag_list = Tag.order(name: :asc).select(:id, :name).map{ |el| {value: el.name, label: el.name, id: el.id.to_s} }
 	end
 end

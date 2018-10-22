@@ -9,7 +9,11 @@
 
 /* ==== Welcome Collector ==== */
 
-/* Div de recherche de tags  */
+/* Div de recherche de tags : aligné avec les active tags */
+#search_tags_form {
+	display : inline-block;
+}
+/* Page de garde Welcome Collector : centré en pleine page*/
 .collector-search {
 	margin-top : 3em;
 	margin-bottom : 7em;

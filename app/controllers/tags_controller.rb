@@ -2,6 +2,7 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy, :star]
 
   # Liste des tags pour gestion banque de données
+  # Attention, ne pas confondre avec welcome > Collector
   def index
     per_page = 40
     case params[:letter]
@@ -52,6 +53,7 @@ class TagsController < ApplicationController
         end
       end
 
+      # Lite des tags actifs (breadcrimbs)
       @active_tags = Tag.find(session[:active_tags])
 
       # Si le tag a des enfants, il faut afficher les tags enfants (navigation), pas d'items

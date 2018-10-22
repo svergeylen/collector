@@ -44,3 +44,8 @@ body {
 	  font-size: 3em;
 	}
 }
+
+/* suppression du message en bas de page créé par autocomplete (?) */
+.ui-helper-hidden-accessible {
+	display: none;
+}

@@ -72,6 +72,7 @@ class ItemsController < ApplicationController
 
 			redirect_to @item, notice: 'Elément ajouté'
     else
+      @item_types = get_item_types
 			render :new 
     end
   end
@@ -86,6 +87,7 @@ class ItemsController < ApplicationController
 
       redirect_to @item, notice: 'Elément mis à jour'
     else
+      @item_types = get_item_types
       render :edit 
     end
   end

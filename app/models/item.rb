@@ -40,9 +40,12 @@ class Item < ApplicationRecord
 		if @tag_names
 			tags = []
 			@tag_names.split(",").each do |name| 
+				logger.debug "---> "+name.to_s
 				name = name.strip
 				next if name==""
 				new_tag = Tag.where(name: name).first_or_create!
+				# BUG ici si on tente de créer un tag qui porte le même nom d'auteur sans les majuscules
+				# car le tag n'est pas créé et le save foire
 				tags << new_tag # unless tags.include?(new_tag)
 			end
 			# J'écrase tous les tags existants. C'est différent de la méthode add_tags qui ajoute des tags
