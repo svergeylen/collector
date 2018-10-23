@@ -8,7 +8,7 @@
 					<%= link_to item.name, item %>
 				</div>
 				<div class="col-md-6 d-none d-md-block">
-					<%= item.different_tags(session[:active_tags]).collect { |tag| link_to tag.name, tag_path(tag, add: 1) }.join(", ").html_safe %>
+					<%= item.tags.reject{|t| session[:active_tags].include?(t.id)}.collect { |tag| link_to tag.name, tag_path(tag, add: 1) }.join(", ").html_safe %>
 				</div>
 				<div class="col-2 col-md-2 text-right">
 					<%= render_users(item) %>

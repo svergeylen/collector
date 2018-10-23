@@ -146,7 +146,7 @@ class Item < ApplicationRecord
 	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
 	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
-	  	Item.where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
+	  	Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
 	 	# TO DO limit et/ou paginate ? (attention, conflit avec le paginate des tags)
 	 	# TO DO problème de performance ~30 sec pour les tags qui ont plus de 1000 items (bd, séries, etc)
 	end
