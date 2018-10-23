@@ -42,17 +42,14 @@
 	<div class="mt-3 mb-5">
 		<%= render_tags(@active_tags, true) %>
 		<%= form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
-			<%= text_field_tag("collector-tag-search", nil, placeholder: "Filtrer...", data: { options: Tag.searchable_tags}, class:"form-control form-control-sm" ) %>
-		<% end %>		
-		
+			<%= text_field_tag("collector-tag-search", nil, data: { options: Tag.searchable_tags}, class:"form-control form-control-sm", size: 12 ) %>
+		<% end %>
 	</div>
 
-	<!-- Actions -->
-	<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
-		<%= hidden_field_tag :tag_id, @tag.id %>
-		<%= hidden_field_tag :view, params[:view] %>
 
-		
+
+	
+
 		<% if @view_alphabet %>
 			<div class="btn-group header-letters">
 				<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
@@ -64,24 +61,40 @@
 		
 		<% if @tags.present? %>
 			<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-			<ul class="children_tags">
-				<% @tags.each do |tag| %>
-					<li><%= link_to tag.name, tag_path(tag, add: 1)  %></li>
-				<% end %>
-			</ul>
+			<div class="row">
+				<div class="col-md-3">
+					<ul class="children_tags">
+						<% @tags.each do |tag| %>
+							<li><%= link_to tag.name, tag_path(tag, add: 1)  %></li>
+						<% end %>
+					</ul>
+				</div>
+				<div class="col-md-9">
 		<%end %>	
 
 			
 		<% if @items.present? %>
-			<% if @view.present? %>
+
+
+			<!-- Form Actions -->
+			<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
+				<%= hidden_field_tag :tag_id, @tag.id %>
+				<%= hidden_field_tag :view, params[:view] %>
+
 				<%= render partial: @view, locals: {items: @items } %>
 
-				<div class="row mt-5 mb-3">
+				<% if @items.size >= @max_items %>
+					<p class="mt-3 mb-3 text-secondary text-right"><small>Affichage limité à <%= @max_items.to_s %> items.</small></p>
+				<% end %>
+
+				<!-- Boutons Actions -->
+				<h3 class="mt-5 mb-3">Actions</h3>
+				<div class="row ">
 					<div class="col-sm-2 col-form-label">
-						Actions :
+						Sélection :
 					</div>
 					<div class="col-sm-10">
-						<%= link_to "Sélectionner tout", "#", id: "check_all", class:'mr-3', title:"Inverse la sélection actuelle des items" %>
+						<%= link_to "Tout sélectionner", "#", id: "check_all", class:'mr-3', title:"Inverse la sélection actuelle des items" %>
 						<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
 						<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
 						<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
@@ -111,16 +124,13 @@
 					</div>
 				</div>
 
+			<% end  %><!-- form Actions -->
 
-
-			<% else %>
-				<p>Ce dossier contient <%= @items.count %> items.</p>
-			<% end %>
+		<% end # items.present? %>
+			
+		<% if @tags.present? %>
+				</div> <!-- col-md-10-->
+			</div> <!-- row -->
 		<% end %>
 
-			
-		
-
-	<% end  %><!-- /Actions -->
-
-</div>
+</div> <!-- rounded-box -->

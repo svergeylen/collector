@@ -20,6 +20,7 @@ class Tag < ApplicationRecord
 	
 	validates :name, presence: true, uniqueness: {:case_sensitive => false}
 	
+	before_save :uppercaseletter
 
 # --------------------- TAGS PARENTS ---------------------------------------------------------------------------
 
@@ -88,6 +89,13 @@ class Tag < ApplicationRecord
 		else
 		 	all
 		end
+	end
+
+private
+	
+	def uppercaseletter
+		self.letter = self.name[0] if self.letter.empty?
+		self.letter = self.letter.upcase
 	end
 
 end

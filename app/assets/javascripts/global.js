@@ -1,10 +1,11 @@
 
 document.addEventListener("turbolinks:load", function() {
+/*
 	var offset = 200;
 	var duration = 300;
 
 	$(window).scroll(function() {
-		/* Bouton Back to top */
+		// Bouton Back to top
 		if ($(this).scrollTop() > offset) {
 			$(".back-to-top").fadeIn(700);
 		} 
@@ -17,7 +18,8 @@ document.addEventListener("turbolinks:load", function() {
  		event.preventDefault();
 		$("html, body").animate({scrollTop: 0}, duration);
 		return false;
-	});
+	}); 
+*/
 
 	/* Link disabled. Bootstrap fait juste du visuel mais ne bloque pas le clic sans ce code */
 	$("li.disabled a").click(function() {

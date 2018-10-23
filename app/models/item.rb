@@ -133,22 +133,27 @@ class Item < ApplicationRecord
 	end
 
 	# Renvoie les tags de l'item après avoir soustrait les active tags
-	def different_tags(active_tag_ids)
-		ids = self.tag_ids - active_tag_ids
-		return Tag.find(ids)
-	end
+	# Deprecated pour raison de performances
+	# def different_tags(active_tag_ids)
+	# 	ids = self.tag_ids - active_tag_ids
+	# 	return Tag.find(ids)
+	# end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
-	def self.having_tags(ar_tags, page: 1, per_page: 10)
+	def self.having_tags(ar_tags, limit: nil)
 	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
 	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
 	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
-	  	# On charge les items correspondants aux lignes trouvées dans ownertags, classé par numéro
-	  	Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
-	 	# TO DO limit et/ou paginate ? (attention, conflit avec le paginate des tags)
-	 	# TO DO problème de performance ~30 sec pour les tags qui ont plus de 1000 items (bd, séries, etc)
+	  	
+	  	if (limit.present?)
+	 		# Si une page est demandée, on impose la pagination. L'ordre n'a pas de sens vu qu'on paginate avant de mettre en ordre (performances :-( )
+	  		Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).order(updated_at: :desc).limit(limit)
+	  	else
+	  		# Sinon, on charge tous les items du tag
+			Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
+		end
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné

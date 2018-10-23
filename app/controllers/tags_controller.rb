@@ -4,16 +4,16 @@ class TagsController < ApplicationController
   # Liste des tags pour gestion banque de données
   # Attention, ne pas confondre avec welcome > Collector
   def index
-    per_page = 40
+    per_page = 50
     case params[:letter]
       when "A".."W"
-        @tags = Tag.where(letter: params[:letter]).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.where(letter: params[:letter].upcase).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "XYZ"
         @tags = Tag.where(letter: "X".."Z").order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "#"
         @tags = Tag.where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "vide"
-        @tags = Tag.where('letter is NULL OR letter is "" ').order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.where(letter:  [nil, '']).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "orphelins"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
         all_tags = Tag.where(root_tag: false).map(&:id)
@@ -28,6 +28,7 @@ class TagsController < ApplicationController
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
+    @max_items = 24 # Nombre d'items max à charger si encore des tags enfants présents
 
     if @tag
       # Si la liste est vide, on initialise la liste avec l'unique tag sélectionné
@@ -53,43 +54,9 @@ class TagsController < ApplicationController
         end
       end
 
-      # Lite des tags actifs (breadcrimbs)
+      # Liste des tags actifs (breadcrimbs)
       @active_tags = Tag.find(session[:active_tags])
 
-      # Si le tag a des enfants, il faut afficher les tags enfants (navigation), pas d'items
-      if @tag.tags.present?
-
-        # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
-        @view_alphabet = (@tag.tags.count >= 40)? true : false
-          
-        per_page = 40
-        case params[:letter]
-          when "A".."W"
-            @tags = @tag.children.where(letter: params[:letter].downcase).or.where(letter: params[:letter].upcase).paginate(page: params[:page], per_page: per_page)
-          when "XYZ"
-            @tags = @tag.children.where(letter: "X".."Z").or.where(letter: "x".."z").paginate(page: params[:page], per_page: per_page)
-          when "#"
-            @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: per_page)
-          when "vide"
-            @tags = @tag.children.where("letter is NULL OR letter is ''").paginate(page: params[:page], per_page: per_page)
-          else
-            @tags = @tag.children.paginate(page: params[:page], per_page: per_page)
-        end
-     
-     else 
-      # Recherche des items qui possèdent tous les tags actifs
-      @items = Item.having_tags(session[:active_tags])
-      # Recherche du numéro suivant en cas d'ajout
-      @next_number = 1
-      @items.each do |item| 
-        if item.number.present? and item.number >= @next_number
-          @next_number = item.number + 1
-        end
-      end
-
-    end  # if tag.tags present?
-
-      
       # Choix de la vue pour l'affichage des items
       if params[:view].present?
         @view = params[:view]
@@ -104,9 +71,43 @@ class TagsController < ApplicationController
       # Options pour les actions en bas de page (selectize)
       @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
       @tag_list = Tag.order(name: :asc).pluck(:name)
-    end
 
-  end
+      # Si le tag a des enfants, affichage des tags enfants dans la sidebar
+      if @tag.tags.present?
+        # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
+        tags_per_page = 40
+        @view_alphabet = (@tag.tags.count >= tags_per_page)? true : false 
+        case params[:letter]
+          when "A".."W"
+            @tags = @tag.children.where(letter: params[:letter]).paginate(page: params[:page], per_page: tags_per_page)
+          when "XYZ"
+            @tags = @tag.children.where(letter: "X".."Z").paginate(page: params[:page], per_page: tags_per_page)
+          when "#"
+            @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: tags_per_page)
+          when "vide"
+            @tags = @tag.children.where("letter is NULL OR letter is ''").paginate(page: params[:page], per_page: tags_per_page)
+          else
+            @tags = @tag.children.paginate(page: params[:page], per_page: tags_per_page)
+        end
+     
+        # On charge les derniers items modifiés (ex : Bd/Bonsai : on affiche les dernières modifs)
+        @items = Item.having_tags(session[:active_tags], limit: @max_items)
+
+      # Si pas de tags enfant, affichage des items en pleine page (pas de sidebar)
+      else
+        # Recherche des items qui possèdent tous les tags actifs
+        @items = Item.having_tags(session[:active_tags])
+        # Recherche du numéro suivant en cas d'ajout
+        @next_number = 1
+        @items.each do |item| 
+          if item.number.present? and item.number >= @next_number
+            @next_number = item.number + 1
+          end
+        end
+
+      end  # if tag.tags present?
+    end # if tag
+  end # show
 
   def new
     @tag = Tag.new
@@ -161,7 +162,7 @@ class TagsController < ApplicationController
       if remove_id == @tag.id 
         if session[:active_tags].empty?
           # Tous les tags actifs ont été supprimés par l'utilisateur
-          redirect_to tags_path, notice: "Vous avez supprimé tous les tags actifs"
+          redirect_to welcome_collector_path, notice: "Vous avez supprimé tous les tags actifs"
         else
           # Il reste au moins un tag actif dans la liste, on choisit le dernier tag de la liste
           @tag = Tag.find(session[:active_tags].last)

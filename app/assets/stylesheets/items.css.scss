@@ -51,6 +51,9 @@
 			color: black;
 		}
 	}
+	.card-body {
+		padding : 0.75em 0.25em;
+	}
 }
 /* Affichage du numéro de l'item lorsque l'utilisateur passe au-dessus de la card */
 .item-card:hover .panel-overlay {

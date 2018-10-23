@@ -15,15 +15,15 @@
 		<%= will_paginate @items, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 		<table class="table table-sm">
 			<tr>
+				<th>id</th>
 				<th>Nom</th>
 				<th>Tags</th>
 				<th>Actions</th>
 			</tr>
 			<% @items.each do |item| %>
 				<tr>
-					<td>
-						<%= link_to item.name, item %>
-					</td>
+					<td><%= item.id.to_s %></td>
+					<td><%= link_to item.name, item %></td>
 					<td>
 						<%if item.tags.present? %>
 							<%= raw item.tags.map { |tag| raw link_to(tag.name, tag) }.join(", ") %>
