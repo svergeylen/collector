@@ -94,7 +94,7 @@ class Tag < ApplicationRecord
 private
 	
 	def uppercaseletter
-		self.letter = self.name[0] if self.letter.empty?
+		self.letter = self.name[0] if self.letter.nil?
 		self.letter = self.letter.upcase
 	end
 
