@@ -13,7 +13,7 @@ class TagsController < ApplicationController
       when "#"
         @tags = Tag.includes(:items).where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "vide"
-        @tags = Tag.includes(:items).where(letter:  [nil, '']).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(letter: '').order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "orphelins"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
         all_tags = Tag.where(root_tag: false).map(&:id)
