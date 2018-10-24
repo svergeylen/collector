@@ -1,16 +1,18 @@
-<!-- Carousel -->
-<div id="itemCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+
+<!-- carousel bootstrap 4 -->
+<div id="itemCarousel" class="carousel slide" data-ride="carousel">
+  
   <div class="carousel-inner">
-  	<% attachments.each_with_index do |attachment, i| %>
-	  	<div class="item <%=  "active" if i==active_slide_id %>">
-	      <%= image_tag "/" + attachment.image.url %>
-	      <div class="carousel-caption">
-	      	<%= long_date(attachment.image_updated_at) %>
-	      </div>
-	    </div>			      
-	    <% content_for :carousel_indicators do %>
-	    	<li data-target="#itemCarousel" data-slide-to=<%= i.to_s %> class="<%= "active" if i==active_slide_id %>"></li>
-	    <% end %>
+    <% attachments.each_with_index do |attachment, i| %>
+      <div class="carousel-item <%= 'active' if i==active_slide_id %>">
+        <%= image_tag ("/"+attachment.image.url), class:"d-block w-100" %>
+        <div class="carousel-caption d-none d-md-block">
+          <p><%= long_date(attachment.image_updated_at) %></p>
+        </div>
+      </div>
+      <% content_for :carousel_indicators do %>
+        <li data-target="#itemCarousel" data-slide-to=<%= i.to_s %> class="<%= 'active' if i==active_slide_id %>"></li>
+      <% end %>
     <% end %>
   </div>
 
@@ -20,14 +22,13 @@
   </ol>
 
   <!-- Left and right controls -->
-  <a class="left carousel-control" href="#itemCarousel" data-slide="prev">
-    <%= fa_icon "arrow-circle-left" %>
+  <a class="carousel-control-prev" href="#itemCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Précédent</span>
   </a>
-  <a class="right carousel-control" href="#itemCarousel" data-slide="next">
-    <%= fa_icon "arrow-circle-right" %>
+  <a class="carousel-control-next" href="#itemCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Suivant</span>
   </a>
 </div>
-<!-- End of Carousel -->
-
+<!-- end of carousel -->

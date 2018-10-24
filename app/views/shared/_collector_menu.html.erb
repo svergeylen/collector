@@ -1,16 +1,47 @@
 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
   <div class="btn-group" role="group">
+
+    <%# Bouton Liste <=> Galerie %>
+    <% if @items.present? %>
+      <% if @view == "list" %>
+        <%= link_to tag_path(@tag, view: "gallery"), class:"btn btn-light", role:'button', title:"Cliquer pour afficher en galerie" do %>
+          <%= far_icon "image" %>
+        <% end %>
+      <% else %>
+        <%= link_to tag_path(@tag, view: "list"), class:"btn btn-light", role:'button', title: "Cliquer pour afficher en liste" do %>
+          <%= fas_icon "list-ul" %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <%# Bouton Menu déroulant %>
     <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <%= fas_icon "cog" %>
     </button>
+
+    <%# Menu déroulant %>
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-    	<%= link_to "Créer item", new_item_path(view: 'bd'), class:'dropdown-item' %>
-    	<%= link_to 'Liste des items', items_path, class:'dropdown-item' %>
+
+    	<%= link_to "<i class='far fa-file'></i> Ajouter item".html_safe, new_item_path(view: 'bd'), class:'dropdown-item' %>
+      <% if @item.present? %>
+        <%= link_to "<i class='fas fa-edit'></i> Modifier item".html_safe, edit_item_path(@item), class:'dropdown-item' %>
+        <%= link_to "<i class='far fa-trash-alt'></i> Supprimer item".html_safe, @item, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer cet item définitiement ?' } %> 
+      <% end %>
+      <%= link_to "<i class='far fa-copy'></i> Liste items".html_safe, items_path, class:'dropdown-item' %>
+      
     	<div class="dropdown-divider"></div>
-    	<%= link_to "Créer tag", new_tag_path, class:'dropdown-item'	 %>
-    	<%= link_to 'Liste des tags', tags_path, class:'dropdown-item' %>
+    	<%= link_to "<i class='fas fa-tag'></i> Créer tag".html_safe, new_tag_path, class:'dropdown-item'	 %>
+      <% if @tag.present? %>
+        <%= link_to "<i class='fas fa-edit'></i> Modifier tag".html_safe, edit_tag_path(@tag), class:'dropdown-item'  %>
+        <%= link_to (current_user.tags.include?(@tag) ? "<i class='fas fa-star'></i> Retirer des favoris".html_safe : "<i class='far fa-star'></i> Ajouter aux favoris".html_safe), star_tag_path(@tag.id), class:"dropdown-item" %>
+        <%= link_to "<i class='far fa-trash-alt'></i> Supprimer tag".html_safe, tag_path(@tag), method: :delete, class:'dropdown-item', data: { confirm: "Etes-vous certain de supprimer ce tag définitivement ?\n (Les items seront conservés mais ne seront plus associés à ce tag)" } %>
+      <% end %>
+    	<%= link_to "<i class='fas fa-tags'></i> Liste tags".html_safe, tags_path, class:'dropdown-item' %>
+
     	<div class="dropdown-divider"></div>
-	    <%= link_to 'Liste des jobs', cron_jobs_path, class:'dropdown-item' %>
+	    <%= link_to "<i class='fas fa-tasks'></i> Liste des jobs".html_safe, cron_jobs_path, class:'dropdown-item' %>
+
     </div>
+
   </div>
-</div>	
+</div>

@@ -1,15 +1,6 @@
 <div class="rounded-box">
-	<div class="float-right">	
-	  <div class="btn-group" role="group">
-	    <button id="btnGroupDrop1" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	      <%= fas_icon "cog" %>
-	    </button>
-	    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-	    	<%= link_to "Ajouter item", new_item_path(view: @item.item_type), class:'dropdown-item' %>
-	    	<%= link_to 'Modifier item', edit_item_path(@item), class:'dropdown-item' %>
-	    	<%= link_to 'Supprimer item', @item, method: :delete, class:'dropdown-item', data: { confirm: 'Supprimer l\'item ?' } %> 
-	    </div>
-	  </div>
+	<div class="float-right">
+		<%= render partial: "shared/collector_menu" %>
 	</div>
 
 	<h3><%= @item.name %></h3>

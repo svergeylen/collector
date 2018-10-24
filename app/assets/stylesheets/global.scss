@@ -27,25 +27,13 @@ body {
 	margin-right: 5px;
 }
 
-
-/* Bouton remonter en haut de la page */
-/*.back-to-top {
-	background: none;
-	margin: 0;
-	position: fixed;
-	bottom: 50px;
-	right: 0;
-	width: 50px;
-	height: 50px;
-	z-index: 100;
-	display: none;
-	text-decoration: none;
-	i {
-	  font-size: 3em;
-	}
-}*/
-
 /* suppression du message en bas de page créé par autocomplete (?) */
 .ui-helper-hidden-accessible {
 	display: none;
+}
+
+/* Alignement des icones dans un menu bootstrap dropdown */
+a.dropdown-item > i {
+    width : 25px; /* je force la largeur des icones pour que le texte soit aligné à gauche */
+    margin-left: -12px; /* Je décale l'icone de 12px à gauche (dans le padding du dropdown-item, afin de ne pas devoir modifier le padding de tous les dropdown-item !)*/
 }
