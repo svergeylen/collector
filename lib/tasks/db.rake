@@ -84,6 +84,17 @@ namespace :db do
 		end
 	end
 
+	# Donne une lettre de classement (letter) aux tags qui n'en n'ont pas encore
+	task add_letter_to_tag: :environment do 
+		Tag.all.each do |tag|
+			if tag.letter.nil? or tag.letter.empty?
+				tag.letter = tag.name[0].upcase
+				tag.save
+				puts "Correction de lettre pour le tag="+tag.name.to_s+" : "+tag.letter.to_s
+			end
+		end
+	end
+
 
 private
 

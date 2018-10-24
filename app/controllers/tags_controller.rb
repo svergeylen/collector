@@ -85,7 +85,7 @@ class TagsController < ApplicationController
           when "#"
             @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: tags_per_page)
           when "vide"
-            @tags = @tag.children.where("letter is NULL OR letter is ''").paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children.where(letter: [nil, ""]).paginate(page: params[:page], per_page: tags_per_page)
           else
             @tags = @tag.children.paginate(page: params[:page], per_page: tags_per_page)
         end
