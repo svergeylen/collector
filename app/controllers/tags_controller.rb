@@ -112,8 +112,16 @@ class TagsController < ApplicationController
   def new
     @tag = Tag.new
     new_and_edit_actions
-    # Reherche des tags à proposer pour populer le(s) champ(s) parent_tags
-    @tag.parent_tag_ids = [ params[:parent_tag].to_s ]
+    
+    if session[:active_tags].present?
+      # On propose tous les tags actifs qui sont filtrants comme tags parents par défaut,
+      # càd que le tag serait enfant du dernier tag cliqué
+      @tag.parent_tag_names = Tag.where(id: session[:active_tags]).where(filter_items: true).pluck(:name).join(",") 
+      # Reherche des valeurs par défaut les plus proches du dernier tag ajouté aux tags actifs
+      last_tag = Tag.find(session[:active_tags].last)
+      @tag.default_view = last_tag.default_view
+      @tag.filter_items = last_tag.filter_items
+    end
   end
 
   def create

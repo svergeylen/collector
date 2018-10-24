@@ -29,11 +29,12 @@ class ItemsController < ApplicationController
     case params[:item_type]
     when "bd"
       new_or_edit_bd
-      @item.tag_series = params[:series] if params[:series]
+      # @item.tag_series = 
+      # To do : proposer la série la plus probable à l'utilisateur
       render "items/new_bd"
     else
       @tag_list = Tag.order(name: :asc).pluck(:name)
-      @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
+      @item.tag_names = Tag.where(id: session[:active_tags]).where(filter_items: true).pluck(:name).join(", ")
       render "items/new"
     end
   end
