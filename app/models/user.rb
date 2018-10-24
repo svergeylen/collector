@@ -62,4 +62,18 @@ class User < ApplicationRecord
     	return iu
 	end
 
+	# Mémorise l'heure à laquelle l'utilisateur a vu la page "La Une"
+	def save_time_la_une
+		self.displayed_la_une = Time.now
+   		self.save
+   		
+	end
+
+	# Mémorise l'heure à laquelle l'utilisateur a vu la page "Collector"
+	def save_time_collector
+		self.displayed_collector = Time.now
+   		self.save
+   		
+	end
+
 end

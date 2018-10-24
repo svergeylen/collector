@@ -34,6 +34,6 @@ body {
 
 /* Alignement des icones dans un menu bootstrap dropdown */
 a.dropdown-item > i {
-    width : 25px; /* je force la largeur des icones pour que le texte soit aligné à gauche */
+    width : 30px; /* je force la largeur des icones pour que le texte soit aligné à gauche */
     margin-left: -12px; /* Je décale l'icone de 12px à gauche (dans le padding du dropdown-item, afin de ne pas devoir modifier le padding de tous les dropdown-item !)*/
 }

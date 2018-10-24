@@ -26,8 +26,8 @@
 						    <%= link_to tag.name, tag_path(tag), class:'text-light' %>
 						  </div>
 						  <ul class="list-group list-group-flush">
-						  	<% tag.items.order(created_at: :desc).limit(5).each do |item| %>
-						    	<li class="list-group-item" title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
+						  	<% tag.items.includes(:adder).order(created_at: :desc).limit(5).each do |item| %>
+						    	<li class="list-group-item <%= 'list-group-item-info' if (item.created_at > current_user.displayed_collector.beginning_of_day) %> " title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
 						    		<span class="float-right text-secondary" >le <%= short_date(item.created_at) %>	</span>
 						    		<%= link_to truncate(item.name, length: 40), item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
 						    	</li>

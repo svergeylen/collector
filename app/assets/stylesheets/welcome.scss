@@ -53,11 +53,15 @@ ul.ui-autocomplete.ui-menu {
 	margin-top : 0;
 	padding : 0; /* cancel padding from devise on .card */
 	ul {
-		margin-top: 10px;
-		margin-bottom: 10px;
 		li {
-		padding : 5px 20px;
-		font-size : 0.9em;
+			padding : 5px 20px;
+			font-size : 0.9em;
+		}
+		li:first-child {
+			padding-top: 10px;
+		}
+		li:last-child {
+			padding-bottom: 10px;
 		}
 	}
 }

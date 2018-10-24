@@ -5,16 +5,10 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-
-    # Eager loading comments
-    # Pagination avec will_paginate
     @posts = Post.all.includes(:comments).order(updated_at: :desc).paginate(page: params[:page], per_page: 5)
     @current_page = params[:page].present? ? params[:page].to_s : "1"
     @next_page = (@current_page.to_i + 1).to_s
-
-    # Mémorise l'heure de l'affichage de La Une pour le compteur de posts/comments en première page
-    current_user.displayed_la_une = Time.now
-    current_user.save
+    current_user.save_time_la_une
     
     respond_to do |format|
       format.html
@@ -54,6 +48,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         save_attachments
+        current_user.save_time_la_une
 
         format.html { redirect_to posts_path, notice: 'Message posté avec succès' }
         format.json { render :show, status: :created, location: @post }
@@ -71,6 +66,7 @@ class PostsController < ApplicationController
       respond_to do |format|
         if @post.update(post_params)
           save_attachments
+          current_user.save_time_la_une
 
           format.html { redirect_to posts_path(:anchor => @post.id), notice: 'Message modifié avec succès' }
           format.json { render :show, status: :ok, location: @post }
@@ -102,6 +98,7 @@ class PostsController < ApplicationController
   def upvote
     @post.increment_vote(current_user)
     @post.touch # purge du cache
+    current_user.save_time_la_une # permet d'éviter le badge "nouveau message" quand l'utilisateur clique sur upvote
   end
 
   # Génération d'une vignette pour les URL copiés/collés dans le formulaire post/new

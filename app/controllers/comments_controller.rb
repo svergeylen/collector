@@ -18,6 +18,7 @@ class CommentsController < ApplicationController
     
     respond_to do |format|
       if @comment.save
+        current_user.save_time_la_une
         format.html { redirect_to posts_path, notice: 'Commentaire créé avec succès' }
         format.json { render :show, status: :created, location: @comment }
         format.js
@@ -36,6 +37,7 @@ class CommentsController < ApplicationController
     if (@comment.user_id == current_user.id)
       respond_to do |format|
         if @comment.update(comment_params)
+          current_user.save_time_la_une
           format.html { redirect_to posts_url, notice: 'Commentaire modifié avec succès' }
           format.json { render :show, status: :ok, location: @comment }
         else
@@ -59,15 +61,6 @@ class CommentsController < ApplicationController
       end
     else
       redirect_to posts_url, alert: 'Ce commentaire ne vous appartient pas' 
-    end
-  end
-
-  # Gestion des votes sur les comments
-  def upvote
-    if current_user.voted_for? @comment
-      current_user.unvote_for @comment
-    else
-      current_user.up_votes @comment
     end
   end
 

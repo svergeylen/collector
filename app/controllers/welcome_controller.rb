@@ -18,9 +18,7 @@ class WelcomeController < ApplicationController
 		# Efface tous les active tags lorsqu'on va à l'accueil du collector
 	    session[:active_tags] = []
 
-	    # Mémorise l'heure de l'affichage du Collector pour le compteur en première page
-    	current_user.displayed_collector = Time.now
-    	current_user.save
+    	current_user.save_time_collector
 
     	# Affichage des tags favoris de l'utilisateur (derniers ajouts/accès rapide)
 	    @tags = current_user.tags.order(:name)

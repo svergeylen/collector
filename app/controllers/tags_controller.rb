@@ -7,19 +7,19 @@ class TagsController < ApplicationController
     per_page = 50
     case params[:letter]
       when "A".."W"
-        @tags = Tag.where(letter: params[:letter].upcase).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(letter: params[:letter].upcase).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "XYZ"
-        @tags = Tag.where(letter: "X".."Z").order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(letter: "X".."Z").order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "#"
-        @tags = Tag.where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "vide"
-        @tags = Tag.where(letter:  [nil, '']).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(letter:  [nil, '']).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "orphelins"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
         all_tags = Tag.where(root_tag: false).map(&:id)
         all_tags_with_parent = Ownertag.where(owner_type: "Tag").map(&:tag_id)
         orphan_ids = all_tags - all_tags_with_parent
-        @tags = Tag.where(id: orphan_ids).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @tags = Tag.includes(:items).where(id: orphan_ids).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       else
         # pas d'action. @tags = nil
         @tag_counter = Tag.all.count 
