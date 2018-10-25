@@ -52,7 +52,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1/edit
   def edit
-    @item_types = get_item_types
+    @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
     # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
     @item.item_type = params[:item_type] if params[:item_type].present?
 
@@ -98,7 +98,7 @@ class ItemsController < ApplicationController
 
       redirect_to @item, notice: 'Elément mis à jour'
     else
-      @item_types = get_item_types
+      @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
       render :edit 
     end
   end

@@ -32,6 +32,17 @@ class Tag < ApplicationRecord
 		@parent_tag_names || parent_tags.pluck(:name).join(", ")
 	end
 
+	# # First Or Create Case Insensitive
+	# def self.first_or_create_i(name)
+	# 	tags = Tag.where("lower(name) = ?", name.downcase)
+	# 	logger.debug ("--->  : "+tags.inspect)
+	# 	if tags.present?
+	# 		return tags.first
+	# 	else
+	# 		return Tag.create(name: name)
+	# 	end
+	# end
+
 	# Before_save : Sauvegarde les tags parents donnés dans une liste de string séparée par des virgule en objets Tag
 	def save_parent_tags
 		if @parent_tag_names
