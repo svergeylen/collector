@@ -236,4 +236,29 @@ class Item < ApplicationRecord
 		  all
 		end
 	end
+
+	# Recherche le meilleur type d'item en fonction des tags donnés en paramètres
+	# def set_best_item_type
+	# 	t = Tag.find_by(name: "Bandes dessinées")
+	# 	self.item_type = "bd" if t.present? and session[active_tags].include?(t.id)
+	# 	t = Tag.find_by(name: "Livres")
+	# 	self.item_type = "livre" if t.present? and session[active_tags].include?(t.id)
+	# 	t = Tag.find_by(name: "Bonsais")
+	# 	self.item_type = "plante" if t.present? and session[active_tags].include?(t.id)
+	# 	t = Tag.find_by(name: "Jeu de société")
+	# 	self.item_type = "jeu" if t.present? and session[active_tags].include?(t.id)
+	# 	t = Tag.find_by(name: "Modélisme")
+	# 	self.item_type = "modelisme" if t.present? and session[active_tags].include?(t.id)
+	# end
+
+	# Liste les types d'items = item.item_type et aussi potentiellement un formulaire personalisé d'edit/new item
+    def self.item_types
+      return {  item: "Item (générique)",
+                bd: "Bande dessinée",
+                jeu: "Jeu de société",
+                livre: "Livre",
+                modelisme: "Modélisme",
+                plante: "Plante"
+      }
+    end
 end

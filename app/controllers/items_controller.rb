@@ -22,19 +22,29 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.number = params[:number].to_i if (params[:number].present?)
-    @item_types = get_item_types
-    @item.item_type = params[:item_type] if params[:item_type].present?
+    
+    @item_types = Item.item_types.collect { |t| [t[1], t[0]] } # @item_types[:item] renvoie "Item (générique)"
+
+    # Recheche du meilleur item_type possible, en fonction de params ou des tags actifs
+    if params[:item_type].present?
+      @item.item_type = params[:item_type]
+    end
     
     # On affiche le formulaire qui dépend de l'item_type (si le type est donné en paramètre)
     case params[:item_type]
     when "bd"
       new_or_edit_bd
-      # @item.tag_series = 
-      # To do : proposer la série la plus probable à l'utilisateur
+      
+      # Sélection des tags proposés par params[:tag_ids] pour chauque champ de formulaire
+      proposed_tags = Tag.includes(:parent_tags).where(id: params[:tag_ids])
+      @item.tag_series     = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
+      @item.tag_auteurs    = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
+      @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
+
       render "items/new_bd"
     else
       @tag_list = Tag.order(name: :asc).pluck(:name)
-      @item.tag_names = Tag.where(id: session[:active_tags]).where(filter_items: true).pluck(:name).join(", ")
+      @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
       render "items/new"
     end
   end
@@ -205,11 +215,6 @@ class ItemsController < ApplicationController
 
       tag_rangement = Tag.find_or_create_by(name: "Rangements")
       @rangements_list = tag_rangement.children.pluck(:name)
-    end
-
-    # Liste les types d'items
-    def get_item_types
-      return [["Item (générique)", "item"], ["Bande dessinée", "bd"], ["Bonsaï", "bonsai"], ["Jeu de société", "jeu"], ["Livre", "livre"],  ["Modélisme", "modelisme"] ]
     end
 
     # Use callbacks to share common setup or constraints between actions.

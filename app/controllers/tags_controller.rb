@@ -97,13 +97,23 @@ class TagsController < ApplicationController
       else
         # Recherche des items qui possèdent tous les tags actifs
         @items = Item.having_tags(session[:active_tags])
-        # Recherche du numéro suivant en cas d'ajout
-        @next_number = 1
+        # Recherche des données intéressantes en cas de création de nouvel item
+        # Recherche du numéro suivant
+        next_number = 1
         @items.each do |item| 
-          if item.number.present? and item.number >= @next_number
-            @next_number = item.number + 1
+          if item.number.present? and item.number >= next_number
+            next_number = item.number + 1
           end
         end
+        # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
+        if @items.present?
+          proposed_tag_ids = @items.last.tags.pluck(:id)
+          # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
+          # Idée > Supprimer les tags non filtrants car cela polluerait les propositions ?
+          item_type = @items.last.item_type
+        end
+        # Création d'un hash ajouté au link_to "Item>New"
+        @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
 
       end  # if tag.tags present?
     end # if tag
@@ -214,3 +224,4 @@ class TagsController < ApplicationController
   end
 
 end
+
