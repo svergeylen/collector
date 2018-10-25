@@ -37,3 +37,8 @@ a.dropdown-item > i {
     width : 30px; /* je force la largeur des icones pour que le texte soit aligné à gauche */
     margin-left: -12px; /* Je décale l'icone de 12px à gauche (dans le padding du dropdown-item, afin de ne pas devoir modifier le padding de tous les dropdown-item !)*/
 }
+
+nav.navbar {
+	padding-top: 1px !important;
+	padding-bottom: 1px !important;
+}
