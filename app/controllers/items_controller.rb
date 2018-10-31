@@ -16,13 +16,26 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    # Test download
+    #  require 'open-uri'
+    #  game_name = @item.name.downcase
+    #  filename = "/home/stephane/www/collector/tmp/page.html"
+    #  download = open('https://www.trictrac.net/jeu-de-societe/'+game_name)
+    #  IO.copy_stream(download, filename)
+
+    # # # Tests parsing
+    #  @html_doc = File.open(filename) { |f| Nokogiri::HTML(f, &:noblanks) }
+    #  @image_src = @html_doc.at_css("#img-game").attributes["src"]
+    #  @content = @html_doc.at_css("#content-column")
+
   end
 
   # GET /items/new
   def new
     @item = Item.new
     @item.number = params[:number].to_i if (params[:number].present?)
-    
+    @quantity = 1
+
     @item_types = Item.item_types.collect { |t| [t[1], t[0]] } # @item_types[:item] renvoie "Item (générique)"
 
     # Recheche du meilleur item_type possible, en fonction de params ou des tags actifs
@@ -55,6 +68,8 @@ class ItemsController < ApplicationController
     @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
     # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
     @item.item_type = params[:item_type] if params[:item_type].present?
+    # Quantité
+    @quantity = @item.quantity_for(current_user.id)
 
     # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
     case @item.item_type
@@ -72,18 +87,20 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
-    
+
     if @item.save
-      # Si l'utilisateur courant crée cet élément, on suppose qu'il en possède un seul et qu'il ne l'a pas encore vu/lu/utilisé
-      current_user.add_to_collection(@item.id)
+      # Si l'utilisateur créé l'élément, on en ajoute 1 à sa collection (sauf si le champ "quantity" est modifié)
+      if params[:quantity].present? and params[:quantity].to_i > 0
+        current_user.add_to_collection(@item.id, params[:quantity].to_i)
+      end
       # Enregistre les pièces jointes (photos)
       save_attachments
       # Crée un job pour l'affichage ultérieur sur La Une
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)      
 
-			redirect_to @item, notice: 'Elément ajouté'
+			redirect_to last_tag_path, notice: 'Elément ajouté'
     else
-      @item_types = get_item_types
+      @item_types = Item.item_types
 			render :new 
     end
   end
@@ -95,6 +112,14 @@ class ItemsController < ApplicationController
 
     if @item.update(item_params)
       save_attachments
+      # Mise à jour de la quantité. Impossible a faire en virtual attribute à cause de la dépendant au current_user (?)
+      iu = @item.itemusers.where(user_id: current_user.id).first
+      if iu.present?
+        iu.quantity = params[:quantity]
+        iu.save
+      else
+        iu = @item.itemusers.create(user_id: current_user.id, quantity: quantity)
+      end
 
       redirect_to @item, notice: 'Elément mis à jour'
     else

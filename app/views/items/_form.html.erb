@@ -42,8 +42,12 @@
   
  <%= render partial: "attachement_form", locals: { form: form, item: @item } %>
 
-  <div class="form-group">
-    <div class="offset-sm-2 col-sm-2">
+  <div class="form-group row align-items-center">
+    <label for="quantity" class="col-sm-2 col-form-label">Quantité</label>
+    <div class="col-sm-5">
+       <%= number_field_tag(:quantity, @quantity, {min: 0, max: 100, step: 1, class:"form-control", style:"width: 6.75em;"} ) %>
+    </div>
+    <div class="col-sm-1 text-align-right">
       <%= form.submit submit_text, class:"btn btn-primary" %>
     </div>
   </div>
