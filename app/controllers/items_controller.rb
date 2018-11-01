@@ -89,9 +89,9 @@ class ItemsController < ApplicationController
     @item.adder_id = current_user.id
 
     if @item.save
-      # Si l'utilisateur créé l'élément, on en ajoute 1 à sa collection (sauf si le champ "quantity" est modifié)
-      if params[:quantity].present? and params[:quantity].to_i > 0
-        current_user.add_to_collection(@item.id, params[:quantity].to_i)
+      # Si l'utilisateur coche l'option "ajouter à ma collection", on ajoute cet élément directement.
+      if params[:add_to_collection].present?
+        current_user.add_to_collection(@item.id)
       end
       # Enregistre les pièces jointes (photos)
       save_attachments
@@ -112,14 +112,6 @@ class ItemsController < ApplicationController
 
     if @item.update(item_params)
       save_attachments
-      # Mise à jour de la quantité. Impossible a faire en virtual attribute à cause de la dépendant au current_user (?)
-      iu = @item.itemusers.where(user_id: current_user.id).first
-      if iu.present?
-        iu.quantity = params[:quantity]
-        iu.save
-      else
-        iu = @item.itemusers.create(user_id: current_user.id, quantity: quantity)
-      end
 
       redirect_to @item, notice: 'Elément mis à jour'
     else
