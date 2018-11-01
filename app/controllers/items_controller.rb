@@ -28,20 +28,24 @@ class ItemsController < ApplicationController
     #  @image_src = @html_doc.at_css("#img-game").attributes["src"]
     #  @content = @html_doc.at_css("#content-column")
 
+    # Ajout d'information pour la création d'un item du même type....
+    next_number = (@item.number + 1) if @item.number.present?
+    proposed_tag_ids = @item.tags.pluck(:id)
+    item_type = @item.item_type
+    @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
+
   end
 
   # GET /items/new
   def new
     @item = Item.new
-    @item.number = params[:number].to_i if (params[:number].present?)
-    @quantity = 1
+    @item.number = params[:number] if (params[:number].present?)
 
     @item_types = Item.item_types.collect { |t| [t[1], t[0]] } # @item_types[:item] renvoie "Item (générique)"
 
     # Recheche du meilleur item_type possible, en fonction de params ou des tags actifs
-    if params[:item_type].present?
-      @item.item_type = params[:item_type]
-    end
+    @item.item_type = params[:item_type] if params[:item_type].present?
+    
     
     # On affiche le formulaire qui dépend de l'item_type (si le type est donné en paramètre)
     case params[:item_type]
@@ -55,6 +59,7 @@ class ItemsController < ApplicationController
       @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
 
       render "items/new_bd"
+    # On affiche le formulaire d'items par défaut
     else
       @tag_list = Tag.order(name: :asc).pluck(:name)
       @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
