@@ -5,8 +5,8 @@
 
     <% item.attachments.each do |attachment| %>
       <div class="attachment-thumbnail">
-        <%= link_to delete_attachment_item_path(item, attachment.id), data: { confirm: "Etes-vous sûr de supprimer cette pièce jointe ?" } do %>
-          <span class="glyphicon glyphicon-remove", title="Supprimer"></span>
+        <%= link_to delete_attachment_item_path(item, attachment.id),  title:"Supprimer", data: { confirm: "Etes-vous sûr de supprimer cette pièce jointe ?" } do %>
+          <%= fas_icon "times" %>
         <% end %>
         <%= image_tag "/" + attachment.image.url(:thumb) %>
       </div>
