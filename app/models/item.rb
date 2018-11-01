@@ -255,9 +255,11 @@ class Item < ApplicationRecord
     def self.item_types
       return {  item: "Item (générique)",
                 bd: "Bande dessinée",
+                film: "Film",
                 jeu: "Jeu de société",
                 livre: "Livre",
                 modelisme: "Modélisme",
+                piece: "Pièce",
                 plante: "Plante"
       }
     end

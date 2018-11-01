@@ -64,11 +64,36 @@ namespace :db do
 		end
 	end
 
-	task add_item_type: :environment do
+	# Corrige l'item_type pour les items qui possède le tag BD
+	task update_type_bd: :environment do
 		bd = Tag.find_by(name: "Bandes dessinées")
 		item_ids = Item.having_tags( [ bd.id ] ).map(&:id)
 		puts item_ids.inspect
 		Item.where(id: item_ids).update_all(item_type: "bd" )
+	end
+
+	# Corrige l'item_type pour les items qui possède le tag "Bonsai"
+	task update_type_plante: :environment do
+		bonsais = Tag.find_by(name: "Bonsais")
+		item_ids = Item.having_tags( [ bonsais.id ] ).map(&:id)
+		puts item_ids.inspect
+		Item.where(id: item_ids).update_all(item_type: "plante" )
+	end
+
+	# Corrige l'item_type pour les items qui possède le tag "Pièces"
+	task update_type_pieces: :environment do
+		pieces = Tag.find_by(name: "Pièces")
+		item_ids = Item.having_tags( [ pieces.id ] ).map(&:id)
+		puts item_ids.inspect
+		Item.where(id: item_ids).update_all(item_type: "piece" )
+	end
+
+	# Corrige l'item_type pour les items qui possède le tag "Films"
+	task update_type_films: :environment do
+		films = Tag.find_by(name: "Films")
+		item_ids = Item.having_tags( [ films.id ] ).map(&:id)
+		puts item_ids.inspect
+		Item.where(id: item_ids).update_all(item_type: "film" )
 	end
 
 	# Recherche les items qui ont des tags en double, supprime tous les tags et réassocie les tag_ids uniques
