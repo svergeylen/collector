@@ -63,6 +63,20 @@
 	box-shadow: 3px 3px 15px #CCC;
 }
 
+/* Gestion de la possession de l'item en galerie */
+
+div.not-owned {
+	div.card-body {
+		div.card-text {
+			a {
+				color : grey !important;
+			}
+		}
+	}
+	img {
+		opacity: 0.3;
+	}
+}
 
 
 
