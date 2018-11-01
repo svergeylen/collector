@@ -42,10 +42,20 @@
   
  <%= render partial: "attachement_form", locals: { form: form, item: @item } %>
 
-  <div class="form-group">
-    <div class="offset-sm-2 col-sm-2">
+  <div class="form-group row align-items-center">
+    <div class="offset-sm-2 col-sm-1">
       <%= form.submit submit_text, class:"btn btn-primary" %>
     </div>
+    <%# Ajout d'un checkbox "ajouter à ma collection" à la création d'item uniquement %>
+    <% if @item.new_record? %>
+      <div class="col-sm-5 form-check form-check-inline">
+          <label for="add_to_collection" class="form-check-label">
+            <%= check_box_tag(:add_to_collection, "1", true, class:"form-check-input" ) %>
+            Ajouter à ma collection
+          </label>    
+      </div>
+    <% end %>
+    
   </div>
 
 <% end %>

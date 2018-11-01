@@ -40,7 +40,7 @@ class Item < ApplicationRecord
 		if @tag_names
 			tags = []
 			@tag_names.split(",").each do |name| 
-				logger.debug "---> "+name.to_s
+				#logger.debug "---> "+name.to_s
 				name = name.strip
 				next if name==""
 				new_tag = Tag.where(name: name).first_or_create!
@@ -255,9 +255,11 @@ class Item < ApplicationRecord
     def self.item_types
       return {  item: "Item (générique)",
                 bd: "Bande dessinée",
+                film: "Film",
                 jeu: "Jeu de société",
                 livre: "Livre",
                 modelisme: "Modélisme",
+                piece: "Pièce",
                 plante: "Plante"
       }
     end
