@@ -40,51 +40,30 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.number = params[:number] if (params[:number].present?)
-
-    @item_types = Item.item_types.collect { |t| [t[1], t[0]] } # @item_types[:item] renvoie "Item (générique)"
-
-    # Recheche du meilleur item_type possible, en fonction de params ou des tags actifs
     @item.item_type = params[:item_type] if params[:item_type].present?
     
-    
-    # On affiche le formulaire qui dépend de l'item_type (si le type est donné en paramètre)
+    # On recherche des tags pour pré-remplir le formulaire au mieux
     case params[:item_type]
     when "bd"
-      new_or_edit_bd
-      
-      # Sélection des tags proposés par params[:tag_ids] pour chauque champ de formulaire
       proposed_tags = Tag.includes(:parent_tags).where(id: params[:tag_ids])
       @item.tag_series     = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
       @item.tag_auteurs    = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
       @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
-
-      render "items/new_bd"
-    # On affiche le formulaire d'items par défaut
     else
-      @tag_list = Tag.order(name: :asc).pluck(:name)
       @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
-      render "items/new"
     end
+
+    render_correct_form("new")
   end
 
 
   # GET /items/1/edit
   def edit
-    @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
     # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
     @item.item_type = params[:item_type] if params[:item_type].present?
-    # Quantité
     @quantity = @item.quantity_for(current_user.id)
-
-    # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
-    case @item.item_type
-      when "bd"
-        new_or_edit_bd
-        render "items/edit_bd"
-      else
-        @tag_list = Tag.order(name: :asc).pluck(:name)
-        render "items/edit"
-    end
+    
+    render_correct_form("edit")
   end
 
   # POST /items
@@ -105,8 +84,7 @@ class ItemsController < ApplicationController
 
 			redirect_to last_tag_path, notice: 'Elément ajouté'
     else
-      @item_types = Item.item_types
-			render :new 
+      render_correct_form("edit")
     end
   end
 
@@ -117,21 +95,12 @@ class ItemsController < ApplicationController
 
     if @item.update(item_params)
       save_attachments
-
       redirect_to @item, notice: 'Elément mis à jour'
     else
-      @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
-      render :edit 
+      render_correct_form("edit")
     end
   end
 
-
-  # Gestion des quantités (Composant React ItemQuantity)
-  def quantity
-    @item = Item.find(params[:id])
-    @iu = @item.update_quantity(params[:delta], current_user.id)
-    render partial: "items/quantity.json.jbuilder", locals: {item: @item}
-  end
 
   # DELETE /items/1
   # DELETE /items/1.json
@@ -227,16 +196,26 @@ class ItemsController < ApplicationController
       end
     end
 
-    # Méthodes utilisées par les 2 formulaires spécifiques aux BD : new + edit
-    def new_or_edit_bd
-      tag_series = Tag.find_or_create_by(name: "Séries")
-      @series_list = tag_series.children.pluck(:name)
-
-      tag_auteurs = Tag.find_or_create_by(name: "Auteurs")
-      @auteurs_list = tag_auteurs.children.pluck(:name)
-
-      tag_rangement = Tag.find_or_create_by(name: "Rangements")
-      @rangements_list = tag_rangement.children.pluck(:name)
+    # Realise toutes les opérations pour charger correctement le formualire (y compris avec erreur de validation)
+    def render_correct_form(action)
+      @last_tag_path = last_tag_path # inaccessible en view
+      # Champ <select> de sélection de type
+      @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
+      # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
+      case @item.item_type
+        when "bd"
+          # Chargement des tags spécifiques à chaque champ : Séries, Auteurs, Rangements
+          tag_series = Tag.find_or_create_by(name: "Séries")
+          @series_list = tag_series.children.pluck(:name)
+          tag_auteurs = Tag.find_or_create_by(name: "Auteurs")
+          @auteurs_list = tag_auteurs.children.pluck(:name)
+          tag_rangement = Tag.find_or_create_by(name: "Rangements")
+          @rangements_list = tag_rangement.children.pluck(:name)
+          render "items/"+action+"_bd"
+        else
+          @tag_list = Tag.order(name: :asc).pluck(:name)
+          render "items/"+action
+      end
     end
 
     # Use callbacks to share common setup or constraints between actions.

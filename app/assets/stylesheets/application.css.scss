@@ -14,10 +14,12 @@
  *= require_self
  */
 
+$enable-shadows: true;
+$enable-gradients: true;
+@import "bootstrap";
 
-@import "bootstrap"
-@import "fontawesome-all"
-@import "selectize.js-master/dist/css/selectize"
-@import "selectize.js-master/dist/css/selectize.bootstrap4"
-@import "jquery-ui/autocomplete.css"
+@import "fontawesome-all";
+@import "selectize.js-master/dist/css/selectize";
+@import "selectize.js-master/dist/css/selectize.bootstrap4";
+@import "jquery-ui/autocomplete.css";
 

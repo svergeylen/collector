@@ -1,8 +1,7 @@
 <%= form_with(model: item, local: true, :html => { :multipart => true } ) do |form| %>
   <% if item.errors.any? %>
     <div class="alert alert-danger" role="alert">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
-
+      <h3>Oups...</h3>
       <ul>
       <% item.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -49,11 +48,11 @@
  
   <%= render partial: "attachement_form", locals: { form: form, item: item } %>
 
-
   <div class="form-group row">
-    <div class="col-md-offset-2 col-md-1">
+    <div class="offset-md-2 col-md-10">
       <%= hidden_field_tag "view", "bd" %>
-      <%= form.submit "Sauver", class:"btn btn-primary" %>
+      <%= form.submit "Créer", class:"btn btn-primary" %>
+      <%= link_to "Annuler", @last_tag_path, class:"btn btn-light ml-4" %>
     </div>
   </div>
 

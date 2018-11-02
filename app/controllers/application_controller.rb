@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   # Renvoie un lien vers le dernier tag affiché (probablement), tout en conservant les tags actifs
   def last_tag_path
-    if session[:active_tags].length > 0
+    if session[:active_tags].present?
   	 return tag_path(session[:active_tags].last)
     else
       return welcome_collector_path

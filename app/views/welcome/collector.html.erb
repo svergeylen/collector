@@ -34,7 +34,7 @@
 						    			<% end %>
 						    			<span class="text-secondary">le <%= short_date(item.created_at) %></span>
 						    		</div>
-						    		<%= link_to truncate(item.name, length: 40), item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
+						    		<%= link_to truncate(item.name, length: 35), item, title: ('Ajouté par '+item.adder.name+', le '+long_date(item.created_at)) %>
 						    	</li>
 						    <% end %>
 						  </ul>
