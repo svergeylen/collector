@@ -38,6 +38,12 @@ function monitor_page_scroll() {
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
+	/* Popper.js pour afficher les applaudissements dans un popup hover */
+	$('[data-toggle="popover"]').popover({
+	  trigger: 'hover', 
+	  html: true
+	});
+
 	// On confirme qu'aucun poste n'est en cours de chargement quand on recharge la page (nécéssaire lorqu'on utilise la fonction "back")
 	is_loading_posts = false;
 

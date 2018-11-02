@@ -62,7 +62,7 @@
       <% end %>
     </div>
     <div class="col-3">
-      <%= link_to upvote_post_path(post), remote: true, class:"btn btn-light applause-height", role:"button", id: "upvote-#{post.id}" do %>
+      <%= link_to upvote_post_path(post), remote: true, class:"btn btn-light applause-height", role:"button", id: "upvote-#{post.id}", title:"Applaudissements" , data: {toggle: "popover", content:render_votes_title(post.votes_for), placement: "bottom" } do %>
         <span class="total_upvotes"><%= post.total_upvotes %></span>
         <%= image_tag "applause.svg" %>
       <% end %>

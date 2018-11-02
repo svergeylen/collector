@@ -1,3 +1,7 @@
  
+/* console.log("mise à jour <%= @post.total_upvotes.to_s %>" );*/
+
 $("#upvote-<%= @post.id %> span.total_upvotes").html("<%= @post.total_upvotes %>"); 
-$("#upvote-<%= @post.id %>").prop('title', "<%= escape_javascript(render partial: 'upvote_title.html.erb', locals: { post: @post } ) %>");
+/*var p = $("#upvote-<%= @post.id %>").popover();
+p[0].dataset.content = "<%= escape_javascript(render partial: 'upvote_title.html.erb', locals: { post: @post } ) %>";
+console.log(p); */

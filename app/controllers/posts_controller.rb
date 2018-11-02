@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all.includes(:comments).order(updated_at: :desc).paginate(page: params[:page], per_page: 5)
+    @posts = Post.all.includes(:comments).includes(:votes_for).order(updated_at: :desc).paginate(page: params[:page], per_page: 5)
     @current_page = params[:page].present? ? params[:page].to_s : "1"
     @next_page = (@current_page.to_i + 1).to_s
     current_user.save_time_la_une

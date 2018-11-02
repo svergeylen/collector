@@ -113,6 +113,15 @@
 		}
 	}
 }
+/* Applaudissements : popper.js popup */
+.popover-body {
+	color : $color-text-dimmed;
+	ul {
+		margin : 5px 0;
+		padding : 0;
+		list-style : none;
+	}
+}
 
 
 /* COMMENTS */
