@@ -143,7 +143,7 @@ class ItemsController < ApplicationController
         result = true
         params[:item_ids].each do |item_id|
           i = Item.find(item_id)
-          result = i.update_tags_with_parent(params[:rangements].split(","), "Rangements") && result
+          result = i.update_tags_with_parent(params[:tag_names].split(","), "Rangements") && result
         end
         if result
           redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Rangement modifié pour les items sélectionnés'
