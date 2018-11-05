@@ -30,6 +30,12 @@
 		padding-bottom : 3px;
 		vertical-align : middle;
 	}
+	.owned a {
+		color : $high-color;
+	}
+	.not-owned a {
+		color : grey;
+	}
 }
 .collector-item-li.checked {
 	background-color : $tag-color-light;
@@ -39,6 +45,7 @@
 .item-card {
 	padding : 0;  /* cancels devise padding */
 	margin-top : 0;
+	margin-bottom : 1em;
 	position: relative;
 	.panel-overlay {
 		position: absolute;
@@ -64,7 +71,6 @@
 }
 
 /* Gestion de la possession de l'item en galerie */
-
 div.not-owned {
 	div.card-body {
 		div.card-text {

@@ -2,7 +2,7 @@
 @import 'colors';
 
 body {
-	font-family: "Helvetica", "Arial", "sans-serif" !important;
+	font-family: "Arial", "sans-serif" !important;
 	background-color: rgb(233, 235, 238) !important;
 }
 
@@ -27,9 +27,25 @@ body {
 	margin-right: 5px;
 }
 
-/* suppression du message en bas de page créé par autocomplete (?) */
-.ui-helper-hidden-accessible {
-	display: none;
+nav.navbar {
+	padding-top: 1px !important;
+	padding-bottom: 1px !important;
+}
+
+/* ======= Bootstrap overrides ======= */
+/* Erreur lors de la validation d'un champ input */
+.field_with_errors input, .field-with-errors input:focus {
+  border: 1px solid red !important;
+  background : #ffeeee !important;
+  box-shadow : none !important;
+}
+/* Effet Glow de bootstrap 3 refait manuellement pour éviter l'encadrement bleu moche de bootstrap 4 */
+input:focus, input.form-control:focus, input[type]:focus,
+textarea:focus, textarea.form-control:focus,
+select:focus, select.form-control:focus {   
+    border-color: rgba(145, 194, 247, 1);
+    box-shadow: 0 1px 1px rgba(145, 194, 247, 0.2) inset, 0 0 10px 2px rgba(145, 194, 247, 0.6);
+    outline: 0 none;
 }
 
 /* Alignement des icones dans un menu bootstrap dropdown */
@@ -38,12 +54,8 @@ a.dropdown-item > i {
     margin-left: -12px; /* Je décale l'icone de 12px à gauche (dans le padding du dropdown-item, afin de ne pas devoir modifier le padding de tous les dropdown-item !)*/
 }
 
-nav.navbar {
-	padding-top: 1px !important;
-	padding-bottom: 1px !important;
-}
-.field_with_errors input, .field-with-errors input:focus {
-  border: 1px solid red !important;
-  background : #ffeeee !important;
-  box-shadow : none !important;
+/* ======= Jquery UI Overrides ======= */
+/* Suppression du message en bas de page créé par autocomplete (?) */
+.ui-helper-hidden-accessible {
+	display: none;
 }

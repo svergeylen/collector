@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-md-4 offset-md-4 collector-search">
 				<%= form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
-					<%= text_field_tag("collector-tag-search", nil, placeholder: "Rechercher", data: { options: Tag.searchable_tags}, class:"form-control" ) %>
+					<%= text_field_tag("collector-tag-search", nil, placeholder: "Recherche dans les tags", data: { options: Tag.searchable_tags}, class:"form-control" ) %>
 				<% end %>
 			</div>
 		</div>

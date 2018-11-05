@@ -132,13 +132,6 @@ class Item < ApplicationRecord
 		end
 	end
 
-	# Renvoie les tags de l'item après avoir soustrait les active tags
-	# Deprecated pour raison de performances
-	# def different_tags(active_tag_ids)
-	# 	ids = self.tag_ids - active_tag_ids
-	# 	return Tag.find(ids)
-	# end
-
 	# Renvoie les Items correspondants à l'array de tag_ids donné
 	def self.having_tags(ar_tags, limit: nil)
 	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
@@ -193,6 +186,12 @@ class Item < ApplicationRecord
 
 
 	# ------------------ POSSESSION de l'ITEM ----------------------------------------------------------------
+
+	# Renvoie true si n'importe qui possède cet item (utile pour savoir si la famille possède ou non l'item)
+	def is_owned?
+		return (self.itemusers.where("quantity > ?", 0).count > 0)
+	end
+
 
 	# Renvoie true si l'utilisateur possède cet item
 	def is_owned_by?(user_id)

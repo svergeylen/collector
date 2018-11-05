@@ -17,19 +17,18 @@
 	</li>
 
 	<% items.each do |item| %>
-		<li class="list-group-item collector-item-li" data-item-id="<%= item.id.to_s %>">
-			<%# item.is_owned_by?(current_user.id) ? "list-group-item-success" : "" %>
+		<li class="list-group-item collector-item-li <%= item.is_owned? ? "owned" : "not-owned" %>" data-item-id="<%= item.id.to_s %>">
 			<div class="row align-items-center">
 				<div class="col-10 col-lg-5 row" >
 					<div class="col-2 text-secondary">
 						<%= item.friendly_number %>
 					</div>
 					<div class="col-10">
-						<%= link_to item.name, item, class: "high-color" %>
+						<%= link_to item.name, item %>
 					</div>
 				</div>
 				<div class="col-lg-5 d-none d-lg-block">
-					<%= item.tags.reject{|t| session[:active_tags].include?(t.id)}.map { |tag| link_to tag.name, tag_path(tag, add: 1), class: "high-color" }.join(", ").html_safe %>
+					<%= item.tags.reject{|t| session[:active_tags].include?(t.id)}.map { |tag| link_to tag.name, tag_path(tag, add: 1) }.join(", ").html_safe %>
 				</div>
 				<div class="col-2 col-lg-2 text-right">
 					<%= render_users(item) %>
