@@ -8,12 +8,12 @@
 				<% end %>	
 			</div>
 			<div class="col-md-8">
-				<h4><%= link_to title, url, target: :blank %></h4>
+				<h5><%= link_to title, url, target: :blank %></h5>
 				<p><%= description if description.present? %></p>
 			</div>
 		</div>
 	<% else %>
-		<h4><%= link_to title, url, target: :blank %></h4>
+		<h5><%= link_to title, url, target: :blank %></h5>
 		<p><%= description  if description.present? %></p>
 	<% end %>
 
