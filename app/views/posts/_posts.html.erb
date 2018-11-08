@@ -39,14 +39,9 @@
 	    <% end %>
 
 	    <% if post.attachments.present? %>
-	      <div class="post-message row text-center"> 
+	      <div class="post-message mb-1 text-center"> 
 	        <% post.attachments.each_with_index do |a, i| %>
-	          <div class="col-xs-6">
-	            <%= link_to post_path(post, slide_id: i) do %>
-	              <%= image_tag "/" + a.image.url(:medium), class:"img-thumbnail" %>
-	            <% end %>
-	          </div>
-	          <% "</div><div class='row'>" if ((i % 2) == 0) %>
+	            <%= link_to image_tag("/" + a.image.url(:thumb), class:"img-thumbnail mb-1"), post_path(post, slide_id: i, anchor: "carousel_photos")   %>           
 	        <% end %>
 	      </div>
 	    <% end %>

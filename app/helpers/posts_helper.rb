@@ -12,4 +12,21 @@ module PostsHelper
 
 		return sanitize(ret)
 	end
+
+	# Renvoie "active" lorsque le slide du carousel soit être actif (params_id si donné ou le slide 0 sinon)
+	def active(i, params_id)
+		if params_id.blank?
+			if i.to_i.zero?
+				return 'active'
+			else
+				return ''
+			end
+		else
+			if (i.to_i==params_id.to_i)
+				return 'active'
+			else
+				return ''
+			end
+		end
+	end
 end

@@ -198,3 +198,24 @@
 	padding-top: 30px;
 	text-align : center;
 }
+
+/* POST > Show */
+#carousel_photos {
+	max-width : 700px;
+	margin:auto;
+	a.carousel-control-prev, a.carousel-control-next {
+		width:49%;
+		justify-content : flex-start;
+		padding: 20px;
+		display: inline-block;
+		padding-top : 50%;
+	}
+	a.carousel-control-prev {
+		text-align : left;
+	}
+	a.carousel-control-next {
+		text-align : right;
+	}
+}
+
+
