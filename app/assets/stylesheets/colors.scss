@@ -29,7 +29,7 @@ $general-padding : 15px;
 /* Couleur bleu foncée des liens (pas tous) */
 body div#main-container div.card a,
 body div#main-container table.table a,
-body div#main-container li > a,
+body div#main-container li a,
 a.high-color {
 	color : $high-color;
 	&:hover {

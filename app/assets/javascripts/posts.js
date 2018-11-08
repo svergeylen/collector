@@ -35,14 +35,19 @@ function monitor_page_scroll() {
 	});
 }
 
-/* On document ready */
-document.addEventListener("turbolinks:load", function() {
-
-	/* Popper.js pour afficher les applaudissements dans un popup hover */
+/* Popper.js pour afficher les applaudissements dans un popup hover */
+function add_poppers() {
 	$('[data-toggle="popover"]').popover({
 	  trigger: 'hover', 
 	  html: true
 	});
+}
+
+/* On document ready */
+document.addEventListener("turbolinks:load", function() {
+
+	// Popup Applaudissements
+	add_poppers();
 
 	// On confirme qu'aucun poste n'est en cours de chargement quand on recharge la page (nécéssaire lorqu'on utilise la fonction "back")
 	is_loading_posts = false;

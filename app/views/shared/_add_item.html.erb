@@ -1,13 +1,16 @@
-
-<p>
-	<%= data[:user].name %> vient d'ajouter :
-</p>
-
+<p><%= data[:user].name %> vient d'ajouter <%= data[:quantity].to_s %> items :</p>
 <ul>
-	<% data[:items].each do |item| %>
+	<% data[:items].each_with_index do |item, i| %>
+		<% if i <= data[:maximum_items] %>
+			<li>
+				<%= link_to item.name, item %> 
+				<small>(<%= raw item.tags.map{ |tag| raw link_to(tag.name, tag) }.join(", ") %>)</small>
+			</li>
+		<% end %>
+	<% end %>
+	<% if data[:quantity] > data[:maximum_items] %>
 		<li>
-			<%= link_to item.name, item %> 
-			(<%= raw item.tags.map{ |tag| raw link_to(tag.name, tag) }.join(", ") %>)
+			et <%= (data[:quantity]-data[:maximum_items]).to_s %> autres items
 		</li>
 	<% end %>
 </ul>

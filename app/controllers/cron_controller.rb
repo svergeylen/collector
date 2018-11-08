@@ -33,6 +33,8 @@ class CronController < ApplicationController
 						
 						data = { jobs: jobs,
 								 items: items,
+								 quantity: items.count,
+								 maximum_items: 10,
 								 user: user }
 						
 						message = render_to_string partial: "shared/#{action}", locals: { data: data} 

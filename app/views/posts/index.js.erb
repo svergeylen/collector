@@ -5,3 +5,5 @@ $(".load_next_posts_spinner").remove();
 
 /* Ajoute les posts dans la page */
 $("#posts").append("<%= escape_javascript(render partial: 'posts', locals: { posts: @posts, next_page: @next_page } ) %>");
+/*Ajouter le popup sur les applaudissements */
+add_poppers();
