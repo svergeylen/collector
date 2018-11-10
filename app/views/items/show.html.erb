@@ -8,10 +8,10 @@
 	
 	<% if @item.attachments.count > 0 %>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-6">
 				<%= render partial: "shared/carousel", locals: {attachments: @item.attachments, active_slide_id: 0 } %>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 	<% end %>
 
 			<% if @item.tags.present? %>
@@ -37,21 +37,22 @@
 					<%= sanitize @item.description %>
 				</div>
 			<% end %>
-			
+
 	<% if @item.attachments.count > 0 %>
 			</div><!-- col -->
 		</div><!-- row -->
 	<% end %>
 
-
+	<hr />
+	<p><%= link_to "Charger plus d'infos", enhance_item_path, :remote => true %></p>
+	<div id="enhanced_content" class="m-3">
+		<%= render partial: "items/enhance/"+@item.item_type, locals: {item: @item} %>
+	</div>
 
 	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
       	Ajouter une image : <%= form.file_field :attachments, multiple: true %>
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
 	
-	<%# image_tag @image_src %>
-	<%# sanitize @content.inner_html %>
-
 </div><!-- rounded-box -->
 

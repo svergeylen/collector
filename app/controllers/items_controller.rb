@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :upvote, :plus, :minus]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :enhance]
 
   # Liste des items pour gestion banque de données
   def index
@@ -16,18 +16,6 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    # Test download
-    #  require 'open-uri'
-    #  game_name = @item.name.downcase
-    #  filename = "/home/stephane/www/collector/tmp/page.html"
-    #  download = open('https://www.trictrac.net/jeu-de-societe/'+game_name)
-    #  IO.copy_stream(download, filename)
-
-    # # # Tests parsing
-    #  @html_doc = File.open(filename) { |f| Nokogiri::HTML(f, &:noblanks) }
-    #  @image_src = @html_doc.at_css("#img-game").attributes["src"]
-    #  @content = @html_doc.at_css("#content-column")
-
     # Ajout d'information pour la création d'un item du même type....
     next_number = (@item.number + 1) if @item.number.present?
     proposed_tag_ids = @item.tags.pluck(:id)
@@ -184,6 +172,15 @@ class ItemsController < ApplicationController
     end
   end
 
+  # Extraction d'information depuis un site tiers
+  def enhance
+    @item.enhance
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
 
   private
     # Sauvegarde les attachments s'il y en a
@@ -196,7 +193,7 @@ class ItemsController < ApplicationController
       end
     end
 
-    # Realise toutes les opérations pour charger correctement le formualire (y compris avec erreur de validation)
+    # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
       @last_tag_path = last_tag_path # inaccessible en view
       # Champ <select> de sélection de type
@@ -222,7 +219,7 @@ class ItemsController < ApplicationController
     def set_item
       @item = Item.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-      redirect_to items_path, alert: "Cet item n'existe plus dans la banque de données"
+      redirect_to collector_path, alert: "Cet item n'existe plus dans la banque de données"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -63,9 +63,8 @@ gem 'nokogiri'
 gem 'will_paginate', '~> 3.1.0'
 gem 'will_paginate-bootstrap4'
 
-# Sélection de tags dans un champ input (multiple select/deselect)
-#gem 'chosen-rails'
-#gem "selectize-rails"
+# Google books API (enrichissement du contenu des items)
+gem 'googlebooks'
 
 
 group :development, :test do

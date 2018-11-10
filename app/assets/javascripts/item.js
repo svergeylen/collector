@@ -68,7 +68,7 @@ document.addEventListener("turbolinks:load", function() {
 	// Show tag : actions en bas de page : modification du rangement de plusieurs items sélectionnés
 	rangements = create_selectize("rangements");
 
-	// Modification de l'item_type dans les formaulaire edit/new item
+	// Modification de l'item_type dans les formulaire edit/new item
 	$("#item_type").change(function(e) {
 		item_type = $(this).val();
 		$(location).attr('href', location.pathname+"?item_type="+item_type);

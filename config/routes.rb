@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 		member do
 			post 'quantity'
 			get  'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"
+			get  'enhance'
 		end
 	end
 	post 'items/actions'

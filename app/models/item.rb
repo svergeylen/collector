@@ -236,19 +236,7 @@ class Item < ApplicationRecord
 		end
 	end
 
-	# Recherche le meilleur type d'item en fonction des tags donnés en paramètres
-	# def set_best_item_type
-	# 	t = Tag.find_by(name: "Bandes dessinées")
-	# 	self.item_type = "bd" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Livres")
-	# 	self.item_type = "livre" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Bonsais")
-	# 	self.item_type = "plante" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Jeu de société")
-	# 	self.item_type = "jeu" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Modélisme")
-	# 	self.item_type = "modelisme" if t.present? and session[active_tags].include?(t.id)
-	# end
+	# -------------- ITEM TYPE et enrichissement via site tiers -------------------------------------------
 
 	# Liste les types d'items = item.item_type et aussi potentiellement un formulaire personalisé d'edit/new item
     def self.item_types
@@ -262,4 +250,60 @@ class Item < ApplicationRecord
                 plante: "Plante"
       }
     end
+
+    # Charge du contenu distant depuis un site tiers, en fonction du type d'item (item_type)
+    def enhance
+		require 'open-uri'
+	    require 'nokogiri'
+	    puts "------------> "+self.name+" : Enhance. Item_type="+self.item_type
+
+	    case self.item_type
+	      when "bd", "livre"
+	      	series = self.tag_series
+			books = GoogleBooks.search(self.name+" - "+series, {:count => 10})
+			
+			
+			book = books.first
+			content = ""
+			content+= "Auteurs : "+book.authors if book.authors.present?
+			content+= "<br />ISBN : "+book.isbn if book.isbn.present?
+			content+= "<br />Description : "+book.description if book.description.present?
+			content+= "<br />Publié le : "+book.published_date if book.description.present?
+			content+= "<br />preview_link : "+book.preview_link if book.preview_link.present?
+			content+= "<br />Info_link : "+book.info_link if book.info_link.present?
+			image_src = book.image_link(:zoom => 2)
+
+	      when "bonsai", "plante"
+
+
+	      when "film"
+	      
+
+	      when "jeu" # Jeux de société
+	        name = self.name.downcase
+	        # Page de garde du jeu
+	        page = fetch_page("https://www.trictrac.net/jeu-de-societe/"+name)
+	        image_src = page.at_css("#img-game").attributes["src"]
+	        content1 = page.at_css("#content-column")
+	      	content = content1
+
+	      when "piece" 
+
+	      else # Items, modélisme
+
+	    end 
+
+	    # Sauvegarde des données rassemblées
+	    self.enhanced_image = image_src if image_src.present?
+	    self.enhanced_content = content if content.present?
+	    self.save
+    end
+
+
+private
+    # Récupère la page distante et instancie Nokogiri pour le parsing de la page
+    def fetch_page(url)
+      return Nokogiri::HTML(open(url))   
+    end
+
 end
