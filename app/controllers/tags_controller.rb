@@ -69,14 +69,13 @@ class TagsController < ApplicationController
       end
 
       # Options pour les actions en bas de page (selectize)
-      @rangements_list = Tag.find_by(name: "Rangements").children.pluck(:name)
       @tag_list = Tag.order(name: :asc).pluck(:name)
 
       # Si le tag a des enfants, affichage des tags enfants dans la sidebar
       if @tag.tags.present?
         # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
         tags_per_page = 40
-        @view_alphabet = (@tag.tags.count >= tags_per_page)? true : false 
+        @view_alphabet = (@tag.tags.count > tags_per_page)? true : false 
         case params[:letter]
           when "A".."W"
             @tags = @tag.children.where(letter: params[:letter]).paginate(page: params[:page], per_page: tags_per_page)
@@ -161,13 +160,13 @@ class TagsController < ApplicationController
   end
 
   def destroy
-    # BUG : Il faut prévoir le déplacement des tags enfants qui deviennent orphelins vers ?? (root_tag=true ?)
     tag_id = @tag.id
+    tag_name = @tag.name
     if @tag.destroy
       session[:active_tags].delete(tag_id)
-      redirect_to last_tag_path, notice: "Tag supprimé"
+      redirect_back fallback_location: welcome_collector_path, notice: "Tag \"#{tag_name}\" supprimé"
     else
-      redirect_to last_tag_path, alert: "Ce Tag ne peut pas être supprimé"
+      redirect_back fallback_location: welcome_collector_path, alert: "Ce Tag ne peut pas être supprimé"
     end
   end
 
