@@ -16,7 +16,7 @@ class TagsController < ApplicationController
         @tags = Tag.includes(:items).where(letter: [nil, ""]).order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "orphelins"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
-        all_tags = Tag.where(root_tag: false).map(&:id)
+        all_tags = Tag.all.map(&:id)
         all_tags_with_parent = Ownertag.where(owner_type: "Tag").map(&:tag_id)
         orphan_ids = all_tags - all_tags_with_parent
         @tags = Tag.includes(:items).where(id: orphan_ids).order(name: :asc).paginate(page: params[:page], per_page: per_page)
