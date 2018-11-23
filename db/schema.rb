@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181110154435) do
+
+ActiveRecord::Schema.define(version: 20181123151938) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -23,6 +24,7 @@ ActiveRecord::Schema.define(version: 20181110154435) do
     t.string "image_content_type"
     t.integer "image_file_size"
     t.datetime "image_updated_at"
+    t.text "exif"
     t.index ["element_type", "element_id"], name: "index_attachments_on_element_type_and_element_id"
   end
 

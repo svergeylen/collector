@@ -66,6 +66,9 @@ gem 'will_paginate-bootstrap4'
 # Google books API (enrichissement du contenu des items)
 gem 'googlebooks'
 
+# Lecture des metadonnées des photos
+gem 'exifr'
+
 
 group :development, :test do
   
