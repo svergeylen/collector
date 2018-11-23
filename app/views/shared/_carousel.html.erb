@@ -5,9 +5,9 @@
   <div class="carousel-inner">
     <% attachments.each_with_index do |attachment, i| %>
       <div class="carousel-item <%= 'active' if i==active_slide_id %>">
-        <%= image_tag ("/"+attachment.image.url), class:"d-block w-100" %>
+        <%= image_tag ("/"+attachment.image.url(:big)), class:"d-block w-100" %>
         <div class="carousel-caption d-none d-md-block">
-          <p><%= long_date(attachment.image_updated_at) %></p>
+          <p><%= long_date(attachment.created_at) %></p>
         </div>
       </div>
       <% content_for :carousel_indicators do %>

@@ -67,6 +67,9 @@ gem 'will_paginate-bootstrap4'
 #gem 'chosen-rails'
 #gem "selectize-rails"
 
+# Lecture des metadonnées des photos
+gem 'exifr'
+
 
 group :development, :test do
   
