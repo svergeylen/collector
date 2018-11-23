@@ -23,12 +23,6 @@ private
 		if exif.nil? or not exif.exif? 
 			logger.debug "Pas d'accès aux données EXIF"
 		else			
-			logger.debug "--------------------------------------------"
-			logger.debug "--->" + exif.inspect
-			logger.debug "--------------------------------------------"
-			logger.debug exif.orientation.inspect
-			
-
 			self.created_at = exif.date_time
 			data = exif.to_hash.extract!(:width, :height, :make, :model, :date_time, :exposure_time, :f_number,
 				:exposure_program, :iso_speed_ratings, :software)

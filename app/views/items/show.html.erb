@@ -10,11 +10,6 @@
 		<div class="row">
 			<div class="col-md-8">
 				<%= render partial: "shared/carousel", locals: {attachments: @item.attachments, active_slide_id: 0 } %>
-
-					Model : <%= @item.attachments.last.exif[:model] %>
-					
-
-
 			</div>
 			<div class="col-md-4">
 	<% end %>
