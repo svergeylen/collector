@@ -1,7 +1,7 @@
 namespace :images do
   desc "Gestion des images"
 
-  task re_process :environment do 
+  task re_process: :environment do 
   	Attachment.all.each { |p| p.image.reprocess! if File.exist?(p.image.path) }
   end
 
