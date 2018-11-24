@@ -6,7 +6,7 @@
 			<div class="card item-card collector-item-li <%= 'not-owned' if !item.is_owned? %>" data-item-id="<%= item.id.to_s %>">
 				
 				<% if item.attachments.present? && item.attachments.last.image.exists? %>
-					<%= image_tag "/" + item.attachments.last.image(:medium), class:"card-img-top" %>
+					<%= image_tag "/" + item.attachments.last.image.url(:medium), class:"card-img-top" %>
 				<% else %>
 					<%= image_tag "no-image.png", class:"card-img-top" %>
 				<% end %>
