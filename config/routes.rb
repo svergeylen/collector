@@ -33,12 +33,15 @@ Rails.application.routes.draw do
 	get 'search/keyword'	# recherche globale (haut à droite)
 	get 'search/tag' 		# recherche dans les tags (welcome collector)
 	resources :tags do
+		post 'actions', on: :collection	# formulaire d'actions en bas de page de tags#index
 		member do
 			get 'star'		# favoris
 			get 'remove/:remove_id', to: 'tags#remove', as: 'remove'
 		end
 	end
+
 	resources :items do
+		post 'actions', on: :collection	# formulaire de modification de plusieurs items en bas de tag#show
 		member do
 			post 'quantity'
 			get  'delete_attachment/:attachment_id', to: "items#delete_attachment", as: "delete_attachment"

@@ -54,3 +54,8 @@ a.dropdown-item > i {
 .ui-helper-hidden-accessible {
 	display: none;
 }
+
+/* Annulation marge label bootstrap */
+label {
+	margin-bottom : 0;
+}

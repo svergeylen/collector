@@ -12,9 +12,9 @@ class TagsController < ApplicationController
         @tags = Tag.includes(:items).where(letter: "X".."Z").order(name: :asc).paginate(page: params[:page], per_page: per_page)
       when "#"
         @tags = Tag.includes(:items).where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "vide"
+      when "Vide"
         @tags = Tag.includes(:items).where(letter: [nil, ""]).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "orphelins"
+      when "Racine"
         # Recherche de tags orphelins (suppression de leur parent ou erreur database)
         all_tags = Tag.all.map(&:id)
         all_tags_with_parent = Ownertag.where(owner_type: "Tag").map(&:tag_id)
@@ -24,6 +24,10 @@ class TagsController < ApplicationController
         # pas d'action. @tags = nil
         @tag_counter = Tag.all.count 
     end
+
+    # Options pour les actions en bas de page (selectize)
+    @tag_list = Tag.order(name: :asc).pluck(:name)
+
   end
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
@@ -203,6 +207,26 @@ class TagsController < ApplicationController
       current_user.tags << @tag
       redirect_to @tag, notice: "Tag ajouté aux favoris"
     end
+  end
+
+
+  # Gestion des actions réalisées sur une liste de tags.
+  # params contient la liste des tag id qu'il faut modifier
+  def actions 
+    if params[:tag_ids].nil?
+      redirect_to tags_path, alert: 'Veuillez sélectionner des tags'
+    else
+
+      # On ajoute les items sélectionnés dans la collection de l'utilisateur courant
+      if params[:add_parent].present?
+        params[:tag_ids].each do |tag_id|
+          Tag.find(tag_id).add_parent_tag(params[:tag_names])
+        end
+        redirect_to tags_path, notice: 'Tag Parent ajouté aux tags sélectionnés'
+      end
+
+
+    end # if item_ids.empty?
   end
 
 

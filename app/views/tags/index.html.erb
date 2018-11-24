@@ -11,7 +11,7 @@
 
 
 	<div class="btn-group mb-4">
-		<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "#", "vide", "orphelins"].each do |letter| %>
+		<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "#", "Vide", "Racine"].each do |letter| %>
 			<%= link_to letter, tags_path(letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
 		<% end %>
 	</div>
@@ -22,27 +22,47 @@
 
 	<% if @tags.present? %>
 		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
-		<table class="table table-sm">
-			<tr>
-				<th>id</th>
-				<th>Nom</th>
-				<th>Lettre</th>
-				<th>Items</th>
-				<th>Actions</th>
-			</tr>
-			<% @tags.each do |tag| %>
+
+		<%= form_tag({controller: "tags", action: "actions"}, method: "post") do |form| %>
+			
+			<table class="table table-sm">
 				<tr>
-					<td><%= tag.id.to_s %></td>
-					<td><%= link_to tag.name, tag %></td>
-					<td><%= tag.letter %></td>
-					<td><%= tag.items.present? ? tag.items.count.to_s : "0" %></td>
-					<td>
-						<%= link_to edit_tag_path(tag) do far_icon "edit" end %>
-						<%= link_to tag_path(tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } do far_icon "trash-alt" end %>
-					</td>
+					<th></th>
+					<th>id</th>
+					<th>Nom</th>
+					<th>Lettre</th>
+					<th>Items</th>
+					<th>Actions</th>
 				</tr>
-			<% end %>
-		</table>
+				<% @tags.each do |tag| %>
+					<tr>
+						<td><%= check_box_tag 'tag_ids[]', tag.id, false, {id: dom_id(tag)} %></td>
+						<td><label for="<%= dom_id(tag) %>"><%= tag.id.to_s %></label></td>
+						<td><%= link_to tag.name, tag %></td>
+						<td><%= tag.letter %></td>
+						<td><%= tag.items.present? ? tag.items.count.to_s : "0" %></td>
+						<td>
+							<%= link_to edit_tag_path(tag) do far_icon "edit" end %>
+							<%= link_to tag_path(tag), method: :delete, data: { confirm: 'Etes-vous certain de supprimer ce tag ?' } do far_icon "trash-alt" end %>
+						</td>
+					</tr>
+				<% end %>
+			</table>
+
+			<div class="row">
+				<div class="col-sm-2 col-form-label">
+					Tags :
+				</div>
+				<div class="col-sm-5">
+					<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
+				</div>
+				<div class="col-sm-5">
+					<%= submit_tag "Ajouter comme parent", name: 'add_parent', class:"btn btn-light mr-3", title: "Ajouter le tag donné comme parent de tous les tags sélectionnés" %> 
+				</div>
+			</div>
+
+			<% end  %><!-- form Actions -->
+
 		<%= will_paginate @tags, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
 	<%end %>
 
