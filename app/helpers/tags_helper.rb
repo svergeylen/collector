@@ -7,8 +7,6 @@ module TagsHelper
 			tags.each do |tag|
 				ret += render_tag(tag, with_delete_option)+ " "
 			end
-		else
-			ret += "-"
 		end
 		return ret.html_safe
 	end

@@ -54,8 +54,13 @@ class TagsController < ApplicationController
         end
       end
 
-      # Liste des tags actifs (breadcrimbs)
+      # Liste des tags actifs (breadcrumbs)
       @active_tags = Tag.find(session[:active_tags])
+
+      # Parents éventuels du premier active tag
+      if @active_tags.present?
+        @elder_tags = Tag.find(@active_tags.first.elder_ids)
+      end
 
       # Choix de la vue pour l'affichage des items
       if params[:view].present?

@@ -46,7 +46,7 @@
 	<hr />
 	<p><%= link_to "Charger plus d'infos", enhance_item_path, :remote => true %></p>
 	<div id="enhanced_content" class="m-3">
-		<%= render partial: "items/enhance/"+@item.item_type, locals: {item: @item} %>
+		<%# render partial: "items/enhance/"+@item.item_type, locals: {item: @item} %>
 	</div>
 
 	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
