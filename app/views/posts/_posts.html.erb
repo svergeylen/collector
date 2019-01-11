@@ -41,7 +41,7 @@
 	    <% if post.attachments.present? %>
 	      <div class="post-message mb-1 text-center"> 
 	        <% post.attachments.each_with_index do |a, i| %>
-	            <%= link_to image_tag("/" + a.image.url(:thumb), class:"img-thumbnail mb-1"), post_path(post, slide_id: i, anchor: "carousel_photos")   %>           
+	            <%= link_to image_tag("/" + a.image.url(:medium), class:"img-thumbnail mb-1"), post_path(post, slide_id: i, anchor: "carousel_photos")   %>           
 	        <% end %>
 	      </div>
 	    <% end %>
