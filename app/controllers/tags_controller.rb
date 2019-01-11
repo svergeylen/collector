@@ -79,8 +79,7 @@ class TagsController < ApplicationController
       # Si le tag a des enfants, affichage des tags enfants dans la sidebar
       if @tag.tags.present?
         # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
-        tags_per_page = 40
-        @navigate_option = (@tag.tags.count > tags_per_page)? true : false 
+        @navigate_option = (@tag.tags.count > 40)? true : false 
         case params[:letter]
           when "A".."W"
             @tags = @tag.children.where(letter: params[:letter])
@@ -100,7 +99,6 @@ class TagsController < ApplicationController
 
       # Recherche des items qui possèdent tous les tags actifs
       items = Item.having_tags(session[:active_tags])
-      @items_count = items.count
       @items = items.paginate(:page => params[:page], :per_page => 24)
 
       # Recherche des données intéressantes en cas de création de nouvel item
@@ -113,9 +111,8 @@ class TagsController < ApplicationController
       end
       # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
       if @items.present?
-        proposed_tag_ids = @items.last.tags.pluck(:id)
+        proposed_tag_ids = @items.last.tags.where(filter_items: true).pluck(:id)
         # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
-        # Idée > Supprimer les tags non filtrants car cela polluerait les propositions ?
         item_type = @items.last.item_type
       end
       # Création d'un hash ajouté au link_to "Item>New"

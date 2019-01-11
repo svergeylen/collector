@@ -32,7 +32,7 @@ class ItemsController < ApplicationController
     
     # On recherche des tags pour pré-remplir le formulaire au mieux
     case params[:item_type]
-    when "bd"
+    when "bd", "livre"
       proposed_tags = Tag.includes(:parent_tags).where(id: params[:tag_ids])
       @item.tag_series     = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
       @item.tag_auteurs    = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
@@ -200,7 +200,7 @@ class ItemsController < ApplicationController
       @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
       # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
       case @item.item_type
-        when "bd"
+        when "bd", "livre"
           # Chargement des tags spécifiques à chaque champ : Séries, Auteurs, Rangements
           tag_series = Tag.find_or_create_by(name: "Séries")
           @series_list = tag_series.children.pluck(:name)
@@ -208,7 +208,7 @@ class ItemsController < ApplicationController
           @auteurs_list = tag_auteurs.children.pluck(:name)
           tag_rangement = Tag.find_or_create_by(name: "Rangements")
           @rangements_list = tag_rangement.children.pluck(:name)
-          render "items/"+action+"_bd"
+          render "items/"+action+"_bd" # Le form bd sert aux item_types = livre
         else
           @tag_list = Tag.order(name: :asc).pluck(:name)
           render "items/"+action
