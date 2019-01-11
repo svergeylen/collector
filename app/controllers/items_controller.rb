@@ -27,18 +27,30 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-    @item.number = params[:number] if (params[:number].present?)
     @item.item_type = params[:item_type] if params[:item_type].present?
     
-    # On recherche des tags pour pré-remplir le formulaire au mieux
+    # Pré-remplissage du formulaire au mieux
+    @item.number = params[:number] if (params[:number].present?)
+    @item.name = params[:name] if (params[:name].present?)
+    @item.description = params[:description] if (params[:description].present?)
     case params[:item_type]
     when "bd", "livre"
-      proposed_tags = Tag.includes(:parent_tags).where(id: params[:tag_ids])
-      @item.tag_series     = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
-      @item.tag_auteurs    = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
+      proposed_tags = []
+
+      if params[:tag_names].present?
+        proposed_1 = Tag.where(name: params[:tag_names].split(","))
+      end
+      proposed_2 = Tag.includes(:parent_tags).where(id: params[:tag_ids])
+      proposed_tags = proposed_1 + proposed_2
+      @item.tag_series = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
+      @item.tag_auteurs = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
       @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
     else
-      @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
+      if params[:tag_names].present?
+        @item.tag_names = params[:tag_names]
+      else
+        @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
+      end
     end
 
     render_correct_form("new")

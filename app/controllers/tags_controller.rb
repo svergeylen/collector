@@ -99,7 +99,7 @@ class TagsController < ApplicationController
 
       # Recherche des items qui possèdent tous les tags actifs
       items = Item.having_tags(session[:active_tags])
-      @items = items.paginate(:page => params[:page], :per_page => 24)
+      @items = items.paginate(:page => params[:page], :per_page => 36)
 
       # Recherche des données intéressantes en cas de création de nouvel item
       # Recherche du numéro suivant
