@@ -1,4 +1,4 @@
-<p><%= data[:user].name %> vient d'ajouter <%= pluralize(data[:quantity], "item") %> :</p>
+<p><%= data[:user].name %> vient d'ajouter <%= pluralize(data[:quantity], "item", "items") %> :</p>
 <ul>
 	<% data[:items].each_with_index do |item, i| %>
 		<li>

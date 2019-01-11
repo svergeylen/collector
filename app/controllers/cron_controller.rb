@@ -12,7 +12,7 @@ class CronController < ApplicationController
 		# Traitement distint pour chaque utilisateur
 		user_ids.each do |user_id|
 
-			# On itère sur les types d'actions connues (çàd dont la template existe dans le dosier "shared" )
+			# On itère sur les types d'actions connues (çàd dont la template existe dans le dosier "app/views/cron" )
 			possible_actions.each do |action|
 
 				jobs = Job.where(done: false).where(user_id: user_id).where(action: action).order(created_at: :asc)
@@ -33,10 +33,10 @@ class CronController < ApplicationController
 						
 						data = { jobs: jobs,
 								 items: items,
-								 quantity: items.count,
+								 quantity: item_ids.length,
 								 user: user }
 						
-						message = render_to_string partial: "shared/#{action}", locals: { data: data} 
+						message = render_to_string partial: "cron/#{action}", locals: { data: data} 
 						post = Post.create!(message: message, user_id: user_id, updated_at: jobs.last.updated_at, created_at: jobs.last.created_at)
 						
 						# Marque les jobs comme terminés pour ne plus les traiter une seconde fois
