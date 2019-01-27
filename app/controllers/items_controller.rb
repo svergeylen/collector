@@ -16,6 +16,14 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
+    # Liste des tags actifs (breadcrumbs)
+    @active_tags = Tag.find(session[:active_tags])
+
+    # Parents éventuels du premier active tag
+    if @active_tags.present?
+      @elder_tags = Tag.find(@active_tags.first.elder_ids)
+    end
+    
     # Ajout d'information pour la création d'un item du même type....
     next_number = (@item.number + 1) if @item.number.present?
     proposed_tag_ids = @item.tags.pluck(:id)
