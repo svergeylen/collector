@@ -133,20 +133,15 @@ class Item < ApplicationRecord
 	end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
-	def self.having_tags(ar_tags, limit: nil)
+	def self.having_tags(ar_tags)
 	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
 	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
 	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
-	  	
-	  	if (limit.present?)
-	 		# Si une page est demandée, on impose la pagination. L'ordre n'a pas de sens vu qu'on paginate avant de mettre en ordre (performances :-( )
-	  		Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).order(updated_at: :desc).limit(limit)
-	  	else
-	  		# Sinon, on charge tous les items du tag
-			Item.includes(:tags, itemusers: [:user]).where(id: ownertags.keys).sort_by{ |a| [a.number.to_f, a.name] }
-		end
+	  	# Les items correspondant aux ownertags reçus, classés par ordre de numéros
+	  	# .includes(:tags, itemusers: [:user])
+		return Item.where(id: ownertags.keys).sort_by { |a| [a.number.to_f, a.name] }
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
@@ -236,19 +231,7 @@ class Item < ApplicationRecord
 		end
 	end
 
-	# Recherche le meilleur type d'item en fonction des tags donnés en paramètres
-	# def set_best_item_type
-	# 	t = Tag.find_by(name: "Bandes dessinées")
-	# 	self.item_type = "bd" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Livres")
-	# 	self.item_type = "livre" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Bonsais")
-	# 	self.item_type = "plante" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Jeu de société")
-	# 	self.item_type = "jeu" if t.present? and session[active_tags].include?(t.id)
-	# 	t = Tag.find_by(name: "Modélisme")
-	# 	self.item_type = "modelisme" if t.present? and session[active_tags].include?(t.id)
-	# end
+	# -------------- ITEM TYPE et enrichissement via site tiers -------------------------------------------
 
 	# Liste les types d'items = item.item_type et aussi potentiellement un formulaire personalisé d'edit/new item
     def self.item_types
@@ -262,4 +245,60 @@ class Item < ApplicationRecord
                 plante: "Plante"
       }
     end
+
+    # Charge du contenu distant depuis un site tiers, en fonction du type d'item (item_type)
+    def enhance
+		require 'open-uri'
+	    require 'nokogiri'
+	    puts "------------> "+self.name+" : Enhance. Item_type="+self.item_type
+
+	    case self.item_type
+	      when "bd", "livre"
+	      	series = self.tag_series
+			books = GoogleBooks.search(self.name+" - "+series, {:count => 10})
+			
+			
+			book = books.first
+			content = ""
+			content+= "Auteurs : "+book.authors if book.authors.present?
+			content+= "<br />ISBN : "+book.isbn if book.isbn.present?
+			content+= "<br />Description : "+book.description if book.description.present?
+			content+= "<br />Publié le : "+book.published_date if book.description.present?
+			content+= "<br />preview_link : "+book.preview_link if book.preview_link.present?
+			content+= "<br />Info_link : "+book.info_link if book.info_link.present?
+			image_src = book.image_link(:zoom => 2)
+
+	      when "bonsai", "plante"
+
+
+	      when "film"
+	      
+
+	      when "jeu" # Jeux de société
+	        name = self.name.downcase
+	        # Page de garde du jeu
+	        page = fetch_page("https://www.trictrac.net/jeu-de-societe/"+name)
+	        image_src = page.at_css("#img-game").attributes["src"]
+	        content1 = page.at_css("#content-column")
+	      	content = content1
+
+	      when "piece" 
+
+	      else # Items, modélisme
+
+	    end 
+
+	    # Sauvegarde des données rassemblées
+	    self.enhanced_image = image_src if image_src.present?
+	    self.enhanced_content = content if content.present?
+	    self.save
+    end
+
+
+private
+    # Récupère la page distante et instancie Nokogiri pour le parsing de la page
+    def fetch_page(url)
+      return Nokogiri::HTML(open(url))   
+    end
+
 end

@@ -68,10 +68,24 @@ document.addEventListener("turbolinks:load", function() {
 	// Show tag : actions en bas de page : modification du rangement de plusieurs items sélectionnés
 	rangements = create_selectize("rangements");
 
-	// Modification de l'item_type dans les formaulaire edit/new item
+	// Modification de l'item_type dans les formulaire edit/new item
 	$("#item_type").change(function(e) {
-		item_type = $(this).val();
-		$(location).attr('href', location.pathname+"?item_type="+item_type);
+		proposed_names = [];
+		if (tag_names) 		{ proposed_names.push(tag_names.items); }
+		if (tag_series) 	{ proposed_names.push(tag_series.items); }
+		if (tag_auteurs) 	{ proposed_names.push(tag_auteurs.items); }
+		if (tag_rangements) { proposed_names.push(tag_rangements.items); }
+			console.log(proposed_names);
+
+		args = location.pathname;
+		args+= "?item_type="+$(this).val();
+		args+= "&name="+$("#item_name").val();
+		args+= "&number="+$("#item_number").val();
+		args+= "&tag_names="+proposed_names.join();
+		if ($("#item_description").val() != undefined) { args+= "&description="+$("#item_description").val(); }
+
+		$(location).attr('href', args);
+		console.log(args);
 	});
 
 });

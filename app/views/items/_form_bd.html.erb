@@ -46,13 +46,17 @@
     </div>
   </div>
  
-  <%= render partial: "attachement_form", locals: { form: form, item: item } %>
-
   <div class="form-group row">
     <div class="offset-md-2 col-md-10">
       <%= hidden_field_tag "view", "bd" %>
       <%= form.submit "Créer", class:"btn btn-primary" %>
       <%= link_to "Annuler", @last_tag_path, class:"btn btn-light ml-4" %>
+      <% if @item.new_record? %>
+        <label for="add_to_collection" class="form-check-label ml-4">
+          <%= check_box_tag(:add_to_collection, "1", true, class:"form-check-input" ) %>
+          Ajouter à ma collection
+        </label>    
+      <% end %>
     </div>
   </div>
 

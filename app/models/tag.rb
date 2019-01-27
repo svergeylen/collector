@@ -48,10 +48,24 @@ class Tag < ApplicationRecord
 		end
 	end
 
+
 	# Ajoute un tag parent aux tags parents existants ()as d'écrasement)
 	def add_parent_tag(tag_name)
 		self.parent_tag_names = self.parent_tag_names+","+tag_name
 		self.save
+	end
+
+	# Renvoie la filiation ancestrale du tag jusqu'à ce qu'il n'y ait plus de parent (racine)
+	# S'il y a plusieurs parents possibles, le premier parent trouvé est ajouté à la liste
+	def elder_ids
+		result = []
+		current_tag = self
+		while current_tag.parent_tags.present?
+			new_id = current_tag.parent_tags.first.id
+			result.unshift(new_id)
+			current_tag = Tag.find(new_id)
+		end
+		return result
 	end
 
 # ------------------------- TAGS ENFANTS -----------------------------------------------------------------------

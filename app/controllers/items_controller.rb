@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :upvote, :plus, :minus]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :enhance]
 
   # Liste des items pour gestion banque de données
   def index
@@ -16,18 +16,14 @@ class ItemsController < ApplicationController
   # GET /items/1
   # GET /items/1.json
   def show
-    # Test download
-    #  require 'open-uri'
-    #  game_name = @item.name.downcase
-    #  filename = "/home/stephane/www/collector/tmp/page.html"
-    #  download = open('https://www.trictrac.net/jeu-de-societe/'+game_name)
-    #  IO.copy_stream(download, filename)
+    # Liste des tags actifs (breadcrumbs)
+    @active_tags = Tag.find(session[:active_tags])
 
-    # # # Tests parsing
-    #  @html_doc = File.open(filename) { |f| Nokogiri::HTML(f, &:noblanks) }
-    #  @image_src = @html_doc.at_css("#img-game").attributes["src"]
-    #  @content = @html_doc.at_css("#content-column")
-
+    # Parents éventuels du premier active tag
+    if @active_tags.present?
+      @elder_tags = Tag.find(@active_tags.first.elder_ids)
+    end
+    
     # Ajout d'information pour la création d'un item du même type....
     next_number = (@item.number + 1) if @item.number.present?
     proposed_tag_ids = @item.tags.pluck(:id)
@@ -39,18 +35,30 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-    @item.number = params[:number] if (params[:number].present?)
     @item.item_type = params[:item_type] if params[:item_type].present?
     
-    # On recherche des tags pour pré-remplir le formulaire au mieux
+    # Pré-remplissage du formulaire au mieux
+    @item.number = params[:number] if (params[:number].present?)
+    @item.name = params[:name] if (params[:name].present?)
+    @item.description = params[:description] if (params[:description].present?)
     case params[:item_type]
-    when "bd"
-      proposed_tags = Tag.includes(:parent_tags).where(id: params[:tag_ids])
-      @item.tag_series     = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
-      @item.tag_auteurs    = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
+    when "bd", "livre"
+      proposed_tags = []
+
+      if params[:tag_names].present?
+        proposed_1 = Tag.where(name: params[:tag_names].split(","))
+      end
+      proposed_2 = Tag.includes(:parent_tags).where(id: params[:tag_ids])
+      proposed_tags = proposed_1 + proposed_2
+      @item.tag_series = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
+      @item.tag_auteurs = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
       @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
     else
-      @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
+      if params[:tag_names].present?
+        @item.tag_names = params[:tag_names]
+      else
+        @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
+      end
     end
 
     render_correct_form("new")
@@ -184,6 +192,15 @@ class ItemsController < ApplicationController
     end
   end
 
+  # Extraction d'information depuis un site tiers
+  def enhance
+    @item.enhance
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
 
   private
     # Sauvegarde les attachments s'il y en a
@@ -196,14 +213,14 @@ class ItemsController < ApplicationController
       end
     end
 
-    # Realise toutes les opérations pour charger correctement le formualire (y compris avec erreur de validation)
+    # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
       @last_tag_path = last_tag_path # inaccessible en view
       # Champ <select> de sélection de type
       @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
       # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
       case @item.item_type
-        when "bd"
+        when "bd", "livre"
           # Chargement des tags spécifiques à chaque champ : Séries, Auteurs, Rangements
           tag_series = Tag.find_or_create_by(name: "Séries")
           @series_list = tag_series.children.pluck(:name)
@@ -211,7 +228,7 @@ class ItemsController < ApplicationController
           @auteurs_list = tag_auteurs.children.pluck(:name)
           tag_rangement = Tag.find_or_create_by(name: "Rangements")
           @rangements_list = tag_rangement.children.pluck(:name)
-          render "items/"+action+"_bd"
+          render "items/"+action+"_bd" # Le form bd sert aux item_types = livre
         else
           @tag_list = Tag.order(name: :asc).pluck(:name)
           render "items/"+action
@@ -222,7 +239,7 @@ class ItemsController < ApplicationController
     def set_item
       @item = Item.find(params[:id])
       rescue ActiveRecord::RecordNotFound
-      redirect_to items_path, alert: "Cet item n'existe plus dans la banque de données"
+      redirect_to collector_path, alert: "Cet item n'existe plus dans la banque de données"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

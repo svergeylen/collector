@@ -24,6 +24,11 @@ document.addEventListener("turbolinks:load", function() {
 		});
 	});
 
+	/* Affiche ou cache les ancertes du tag (elders) */
+	$("#elder_tags_button").click(function(e) {  
+		$("#elder_tags").toggle("slide");    
+	});
+
 });
 
 /* Coche le checkbox contenu dans la ligne de la liste ou dans la card de la gallerie */

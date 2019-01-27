@@ -1,0 +1,4 @@
+/* Ajoute le contnu distant à la page de l'item */
+$('#enhanced_content').html("<%= j ( render partial: 'items/enhance/'+@item.item_type, locals: {item: @item} ) %>")
+
+

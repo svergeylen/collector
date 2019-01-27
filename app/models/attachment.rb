@@ -19,18 +19,22 @@ class Attachment < ApplicationRecord
 private 
 
 	def load_exif 
-	    exif = EXIFR::JPEG.new(image.queued_for_write[:original].path) 
-		if exif.nil? or not exif.exif? 
-			logger.debug "Pas d'accès aux données EXIF"
-		else			
-			self.created_at = exif.date_time
-			data = exif.to_hash.extract!(:width, :height, :make, :model, :date_time, :exposure_time, :f_number,
-				:exposure_program, :iso_speed_ratings, :software)
-			if exif.gps.present?
-				data[:latitude] = exif.gps.latitude
-				data[:longitude] = exif.gps.longitude
+		if image.instance.image_content_type == "image/jpg" or image.instance.image_content_type == "image/jpeg"
+		    exif = EXIFR::JPEG.new(image.queued_for_write[:original].path) 
+			if exif.nil? or not exif.exif? 
+				logger.debug "Pas de données EXIF"
+			else			
+				self.created_at = exif.date_time
+				data = exif.to_hash.extract!(:width, :height, :make, :model, :date_time, :exposure_time, :f_number,
+					:exposure_program, :iso_speed_ratings, :software)
+				if exif.gps.present?
+					data[:latitude] = exif.gps.latitude
+					data[:longitude] = exif.gps.longitude
+				end
+				self.exif = data
 			end
-			self.exif = data
+		else
+			logger.debug "L'image n'est pas un JPG. Pas de données EXIF."
 		end
 	end
 

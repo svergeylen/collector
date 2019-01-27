@@ -86,6 +86,10 @@ GEM
     fontawesome5-rails (5.2.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    googlebooks (0.0.9)
+      httparty
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     jbuilder (2.7.0)
@@ -115,6 +119,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.10.3)
     multi_json (1.12.2)
+    multi_xml (0.6.0)
     mysql2 (0.4.10)
     nio4r (2.2.0)
     nokogiri (1.8.1)
@@ -234,6 +239,7 @@ DEPENDENCIES
   devise
   exifr
   fontawesome5-rails
+  googlebooks
   jbuilder (~> 2.5)
   jquery-rails
   jquery-ui-rails

@@ -24,6 +24,8 @@
 
     	<%= link_to "<i class='far fa-file'></i>Nouvel item".html_safe, new_item_path(@new_item_options), class:'dropdown-item' %>
       <% if @item.present? %>
+
+      
         <%= link_to "<i class='fas fa-edit'></i>Modifier item".html_safe, edit_item_path(@item), class:'dropdown-item' %>
         <%= link_to "<i class='far fa-trash-alt'></i>Supprimer item".html_safe, @item, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer cet item définitiement ?' } %> 
       <% end %>

@@ -1,0 +1,8 @@
+<% if elder_tags.present? %>
+	<span id="elder_tags"><%= render_tags(elder_tags) %></span>
+	<i class="fas fa-angle-double-left fa-1x mr-0 text-secondary" id="elder_tags_button"></i>
+<% end %>
+<%= render_tags(active_tags, true) %>
+<%= form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
+	<%= text_field_tag("collector-tag-search", nil, data: { options: Tag.searchable_tags}, class:"form-control form-control-sm", size: 12 ) %>
+<% end %>

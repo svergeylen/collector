@@ -3,55 +3,60 @@
 		<%= render partial: "shared/collector_menu" %>
 	</div>
 
-	<h3><%= @item.name %></h3>
-	<p><small>Ajouté par <%= link_to(@item.adder.name, @item.adder, class:"high-color") if @item.adder %>, le <%= long_date(@item.created_at) %></small></p>
+	<div class="mt-2 mb-4">
+		<%= render partial: "shared/tags", locals: { elder_tags: @elder_tags, active_tags: @active_tags} %>
+	</div>
 	
 	<% if @item.attachments.count > 0 %>
 		<div class="row">
-			<div class="col-md-8">
+			<div class="col-md-6">
 				<%= render partial: "shared/carousel", locals: {attachments: @item.attachments, active_slide_id: 0 } %>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-6">
 	<% end %>
 
+	<h3><%= @item.name %></h3>
+
+		<div class="mt-3 mb-3">
+			<%= render_users(@item) %>
+		</div>
+
 			<% if @item.tags.present? %>
-				<div class="mt-3 mb-3">
+				<div class="mb-3">
 					<% if @item.item_type == "bd"  %>
-						<p>Numéro : <%= @item.friendly_number %></p>
 						<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
 						<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
 						<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
-					<% else %>
 						<p>Numéro : <%= @item.friendly_number %></p>
-						<%= render_tags(@item.tags) %>
+					<% else %>
+						<p><%= render_tags(@item.tags) %></p>
+						<p>Numéro : <%= @item.friendly_number %></p>
 					<% end %>
 				</div>
-			<% end %>
-			
-				<div class="mt-3 mb-3">
-					<%= render_users(@item) %>
-				</div>
+			<% end %>				
 
 			<% if @item.description.present? %>
 				<div class="mt-3 mb-3">
 					<%= sanitize @item.description %>
 				</div>
 			<% end %>
-			
+
 	<% if @item.attachments.count > 0 %>
 			</div><!-- col -->
 		</div><!-- row -->
 	<% end %>
 
+<!-- ><hr />
+	<p><%= link_to "Charger plus d'infos", enhance_item_path, :remote => true %></p>
+	<div id="enhanced_content" class="m-3">
+		<%# render partial: "items/enhance/"+@item.item_type, locals: {item: @item} %>
+	</div>
+-->
 
-
-	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal") do |form| %>
+	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal mt-4 mb-2") do |form| %>
       	Ajouter une image : <%= form.file_field :attachments, multiple: true %>
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
 	
-	<%# image_tag @image_src %>
-	<%# sanitize @content.inner_html %>
-
 </div><!-- rounded-box -->
 

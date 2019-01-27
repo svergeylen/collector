@@ -1,4 +1,6 @@
 class TagsController < ApplicationController
+  require 'will_paginate/array'
+
   before_action :set_tag, only: [:show, :edit, :update, :remove, :destroy, :star]
 
   # Liste des tags pour gestion banque de données
@@ -32,8 +34,6 @@ class TagsController < ApplicationController
 
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
-    @max_items = 24 # Nombre d'items max à charger si encore des tags enfants présents
-
     if @tag
       # Si la liste est vide, on initialise la liste avec l'unique tag sélectionné
       if session[:active_tags].nil?
@@ -58,8 +58,13 @@ class TagsController < ApplicationController
         end
       end
 
-      # Liste des tags actifs (breadcrimbs)
+      # Liste des tags actifs (breadcrumbs)
       @active_tags = Tag.find(session[:active_tags])
+
+      # Parents éventuels du premier active tag
+      if @active_tags.present?
+        @elder_tags = Tag.find(@active_tags.first.elder_ids)
+      end
 
       # Choix de la vue pour l'affichage des items
       if params[:view].present?
@@ -78,47 +83,47 @@ class TagsController < ApplicationController
       # Si le tag a des enfants, affichage des tags enfants dans la sidebar
       if @tag.tags.present?
         # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
-        tags_per_page = 40
-        @view_alphabet = (@tag.tags.count > tags_per_page)? true : false 
+        @navigate_option = (@tag.tags.count > 40)? true : false 
         case params[:letter]
           when "A".."W"
-            @tags = @tag.children.where(letter: params[:letter]).paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children.where(letter: params[:letter])
           when "XYZ"
-            @tags = @tag.children.where(letter: "X".."Z").paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children.where(letter: "X".."Z")
           when "#"
-            @tags = @tag.children.where(letter: 0..9999999).paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children.where(letter: 0..9999999) 
           when "vide"
-            @tags = @tag.children.where(letter: [nil, ""]).paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children.where(letter: [nil, ""])
           else
-            @tags = @tag.children.paginate(page: params[:page], per_page: tags_per_page)
+            @tags = @tag.children
         end
-     
-        # On charge les derniers items modifiés (ex : Bd/Bonsai : on affiche les dernières modifs)
-        @items = Item.having_tags(session[:active_tags], limit: @max_items)
+        # Nombre de tag par colonne
+        @tags_per_column = (@tags.count.to_f/4).ceil 
 
-      # Si pas de tags enfant, affichage des items en pleine page (pas de sidebar)
-      else
-        # Recherche des items qui possèdent tous les tags actifs
-        @items = Item.having_tags(session[:active_tags])
-        # Recherche des données intéressantes en cas de création de nouvel item
-        # Recherche du numéro suivant
-        next_number = 1
-        @items.each do |item| 
-          if item.number.present? and item.number >= next_number
-            next_number = item.number + 1
-          end
-        end
-        # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
-        if @items.present?
-          proposed_tag_ids = @items.last.tags.pluck(:id)
-          # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
-          # Idée > Supprimer les tags non filtrants car cela polluerait les propositions ?
-          item_type = @items.last.item_type
-        end
-        # Création d'un hash ajouté au link_to "Item>New"
-        @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
+      end # @tag.tags.present?
 
-      end  # if tag.tags present?
+      # Recherche des items qui possèdent tous les tags actifs
+      items = Item.having_tags(session[:active_tags])
+      @items = items.paginate(:page => params[:page], :per_page => 36)
+
+      # Recherche des données intéressantes en cas de création de nouvel item
+      # Recherche du numéro suivant
+      next_number = 1
+      @items.each do |item| 
+        if item.number.present? and item.number >= next_number
+          next_number = item.number + 1
+        end
+      end
+      # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
+      if @items.present?
+        proposed_tag_ids = @items.last.tags.where(filter_items: true).pluck(:id)
+        # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
+        item_type = @items.last.item_type
+      end
+      # Création d'un hash ajouté au link_to "Item>New"
+      @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
+
+      
+
     end # if tag
   end # show
 

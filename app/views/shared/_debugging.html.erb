@@ -1,5 +1,5 @@
 
-<% if false && Rails.env == "development" %>
+<% if true && Rails.env == "development" %>
 	<div class="rounded-box">
 		<div class="d-block d-sm-none">Taille XS : < 576px</div>
 		<div class="d-none d-sm-block d-md-none">Taille SM : > 576px</div>
@@ -12,6 +12,7 @@
 		<% if @tag.present? %>
 			<h4>Tag</h4>
 			<p>Tag : <%= @tag.inspect %></p>
+			<p>Elder_ids : <%= @tag.elder_ids.inspect %> </p>
 		<% end %>
 
 		
@@ -25,6 +26,5 @@
 		<%= params.inspect %>
 
 		<h4>Divers</h4>
-			
 	</div>
 <% end %>
