@@ -238,9 +238,12 @@ class TagsController < ApplicationController
   private
   
   def set_tag
-    @tag = Tag.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-    redirect_to tags_path, alert: "Ce tag n'existe plus dans la banque de données"
+    if Tag.exists?(params[:id])
+      @tag = Tag.find(params[:id])
+    else
+      back = request.env["HTTP_REFERER"] || welcome_collector_path
+      redirect_to back, alert: "Tag introuvable. Il a probablement été supprimé."
+    end
   end
 
   def new_and_edit_actions

@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
   # GET /items/1.json
   def show
     # Liste des tags actifs (breadcrumbs)
-    @active_tags = Tag.find(session[:active_tags])
+    @active_tags = Tag.find(session[:active_tags]) if session[:active_tags].present?
 
     # Parents éventuels du premier active tag
     if @active_tags.present?
@@ -237,9 +237,12 @@ class ItemsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-      redirect_to collector_path, alert: "Cet item n'existe plus dans la banque de données"
+      if Item.exists?(params[:id])
+        @item = Item.find(params[:id])
+      else
+        back = request.env["HTTP_REFERER"] || welcome_collector_path
+        redirect_to back, alert: "Item introuvable. Il a probablement été supprimé."
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

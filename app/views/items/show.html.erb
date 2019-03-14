@@ -23,14 +23,16 @@
 
 			<% if @item.tags.present? %>
 				<div class="mb-3">
-					<% if @item.item_type == "bd"  %>
+					<% if @item.item_type == "bd" or @item.item_type == "livre"  %>
 						<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
 						<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
 						<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
 						<p>Numéro : <%= @item.friendly_number %></p>
 					<% else %>
 						<p><%= render_tags(@item.tags) %></p>
-						<p>Numéro : <%= @item.friendly_number %></p>
+						<% if @item.number.present? %>
+							<p>Numéro : <%= @item.friendly_number %></p>
+						<% end %>
 					<% end %>
 				</div>
 			<% end %>				
@@ -53,7 +55,7 @@
 	</div>
 -->
 
-	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal mt-4 mb-2") do |form| %>
+	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal mt-5 mb-2") do |form| %>
       	Ajouter une image : <%= form.file_field :attachments, multiple: true %>
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
