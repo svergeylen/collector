@@ -8,7 +8,7 @@ class TasksController < ApplicationController
  
   private
     def task_params
-      params.require(:task).permit(:classification, :message, :user_id)
+      params.require(:task).permit(:classification, :message, :user_id, :created_at)
     end
 	
 end

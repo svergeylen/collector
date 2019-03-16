@@ -23,6 +23,9 @@ class ItemsController < ApplicationController
     if @active_tags.present?
       @elder_tags = Tag.find(@active_tags.first.elder_ids)
     end
+
+    # Notes associées à cet item
+    @notes = @item.tasks.order(created_at: :asc)
     
     # Ajout d'information pour la création d'un item du même type....
     next_number = (@item.number + 1) if @item.number.present?
