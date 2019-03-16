@@ -101,9 +101,16 @@ class TagsController < ApplicationController
 
       end # @tag.tags.present?
 
+      # Choix de l'ordre dans lequel afficher les items
+      if params[:order].present?
+        @order = params[:order]
+      else
+        @order = @tag.root_tag? ? "date" : "number"
+      end
+
       # Recherche des items qui possèdent tous les tags actifs
-      items = Item.having_tags(session[:active_tags])
-      @items = items.paginate(:page => params[:page], :per_page => 36)
+      items = Item.having_tags(session[:active_tags], @order )
+      @items = items.paginate(page: params[:page], per_page: 36)
 
       # Recherche des données intéressantes en cas de création de nouvel item
       # Recherche du numéro suivant

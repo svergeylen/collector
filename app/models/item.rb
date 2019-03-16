@@ -133,7 +133,8 @@ class Item < ApplicationRecord
 	end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
-	def self.having_tags(ar_tags)
+	# order = "date" permet de trier par date au lieu de trier par numéro
+	def self.having_tags(ar_tags, order)
 	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
 	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
 	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
@@ -141,7 +142,11 @@ class Item < ApplicationRecord
 	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
 	  	# Les items correspondant aux ownertags reçus, classés par ordre de numéros
 	  	# .includes(:tags, itemusers: [:user])
-		return Item.where(id: ownertags.keys).sort_by { |a| [a.number.to_f, a.name] }
+	  	if order == "date"
+	  		return Item.where(id: ownertags.keys).order(updated_at: :desc)
+	  	else
+			return Item.where(id: ownertags.keys).sort_by { |a| [a.number.to_f, a.name] }
+		end
 	end
 
 	# Renvoie seulement les tags d'un item pour un parent spécifique donné
