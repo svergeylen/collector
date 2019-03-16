@@ -85,7 +85,7 @@ document.addEventListener("turbolinks:load", function() {
 		if ($("#item_description").val() != undefined) { args+= "&description="+$("#item_description").val(); }
 
 		$(location).attr('href', args);
-		console.log(args);
+		// console.log(args);
 	});
 
 });
