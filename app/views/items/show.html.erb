@@ -43,6 +43,22 @@
 				</div>
 			<% end %>
 
+			
+
+			<h2>Notes</h2>
+			<ul>
+			<% @item.tasks.each do |task| %>
+			  <li><%= hist_date(task.created_at) %> : <%= task.classification %> : <%= task.message %></li>
+			<% end %>
+			</ul>
+
+			<b>Ajouter une note</b>
+			<%= form_with(model: [ @item, @item.tasks.build ], local: true) do |form| %>
+			    <%= form.text_field :classification %>
+			    <%= form.text_area :message %>
+			    <%= form.submit 'Créer' %>
+			<% end %>
+
 	<% if @item.attachments.count > 0 %>
 			</div><!-- col -->
 		</div><!-- row -->
@@ -60,5 +76,11 @@
       	<%= form.submit "Envoyer", class:"btn btn-default" %>
 	<% end %>
 	
+
+
+	
+
+
+
 </div><!-- rounded-box -->
 

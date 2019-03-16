@@ -43,4 +43,8 @@ module ApplicationHelper
 		end
 	end
 
+	def hist_date(mydate) 
+		return mydate.strftime("%m/%Y")
+	end
+
 end

@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20181123151938) do
+ActiveRecord::Schema.define(version: 20190316111034) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -109,6 +108,16 @@ ActiveRecord::Schema.define(version: 20181123151938) do
     t.boolean "filter_items", default: true
     t.index ["letter"], name: "index_tags_on_letter"
     t.index ["name"], name: "index_tags_on_name"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.text "message"
+    t.string "classification"
+    t.integer "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["item_id"], name: "index_tasks_on_item_id"
   end
 
   create_table "users", force: :cascade do |t|
