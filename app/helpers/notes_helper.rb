@@ -2,6 +2,8 @@ module NotesHelper
 
 	def icon_for_classification(keyword)
 		case keyword
+		when "achat"
+			ret = image_tag("achat.png").html_safe
 		when "ligature"
 			ret = image_tag("ligature.png").html_safe
 		when "rempotage"

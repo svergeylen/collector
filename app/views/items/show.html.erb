@@ -59,7 +59,7 @@
 			<b>Ajouter une note</b>
 			<%= form_with(model: [ @item, @item.notes.build(created_at: DateTime.now.to_date ) ], local: true) do |form| %>
 				<div class="form-group">
-				    <%= form.select :classification, options_for_select([ ["Ligature","ligature"], ["Rempotage", "rempotage"], ["Taille des racines", "racines"], ["Taille de structure","structure"], ["Taille de densification", "densification"] ]), {prompt: "Pas de type particulier"}, { class: "form-control custom-select"}  %>
+				    <%= form.select :classification, options_for_select([ ["Achat", "achat"], ["Ligature","ligature"], ["Rempotage", "rempotage"], ["Taille des racines", "racines"], ["Taille de structure","structure"], ["Taille de densification", "densification"] ]), {prompt: "Pas de type particulier"}, { class: "form-control custom-select"}  %>
 				    <%= form.text_area :message, class: "form-control" %>
 				    <%= form.date_field :created_at, class: "form-control" %>
 				    <%= form.submit 'Créer', class: "btn btn-light" %>
