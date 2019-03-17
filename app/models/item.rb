@@ -225,13 +225,6 @@ class Item < ApplicationRecord
 		return ret
 	end
 
-	# ----------------------------- NOTES ----------------------------------------------------------------
-
-	def notes_for(user_id)
-		self.notes.where(user_id: user_id).order(created_at: :asc)
-	end
-
-
 	# --------------------------- RECHERCHE -------------------------------------------------------------
 
 	# Recherche les items contenant le mot clé donné

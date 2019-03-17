@@ -15,6 +15,9 @@ class User < ApplicationRecord
 	has_many :posts, dependent: :destroy
 	has_many :comments, through: :posts
 
+	# Notes dans le Collector
+	has_many :notes
+
 	acts_as_voter # les users peuvent mettre des likes sur les posts et les items
 
 	has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>", tiny: "30x30>" }, default_url: "default-profile/:style.png"
