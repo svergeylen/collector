@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
     end
 
     # Notes associées à cet item
-    @notes = @item.tasks.order(created_at: :asc)
+    @notes = @item.notes_for(current_user.id)
     
     # Ajout d'information pour la création d'un item du même type....
     next_number = (@item.number + 1) if @item.number.present?

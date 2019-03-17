@@ -12,7 +12,7 @@ class Item < ApplicationRecord
 	has_many :attachments,  as:         :element,   dependent: :destroy
 	accepts_nested_attributes_for :attachments
 
-	has_many :tasks
+	has_many :notes
 
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
@@ -223,6 +223,12 @@ class Item < ApplicationRecord
 			end
 		end
 		return ret
+	end
+
+	# ----------------------------- NOTES ----------------------------------------------------------------
+
+	def notes_for(user_id)
+		self.notes.where(user_id: user_id).order(created_at: :asc)
 	end
 
 

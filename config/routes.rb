@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 	end
 
 	resources :items do
-		resources :tasks
+		resources :notes
 		post 'actions', on: :collection	# formulaire de modification de plusieurs items en bas de tag#show
 		member do
 			post 'quantity'
