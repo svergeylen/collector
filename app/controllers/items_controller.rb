@@ -48,6 +48,7 @@ class ItemsController < ApplicationController
     when "bd", "livre"
       proposed_tags = []
 
+      proposed_1 = []
       if params[:tag_names].present?
         proposed_1 = Tag.where(name: params[:tag_names].split(","))
       end
