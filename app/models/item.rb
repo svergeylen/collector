@@ -12,7 +12,7 @@ class Item < ApplicationRecord
 	has_many :attachments,  as:         :element,   dependent: :destroy
 	accepts_nested_attributes_for :attachments
 
-	has_many :notes
+	has_many :notes,   dependent: :destroy
 
 	acts_as_votable # les users peuvent mettre des likes sur les items
 	
