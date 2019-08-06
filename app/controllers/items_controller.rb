@@ -118,7 +118,7 @@ class ItemsController < ApplicationController
   # DELETE /items/1.json
   def destroy
     @item.destroy
-    redirect_back fallback_location: welcome_collector_path, notice: 'Elément supprimé'
+    redirect_to last_tag_path, notice: 'Elément supprimé'
   end
 
   # Gestion des actions réalisées sur une liste d'items.
