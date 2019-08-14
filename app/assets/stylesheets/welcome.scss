@@ -17,9 +17,8 @@
 .collector-search {
 	margin-top : 3em;
 	margin-bottom : 7em;
-	text-align : center;
-	input#collector-tag-search {
-		width : 100%;
+	input#keyword {
+		width : 100% !important;
 	}
 }
 
