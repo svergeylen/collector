@@ -180,9 +180,9 @@ class TagsController < ApplicationController
     tag_name = @tag.name
     if @tag.destroy
       session[:active_tags].delete(tag_id)
-      redirect_back fallback_location: welcome_collector_path, notice: "Tag \"#{tag_name}\" supprimé"
+      redirect_to last_tag_path, notice: "Tag \"#{tag_name}\" supprimé"
     else
-      redirect_back fallback_location: welcome_collector_path, alert: "Ce Tag ne peut pas être supprimé"
+      redirect_to last_tag_path, alert: "Ce Tag ne peut pas être supprimé"
     end
   end
 
