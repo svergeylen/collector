@@ -190,6 +190,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     if @item.attachments.exists?(params[:attachment_id])
       @item.attachments.find(params[:attachment_id]).destroy
+      @item.touch
       redirect_to edit_item_path(@item), notice: 'Pièce jointe supprimée' 
     else
       redirect_to edit_item_path(@item), alert: 'Erreur lors de la suppression de la pièce jointe' 
@@ -211,9 +212,17 @@ class ItemsController < ApplicationController
     def save_attachments
       # Paperclip multiple upload of attachments on Item
       if params[:item][:attachments]
+      	list_of_attachments = []
         params[:item][:attachments].each { |attach|
-          @item.attachments.create(image: attach, user_id: current_user.id)
+          tmp = @item.attachments.create(image: attach, user_id: current_user.id)
+          @item.touch
+          list_of_attachments << tmp.id
         }
+        
+        # Crée un job pour afficher les nouvelles images sur la Une
+	      Job.create!(action: "add_pictures", element_id: @item.id, element_type: "Item", 
+  	      user_id:current_user.id, memory: { attachment_ids: list_of_attachments })
+
       end
     end
 

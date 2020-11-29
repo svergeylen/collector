@@ -218,4 +218,23 @@
 	}
 }
 
+/* Add-pictures blog post automatic from cron job */
+.add-pictures-attachments {
+}
+
+.add-pictures-attachment {
+	float: left;
+	width : 150px;
+	height : 150px;
+	margin : 10px;
+	padding : 10px;
+	border : 1px solid grey;
+	text-align : center;
+}
+.add-pictures-attachment img {
+	max-width : 130px;
+	max-height : 130px;
+}
+
+
 

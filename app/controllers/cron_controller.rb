@@ -6,7 +6,7 @@ class CronController < ApplicationController
 	# Doit être invoqué par le cron du système ou manuellement /cron/run
 	def run
 		@jobs_done = 0
-		possible_actions = ["add_item", "new_profile_picture", "new_profile_name"]
+		possible_actions = ["add_item", "add_pictures", "new_profile_picture", "new_profile_name"]
 		user_ids = Job.where(done: false).select(:user_id).distinct.map{ |job| job.user_id }
 
 		# Traitement distint pour chaque utilisateur
@@ -20,9 +20,10 @@ class CronController < ApplicationController
 					#logger.debug "------------->>"+ jobs.inspect
 
 					# On vérifie que le dernier job a été ajouté il y a un certain temps (sinon on attend)
-					if (jobs.last.created_at + 15.minutes < Time.now )
+					if (jobs.last.created_at + 0.minutes < Time.now )
 						user = User.find(user_id)
 						item_ids = []
+						
 						# On élimine les items qui auraient déjà été supprimés depuis la création du job.
 						jobs.each { |job|
 						 	if Item.exists?(job.element_id) 
