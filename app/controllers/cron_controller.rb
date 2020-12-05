@@ -20,7 +20,7 @@ class CronController < ApplicationController
 					#logger.debug "------------->>"+ jobs.inspect
 
 					# On vérifie que le dernier job a été ajouté il y a un certain temps (sinon on attend)
-					if (jobs.last.created_at + 0.minutes < Time.now )
+					if (jobs.last.created_at + 15.minutes < Time.now )
 						user = User.find(user_id)
 						item_ids = []
 						
