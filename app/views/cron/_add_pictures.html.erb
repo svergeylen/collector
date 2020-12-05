@@ -3,12 +3,16 @@
 <div class="add-pictures-attachments">
 	<% data[:jobs].each_with_index do |job, i| %>
 			<% a = Attachment.where(id: job[:memory][:attachment_ids]).each do |attach| %>
-				<div class="add-pictures-attachment img-thumbnail">
-					<%= link_to item_path(attach.element.id) do %>
+				
+				<%= link_to item_path(attach.element.id) do %>
+					<div class="add-pictures-attachment img-thumbnail box-shadow">
 						<%= image_tag ("/"+attach.image.url(:medium)) %>
-						<%= attach.element.name %>
-					<% end %>
-				</div>
+						<div class="add-pictures-description">
+							<%= attach.element.name %>
+						</div>
+					</div>
+				<% end %>
+				
 			<% end %>
 
 	<% end %>
