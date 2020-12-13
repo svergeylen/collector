@@ -14,8 +14,19 @@ class FoldersController < ApplicationController
   	# Breadcrumbs
 		@ancestors = Folder.find(@folder.path_ids)
   
+    # Choix de l'ordre dans lequel afficher les items
+    if params[:order].present?
+      @order = params[:order]
+    else
+      @order = @folder.is_root? ? "date" : "number"
+    end
+    
   	# Items directs. N'affiche que les items dans ce dossier ci (sans inclure les sous-dossiers)
-  	@items = @folder.items
+  	if (@order == "date") 
+	  	@items = @folder.items.order(updated_at: :desc)
+  	else 
+	  	@items = @folder.items.order(number: :asc)
+  	end
   	
   	# Derniers items modifiés dans cette catégorie
 		if @folder.is_root?
@@ -49,19 +60,14 @@ class FoldersController < ApplicationController
     if params[:view].present?
       @view = params[:view]
     else
-      #if @folder.default_view.blank?
+      if @folder.default_view.blank?
         @view = "list"
-      #else
-      #  @view = @folder.default_view
-      #end 
+      else
+        @view = @folder.default_view
+      end 
     end
     
-    # Choix de l'ordre dans lequel afficher les items
-    if params[:order].present?
-      @order = params[:order]
-    else
-      @order = @folder.is_root? ? "date" : "number"
-    end
+
   
   
   end
@@ -123,6 +129,6 @@ class FoldersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def folder_params
-      params.require(:folder).permit(:name, :parent_id)
+      params.require(:folder).permit(:name, :parent_id, :letter, :default_view)
     end
 end
