@@ -23,7 +23,7 @@
   </div>
   
   <div class="form-group row">
-    <label for="folder" class="col-sm-2 col-form-label">Série/Dossier</label>
+    <label for="folder" class="col-sm-2 col-form-label">Dossier</label>
     <div class="col-sm-6">
       <%= form.collection_select :folder_id, @folders_list, :id, :name, {prompt: true}, {class: 'form-control'} %>
     </div>

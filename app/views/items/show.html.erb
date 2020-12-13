@@ -3,7 +3,8 @@
 		<%= render partial: "shared/collector_menu" %>
 	</div>
 	
-	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors } %>
+	<h3><%= @item.name %></h3>
+
 
 	<% if @item.attachments.count > 0 %>
 		<div class="row">
@@ -13,16 +14,20 @@
 			<div class="col-md-6">
 	<% end %>
 
-	<h3><%= @item.name %></h3>
-
+	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors, folder: @item.folder } %>
+	
 	<div class="mt-3 mb-3">
 		<%= render_users(@item) %>
 	</div>
 
 	<div class="mb-3">
-		Série/Dossier : <%= @item.folder.name %>, n°<%= @item.friendly_number %>
+		n°<%= @item.friendly_number %>
 	</div>
 		
+	<% if @item.tags.present? %>
+		<p><%= render_tags(@item.tags) %></p>
+	<% end	 %>		
+	
 	<div class="mt-3 mb-3">
 		<%= sanitize @item.description %>
 	</div>
@@ -50,9 +55,7 @@
 		</div>
 	<% end %>
 
-	<% if @item.tags.present? %>
-		<p><%= render_tags(@item.tags) %></p>
-	<% end	 %>		
+
 		
 	<% if @item.attachments.count > 0 %>
 			</div><!-- col -->

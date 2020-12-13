@@ -14,7 +14,7 @@ class FoldersController < ApplicationController
   	# Breadcrumbs
 		@ancestors = Folder.find(@folder.path_ids)
   
-  	# Items directs
+  	# Items directs. N'affiche que les items dans ce dossier ci (sans inclure les sous-dossiers)
   	@items = @folder.items
   	
   	# Derniers items modifiés dans cette catégorie

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201206093748) do
+ActiveRecord::Schema.define(version: 20201213170121) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20201206093748) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ancestry"
+    t.string "letter"
+    t.string "default_view"
     t.index ["ancestry"], name: "index_folders_on_ancestry"
   end
 

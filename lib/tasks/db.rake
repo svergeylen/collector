@@ -22,10 +22,13 @@ namespace :db do
 			Tag.find_by_name(root_folder_name).items.each do |item|		
 				serie_parent = serie_parents[index]
 				puts "   - "+item.id.to_s+": "+item.name+" --> "+serie_parent
-				serie = item.tag_serie_by(serie_parent)
+				tag = item.tag_serie_by(serie_parent)
+				serie_name = (tag.present? ? tag.name : "")
 				# Recherche le dossier s'il existe (série existante) ou création
-				folder = Folder.find_or_create_by(name: serie)
+				folder = Folder.find_or_create_by(name: serie_name)
 				folder.parent = parent
+				folder.default_view = tag.default_view if tag.present?
+				folder.letter = tag.letter if tag.present?
 				folder.save
 				# place l'item dans ce dossier
 				item.folder = folder
@@ -33,6 +36,11 @@ namespace :db do
 			end
 			puts "------- Fin --------- "+root_folder_name
 		end 
+		puts "--- Conclusions ---"
+		puts "Folder sans parent : "
+		puts Folder.roots.pluck(:name).join(", ")
+		puts "Item sans folder : "
+		puts Item.where(folder_id: :nil).pluck(:name).join(", ")
 		puts "Fin de fin"
 	end
 	

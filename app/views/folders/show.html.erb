@@ -5,17 +5,15 @@
 
 	<h1><%= @folder.name %></h1>
 
-	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors } %>
+	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors, folder: @folder } %>
 
 
 	<% if @last_modified.present? %>
-		<h4>Dernièrement	</h4>
+		<h5>Récemment</h5>
 		<ul>
 		<% @last_modified.each do |item| %>
 			<li>
-				<span class="item_number"><%= item.friendly_number %></span>
-				<span class="item_folder"><%= link_to item.folder.name, item.folder %></span>
-				<span class="item_title"> : <%= link_to item.name, item %></span>
+				<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
 			</li>
 		<% end %>
 		</ul>

@@ -210,7 +210,7 @@ class ItemsController < ApplicationController
 
     # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
-      @folders_list = Folder.all
+      @folders_list = Folder.all.order(:name)
     	@tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/"+action
     end

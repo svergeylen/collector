@@ -71,8 +71,7 @@ class Item < ApplicationRecord
 	# Donne LE nom de la série de l'item dont le parent tag est donné.
 	# Pour Bonsais : parent_name = "Espèces" --> renvoie le premier tags enfant de "Espèces"
 	def tag_serie_by(parent_name)
-		tmp = @tag_series || tags_with_parent(parent_name).first
-		return (tmp.present? ? tmp.name : "")
+		@tag_series || tags_with_parent(parent_name).first
 	end
 	
 	# Before_save : Sauvegarde les series donnés dans une liste de string séparée par des virgule en objets Tag

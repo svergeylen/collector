@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <% ancestors.each do |ancestor| %>
-    	<li class="breadcrumb-item">
+    	<li class="breadcrumb-item <%= "active" if ancestor.id==folder.id %> ">
     		<%= link_to ancestor.name, ancestor %> 
     	</li>
     <% end %>
