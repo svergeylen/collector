@@ -17,8 +17,8 @@
 			</div>
 		</div>
 
-		<% if @tags.present? %>
-			<% @tags.each_with_index do |tag, index| %>
+		
+			<% @folders.each_with_index do |folder, index| %>
 				<% if (index % 3 == 0) %>
 					<div class="row">
 				<% end %>
@@ -26,10 +26,10 @@
 
 						<div class="card card-latest">
 						  <div class="card-header bg-major">
-						    <%= link_to tag.name, tag_path(tag), class:'text-light' %>
+						    <%= link_to folder.name, folder, class:'text-light' %>
 						  </div>
 						  <ul class="list-group list-group-flush">
-						  	<% tag.items.includes(:adder).order(created_at: :desc).limit(5).each do |item| %>
+						  	<% folder.items.includes(:adder).order(created_at: :desc).limit(5).each do |item| %>
 						    	<li class="list-group-item" title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
 						    		<div class="float-right" >
 						    			<% if (item.created_at > current_user.displayed_collector.beginning_of_day) %>
@@ -48,7 +48,7 @@
 					</div> <!-- row -->
 				<% end %>
 			<% end %>
-		<%end %>
+		
 	</div>
 
 </div>

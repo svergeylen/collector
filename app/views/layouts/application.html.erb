@@ -31,9 +31,6 @@
 		  			<%= link_to "La Une", posts_path, class:'nav-link text-light' %>
 	  			</li>
 		  	<% end %>
-	    	<li class='nav-item'>
-	    		<%= link_to "Collector", welcome_collector_path, class:"nav-link text-light" %>
-	   		</li>
 	   		<% Folder.roots.limit(15).order(name: :asc).each do |folder| %>
 			 		<li class='nav-item'>
 			 			<%= link_to folder.name, folder, class:"nav-link text-light" %>

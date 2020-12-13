@@ -2,15 +2,15 @@
 	<h2>Recherche de "<%= @keyword %>"</h2>
 
 
-	<% if @tags.present? %>
-		<h4><%= pluralize( @tags.count, "tag trouvé", "tags trouvés", locale: :fr) %> : </h4>
+	<% if @folders.present? %>
+		<h4><%= pluralize( @folders.count, "dossier trouvé", "dossiers trouvés", locale: :fr) %> : </h4>
 		<ul>
-		<% @tags.each do |tag| %>
-			<li><%= link_to highlight(tag.name, @keyword, highlighter: '<strong>\1</strong>'), tag_path(tag) %> </li>
+		<% @folders.each do |folder| %>
+			<li><%= link_to highlight(folder.name, @keyword, highlighter: '<strong>\1</strong>'), folder_path(folder) %> </li>
 		<% end %>
 		</ul>
 	<% else %>
-		<p>Pas de tag correspondant.</p>
+		<p>Pas de dossier correspondant.</p>
 	<% end %>
 
 	<% if @items.present? %>

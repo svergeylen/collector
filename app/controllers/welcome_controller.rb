@@ -22,5 +22,9 @@ class WelcomeController < ApplicationController
 
     	# Affichage des tags favoris de l'utilisateur (derniers ajouts/accès rapide)
 	    @tags = current_user.tags.order(:name)
+	    
+	    # 
+	    @folders = Folder.roots
+	    
 	end
 end

@@ -1,6 +1,10 @@
 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
   <div class="btn-group" role="group">
 
+		<%= form_tag(search_keyword_path, method: "get", class: "form-inline my-2 my-lg-0") do %>
+			<%= text_field_tag(:keyword, "", placeholder: "Rechercher", class: 'form-control', autocomplete: 'off') %>
+		<% end %>
+				
     <% if @items.present? and @tag.present? %>
 
       <%# Bouton Tri par date ou tri par numéro %>

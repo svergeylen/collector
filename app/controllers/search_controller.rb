@@ -4,7 +4,7 @@ class SearchController < ApplicationController
   def keyword
   	@keyword = params[:keyword] if params[:keyword].present?
   	
-  	@tags = Tag.search(@keyword).limit(50)
+  	@folders = Folder.search(@keyword).limit(50)
   	@items = Item.search(@keyword).limit(50)
     @posts = Post.search(@keyword)
     @comments = Comment.search(@keyword)
