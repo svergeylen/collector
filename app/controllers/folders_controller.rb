@@ -14,13 +14,21 @@ class FoldersController < ApplicationController
   	# Breadcrumbs
 		@ancestors = Folder.find(@folder.path_ids)
   
-  	# Items
+  	# Items directs
   	@items = @folder.items
+  	
+  	# Derniers items modifiés dans cette catégorie
+		if @folder.is_root?
+			@last_modified = Item.belongs_to_folder(@folder).order(updated_at: :desc).limit(5)
+		else
+			@last_modified = []
+		end
+
   
   	# Si le dossier contient des sous-dossiers
     if @folder.children.present?
       # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
-      @navigate_option = (@folder.children.count > 40)? true : false 
+      @navigate_option = (@folder.children.count > 20)? true : false 
       case params[:letter]
         when "A".."W"
           @subfolders = @folder.children.where(letter: params[:letter])

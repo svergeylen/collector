@@ -8,6 +8,19 @@
 	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors } %>
 
 
+	<% if @last_modified.present? %>
+		<h4>Dernièrement	</h4>
+		<ul>
+		<% @last_modified.each do |item| %>
+			<li>
+				<span class="item_number"><%= item.friendly_number %></span>
+				<span class="item_folder"><%= link_to item.folder.name, item.folder %></span>
+				<span class="item_title"> : <%= link_to item.name, item %></span>
+			</li>
+		<% end %>
+		</ul>
+	<% end %>
+
 	<% if @navigate_option %>
 		<div class="btn-group header-letters mt-2 mb-2">
 			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
@@ -32,6 +45,7 @@
 		
 	<% else %>
 		<% if @subfolders.present? %>
+		<h4>Sous dossiers</h4>
 			<div class="row">
 				<div class="col-md-3">
 					<ul class="children_tags">

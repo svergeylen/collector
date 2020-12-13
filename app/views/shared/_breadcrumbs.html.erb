@@ -1,6 +1,9 @@
-<div class="mt-3 mb-3">
-	<%= link_to "Root", welcome_collector_path  %>
-	<% ancestors.each do |ancestor| %>
-		> <%= link_to ancestor.name, ancestor %> 
-	<% end %>
-</div>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <% ancestors.each do |ancestor| %>
+    	<li class="breadcrumb-item">
+    		<%= link_to ancestor.name, ancestor %> 
+    	</li>
+    <% end %>
+  </ol>
+</nav>

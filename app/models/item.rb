@@ -252,6 +252,13 @@ class Item < ApplicationRecord
 		end
 	end
 
+	# -------------- Items appartenant à un noeud root donné  -------------------------
+	def self.belongs_to_folder(root_folder)
+		# Renvoie tous les items dont le folder se trouve parmi n'importe quel descendant de la racine donnée
+		where(folder: root_folder.descendant_ids)
+	end
+
+
 	# -------------- ITEM TYPE et enrichissement via site tiers -------------------------------------------
 
 	# Liste les types d'items = item.item_type et aussi potentiellement un formulaire personalisé d'edit/new item
