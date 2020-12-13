@@ -41,47 +41,22 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-    @item.item_type = params[:item_type] if params[:item_type].present?
     
     # Pré-remplissage du formulaire au mieux
     @item.number = params[:number] if (params[:number].present?)
     @item.name = params[:name] if (params[:name].present?)
     @item.description = params[:description] if (params[:description].present?)
-    case params[:item_type]
-    when "bd", "livre"
-      proposed_tags = []
-
-      proposed_1 = []
-      if params[:tag_names].present?
-        proposed_1 = Tag.where(name: params[:tag_names].split(","))
-      end
-      proposed_2 = Tag.includes(:parent_tags).where(id: params[:tag_ids])
-      proposed_tags = proposed_1 + proposed_2
-      @item.tag_series = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Séries")) }.pluck(:name).join(",")
-      @item.tag_auteurs = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Auteurs")) }.pluck(:name).join(",")
-      @item.tag_rangements = proposed_tags.select{ |t| t.parent_tags.include?(Tag.find_by(name: "Rangements")) }.pluck(:name).join(",")
-    else
-      if params[:tag_names].present?
-        @item.tag_names = params[:tag_names]
-      else
-        @item.tag_names = Tag.where(id: session[:active_tags]).pluck(:name).join(", ")
-      end
+    if params[:tag_names].present?
+      @item.tag_names = params[:tag_names]
     end
-
-    @folders_list = Folder.all
+  
     
     render_correct_form("new")
   end
 
 
   # GET /items/1/edit
-  def edit
-    # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
-    #@item.item_type = params[:item_type] if params[:item_type].present?
-    #@quantity = @item.quantity_for(current_user.id)
-    
-    @folders_list = Folder.all
-    
+  def edit   
     render_correct_form("edit")
   end
 
@@ -235,24 +210,9 @@ class ItemsController < ApplicationController
 
     # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
-      @last_tag_path = last_tag_path # inaccessible en view
-      # Champ <select> de sélection de type
-      @item_types = Item.item_types.collect { |t| [t[1], t[0]] }
-      # On affiche le formulaire correspondant au type d'item (éventuellement modifié ci-dessus)
-      case @item.item_type
-        when "bd", "livre"
-          # Chargement des tags spécifiques à chaque champ : Séries, Auteurs, Rangements
-          tag_series = Tag.find_or_create_by(name: "Séries")
-          @series_list = tag_series.children.pluck(:name)
-          tag_auteurs = Tag.find_or_create_by(name: "Auteurs")
-          @auteurs_list = tag_auteurs.children.pluck(:name)
-          tag_rangement = Tag.find_or_create_by(name: "Rangements")
-          @rangements_list = tag_rangement.children.pluck(:name)
-          render "items/"+action+"_bd" # Le form bd sert aux item_types = livre
-        else
-          @tag_list = Tag.order(name: :asc).pluck(:name)
-          render "items/"+action
-      end
+      @folders_list = Folder.all
+    	@tag_list = Tag.order(name: :asc).pluck(:name)
+      render "items/"+action
     end
 
     # Use callbacks to share common setup or constraints between actions.

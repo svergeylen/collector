@@ -31,7 +31,7 @@ class FoldersController < ApplicationController
         when "vide"
           @subfolders = @folder.children.where(letter: [nil, ""])
         else
-          @subfolders = @folder.children
+          @subfolders = @folder.children.order(:name)
       end
       # Nombre de tag par colonne
       @folders_per_column = (@subfolders.count.to_f/4).ceil 
@@ -102,7 +102,7 @@ class FoldersController < ApplicationController
   def destroy
     @folder.destroy
     respond_to do |format|
-      format.html { redirect_to folders_url, notice: 'Folder was successfully destroyed.' }
+      format.html { redirect_to welcome_collector_path, notice: 'Dossier supprimé' }
       format.json { head :no_content }
     end
   end
@@ -115,6 +115,6 @@ class FoldersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def folder_params
-      params.require(:folder).permit(:name)
+      params.require(:folder).permit(:name, :parent_id)
     end
 end
