@@ -1,0 +1,97 @@
+<div class="rounded-box">
+	<div class="float-right">
+		<%= render partial: "shared/collector_menu" %>
+	</div>
+
+	<h1><%= @folder.name %></h1>
+
+	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors } %>
+
+
+	<% if @navigate_option %>
+		<div class="btn-group header-letters mt-2 mb-2">
+			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
+				<%= link_to letter, folder_path(@folder, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
+			<% end %>
+		</div>
+		<div class="row general-padding">
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<ul class="pl-2">
+					<% @subfolders.each_with_index do |subfolder, i| %>
+						<li><%= link_to subfolder.name, subfolder  %></li>
+				    	<% if ((i+1) % @folders_per_column) == 0 %>
+				    			</ul>
+				    		</div>
+				    		<div class="col-md-3 col-sm-6 col-xs-12">
+				    			<ul class="pl-2">
+				    	<% end %>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+		
+	<% else %>
+		<% if @subfolders.present? %>
+			<div class="row">
+				<div class="col-md-3">
+					<ul class="children_tags">
+						<% @subfolders.each do |subfolder| %>
+							<li><%= link_to subfolder.name, subfolder  %></li>
+						<% end %>
+					</ul>
+				</div>
+			<div class="col-md-9">
+		<% end %>	
+		
+		<% if @items.present? %>
+
+			<!-- Form Actions -->
+			<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
+				<%= hidden_field_tag :folder_id, @folder.id %>
+				<%= hidden_field_tag :view, params[:view] %>
+
+				<%= render partial: @view, locals: {items: @items } %>
+
+				<div class="mt-2 mb-2">
+					<%# will_paginate @items %>
+				</div>
+
+				<!-- Boutons Actions -->
+				<h3 class="mt-5 mb-3">Actions</h3>
+				<div class="row ">
+					<div class="col-sm-2 col-form-label">
+						Sélection :
+					</div>
+					<div class="col-sm-10">
+						<%= submit_tag "Ajouter", name: 'add_to_collection', class:"btn btn-light mr-3", title:"Ajouter les éléments dans ma collection personnelle (icone avatar)" %> 
+						<%= submit_tag "Enlever", name: 'remove_from_collection', class:"btn btn-light mr-3", title:"Enlever les éléments de ma collection personnelle (icone avatar)" %> 
+						<%= submit_tag "Supprimer", name: 'destroy', class:"btn btn-light mr-3", title: "Supprimer ces éléments du Collector (irréversible)", data: { confirm: "Attention, vous allez supprimer définitivement les élements sélectionnés du Collector."} %>
+						<%= link_to "Tout sélectionner", "#", id: "check_all", class:'mr-3', title:"Inverse la sélection actuelle des items" %>
+					</div>
+				</div>
+				<div class="row mb-3 mt-3">
+					<div class="col-sm-2 col-form-label">
+						Tags :
+					</div>
+					<div class="col-sm-5">
+						<%= text_field_tag :tag_names, "", id: "tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
+					</div>
+					<div class="col-sm-5">
+						<%= submit_tag "Ajouter", name: 'add_tag', class:"btn btn-light mr-3", title: "Ajouter les tags donnés aux items sélectionnés" %> 
+						<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light mr-3", title: "Enlève les tags donnés aux items sélectionnés" %>	
+						<%= submit_tag "Ranger", name: 'move', class:"btn btn-light", title: "Déplace les items sélectionnés du rangement actuel vers le rangement donné" %>	
+					</div>
+				</div>
+
+			<% end  %><!-- form Actions -->
+
+		<% end # items.present? %>
+	
+		<% if @subfolders.present? %>
+				</div> <!-- col-md-10-->
+			</div> <!-- row -->
+		<% end %>
+
+	<% end # navigate_option %>
+
+</div> <!-- rounded-box -->

@@ -1,6 +1,42 @@
 namespace :db do
 	desc "Conversion des données site Collector"
 
+
+	# Crée les folders 
+	task create_folders_items: :environment do
+		puts "Création des folders"	
+		# Root folder à créer
+		root_folders  = ["Bandes dessinées", "Bonsais", "Livres", "Jeux de société", "Modélisme", "Pièces"]
+		# nom du tag qui contient l'information principale de "série", pour chaque root_folders
+		serie_parents = ["Séries",           "Espèces", "Thèmes", "Par genre",       "Modélisme", "Pièces par pays"]
+		
+		# Je commence par créer les root_folder pour que les ID soient de 1 à 7, pour le plaisir
+		root_folders.each do |root_folder_name|
+			parent = Folder.find_or_create_by(name: root_folder_name)
+		end
+		
+		# Je crée les sous-dossiers (=série) et place chaque item dedans. Un fodler/série par item
+		root_folders.each_with_index do |root_folder_name, index|
+			puts "------- Debut --------- "+root_folder_name
+			parent = Folder.find_or_create_by(name: root_folder_name)
+			Tag.find_by_name(root_folder_name).items.each do |item|		
+				serie_parent = serie_parents[index]
+				puts "   - "+item.id.to_s+": "+item.name+" --> "+serie_parent
+				serie = item.tag_serie_by(serie_parent)
+				# Recherche le dossier s'il existe (série existante) ou création
+				folder = Folder.find_or_create_by(name: serie)
+				folder.parent = parent
+				folder.save
+				# place l'item dans ce dossier
+				item.folder = folder
+				item.save
+			end
+			puts "------- Fin --------- "+root_folder_name
+		end 
+		puts "Fin de fin"
+	end
+	
+	
 	task convert_bd: :environment do
 		bd          = Tag.create(name: "Bandes dessinées", root_tag: true)
 		auteurs		= Tag.create(name: "Auteurs", default_view: "list")

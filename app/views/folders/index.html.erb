@@ -1,0 +1,27 @@
+<h1>Folders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th> Parent</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @folders.each do |folder| %>
+      <tr>
+        <td><%= link_to folder.name, folder %></td>
+        <td><%= link_to(folder.parent.name, folder.parent) if folder.parent %></td>
+        <td><%= link_to 'Edit', edit_folder_path(folder) %></td>
+        <td><%= link_to 'Destroy', folder, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Folder', new_folder_path %>

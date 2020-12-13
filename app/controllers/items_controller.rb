@@ -33,6 +33,9 @@ class ItemsController < ApplicationController
     item_type = @item.item_type
     @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
 
+		# breadcrumbs 
+		@ancestors = Folder.find(@item.folder.path_ids)
+		
   end
 
   # GET /items/new
@@ -65,6 +68,8 @@ class ItemsController < ApplicationController
       end
     end
 
+    @folders_list = Folder.all
+    
     render_correct_form("new")
   end
 
@@ -72,8 +77,10 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
     # On change le type d'item si c'est forcé dans l'URL (via modification du champ <select> )
-    @item.item_type = params[:item_type] if params[:item_type].present?
-    @quantity = @item.quantity_for(current_user.id)
+    #@item.item_type = params[:item_type] if params[:item_type].present?
+    #@quantity = @item.quantity_for(current_user.id)
+    
+    @folders_list = Folder.all
     
     render_correct_form("edit")
   end

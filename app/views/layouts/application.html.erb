@@ -34,6 +34,11 @@
 	    	<li class='nav-item'>
 	    		<%= link_to "Collector", welcome_collector_path, class:"nav-link text-light" %>
 	   		</li>
+	   		<% Folder.roots.limit(15).order(name: :asc).each do |folder| %>
+			 		<li class='nav-item'>
+			 			<%= link_to folder.name, folder, class:"nav-link text-light" %>
+			 		</li>
+	   		<% end %>
 		  </ul>
 
 		<%# form_tag(search_keyword_path, method: "get", class: "form-inline my-2 my-lg-0") do %>

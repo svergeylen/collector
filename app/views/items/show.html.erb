@@ -2,11 +2,9 @@
 	<div class="float-right">
 		<%= render partial: "shared/collector_menu" %>
 	</div>
-
-	<div class="mt-2 mb-4">
-		<%= render partial: "shared/tags", locals: { elder_tags: @elder_tags, active_tags: @active_tags} %>
-	</div>
 	
+	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors } %>
+
 	<% if @item.attachments.count > 0 %>
 		<div class="row">
 			<div class="col-md-6">
@@ -17,68 +15,50 @@
 
 	<h3><%= @item.name %></h3>
 
-		<div class="mt-3 mb-3">
-			<%= render_users(@item) %>
+	<div class="mt-3 mb-3">
+		<%= render_users(@item) %>
+	</div>
+
+	<div class="mb-3">
+		Folder : <%= @item.folder.name %>, n°<%= @item.friendly_number %>
+	</div>
+		
+	<div class="mt-3 mb-3">
+		<%= sanitize @item.description %>
+	</div>
+	
+	<b>Notes</b>
+	<ul>
+		<% @notes.each do |note| %>
+		  <li>
+		  	<span title="Note de <%= note.user.name %>, le <%= long_date(note.created_at) %>">
+		  		<%= hist_date(note.created_at) %>
+		  	</span> : 
+		  	<%= icon_for_classification(note.classification) if note.classification%>
+		  	<%= note.message %>
+		  </li>
+		<% end %>
+	</ul>  
+
+	<b>Ajouter une note</b>
+	<%= form_with(model: [ @item, @item.notes.build(created_at: DateTime.now.to_date ) ], local: true) do |form| %>
+		<div class="form-group">
+		    <%= form.select :classification, options_for_select([  ["Achat", "achat"], ["Vu / lu / joué", "vu"], ["Bouture", "bouture"],  ["Ligature","ligature"],  ["Rempotage", "rempotage"], ["Taille des racines", "racines"], ["Taille de structure","structure"], ["Taille de densification", "densification"], ["Sécheresse", "secheresse"], ["Excès d'arrosage", "arrosage"], ["Parasites","parasites"] ]), {prompt: "Pas de type particulier"}, { class: "form-control custom-select"}  %>
+		    <%= form.text_area :message, class: "form-control" %>
+		    <%= form.date_field :created_at, class: "form-control" %>
+		    <%= form.submit 'Créer', class: "btn btn-light" %>
 		</div>
+	<% end %>
 
-			<% if @item.tags.present? %>
-				<div class="mb-3">
-					<% if @item.item_type == "bd" or @item.item_type == "livre"  %>
-						<p>Série : <%= render_tags ( @item.tags_with_parent("Séries")) %></p>
-						<p>Auteurs : <%= render_tags ( @item.tags_with_parent("Auteurs")) %></p>
-						<p>Rangement : <%= render_tags ( @item.tags_with_parent("Rangements")) %></p>
-						<p>Numéro : <%= @item.friendly_number %></p>
-					<% else %>
-						<p><%= render_tags(@item.tags) %></p>
-						<% if @item.number.present? %>
-							<p>Numéro : <%= @item.friendly_number %></p>
-						<% end %>
-					<% end %>
-				</div>
-			<% end %>				
-
-			<% if @item.description.present? %>
-				<div class="mt-3 mb-3">
-					<%= sanitize @item.description %>
-				</div>
-			<% end %>
-
-			
-
-			<b>Notes</b>
-			<ul>
-				<% @notes.each do |note| %>
-				  <li>
-				  	<span title="Note de <%= note.user.name %>, le <%= long_date(note.created_at) %>">
-				  		<%= hist_date(note.created_at) %>
-				  	</span> : 
-				  	<%= icon_for_classification(note.classification) if note.classification%>
-				  	<%= note.message %>
-				  </li>
-				<% end %>
-			</ul>  
-
-			<b>Ajouter une note</b>
-			<%= form_with(model: [ @item, @item.notes.build(created_at: DateTime.now.to_date ) ], local: true) do |form| %>
-				<div class="form-group">
-				    <%= form.select :classification, options_for_select([  ["Achat", "achat"], ["Vu / lu / joué", "vu"], ["Bouture", "bouture"],  ["Ligature","ligature"],  ["Rempotage", "rempotage"], ["Taille des racines", "racines"], ["Taille de structure","structure"], ["Taille de densification", "densification"], ["Sécheresse", "secheresse"], ["Excès d'arrosage", "arrosage"], ["Parasites","parasites"] ]), {prompt: "Pas de type particulier"}, { class: "form-control custom-select"}  %>
-				    <%= form.text_area :message, class: "form-control" %>
-				    <%= form.date_field :created_at, class: "form-control" %>
-				    <%= form.submit 'Créer', class: "btn btn-light" %>
-				</div>
-			<% end %>
-
+	<% if @item.tags.present? %>
+		<p><%= render_tags(@item.tags) %></p>
+	<% end	 %>		
+		
 	<% if @item.attachments.count > 0 %>
 			</div><!-- col -->
 		</div><!-- row -->
 	<% end %>
 
-<!-- ><hr />
-	<p><%= link_to "Charger plus d'infos", enhance_item_path, :remote => true %></p>
-	<div id="enhanced_content" class="m-3">
-		<%# render partial: "items/enhance/"+@item.item_type, locals: {item: @item} %>
-	</div>
--->
 
 	<%= form_with(model: @item, local: true, :html => { :multipart => true }, class: "form-horizontal mt-5 mb-2") do |form| %>
       	Ajouter une image : <%= form.file_field :attachments, multiple: true %>

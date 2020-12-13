@@ -41,6 +41,8 @@ GEM
     acts_as_votable (0.10.0)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    ancestry (3.2.1)
+      activerecord (>= 4.2.0)
     arel (8.0.0)
     autoprefixer-rails (7.2.3)
       execjs
@@ -161,7 +163,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    rake (12.3.0)
+    rake (13.0.1)
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -231,6 +233,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_votable (~> 0.10.0)
+  ancestry
   autoprefixer-rails
   bcrypt (~> 3.1.16)
   bootstrap (~> 4.1.3)

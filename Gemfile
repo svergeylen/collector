@@ -69,6 +69,8 @@ gem 'googlebooks'
 # Lecture des metadonnées des photos
 gem 'exifr'
 
+# Tree, structure hiérarchique des dossiers
+gem 'ancestry'
 
 group :development, :test do
   

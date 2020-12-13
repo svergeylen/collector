@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190317133249) do
+ActiveRecord::Schema.define(version: 20201206093748) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(version: 20190317133249) do
     t.index ["user_id"], name: "index_favourites_on_user_id"
   end
 
+  create_table "folders", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ancestry"
+    t.index ["ancestry"], name: "index_folders_on_ancestry"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -55,6 +63,8 @@ ActiveRecord::Schema.define(version: 20190317133249) do
     t.string "item_type"
     t.text "enhanced_image"
     t.text "enhanced_content"
+    t.integer "folder_id"
+    t.index ["folder_id"], name: "index_items_on_folder_id"
   end
 
   create_table "itemusers", force: :cascade do |t|

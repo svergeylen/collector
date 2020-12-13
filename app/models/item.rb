@@ -1,5 +1,8 @@
 class Item < ApplicationRecord
 	enum rails_view: [ :general, :bd]
+	
+	# Classement des items dans un dossier
+	belongs_to :folder
 
 	has_many :ownertags,    dependent:  :destroy, as: :owner
 	has_many :tags,         through:    :ownertags
@@ -55,9 +58,21 @@ class Item < ApplicationRecord
 		end
 	end
 
-	# Donne la liste de series de l'item au format string séparé par une virgule
+	# Donne LA série de l'item au format string séparé par une virgule
 	def tag_series
-		@tag_series || tags_with_parent("Séries").pluck(:name).join(", ")
+		tmp = @tag_series || tags_with_parent("Séries").first
+		if tmp.present? 
+			return tmp.name 
+		else
+		 return "" 
+		 end
+	end
+	
+	# Donne LE nom de la série de l'item dont le parent tag est donné.
+	# Pour Bonsais : parent_name = "Espèces" --> renvoie le premier tags enfant de "Espèces"
+	def tag_serie_by(parent_name)
+		tmp = @tag_series || tags_with_parent(parent_name).first
+		return (tmp.present? ? tmp.name : "")
 	end
 	
 	# Before_save : Sauvegarde les series donnés dans une liste de string séparée par des virgule en objets Tag

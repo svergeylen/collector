@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :folders
   # Attachment
   get "attachment/:attachment_id/:style.:extension", to: "attachments#download", as: "download_attachment"
 
