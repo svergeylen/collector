@@ -15,16 +15,7 @@ class WelcomeController < ApplicationController
 
 	# Accueil du Collector
 	def collector
-		# Efface tous les active tags lorsqu'on va à l'accueil du collector
-	    session[:active_tags] = []
-
-    	current_user.save_time_collector
-
-    	# Affichage des tags favoris de l'utilisateur (derniers ajouts/accès rapide)
-	    @tags = current_user.tags.order(:name)
-	    
-	    # 
-	    @folders = Folder.roots
-	    
+  	current_user.save_time_collector
+    @folders = Folder.roots
 	end
 end

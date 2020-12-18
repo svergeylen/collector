@@ -2,17 +2,9 @@ class UsersController < ApplicationController
 	def show
   		@user = User.find(params[:id])
   		
-  		# Derniers messages
-  		@last_post = @user.posts.order(created_at: :desc).limit(1).first
-
   		# Derniers ajouts Collector
   		@months_quantity = 6
   		@items = @user.last_added_items(@months_quantity)
-	end
-
-	# Montre les séries suivies et les prochains numéro à acquérir
-	def favorites
-		@series = current_user.series.order(name: :asc)
 	end
 
 	# Supprimer l'image de profil

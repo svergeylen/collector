@@ -21,7 +21,7 @@
 
 	<% if @navigate_option %>
 		<div class="btn-group header-letters mt-2 mb-2">
-			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "XYZ", "vide"].each do |letter| %>
+			<% ["#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "vide"].each do |letter| %>
 				<%= link_to letter, folder_path(@folder, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
 			<% end %>
 		</div>

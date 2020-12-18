@@ -5,16 +5,6 @@ class ApplicationController < ActionController::Base
   # Ajoute des paramètres modifiables par l'utilisateur dans Devise (strong Paramaters)
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-
-  # Renvoie un lien vers le dernier tag affiché (probablement), tout en conservant les tags actifs
-  def last_tag_path
-    if session[:active_tags].present?
-  	 return tag_path(session[:active_tags].last)
-    else
-      return welcome_collector_path
-    end
-  end
-
 	protected
 
 	def configure_permitted_parameters

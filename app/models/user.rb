@@ -7,10 +7,6 @@ class User < ApplicationRecord
   	has_many :itemusers
 	has_many :items, through: :itemusers
 
-	# Tags favoris
-	has_many :favourites
-	has_many :tags, through: :favourites
-
 	# News
 	has_many :posts, dependent: :destroy
 	has_many :comments, through: :posts

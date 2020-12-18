@@ -6,23 +6,17 @@ class ItemsController < ApplicationController
     per_page = 40
     case params[:mode]
       when "Orphelins"
-        item_ids_having_tags = Ownertag.all.group(:owner_id).where(owner_type: 'Item').pluck(:owner_id)
-        @items = Item.where.not(id: item_ids_having_tags).order(:name).paginate(page: params[:page], per_page: per_page)
+        @items = Item.where(folder: [nil, ""]).paginate(page: params[:page], per_page: per_page)
       else
-        @items = Item.includes(:tags).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+        @items = Item.order(id: :asc).paginate(page: params[:page], per_page: per_page)
     end
   end
 
   # GET /items/1
   # GET /items/1.json
   def show
-    # Liste des tags actifs (breadcrumbs)
-    @active_tags = Tag.find(session[:active_tags]) if session[:active_tags].present?
-
-    # Parents éventuels du premier active tag
-    if @active_tags.present?
-      @elder_tags = Tag.find(@active_tags.first.elder_ids)
-    end
+		# breadcrumbs 
+		@ancestors = Folder.find(@item.folder.path_ids)
 
     # Notes associées à cet item
     @notes = @item.notes.includes(:user).order(created_at: :asc)
@@ -32,10 +26,6 @@ class ItemsController < ApplicationController
     proposed_tag_ids = @item.tags.pluck(:id)
     item_type = @item.item_type
     @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
-
-		# breadcrumbs 
-		@ancestors = Folder.find(@item.folder.path_ids)
-		
   end
 
   # GET /items/new
@@ -49,8 +39,7 @@ class ItemsController < ApplicationController
     if params[:tag_names].present?
       @item.tag_names = params[:tag_names]
     end
-  
-    
+
     render_correct_form("new")
   end
 

@@ -58,9 +58,6 @@ document.addEventListener("turbolinks:load", function() {
 
 	// New,Edit item
 	tag_names = create_selectize("tag_names");
-	tag_series = create_selectize("tag_series");
-	tag_auteurs = create_selectize("tag_auteurs");
-	tag_rangements = create_selectize("tag_rangements");
 
 	// New,Edit Tag
 	parent_tag_names = create_selectize("parent_tag_names");
@@ -72,10 +69,7 @@ document.addEventListener("turbolinks:load", function() {
 	$("#item_type").change(function(e) {
 		proposed_names = [];
 		if (tag_names) 		{ proposed_names.push(tag_names.items); }
-		if (tag_series) 	{ proposed_names.push(tag_series.items); }
-		if (tag_auteurs) 	{ proposed_names.push(tag_auteurs.items); }
 		if (tag_rangements) { proposed_names.push(tag_rangements.items); }
-			console.log(proposed_names);
 
 		args = location.pathname;
 		args+= "?item_type="+$(this).val();

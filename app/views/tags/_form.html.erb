@@ -13,46 +13,11 @@
 
   <div class="form-group row">
     <label class="col-form-label col-sm-2" for="tag_name">Nom</label>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       <%= form.text_field :name, id: "tag_name", class: "form-control",autocomplete: :off, autofocus: true %>
-    </div>
-    <div class="col-sm-2">
-      <label class="col-form-label col-sm-2" for="tag_letter">Classement</label>
-    </div>
-    <div class="col-sm-2">
-      <%= form.text_field :letter, id: :tag_letter, class: "form-control", autocomplete: :off %>
-    </div>
+    </div>  
   </div>
 
-  <div class="form-group row">
-    <label class="col-form-label col-sm-2" for="parent_tag_names">Parents</label>
-    <div class="col-sm-8">
-      <%= form.text_field :parent_tag_names, id: "parent_tag_names", class: "form-control", autocomplete: :off, data: { tag_list: @tag_list } %>
-    </div>
-  </div>
-
-  <% if @tag.tags.present? %>
-    <div class="form-group row">
-      <div class="col-sm-2">Enfants</div>
-      <div class="col-sm-8">
-        <%= render_tags @tag.children.limit(20) %>
-        <%= "etc." if @tag.children.count > 20 %>
-      </div>
-    </div>
-  <% end %>
-
-  <% if @tag.items.present? %>
-    <div class="form-group row">
-      <div class="col-sm-2">Items</div>
-      <div class="col-sm-8">
-        <% @tag.items.order(name: :asc).limit(20).each do |item| %>
-          <%= link_to item.name, item, class:"high-color" %>, 
-        <% end %>
-        <%= "etc." if @tag.children.count > 20 %>
-      </div>
-    </div>
-  <% end %>
-  
   <div class="form-group row">
     <div class="col-form-label col-sm-2" >
       Affichage

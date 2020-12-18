@@ -14,7 +14,36 @@ class FoldersController < ApplicationController
   	# Breadcrumbs
 		@ancestors = Folder.find(@folder.path_ids)
   
-    # Choix de l'ordre dans lequel afficher les items
+   	# Derniers items modifiés dans cette catégorie
+		if @folder.is_root?
+			@last_modified = Item.belongs_to_folder(@folder).order(updated_at: :desc).limit(5)
+		else
+			@last_modified = []
+		end
+		
+    # Si le dossier contient des sous-dossiers
+    if @folder.children.present?
+      # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
+      @navigate_option = (@folder.children.count > 20)? true : false 
+      case params[:letter]
+	      when "#"
+	      	@subfolders = @folder.children.where(letter: "1".."9").order(:name)
+        when "A".."V"
+          @subfolders = @folder.children.where(letter: params[:letter]).order(:name)
+        when "WXYZ"
+          @subfolders = @folder.children.where(letter: "W".."Z").order(:name)
+        when "#"
+          @subfolders = @folder.children.where(letter: 0..9999999).order(:name)
+        when "vide"
+          @subfolders = @folder.children.where(letter: [nil, ""]).order(:name)
+        else
+          @subfolders = @folder.children.order(:name)
+      end
+      # Nombre de tag par colonne
+      @folders_per_column = (@subfolders.count.to_f/4).ceil 
+    end # @folder.children.present?
+  
+  	# Choix de l'ordre dans lequel afficher les items
     if params[:order].present?
       @order = params[:order]
     else
@@ -27,35 +56,7 @@ class FoldersController < ApplicationController
   	else 
 	  	@items = @folder.items.order(number: :asc)
   	end
-  	
-  	# Derniers items modifiés dans cette catégorie
-		if @folder.is_root?
-			@last_modified = Item.belongs_to_folder(@folder).order(updated_at: :desc).limit(5)
-		else
-			@last_modified = []
-		end
 
-  
-  	# Si le dossier contient des sous-dossiers
-    if @folder.children.present?
-      # S'il y a beaucoup de tags enfants, il faut afficher la barre alphabet et filtrer par lettre
-      @navigate_option = (@folder.children.count > 20)? true : false 
-      case params[:letter]
-        when "A".."W"
-          @subfolders = @folder.children.where(letter: params[:letter])
-        when "XYZ"
-          @subfolders = @tafolderg.children.where(letter: "X".."Z")
-        when "#"
-          @subfolders = @folder.children.where(letter: 0..9999999) 
-        when "vide"
-          @subfolders = @folder.children.where(letter: [nil, ""])
-        else
-          @subfolders = @folder.children.order(:name)
-      end
-      # Nombre de tag par colonne
-      @folders_per_column = (@subfolders.count.to_f/4).ceil 
-    end # @folder.children.present?
-  
     # Choix de la vue pour l'affichage des items
     if params[:view].present?
       @view = params[:view]
@@ -66,10 +67,6 @@ class FoldersController < ApplicationController
         @view = @folder.default_view
       end 
     end
-    
-
-  
-  
   end
 
   # GET /folders/new
@@ -85,29 +82,20 @@ class FoldersController < ApplicationController
   # POST /folders.json
   def create
     @folder = Folder.new(folder_params)
-
-    respond_to do |format|
-      if @folder.save
-        format.html { redirect_to @folder, notice: 'Folder was successfully created.' }
-        format.json { render :show, status: :created, location: @folder }
-      else
-        format.html { render :new }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
-      end
+		if @folder.save
+		 	redirect_to @folder, notice: 'Folder was successfully created.'
+		else
+			render :new 
     end
   end
 
   # PATCH/PUT /folders/1
   # PATCH/PUT /folders/1.json
   def update
-    respond_to do |format|
-      if @folder.update(folder_params)
-        format.html { redirect_to @folder, notice: 'Folder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @folder }
-      else
-        format.html { render :edit }
-        format.json { render json: @folder.errors, status: :unprocessable_entity }
-      end
+    if @folder.update(folder_params)
+			redirect_to @folder, notice: 'Folder was successfully updated.'
+    else
+			render :edit
     end
   end
 
@@ -115,10 +103,7 @@ class FoldersController < ApplicationController
   # DELETE /folders/1.json
   def destroy
     @folder.destroy
-    respond_to do |format|
-      format.html { redirect_to welcome_collector_path, notice: 'Dossier supprimé' }
-      format.json { head :no_content }
-    end
+		redirect_to welcome_collector_path, notice: 'Dossier supprimé'
   end
 
   private
