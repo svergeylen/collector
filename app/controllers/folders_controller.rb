@@ -67,6 +67,10 @@ class FoldersController < ApplicationController
         @view = @folder.default_view
       end 
     end
+    
+    # tag list pour actions
+    @tag_list = Tag.all.order(name: :asc).pluck(:name)
+    
   end
 
   # GET /folders/new

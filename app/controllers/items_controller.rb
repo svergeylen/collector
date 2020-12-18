@@ -89,14 +89,17 @@ class ItemsController < ApplicationController
   # DELETE /items/1.json
   def destroy
     @item.destroy
-    redirect_to last_tag_path, notice: 'Elément supprimé'
+    redirect_to welcome_collector_path, notice: 'Elément supprimé'
   end
 
   # Gestion des actions réalisées sur une liste d'items.
   # params contient la liste des item_id qu'il faut modifier
   def actions 
+  	# Chemin de redirection
+		back = folder_path(params[:folder_id], view: params[:view])
+
     if params[:item_ids].nil?
-      redirect_to tag_path(params[:tag_id], view: params[:view]), alert: 'Veuillez sélectionner des éléments'
+      redirect_to back, alert: 'Veuillez sélectionner des éléments'
     else
 
       # On ajoute les items sélectionnés dans la collection de l'utilisateur courant
@@ -104,7 +107,7 @@ class ItemsController < ApplicationController
         params[:item_ids].each do |item_id|
           current_user.add_to_collection(item_id, 1)
         end
-        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments ajoutés à ma collection'
+        redirect_to back, notice: 'Eléments ajoutés à ma collection'
       end
 
       # On enlève les items sélectionnés des possessions de l'utilisateur courant
@@ -112,27 +115,13 @@ class ItemsController < ApplicationController
         params[:item_ids].each do |item_id|
           current_user.add_to_collection(item_id, -1)
         end
-        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments enlevés de ma collection'
+        redirect_to back, notice: 'Eléments enlevés de ma collection'
       end
 
       # On enlève les items sélectionnés des possessions de l'utilisateur courant
       if params[:destroy].present?
         Item.where(id: params[:item_ids]).destroy_all
-        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Eléments supprimés du Collector'
-      end
-
-      # On écrase le rangement des items donnés vers le(s) nouveaux rangement(s) donné(s)
-      if params[:move].present?
-        result = true
-        params[:item_ids].each do |item_id|
-          i = Item.find(item_id)
-          result = i.update_tags_with_parent(params[:tag_names].split(","), "Rangements") && result
-        end
-        if result
-          redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Rangement modifié pour les items sélectionnés'
-        else
-          redirect_to tag_path(params[:tag_id], view: params[:view]), alert: 'Erreur lors de la modification du rangement'
-        end
+        redirect_to tback, notice: 'Eléments supprimés du Collector'
       end
 
       # On ajoute le(s) tag(s) donné(s) aux items sélectionnés
@@ -141,7 +130,7 @@ class ItemsController < ApplicationController
           i = Item.find(item_id)
           result = i.add_tags(params[:tag_names].split(","))
         end
-        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag(s) ajouté(s) aux items sélectionnés'
+        redirect_to back, notice: 'Tag(s) ajouté(s) aux items sélectionnés'
       end
 
       # On supprimer un même tag des items sélectionnés
@@ -150,7 +139,7 @@ class ItemsController < ApplicationController
           i = Item.find(item_id)
           result = i.remove_tags(params[:tag_names].split(","))
         end
-        redirect_to tag_path(params[:tag_id], view: params[:view]), notice: 'Tag(s) retirés(s) des items sélectionnés'
+        redirect_to back, notice: 'Tag(s) retirés(s) des items sélectionnés'
       end
 
     end # if item_ids.empty?
