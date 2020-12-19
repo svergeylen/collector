@@ -3,8 +3,17 @@
 		<%= render partial: "shared/collector_menu" %>
 	</div>
 
-	<h1><%= @tag.name %></h1>
+	<h4>Tag : <%= @tag.name %></h4>
 
+
+	<%= will_paginate @items %>
 	
+	<ul>
+	<% @items.each do |item| %>
+		<li><%= item.id %> - <%= link_to item.name, item %></li>
+	<% end %>
+	</ul>
 
+	<%= will_paginate @items %>
+		
 </div> <!-- rounded-box -->

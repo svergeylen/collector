@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201213170121) do
+ActiveRecord::Schema.define(version: 20201219065702) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -37,14 +37,6 @@ ActiveRecord::Schema.define(version: 20201213170121) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "favourites", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "tag_id"
-    t.integer "weight", default: 0
-    t.index ["tag_id"], name: "index_favourites_on_tag_id"
-    t.index ["user_id"], name: "index_favourites_on_user_id"
-  end
-
   create_table "folders", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -67,6 +59,14 @@ ActiveRecord::Schema.define(version: 20201213170121) do
     t.text "enhanced_content"
     t.integer "folder_id"
     t.index ["folder_id"], name: "index_items_on_folder_id"
+  end
+
+  create_table "items_tags", id: false, force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "item_id"
+    t.string "owner_type", default: "Item"
+    t.index ["item_id"], name: "index_items_tags_on_item_id"
+    t.index ["tag_id"], name: "index_items_tags_on_tag_id"
   end
 
   create_table "itemusers", force: :cascade do |t|
@@ -101,14 +101,6 @@ ActiveRecord::Schema.define(version: 20201213170121) do
     t.index ["item_id"], name: "index_notes_on_item_id"
   end
 
-  create_table "ownertags", force: :cascade do |t|
-    t.integer "tag_id"
-    t.integer "owner_id"
-    t.string "owner_type", default: "Item"
-    t.index ["owner_id"], name: "index_ownertags_on_owner_id"
-    t.index ["tag_id"], name: "index_ownertags_on_tag_id"
-  end
-
   create_table "posts", force: :cascade do |t|
     t.text "message"
     t.integer "user_id"
@@ -124,11 +116,6 @@ ActiveRecord::Schema.define(version: 20201213170121) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
-    t.boolean "root_tag", default: false
-    t.string "default_view"
-    t.string "letter"
-    t.boolean "filter_items", default: true
-    t.index ["letter"], name: "index_tags_on_letter"
     t.index ["name"], name: "index_tags_on_name"
   end
 

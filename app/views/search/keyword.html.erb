@@ -25,6 +25,17 @@
 		<p>Pas d'item correspondant.</p>
 	<% end %>
 
+	<% if @tags.present? %>
+		<h4><%= pluralize( @tags.count, "tag trouvé", "tags trouvés", locale: :fr) %> : </h4>
+		<ul>
+		<% @tags.each do |tag| %>
+			<li><%= link_to highlight(tag.name, @keyword, highlighter: '<strong>\1</strong>'), tag_path(tag) %> </li>
+		<% end %>
+		</ul>
+	<% else %>
+		<p>Pas de dossier correspondant.</p>
+	<% end %>
+	
 	<% if @posts.present? %>
 		<h4><%= pluralize( @posts.count, "message trouvé", "messages trouvés", locale: :fr) %> : </h4>
 		<ul>

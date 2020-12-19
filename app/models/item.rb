@@ -1,12 +1,5 @@
 class Item < ApplicationRecord
-	enum rails_view: [ :general, :bd]
-	
-	# Classement des items dans un dossier
 	belongs_to :folder
-
-	has_many :ownertags,    dependent:  :destroy, as: :owner
-	has_many :tags,         through:    :ownertags
-	accepts_nested_attributes_for :tags
 
 	has_many :itemusers
 	has_many :users,        through:    :itemusers
@@ -16,6 +9,8 @@ class Item < ApplicationRecord
 	accepts_nested_attributes_for :attachments
 
 	has_many :notes,   dependent: :destroy
+
+	has_and_belongs_to_many :tags
 
 	validates :name, presence: true
 	validates :adder_id, presence: true
@@ -54,50 +49,48 @@ class Item < ApplicationRecord
 	#def tag_serie_by(parent_name)
 	#	@tag_series || tags_with_parent(parent_name).first
 	#end
-	
-
 
 	# --------------------- TAGS ---------------------------------------------------------------------------
 
 	# Ajoute l'array de tag_names à l'item sans créer de doublon. Crée les tags si inexistants.
 	# Différent de save_tags qui écrase les tags existants par les tags donnés.
-	def add_tags(tag_names_array)
-		tag_names_array.each do |tag_name|
-			tag_name = tag_name.strip
-			if tag_name!=""
-				tag = Tag.where(name: tag_name).first_or_create!
-				self.tags << tag unless self.tags.include?(tag)
-			end
-		end
-	end
+#	def add_tags(tag_names_array)
+#		tag_names_array.each do |tag_name|
+#			tag_name = tag_name.strip
+#			if tag_name!=""
+#				tag = Tag.where(name: tag_name).first_or_create!
+#				self.tags << tag unless self.tags.include?(tag)
+#			end
+#		end
+#	end
 
 	# Supprime l'association entre l'item et le tableau de tag_names donné
-	def remove_tags(tag_names_array)
-		tag_names_array.each do |tag_name|
-			tag_name = tag_name.strip
-			if tag_name!=""
-				tag = Tag.find_by(name: tag_name)
-				self.tags.delete(tag) if tag.present?
-			end
-		end
-	end
+#	def remove_tags(tag_names_array)
+#		tag_names_array.each do |tag_name|
+#			tag_name = tag_name.strip
+#			if tag_name!=""
+#				tag = Tag.find_by(name: tag_name)
+#				self.tags.delete(tag) if tag.present?
+#			end
+#		end
+#	end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
 	# order = "date" permet de trier par date au lieu de trier par numéro
-	def self.having_tags(ar_tags, order)
-	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
-	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
-	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
-	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
-	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
-	  	# Les items correspondant aux ownertags reçus, classés par ordre de numéros
-	  	# .includes(:tags, itemusers: [:user])
-	  	if order == "date"
-	  		return Item.where(id: ownertags.keys).order(updated_at: :desc)
-	  	else
-			return Item.where(id: ownertags.keys).sort_by { |a| [a.number.to_f, a.name] }
-		end
-	end
+#	def self.having_tags(ar_tags, order)
+#	  	# On sélectionne dans les tags donnés uniquement ceux qui doivent filtrer les items
+#	  	applicable_tag_ids = Tag.where(id: ar_tags).where(filter_items: true).pluck(:id)
+#	  	# On sélectionne les items qui correspondent à ces tags filtrants en comptant si chaque item est repris autant de fois que le nombre de tags filtrants donné
+#	  	# Si il y a deux tags filtrants donnés, il faut que ownertags contiennent 2 lignes pour cet item (une ligne pour chaque tag différent)
+#	  	ownertags = Ownertag.where(tag_id: applicable_tag_ids, owner_type: "Item").group(:owner_id).count.select{|owner_id, value| value == applicable_tag_ids.size }
+#	  	# Les items correspondant aux ownertags reçus, classés par ordre de numéros
+#	  	# .includes(:tags, itemusers: [:user])
+#	  	if order == "date"
+#	  		return Item.where(id: ownertags.keys).order(updated_at: :desc)
+#	  	else
+#			return Item.where(id: ownertags.keys).sort_by { |a| [a.number.to_f, a.name] }
+#		end
+#	end
 
 
 	# ------------------ POSSESSION de l'ITEM ----------------------------------------------------------------

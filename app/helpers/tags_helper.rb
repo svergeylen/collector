@@ -13,23 +13,11 @@ module TagsHelper
 
 	# Réalise le rendu d'un seul tag vers HTML, contenant le lien vers le tag et vers la suppression des tags actifs
 	def render_tag(tag, with_delete_option = false) 
-		ret = "<span class='collector-tag "
-		if tag.filter_items? 
-			ret += "collector-tag-filter'>"
-		else
-			ret += "collector-tag-nofilter' title='Tag non-filtrant'>"
-		end
-		ret += link_to tag.name, tag 
-		ret += "  "
-		if with_delete_option
-			ret += link_to (fas_icon 'times').html_safe, remove_tag_path(id: tag.id, remove_id: tag.id)
-		end
-		ret += "</span>"
-		return ret.html_safe
+		return ("<span class='collector-tag collector-tag-nofilter' title='Tag non-filtrant'>"+ link_to(tag.name, tag)+"</span>").html_safe
 	end
 
 	# Renvoie un clearfix en fonction de la résolution d'écran
-	# Ceci permet que des image de tailles différentes prestent bien en grille
+	# Ceci permet que des image de tailles différentes restent bien en grille
 	# http://michaelsoriano.com/create-a-responsive-photo-gallery-with-bootstrap-framework/
 	def clear_fix(i)
 		cla = ""

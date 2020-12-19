@@ -39,11 +39,7 @@ class TagsController < ApplicationController
       if params[:view].present?
         @view = params[:view]
       else
-        if @tag.default_view.blank?
-          @view = "list"
-        else
-          @view = @tag.default_view
-        end 
+        @view = "list"
       end
 
       # Options pour les actions en bas de page (selectize)
@@ -53,12 +49,12 @@ class TagsController < ApplicationController
       if params[:order].present?
         @order = params[:order]
       else
-        @order = @tag.root_tag? ? "date" : "number"
+        @order = "number"
       end
 
       # Recherche des items qui possèdent tous les tags actifs
       items = @tag.items #order(@order)
-      @items = items.paginate(page: params[:page], per_page: 36)
+      @items = items.paginate(page: params[:page], per_page: 100)
 
       # Recherche des données intéressantes en cas de création de nouvel item
       # Recherche du numéro suivant
@@ -70,7 +66,7 @@ class TagsController < ApplicationController
       end
       # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
       if @items.present?
-        proposed_tag_ids = @items.last.tags.where(filter_items: true).pluck(:id)
+        proposed_tag_ids = @items.last.tags.pluck(:id)
         # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
         item_type = @items.last.item_type
       end
@@ -117,24 +113,7 @@ class TagsController < ApplicationController
   end
 
 
-  # Gestion des actions réalisées sur une liste de tags.
-  # params contient la liste des tag id qu'il faut modifier
-  def actions 
-    if params[:tag_ids].nil?
-      redirect_to tags_path, alert: 'Veuillez sélectionner des tags'
-    else
-      # On ajoute les items sélectionnés dans la collection de l'utilisateur courant
-      if params[:add_parent].present?
-        params[:tag_ids].each do |tag_id|
-          Tag.find(tag_id).add_parent_tag(params[:tag_names])
-        end
-        redirect_to tags_path, notice: 'Tag Parent ajouté aux tags sélectionnés'
-      end
-    end # if item_ids.empty?
-  end
-
-
-  private
+ private
   
   def set_tag
     if Tag.exists?(params[:id])
@@ -146,7 +125,7 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :root_tag, :letter, :default_view, :filter_items, :parent_tag_names)
+    params.require(:tag).permit(:name)
   end
 
 end

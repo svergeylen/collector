@@ -1,9 +1,8 @@
 class Comment < ApplicationRecord
-  	belongs_to :post, touch: true
-  	belongs_to :user
+	belongs_to :post, touch: true
+	belongs_to :user
 
-  	validates :message, presence: true
-  	acts_as_votable # Les users peuvent liker des commentaires
+	validates :message, presence: true
 
 	before_validation :check_user_and_post_exists
 
