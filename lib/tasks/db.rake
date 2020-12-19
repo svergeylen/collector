@@ -45,6 +45,21 @@ namespace :db do
 	end
 	
 	
+	# Siplification de tags redondants avec les folders
+	task tag_simplify: :environment do
+		puts "Simplification des tags"	
+		Folder.all.each do |folder|
+			tag = Tag.where(name: folder.name).first
+			if tag.present?
+				puts folder.name+" -- "+tag.name
+				tag.destroy
+			end
+		end
+		
+		puts "Fin"
+	end
+	
+	
 	task convert_bd: :environment do
 		bd          = Tag.create(name: "Bandes dessinées", root_tag: true)
 		auteurs		= Tag.create(name: "Auteurs", default_view: "list")
