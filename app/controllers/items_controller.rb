@@ -21,11 +21,10 @@ class ItemsController < ApplicationController
     # Notes associées à cet item
     @notes = @item.notes.includes(:user).order(created_at: :asc)
     
-    # Ajout d'information pour la création d'un item du même type....
+    # Ajout d'information pour la création d'un item
     next_number = (@item.number + 1) if @item.number.present?
     proposed_tag_ids = @item.tags.pluck(:id)
-    item_type = @item.item_type
-    @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
+    @new_item_options = {number: next_number, tag_ids: proposed_tag_ids}
   end
 
   # GET /items/new
@@ -205,6 +204,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :folder_id, :item_type, :description, :attachments, :tag_names, :tag_series, :tag_auteurs, :tag_rangements)
+      params.require(:item).permit(:number, :name, :folder_id, :description, :attachments, :tag_names)
     end
 end

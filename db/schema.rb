@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201219065702) do
+ActiveRecord::Schema.define(version: 20201221172010) do
 
   create_table "attachments", force: :cascade do |t|
     t.string "name"
@@ -54,7 +54,6 @@ ActiveRecord::Schema.define(version: 20201219065702) do
     t.integer "adder_id"
     t.float "number"
     t.text "description"
-    t.string "item_type"
     t.text "enhanced_image"
     t.text "enhanced_content"
     t.integer "folder_id"
@@ -64,7 +63,6 @@ ActiveRecord::Schema.define(version: 20201219065702) do
   create_table "items_tags", id: false, force: :cascade do |t|
     t.integer "tag_id"
     t.integer "item_id"
-    t.string "owner_type", default: "Item"
     t.index ["item_id"], name: "index_items_tags_on_item_id"
     t.index ["tag_id"], name: "index_items_tags_on_tag_id"
   end

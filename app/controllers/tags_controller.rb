@@ -35,46 +35,9 @@ class TagsController < ApplicationController
   # Affichage d'un seul tag, de ses tags enfants ou des items qu'il contient
   def show
     if @tag
-      # Choix de la vue pour l'affichage des items
-      if params[:view].present?
-        @view = params[:view]
-      else
-        @view = "list"
-      end
-
-      # Options pour les actions en bas de page (selectize)
-      @tag_list = Tag.order(name: :asc).pluck(:name)
-
-      # Choix de l'ordre dans lequel afficher les items
-      if params[:order].present?
-        @order = params[:order]
-      else
-        @order = "number"
-      end
-
       # Recherche des items qui possèdent tous les tags actifs
       items = @tag.items #order(@order)
       @items = items.paginate(page: params[:page], per_page: 100)
-
-      # Recherche des données intéressantes en cas de création de nouvel item
-      # Recherche du numéro suivant
-      next_number = 1
-      @items.each do |item| 
-        if item.number.present? and item.number >= next_number
-          next_number = item.number + 1
-        end
-      end
-      # Mémorisation des tags du dernier item pour proposer des tags (ex : les auteurs)
-      if @items.present?
-        proposed_tag_ids = @items.last.tags.pluck(:id)
-        # Idée > Ajouter les actives_tags dans proposed_tag_ids (+uniq) ?
-        item_type = @items.last.item_type
-      end
-      # Création d'un hash ajouté au link_to "Item>New"
-      @new_item_options = {number: next_number, item_type: item_type, tag_ids: proposed_tag_ids}
-
-      
-
     end # if tag
   end # show
 
