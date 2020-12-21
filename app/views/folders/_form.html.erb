@@ -38,14 +38,14 @@
     <div class="col-form-label col-sm-2" >
       Affichage
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-4">
        <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], @folder.default_view), {}, { class:"form-control custom-select" } ) %>
     </div>
   </div> 
     
   <div class="form-group row">
     <div class="col-sm-8 offset-sm-2">
-    	<%= form.submit %>
+    	<%= form.submit(submit_text, class: "btn btn-primary") %>
     </div>  
   </div>
     

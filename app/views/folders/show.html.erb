@@ -4,37 +4,40 @@
 	</div>
 
 	<h1><%= @folder.name %></h1>
-
+	
 	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors, folder: @folder } %>
-
-
+	
 	<% if @last_modified.present? %>
 		<h5>Récemment</h5>
-		<ul>
-		<% @last_modified.each do |item| %>
-			<li>
-				<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
-			</li>
+		<% if @folder.default_view == "gallery" %>
+			<%= render partial: "gallery", locals: {items: @last_modified } %>		
+		<% else %>
+			<ul>
+			<% @last_modified.each do |item| %>
+				<li>
+					<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
+				</li>
+			<% end %>
+			</ul>
 		<% end %>
-		</ul>
 	<% end %>
 
 	<% if @navigate_option %>
-		<div class="btn-group header-letters mt-2 mb-2">
+		<ul class="nav nav-pills nav-justified">
 			<% ["#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "vide"].each do |letter| %>
-				<%= link_to letter, folder_path(@folder, letter: letter), role: "button", class: "btn btn-light btn-xs #{"active" if (params[:letter]==letter)}" %>
+				<li><%= link_to letter, folder_path(@folder, letter: letter),  class: "btn btn-default btn-light  #{"active" if (params[:letter]==letter)}" %></li>
 			<% end %>
-		</div>
+		</ul>
 		<div class="row general-padding">
 			<div class="col-md-3 col-sm-6 col-xs-12">
-				<ul class="pl-2">
+				<ul class="pl-2 mb-0">
 					<% @subfolders.each_with_index do |subfolder, i| %>
 						<li><%= link_to subfolder.name, subfolder  %></li>
 				    	<% if ((i+1) % @folders_per_column) == 0 %>
 				    			</ul>
 				    		</div>
 				    		<div class="col-md-3 col-sm-6 col-xs-12">
-				    			<ul class="pl-2">
+				    			<ul class="pl-2 mb-0">
 				    	<% end %>
 					<% end %>
 				</ul>

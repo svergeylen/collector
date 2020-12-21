@@ -1,9 +1,11 @@
-<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+<div class="btn-toolbar" role="toolbar" aria-label="Button group with nested dropdown">
   <div class="btn-group" role="group">
 
-		<%= form_tag(search_keyword_path, method: "get", class: "form-inline my-2 my-lg-0") do %>
-			<%= text_field_tag(:keyword, "", placeholder: "Rechercher", class: 'form-control', autocomplete: 'off') %>
-		<% end %>
+		<div class="input-group">
+			<%= form_tag(search_keyword_path, method: "get", class: "") do %>
+				<%= text_field_tag(:keyword, "", placeholder: "Rechercher", class: 'form-control', autocomplete: 'off') %>
+			<% end %>
+		</div>
 				
     <% if @items.present? and @folder.present? %>
 
