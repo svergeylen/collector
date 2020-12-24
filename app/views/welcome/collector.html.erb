@@ -4,21 +4,9 @@
 	</div>
 
 	<h1>Collector</h1>
-
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-4 offset-md-4 collector-search">
-				<%# form_tag({controller: 'search', action: 'tag'}, method: "get", id:"search_tags_form") do %>
-					<%# text_field_tag("collector-tag-search", nil, placeholder: "Recherche dans les tags", data: { options: Tag.searchable_tags}, class:"form-control" ) %>
-				<%# end %>
-				<%= form_tag(search_keyword_path, method: "get", class: "form-inline my-2 my-lg-0") do %>
-					<%= text_field_tag(:keyword, "", placeholder: "Rechercher", class: 'form-control', autocomplete: 'off') %>
-				<% end %>
-			</div>
-		</div>
-
-		
+	<h5>Récemment</h5>
 			<% @folders.each_with_index do |folder, index| %>
+
 				<% if (index % 3 == 0) %>
 					<div class="row">
 				<% end %>
@@ -29,7 +17,8 @@
 						    <%= link_to folder.name, folder, class:'text-light' %>
 						  </div>
 						  <ul class="list-group list-group-flush">
-						  	<% folder.items.includes(:adder).order(created_at: :desc).limit(5).each do |item| %>
+
+						  	<% folder.last_modified.each do |item| %>
 						    	<li class="list-group-item" title="Ajouté par <%= item.adder.name %>, le <%= long_date(item.created_at) %>">
 						    		<div class="float-right" >
 						    			<% if (item.created_at > current_user.displayed_collector.beginning_of_day) %>
@@ -48,7 +37,5 @@
 					</div> <!-- row -->
 				<% end %>
 			<% end %>
-		
-	</div>
 
 </div>

@@ -16,7 +16,7 @@ class FoldersController < ApplicationController
   
    	# Derniers items modifiés dans cette catégorie
 		if @folder.is_root?
-			@last_modified = Item.belongs_to_folder(@folder).order(updated_at: :desc).limit(6)
+			@last_modified = @folder.last_modified
 		else
 			@last_modified = []
 		end
