@@ -34,8 +34,6 @@ class FoldersController < ApplicationController
           @subfolders = @folder.children.where(letter: "W".."Z").order(:name)
         when "#"
           @subfolders = @folder.children.where(letter: 0..9999999).order(:name)
-        when "vide"
-          @subfolders = @folder.children.where(letter: [nil, ""]).order(:name)
         else
           @subfolders = @folder.children.order(:name)
       end

@@ -41,7 +41,7 @@
 	background-color : $tag-color-light;
 }
 
-/* Galerie d'item */
+/* Galerie d'items */
 .item-card {
 	padding : 0;  /* cancels devise padding */
 	margin-top : 0;
@@ -60,6 +60,14 @@
 	}
 	.card-body {
 		padding : 0.75em 0.25em;
+		height : 65px;
+		overflow : hidden;
+		margin-top : auto;
+		margin-bottom: auto;
+	}
+	img { /* Redimensionne l'image pour remplir l'expace dans la card totalement et responsif */
+		height : 150px;
+		object-fit: cover;
 	}
 }
 /* Affichage du numéro de l'item lorsque l'utilisateur passe au-dessus de la card */

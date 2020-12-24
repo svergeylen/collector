@@ -4,16 +4,26 @@
 	</div>
 
 	<h1><%= @folder.name %></h1>
-	
+	<div class="d-none d-sm-block">
+		<h2>essai</h2>
+	</div>
+
 	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors, folder: @folder } %>
 	
 	<% if @last_modified.present? %>
 		<h5>Récemment</h5>
+		
 		<% if @folder.default_view == "gallery" %>
-			<%= render partial: "gallery", locals: {items: @last_modified } %>		
+			<div class="row item-gallery pl-2 pr-2">
+				<% @last_modified.each_with_index do |item, i| %>
+					<div class="col-6 col-sm-4 col-md-3 col-lg-2 pr-2 pl-2 	<%= "d-none d-sm-block" if i >= 2 %>" >
+						<%= render partial: "shared/card", locals: {item: item} %>
+					<%= clear_fix(i) %>
+				<% end %>
+			</div>
 		<% else %>
 			<ul>
-			<% @last_modified.each do |item| %>
+			<% @last_modified.each_with_index do |item, index| %>
 				<li>
 					<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
 				</li>
@@ -24,7 +34,7 @@
 
 	<% if @navigate_option %>
 		<ul class="nav nav-pills nav-justified">
-			<% ["#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "vide"].each do |letter| %>
+			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "#", "Tous"].each do |letter| %>
 				<li><%= link_to letter, folder_path(@folder, letter: letter),  class: "btn btn-default btn-light  #{"active" if (params[:letter]==letter)}" %></li>
 			<% end %>
 		</ul>

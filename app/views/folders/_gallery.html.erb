@@ -1,34 +1,7 @@
 <div class="row item-gallery pl-2 pr-2">
 	<% items.each_with_index do |item, i| %>
-
-		<div class="col-sm-4 col-md-3 col-lg-2 pr-2 pl-2" >
-
-			<div class="card item-card collector-item-li <%= 'not-owned' if !item.is_owned? %>" data-item-id="<%= item.id.to_s %>">
-				
-				<% if item.attachments.present? && item.attachments.last.image.exists? %>
-					<%= image_tag "/" + item.attachments.last.image.url(:medium), class:"card-img-top" %>
-				<% else %>
-					<%= image_tag "no-image.png", class:"card-img-top" %>
-				<% end %>
-				
-				<% if item.number %>
-					<div class="panel-overlay">
-						<span>n°<%= item.friendly_number %></span>
-					</div>
-				<% end %>
-				
-			  <div class="card-body">
-			    <div class="card-text text-center">
-			    	<%= check_box_tag( 'item_ids[]', item.id, false, {id: dom_id(item), style: "display:none;" }) %>
-			    	<%= link_to item.name, item, class:"not-owned" %>
-			    </div>
-		    	
-			  </div>
-			</div>
-
-		</div>
-
+		<div class="col-6 col-sm-4 col-md-3 col-lg-2 pr-2 pl-2" >
+			<%= render partial: "shared/card", locals: {item: item} %>
 		<%= clear_fix(i) %>
-
 	<% end %>
 </div>

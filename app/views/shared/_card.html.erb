@@ -1,0 +1,26 @@
+<div class="card item-card collector-item-li <%= 'not-owned' if !item.is_owned? %>" data-item-id="<%= item.id.to_s %>">
+					
+		<div class="card-img-wrapper">
+			<% if item.attachments.present? && item.attachments.last.image.exists? %>
+				<%= image_tag "/" + item.attachments.last.image.url(:medium), class:"card-img-top" %>
+			<% else %>
+				<%= image_tag "no-image.png", class:"card-img-top" %>
+			<% end %>
+		</div>
+		
+		<% if item.number %>
+			<div class="panel-overlay">
+				<span>n°<%= item.friendly_number %></span>
+			</div>
+		<% end %>
+		
+	  <div class="card-body">
+	    <div class="card-text text-center">
+	    	<%= check_box_tag( 'item_ids[]', item.id, false, {id: dom_id(item), style: "display:none;" }) %>
+	    	<%= link_to item.name, item, class:"not-owned" %>
+	    </div>
+    	
+	  </div>
+	</div>
+
+</div>
