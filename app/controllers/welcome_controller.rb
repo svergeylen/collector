@@ -16,6 +16,6 @@ class WelcomeController < ApplicationController
 	# Accueil du Collector
 	def collector
   	current_user.save_time_collector
-    @folders = Folder.roots
+    @folders = Folder.roots.order('lower(name)')
 	end
 end

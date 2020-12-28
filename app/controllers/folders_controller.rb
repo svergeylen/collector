@@ -27,15 +27,15 @@ class FoldersController < ApplicationController
       @navigate_option = (@folder.children.count > 20)? true : false 
       case params[:letter]
 	      when "#"
-	      	@subfolders = @folder.children.where(letter: "1".."9").order(:name)
+	      	@subfolders = @folder.children.where(letter: "1".."9").order('lower(name)')
         when "A".."V"
-          @subfolders = @folder.children.where(letter: params[:letter]).order(:name)
+          @subfolders = @folder.children.where(letter: params[:letter]).order('lower(name)')
         when "WXYZ"
-          @subfolders = @folder.children.where(letter: "W".."Z").order(:name)
+          @subfolders = @folder.children.where(letter: "W".."Z").order('lower(name)')
         when "#"
-          @subfolders = @folder.children.where(letter: 0..9999999).order(:name)
+          @subfolders = @folder.children.where(letter: 0..9999999).order('lower(name)')
         else
-          @subfolders = @folder.children.order(:name)
+          @subfolders = @folder.children.order('lower(name)')
       end
       # Nombre de tag par colonne
       @folders_per_column = (@subfolders.count.to_f/4).ceil 
@@ -68,6 +68,9 @@ class FoldersController < ApplicationController
     
     # tag list pour actions
     @tag_list = Tag.all.order(name: :asc).pluck(:name)
+    # Suggestions pour l'ajout de nouvel item
+    last_item = @items.order(:number).last
+    @new_item_options = { number: last_item.number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
     
   end
 

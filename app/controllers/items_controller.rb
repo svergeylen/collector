@@ -30,15 +30,12 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
-    
     # Pré-remplissage du formulaire au mieux
     @item.number = params[:number] if (params[:number].present?)
     @item.name = params[:name] if (params[:name].present?)
     @item.description = params[:description] if (params[:description].present?)
-    if params[:tag_names].present?
-      @item.tag_names = params[:tag_names]
-    end
-
+    @item.tag_names = params[:tag_names] if params[:tag_names].present?
+    @item.folder_id = params[:folder_id] if params[:folder_id].present?
     render_correct_form("new")
   end
 
@@ -64,7 +61,7 @@ class ItemsController < ApplicationController
       # Crée un job pour l'affichage ultérieur sur La Une
       Job.create(action: "add_item", element_id: @item.id, element_type: "Item", user_id: current_user.id)      
 
-			redirect_to last_tag_path, notice: 'Elément ajouté'
+			redirect_to @item.folder, notice: 'Elément ajouté'
     else
       render_correct_form("edit")
     end
@@ -187,7 +184,7 @@ class ItemsController < ApplicationController
 
     # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
-      @folders_list = Folder.all.order(:name)
+      @folders_list = Folder.all.order('lower(name)')
     	@tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/"+action
     end
