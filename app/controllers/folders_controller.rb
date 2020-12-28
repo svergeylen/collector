@@ -69,9 +69,11 @@ class FoldersController < ApplicationController
     # tag list pour actions
     @tag_list = Tag.all.order(name: :asc).pluck(:name)
     # Suggestions pour l'ajout de nouvel item
-    last_item = @items.order(:number).last
-    @new_item_options = { number: last_item.number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
-    
+    if @items.present?
+	    last_item = @items.order(:number).last
+  	  @new_item_options = { number: last_item.number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
+  	end
+  	  
   end
 
   # GET /folders/new

@@ -54,26 +54,26 @@ class Item < ApplicationRecord
 
 	# Ajoute l'array de tag_names à l'item sans créer de doublon. Crée les tags si inexistants.
 	# Différent de save_tags qui écrase les tags existants par les tags donnés.
-#	def add_tags(tag_names_array)
-#		tag_names_array.each do |tag_name|
-#			tag_name = tag_name.strip
-#			if tag_name!=""
-#				tag = Tag.where(name: tag_name).first_or_create!
-#				self.tags << tag unless self.tags.include?(tag)
-#			end
-#		end
-#	end
+	def add_tags(tag_names_array)
+		tag_names_array.each do |tag_name|
+			tag_name = tag_name.strip
+			if tag_name!=""
+				tag = Tag.where(name: tag_name).first_or_create!
+				self.tags << tag unless self.tags.include?(tag)
+			end
+		end
+	end
 
 	# Supprime l'association entre l'item et le tableau de tag_names donné
-#	def remove_tags(tag_names_array)
-#		tag_names_array.each do |tag_name|
-#			tag_name = tag_name.strip
-#			if tag_name!=""
-#				tag = Tag.find_by(name: tag_name)
-#				self.tags.delete(tag) if tag.present?
-#			end
-#		end
-#	end
+	def remove_tags(tag_names_array)
+		tag_names_array.each do |tag_name|
+			tag_name = tag_name.strip
+			if tag_name!=""
+				tag = Tag.find_by(name: tag_name)
+				self.tags.delete(tag) if tag.present?
+			end
+		end
+	end
 
 	# Renvoie les Items correspondants à l'array de tag_ids donné
 	# order = "date" permet de trier par date au lieu de trier par numéro

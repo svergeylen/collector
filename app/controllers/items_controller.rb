@@ -117,7 +117,7 @@ class ItemsController < ApplicationController
       # On enlève les items sélectionnés des possessions de l'utilisateur courant
       if params[:destroy].present?
         Item.where(id: params[:item_ids]).destroy_all
-        redirect_to tback, notice: 'Eléments supprimés du Collector'
+        redirect_to back, notice: 'Eléments supprimés du Collector'
       end
 
       # On ajoute le(s) tag(s) donné(s) aux items sélectionnés

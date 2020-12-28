@@ -42,20 +42,19 @@
 
     	<%= link_to "<i class='far fa-file'></i>Nouvel item".html_safe, new_item_path(@new_item_options), class:'dropdown-item' %>
       <% if @item.present? %>
-        <%= link_to "<i class='fas fa-edit'></i>Modifier item".html_safe, edit_item_path(@item), class:'dropdown-item' %>
+        <%= link_to "<i class='fas fa-file'></i>Modifier item".html_safe, edit_item_path(@item), class:'dropdown-item' %>
         <%= link_to "<i class='far fa-trash-alt'></i>Supprimer item".html_safe, @item, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer cet item définitiement ?' } %>
       <% end %>
       
       <div class="dropdown-divider"></div>
       <%= link_to "<i class='far fa-folder'></i>Nouveau dossier".html_safe, new_folder_path, class:'dropdown-item' %>
       <% if @folder.present? %> 
-      	<%= link_to "<i class='fas fa-edit'></i>Modifier dossier".html_safe, edit_folder_path(@folder), class:'dropdown-item' %>
+      	<%= link_to "<i class='fas fa-folder'></i>Modifier dossier".html_safe, edit_folder_path(@folder), class:'dropdown-item' %>
         <%= link_to "<i class='far fa-trash-alt'></i>Supprimer dossier".html_safe, @folder, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer ce dossier définitiement ?' } %>
       <% end %>
 
-      <div class="dropdown-divider"></div>
-      <%= link_to "<i class='fas fa-tag'></i>Nouveau tag".html_safe, new_tag_path, class:'dropdown-item' %>
       <% if @tag.present? %> 
+        <div class="dropdown-divider"></div>
       	<%= link_to "<i class='fas fa-edit'></i>Modifier tag".html_safe, edit_tag_path(@tag), class:'dropdown-item' %>
         <%= link_to "<i class='far fa-trash-alt'></i>Supprimer tag".html_safe, @tag, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer ce tag définitiement ?' } %>
       <% end %>
