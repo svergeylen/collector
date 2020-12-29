@@ -8,65 +8,52 @@
 	<%= render partial: "shared/breadcrumbs", locals: { ancestors: @ancestors, folder: @folder } %>
 	
 	<% if @last_modified.present? %>
-		<h5>Récemment</h5>
-		
-		<% if @folder.default_view == "gallery" %>
-			<div class="row item-gallery pl-2 pr-2">
-				<% @last_modified.each_with_index do |item, i| %>
-					<div class="col-6 col-sm-4 col-md-3 col-lg-2 pr-2 pl-2 	<%= "d-none d-sm-block" if i >= 2 %>" >
-						<%= render partial: "shared/card", locals: {item: item} %>
-					<%= clear_fix(i) %>
+		<div>
+			<h5>Récemment</h5>
+			
+			<% if @folder.default_view == "gallery" %>
+				<div class="row item-gallery pl-2 pr-2">
+					<% @last_modified.each_with_index do |item, i| %>
+						<div class="col-6 col-sm-4 col-md-3 col-lg-2 pr-2 pl-2 	<%= "d-none d-sm-block" if i >= 2 %>" >
+							<%= render partial: "shared/card", locals: {item: item} %>
+						<%= clear_fix(i) %>
+					<% end %>
+				</div>
+			<% else %>
+				<ul>
+				<% @last_modified.each_with_index do |item, index| %>
+					<li>
+						<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
+					</li>
 				<% end %>
-			</div>
-		<% else %>
-			<ul>
-			<% @last_modified.each_with_index do |item, index| %>
-				<li>
-					<%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %>
-				</li>
+				</ul>
 			<% end %>
-			</ul>
-		<% end %>
+		</div>
 	<% end %>
 
-	<% if @navigate_option %>
+	<% if (@subfolders.present? && @subfolders.size > 20) || (params[:letter].present?) %>
 		<ul class="nav nav-pills nav-justified">
 			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "#", "Tous"].each do |letter| %>
 				<li><%= link_to letter, folder_path(@folder, letter: letter),  class: "btn btn-default btn-light  #{"active" if (params[:letter]==letter)}" %></li>
 			<% end %>
 		</ul>
-		<div class="row general-padding">
-			<div class="col-md-3 col-sm-6 col-xs-12">
-				<ul class="pl-2 mb-0">
-					<% @subfolders.each_with_index do |subfolder, i| %>
-						<li><%= link_to subfolder.name, subfolder  %></li>
-				    	<% if ((i+1) % @folders_per_column) == 0 %>
-				    			</ul>
-				    		</div>
-				    		<div class="col-md-3 col-sm-6 col-xs-12">
-				    			<ul class="pl-2 mb-0">
-				    	<% end %>
-					<% end %>
-				</ul>
-			</div>
-		</div>
+	<% end %>
 		
-	<% else %>
+	<% if @items.present? %>
+	
 		<% if @subfolders.present? %>
-		<h4>Sous dossiers</h4>
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-3">				
+					<h4>Sous dossiers</h4>
 					<ul class="children_tags">
 						<% @subfolders.each do |subfolder| %>
 							<li><%= link_to subfolder.name, subfolder  %></li>
 						<% end %>
 					</ul>
 				</div>
-			<div class="col-md-9">
-		<% end %>	
-		
-		<% if @items.present? %>
-
+				<div class="col-md-9">
+		<% end %>
+			
 			<!-- Form Actions -->
 			<%= form_tag({controller: "items", action: "actions"}, method: "post") do |form| %>
 				<%= hidden_field_tag :folder_id, @folder.id %>
@@ -103,16 +90,33 @@
 						<%= submit_tag "Enlever", name: 'remove_tag', class:"btn btn-light mr-3", title: "Enlève les tags donnés aux items sélectionnés" %>	
 					</div>
 				</div>
-
 			<% end  %><!-- form Actions -->
-
-		<% end # items.present? %>
-	
+			
 		<% if @subfolders.present? %>
-				</div> <!-- col-md-10-->
-			</div> <!-- row -->
+				</div>
+			</div>
 		<% end %>
+			
 
-	<% end # navigate_option %>
+		
+	<% else %>
 
+		<div class="row general-padding">
+			<div class="col-sm-6 col-md-3 ">
+				<ul class="pl-2 mb-0">
+					<% @subfolders.each_with_index do |subfolder, i| %>
+						<li><%= link_to subfolder.name, subfolder  %></li>
+				    	<% if ((i+1) % @folders_per_column) == 0 %>
+				    			</ul>
+				    		</div>
+				    		<div class="col-sm-6 col-md-3">
+				    			<ul class="pl-2 mb-0">
+				    	<% end %>
+					<% end %>
+				</ul>
+			</div>
+		</div>	
+		
+	<% end %>
+	
 </div> <!-- rounded-box -->
