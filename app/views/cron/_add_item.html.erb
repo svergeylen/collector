@@ -1,9 +1,8 @@
 <p><%= data[:user].name %> vient d'ajouter <%= pluralize(data[:quantity], "item", "items") %> :</p>
 <ul>
-	<% data[:items].each_with_index do |item, i| %>
+	<% data[:items].each do |item| %>
 		<li>
-			<%= sanitize (link_to item.name, item) %> 
-			<small>(<%= sanitize( item.tags.map{ |tag| link_to(tag.name, tag) }.join(", ") ) %>)</small>
+			<%= sanitize (link_to(folder.name, folder)) %> : <%= sanitize (link_to item.name, item) %>
 		</li>
 	<% end %>
 </ul>

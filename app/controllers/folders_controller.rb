@@ -71,7 +71,8 @@ class FoldersController < ApplicationController
     # Suggestions pour l'ajout de nouvel item
     if @items.present?
 	    last_item = @items.order(:number).last
-  	  @new_item_options = { number: last_item.number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
+	    number = last_item.number || 0
+  	  @new_item_options = { number: number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
   	end
   	  
   end
