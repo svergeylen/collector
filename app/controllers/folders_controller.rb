@@ -71,8 +71,8 @@ class FoldersController < ApplicationController
   	  @new_item_options = { number: number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
   	end
   	# Suggestion pour l'ajout de nouveau dossier
-  	parent_id = @folder.is_root? ? "" : @folder.parent.id
-  	@new_folder_options = { parent_id: parent_id }
+  	# parent_id = @folder.is_root? ? "" : @folder.parent.id
+  	@new_folder_options = { parent_id: @folder.id }
   	  
   end
 
