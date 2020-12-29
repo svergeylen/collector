@@ -69,6 +69,8 @@ class FoldersController < ApplicationController
 	    last_item = @items.order(:number).last
 	    number = last_item.number || 0
   	  @new_item_options = { number: number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
+  	else 
+  		@new_item_options = { number: 1, folder_id: @folder.id}
   	end
   	# Suggestion pour l'ajout de nouveau dossier
   	# parent_id = @folder.is_root? ? "" : @folder.parent.id

@@ -10,7 +10,7 @@
 	
 	<ul>
 	<% @items.each do |item| %>
-		<li><%= item.id %> - <%= link_to item.name, item %></li>
+		<li><%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %> </li>
 	<% end %>
 	</ul>
 
