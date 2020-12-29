@@ -2,18 +2,14 @@ class FoldersController < ApplicationController
   before_action :set_folder, only: [:show, :edit, :update, :destroy]
 
   # GET /folders
-  # GET /folders.json
   def index
     @folders = Folder.all
   end
 
   # GET /folders/1
-  # GET /folders/1.json
   def show
-  
   	# Breadcrumbs
 		@ancestors = Folder.find(@folder.path_ids)
-  
    	# Derniers items modifiés dans cette catégorie
 		if @folder.is_root?
 			@last_modified = @folder.last_modified
@@ -66,7 +62,7 @@ class FoldersController < ApplicationController
       end 
     end
     
-    # tag list pour actions
+    # Tag list pour actions
     @tag_list = Tag.all.order(name: :asc).pluck(:name)
     # Suggestions pour l'ajout de nouvel item
     if @items.present?
@@ -74,12 +70,16 @@ class FoldersController < ApplicationController
 	    number = last_item.number || 0
   	  @new_item_options = { number: number+1 , tag_names: last_item.tag_names, folder_id: @folder.id}
   	end
+  	# Suggestion pour l'ajout de nouveau dossier
+  	parent_id = @folder.is_root? ? "" : @folder.parent.id
+  	@new_folder_options = { parent_id: parent_id }
   	  
   end
 
   # GET /folders/new
   def new
     @folder = Folder.new
+    @folder.parent_id = params[:parent_id] 
   end
 
   # GET /folders/1/edit
@@ -87,28 +87,25 @@ class FoldersController < ApplicationController
   end
 
   # POST /folders
-  # POST /folders.json
   def create
     @folder = Folder.new(folder_params)
 		if @folder.save
-		 	redirect_to @folder, notice: 'Folder was successfully created.'
+		 	redirect_to @folder, notice: 'Dossier créé avec succès'
 		else
 			render :new 
     end
   end
 
   # PATCH/PUT /folders/1
-  # PATCH/PUT /folders/1.json
   def update
     if @folder.update(folder_params)
-			redirect_to @folder, notice: 'Folder was successfully updated.'
+			redirect_to @folder, notice: 'Dossier mis à jour'
     else
 			render :edit
     end
   end
 
   # DELETE /folders/1
-  # DELETE /folders/1.json
   def destroy
     @folder.destroy
 		redirect_to welcome_collector_path, notice: 'Dossier supprimé'

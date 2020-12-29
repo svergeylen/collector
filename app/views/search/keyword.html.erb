@@ -1,6 +1,9 @@
 <div class="rounded-box search_results">
+	<div class="float-right">
+		<%= render partial: "shared/collector_menu" %>
+	</div>
+	
 	<h2>Recherche de "<%= @keyword %>"</h2>
-
 
 	<% if @folders.present? %>
 		<h4><%= pluralize( @folders.count, "dossier trouvé", "dossiers trouvés", locale: :fr) %> : </h4>

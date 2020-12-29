@@ -47,7 +47,7 @@
       <% end %>
       
       <div class="dropdown-divider"></div>
-      <%= link_to "<i class='far fa-folder'></i>Nouveau dossier".html_safe, new_folder_path, class:'dropdown-item' %>
+      <%= link_to "<i class='far fa-folder'></i>Nouveau dossier".html_safe, new_folder_path(@new_folder_options), class:'dropdown-item' %>
       <% if @folder.present? %> 
       	<%= link_to "<i class='fas fa-folder'></i>Modifier dossier".html_safe, edit_folder_path(@folder), class:'dropdown-item' %>
         <%= link_to "<i class='far fa-trash-alt'></i>Supprimer dossier".html_safe, @folder, method: :delete, class:'dropdown-item', data: { confirm: 'Etes vous certain de supprimer ce dossier définitiement ?' } %>
