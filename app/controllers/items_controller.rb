@@ -51,6 +51,8 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
 
+		logger.debug @item.inspect
+
     if @item.save
       # Si l'utilisateur coche l'option "ajouter à ma collection", on ajoute cet élément directement.
       if params[:add_to_collection].present?
@@ -163,7 +165,7 @@ class ItemsController < ApplicationController
   end
 
 
-  private
+  private   
     # Sauvegarde les attachments s'il y en a
     def save_attachments
       # Paperclip multiple upload of attachments on Item
@@ -184,7 +186,7 @@ class ItemsController < ApplicationController
 
     # Realise toutes les opérations communes pour les formulaires new/edit (y compris avec erreur de validation)
     def render_correct_form(action)
-      @folders_list = Folder.all.order('lower(name)')
+      @folders_list = Folder.select(:name).order(:name).pluck(:name).to_json
     	@tag_list = Tag.order(name: :asc).pluck(:name)
       render "items/"+action
     end
@@ -201,6 +203,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:number, :name, :folder_id, :description, :attachments, :tag_names)
+      params.require(:item).permit(:number, :name, :folder_id, :folder_name, :parent_name, :description, :attachments, :tag_names)
     end
 end

@@ -80,6 +80,7 @@ class FoldersController < ApplicationController
 
   # GET /folders/new
   def new
+	  edit_new_actions
     @folder = Folder.new
     @folder.parent_id = params[:parent_id] 
   end

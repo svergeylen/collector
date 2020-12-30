@@ -15,11 +15,14 @@ class Item < ApplicationRecord
 	validates :name, presence: true
 	validates :adder_id, presence: true
 
-	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
-
 	attr_writer :tag_names 			# tags form item générique
+	attr_writer :folder_name
+	attr_writer :parent_name
+
+	before_validation :save_folder
 	before_save :save_tags
 
+	# --------------------- VIRTUAL ATTRIBUTES ---------------------------------------------------------------------------
 	# Donne la liste de tags de l'item au format string séparé par une virgule
 	def tag_names
 		@tag_names || tags.pluck(:name).join(", ")
@@ -43,13 +46,27 @@ class Item < ApplicationRecord
 		end
 	end
 
-	
-	# Donne LE nom de la série de l'item dont le parent tag est donné.
-	# Pour Bonsais : parent_name = "Espèces" --> renvoie le premier tags enfant de "Espèces"
-	#def tag_serie_by(parent_name)
-	#	@tag_series || tags_with_parent(parent_name).first
-	#end
+	# Donne le nom du folder
+	def folder_name
+		@folder_name || (folder.present? ? folder.name : "")
+	end
 
+	# Before_save : Sauvegarde le nom du folder donné en string
+	def save_folder
+		logger.debug "-------- save_folder ---------"
+		if @folder_name	
+			folder = Folder.find_by(name: @folder_name)
+			logger.debug folder.inspect
+			if folder.nil?
+				#parent = Folder.find_by(name: params[:parent_name])
+				#parent_id = parent.present? ? parent.id : nil
+				folder = Folder.create(name: @folder_name, parent_id: nil)
+			end
+			logger.debug folder.inspect
+			self.folder = folder
+		end
+	end
+	
 	# --------------------- TAGS ---------------------------------------------------------------------------
 
 	# Ajoute l'array de tag_names à l'item sans créer de doublon. Crée les tags si inexistants.
