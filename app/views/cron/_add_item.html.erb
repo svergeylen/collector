@@ -2,7 +2,7 @@
 <ul>
 	<% data[:items].each do |item| %>
 		<li>
-			<%= sanitize (link_to(folder.name, folder)) %> : <%= sanitize (link_to item.name, item) %>
+			<%= sanitize (link_to(item.folder.name, item.folder)) if item.folder.present? %> : <%= sanitize (link_to item.name, item) %>
 		</li>
 	<% end %>
 </ul>

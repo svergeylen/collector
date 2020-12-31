@@ -30,7 +30,7 @@ class CronController < ApplicationController
 							 	item_ids << job.element_id
 							end
 						 }
-						items = Item.find( item_ids )
+						items = Item.includes(:folder).find( item_ids )
 						
 						data = { jobs: jobs,
 								 items: items,
