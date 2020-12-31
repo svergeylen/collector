@@ -53,7 +53,7 @@ class Item < ApplicationRecord
 
 	# Before_save : Sauvegarde le nom du folder donné en string
 	def save_folder
-		logger.debug "-------- save_folder ---------"
+		logger.debug "-------- Item : before_save ---------"
 		if @folder_name	
 			logger.debug "Recherche du folder : "+@folder_name
 			folder = Folder.find_by(name: @folder_name)

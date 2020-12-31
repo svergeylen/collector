@@ -80,12 +80,14 @@ class FoldersController < ApplicationController
 
   # GET /folders/new
   def new
+  	new_and_edit_actions
     @folder = Folder.new
     @folder.parent_id = params[:parent_id] 
   end
 
   # GET /folders/1/edit
   def edit
+  	new_and_edit_actions
   end
 
   # POST /folders
@@ -118,9 +120,13 @@ class FoldersController < ApplicationController
     def set_folder
       @folder = Folder.find(params[:id])
     end
+    
+    def new_and_edit_actions
+			@folders_list = Folder.select(:name).order(:name).pluck(:name).to_json
+    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def folder_params
-      params.require(:folder).permit(:name, :parent_id, :letter, :default_view)
+      params.require(:folder).permit(:name, :parent_name, :letter, :default_view)
     end
 end

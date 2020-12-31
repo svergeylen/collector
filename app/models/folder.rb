@@ -3,9 +3,30 @@ class Folder < ApplicationRecord
 	
 	has_many :items
 	
-	before_validation :add_letter
+	before_validation :add_letter, :save_parent
 	before_destroy :reallocate_items
 
+	attr_writer :parent_name		# version string du folder parent
+
+	# Donne le nom du parent
+	def parent_name
+		@parent_name || (parent.present? ? parent.name : "")
+	end
+
+	# Before_save : Sauvegarde le nom du folder donné en string
+	def save_parent
+		logger.debug "-------- Folder : before_save : save_parent ---------"
+		if @parent_name
+			# Si le texte renvoyé est vide, cela devient un noeud racine
+			if @parent_name == ""
+				self.parent = nil
+			else
+				# On n'associe le folder à son parent QUE si le parent existe. Sinon, on ne modifie pas le parent du tout (ignore)
+				folder = Folder.find_by(name: @parent_name)
+				self.parent = folder if folder.present?
+			end
+		end
+	end
 	
 	# renvoie les 6 derniers items modifié de ce folder OU des folders enfants
 	def last_modified

@@ -15,17 +15,21 @@
 
   <div class="form-group row">
     <label for="item_name" class="col-sm-2 col-form-label">Nom</label>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
     	<%= form.text_field :name, id: :folder_name, class: "form-control", autocomplete: :off %>
     </div>  
   </div>
   
+  <script>
+  	var j_folder_list = <%= 	raw json_escape(@folders_list) %>;
+	</script>
   <div class="form-group row">
-    <label for="item_name" class="col-sm-2 col-form-label">Parent</label>
-    <div class="col-sm-4">
-    	<%= form.collection_select :parent_id, Folder.all.order(:name), :id, :name, {prompt: true}, {class: 'form-control'} %>
+    <label for="parent_name" class="col-sm-2 col-form-label">Dossier parent</label>
+    <div class="col-sm-3 ui-widget">
+    	<%= form.text_field :parent_name, id: :parent_name, class: "form-control" %>
     </div>  
   </div>
+  
   
   <div class="form-group row">
     <label for="folder_letter" class="col-sm-2 col-form-label">Classement</label>
@@ -38,7 +42,7 @@
     <div class="col-form-label col-sm-2" >
       Affichage
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-3">
        <%= form.select(:default_view, options_for_select([ ["Liste", "list"],["Galerie", "gallery"] ], @folder.default_view), {}, { class:"form-control custom-select" } ) %>
     </div>
   </div> 
