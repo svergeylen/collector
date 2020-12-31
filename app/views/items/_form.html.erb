@@ -31,7 +31,7 @@
     	<%= form.text_field :folder_name, id: :folder_name, class: "form-control", placeholder: "Dossier"  %>
     </div>  
     <div class="col-sm-3 ui-widget">
-		  <%= form.text_field :parent_name, id: :parent_name, class: "form-control", placeholder:"Dossier parent"  %>
+		  <%= form.text_field :parent_name, id: :parent_name, class: "form-control", placeholder:"Dossier parent", disabled: true, value: @parent_name  %>
   	</div>
   </div>
   

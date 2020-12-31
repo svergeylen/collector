@@ -16,8 +16,8 @@ class Item < ApplicationRecord
 	validates :adder_id, presence: true
 
 	attr_writer :tag_names 			# tags form item générique
-	attr_writer :folder_name
-	attr_writer :parent_name
+	attr_writer :folder_name		# version string du folder souhaité pour l'item
+	attr_writer :parent_name		# version string du parent du folder créé (lors de la création d'un folder à la volée)
 
 	before_validation :save_folder
 	before_save :save_tags
@@ -55,14 +55,20 @@ class Item < ApplicationRecord
 	def save_folder
 		logger.debug "-------- save_folder ---------"
 		if @folder_name	
+			logger.debug "Recherche du folder : "+@folder_name
 			folder = Folder.find_by(name: @folder_name)
-			logger.debug folder.inspect
 			if folder.nil?
-				#parent = Folder.find_by(name: params[:parent_name])
-				#parent_id = parent.present? ? parent.id : nil
-				folder = Folder.create(name: @folder_name, parent_id: nil)
+				logger.debug "Recherche/Création du parent : "+@parent_name
+				parent = Folder.find_by(name: @parent_name)
+				logger.debug parent.inspect
+				parent_id = parent.present? ? parent.id : nil
+
+				# Ici, si on ne trouve pas le parent, on ne le créé pas ! (il est donc impossible de créer un nouveau folder ET un nouveau parent... qui n'aurait pas de parent lui même)
+				logger.debug "Création du folder : "+@folder_name
+				folder = Folder.create(name: @folder_name, parent_id: parent_id)
 			end
 			logger.debug folder.inspect
+			# Attribution du folder à l'item, qu'il ait été créé ou retrouvé
 			self.folder = folder
 		end
 	end

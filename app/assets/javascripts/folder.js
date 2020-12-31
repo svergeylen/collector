@@ -13,6 +13,7 @@ function updateForm(val) {
 
 document.addEventListener("turbolinks:load", function() {
 
+	/* --- FOLDER NAME --- */
 	/* Lorsque le nom d'un folder est modifié, définir la lettre de classement (si elle est vide) */
 	var fn = $("input#folder_name");
 	fn.change(function() {
@@ -28,7 +29,7 @@ document.addEventListener("turbolinks:load", function() {
   	classes: {
     	"ui-autocomplete": "highlight"
   	},
-  	delay: 0, /* donnees locales pour recherche rapide :-) */
+  	delay: 0,
   	change: function( event, ui ) {
   		updateForm(this.value);
   	},
@@ -36,5 +37,14 @@ document.addEventListener("turbolinks:load", function() {
   		updateForm(ui.item.value);
   	}
   });
-	
+  
+  /* --- PARENT NAME --- */
+	$("input#parent_name").autocomplete({
+  	source: j_folder_list,
+  	autoFocus: true,
+  	classes: {
+    	"ui-autocomplete": "highlight"
+  	},
+  	delay: 0
+  });
 });

@@ -31,7 +31,7 @@
 		</div>
 	<% end %>
 
-	<% if (@subfolders.present? && @subfolders.size > 20) || (params[:letter].present?) %>
+	<% if (@subfolders.present? && @subfolders.size > 2) || (params[:letter].present?) %>
 		<ul class="nav nav-pills nav-justified">
 			<% ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "WXYZ", "#", "Tous"].each do |letter| %>
 				<li><%= link_to letter, folder_path(@folder, letter: letter),  class: "btn btn-default btn-light  #{"active" if (params[:letter]==letter)}" %></li>

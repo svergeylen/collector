@@ -188,6 +188,9 @@ class ItemsController < ApplicationController
     def render_correct_form(action)
       @folders_list = Folder.select(:name).order(:name).pluck(:name).to_json
     	@tag_list = Tag.order(name: :asc).pluck(:name)
+    	if @item.folder.present? and @item.folder.parent.present?
+	    	@parent_name = @item.folder.parent.name
+    	end
       render "items/"+action
     end
 
