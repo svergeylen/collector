@@ -6,14 +6,22 @@
 	<h4>Tag : <%= @tag.name %></h4>
 
 
-	<%= will_paginate @items %>
 	
+
+	<%= will_paginate @items %>
+
 	<ul>
 	<% @items.each do |item| %>
-		<li><%= link_to item.folder.name, item.folder %> : <%= link_to item.name, item %> </li>
+		<li><% if item.folder %> 
+					<%= link_to item.folder.name, item.folder %> : 
+				<% end %>
+				<%= link_to item.name, item %> </li>
 	<% end %>
 	</ul>
 
 	<%= will_paginate @items %>
+
+
+	
 		
 </div> <!-- rounded-box -->

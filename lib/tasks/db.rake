@@ -2,6 +2,58 @@ namespace :db do
 	desc "Conversion des données site Collector"
 
 
+
+	# Extraction des BD en fichiers
+	task exportBD: :environment do
+	require 'fileutils'
+		puts "Export des BD"	
+		FileUtils.mkdir_p 'tmp/exportBD'
+		File.open("tmp/exportBD/export.html", "w") do |f| 
+			f.write("<h1>Export des BD</h1>")
+			Folder.find_by(name: "BD").children.order(name: :asc).each do |folder|
+				puts " - "+folder.name+". "+			folder.items.count.to_s+" items"
+				f.write("<h2>"+folder.name + "</h2>\n")
+				f.write("<div class='list'>")
+				folder.items.order(number: :asc).each do |item|
+					puts "  - "+item.name
+					f.write("<p>"+item.friendly_number+"#tab#"+item.name+"#tab#"+item.tag_names+"</p>")
+				end
+			f.write("</div>")				
+			end
+		end
+		puts "Fin"
+	end
+	
+	
+	# Extraction des bonsais en fichiers
+	task export: :environment do
+	require 'fileutils'
+		puts "Exportdes bonsais"	
+		FileUtils.mkdir_p 'tmp/export'
+		Folder.find_by(name: "Bonsais").children.each do |folder|
+			puts " - "+folder.name+". "+			folder.items.count.to_s+" items"
+			folder.items.each do |item|
+				puts "  - "+item.name
+				FileUtils.mkdir_p 'tmp/export/' + folder.name.gsub(/[^0-9A-z.\-]/, ' ')
+				filename = "tmp/export/" + folder.name.gsub(/[^0-9A-z.\-]/, ' ') + "/" + item.name.gsub(/[^0-9A-z.\-]/, ' ')+".txt"
+				
+				File.open(filename, "w") do |f| 
+					f.write(folder.name + " : "+ item.name+"\n")
+					f.write("  créé le "+item.created_at.strftime("%d %B %Y").to_s+"\n\n")
+					f.write(item.description.to_s+"\n\n") if item.description.present?
+									
+					item.notes.order(created_at: :desc	).each do |note|
+						f.write(note.created_at.strftime("%d %B %Y").to_s+"\n") 
+						f.write(note.classification.to_s+"\n") if note.classification.present?
+						f.write(note.message.to_s+"\n\n")  if note.message.present?
+					end
+				end	
+			end
+		end
+		puts "Fin"
+	end
+	
+
 	# Crée les folders 
 	task create_folders_items: :environment do
 		puts "Création des folders"	
@@ -42,6 +94,23 @@ namespace :db do
 		puts "Item sans folder : "
 		puts Item.where(folder_id: :nil).pluck(:name).join(", ")
 		puts "Fin de fin"
+	end
+	
+	# Livres et films à la main... 
+	task update_films: :environment do
+		puts "--- début ---"
+		film_folder = Folder.find_or_create_by(name: "Films") 
+		
+		items_ids = Item.where(folder_id: nil).each do |item|
+			if item.tags.first.name == "Voie libre"
+				item.destroy 
+			else
+				item.folder = film_folder
+				item.save
+			end	
+		end
+		puts "--- fin---"
+		
 	end
 	
 	

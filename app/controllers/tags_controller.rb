@@ -37,6 +37,7 @@ class TagsController < ApplicationController
     if @tag
       # Recherche des items qui possèdent tous les tags actifs
       items = @tag.items #order(@order)
+      logger.debug "---->"+items.count.to_s
       @items = items.paginate(page: params[:page], per_page: 100)
     end # if tag
   end # show

@@ -147,7 +147,11 @@ class Item < ApplicationRecord
 				ret = self.number.to_s
 			end
 		end
-		return ret
+		if ret.nil? 
+			return ""
+		else
+			return ret
+		end
 	end
 
 	# --------------------------- RECHERCHE -------------------------------------------------------------
