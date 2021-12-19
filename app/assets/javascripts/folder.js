@@ -13,6 +13,9 @@ function updateForm(val) {
 
 document.addEventListener("turbolinks:load", function() {
 	
+	/* Actions bas de page */
+	folder_names = create_selectize("folder_names");
+	
 	/* il faut que la liste des folder soit définie dans cette vue pour lancer le script autocompete */
 	if (typeof j_folder_list !== 'undefined') {
 	
@@ -41,7 +44,7 @@ document.addEventListener("turbolinks:load", function() {
 			}
 		});
 		
-		/* --- view ITEM _form et FODLER _form : PARENT NAME  --- */
+		/* --- view ITEM _form et FOLDER _form : PARENT NAME  --- */
 		/* This is for selection of PARENT, that shall exist in the list. --> Erase user input if not pick from the list */
 		$("input#parent_name").autocomplete({
 			source: j_folder_list,

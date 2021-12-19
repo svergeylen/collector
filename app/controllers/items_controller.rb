@@ -90,6 +90,7 @@ class ItemsController < ApplicationController
     redirect_to welcome_collector_path, notice: 'Elément supprimé'
   end
 
+
   # Gestion des actions réalisées sur une liste d'items.
   # params contient la liste des item_id qu'il faut modifier
   def actions 
@@ -122,6 +123,23 @@ class ItemsController < ApplicationController
         redirect_to back, notice: 'Eléments supprimés du Collector'
       end
 
+
+			# Déplacement dans un autre sous dossier
+      if params[:move_to_folder].present?
+      	if params[:folder_names].present?
+		      params[:item_ids].each do |item_id|
+		        i = Item.find(item_id)
+		        i.folder_name = params[:folder_names].split(",").first
+		        i.save_folder
+		        i.save
+		      end
+	        redirect_to back, notice: 'Item déplacé dans le dossier'
+	      else
+	        redirect_to back, notice: 'Pas de dossier sélectionné ou trouvé'
+	      end
+	       
+      end
+      
       # On ajoute le(s) tag(s) donné(s) aux items sélectionnés
       if params[:add_tag].present?
         params[:item_ids].each do |item_id|

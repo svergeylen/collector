@@ -56,30 +56,11 @@ function create_selectize(id) {
 /* On document ready */
 document.addEventListener("turbolinks:load", function() {
 
-	// New,Edit item
+	// Actions en bas de page (folder:index, item:show/edit)
 	tag_names = create_selectize("tag_names");
 
 	// New,Edit Tag
 	parent_tag_names = create_selectize("parent_tag_names");
 
-	// Show tag : actions en bas de page : modification du rangement de plusieurs items sélectionnés
-	rangements = create_selectize("rangements");
-
-	// Modification de l'item_type dans les formulaire edit/new item
-	$("#item_type").change(function(e) {
-		proposed_names = [];
-		if (tag_names) 		{ proposed_names.push(tag_names.items); }
-		if (tag_rangements) { proposed_names.push(tag_rangements.items); }
-
-		args = location.pathname;
-		args+= "?item_type="+$(this).val();
-		args+= "&name="+$("#item_name").val();
-		args+= "&number="+$("#item_number").val();
-		args+= "&tag_names="+proposed_names.join();
-		if ($("#item_description").val() != undefined) { args+= "&description="+$("#item_description").val(); }
-
-		$(location).attr('href', args);
-		// console.log(args);
-	});
 
 });

@@ -62,6 +62,9 @@ class FoldersController < ApplicationController
       end 
     end
     
+    # Folder list pour actions
+    @folder_list = Folder.all.order(name: :asc).pluck(:name)
+    
     # Tag list pour actions
     @tag_list = Tag.all.order(name: :asc).pluck(:name)
     # Suggestions pour l'ajout de nouvel item
@@ -76,6 +79,7 @@ class FoldersController < ApplicationController
   	# parent_id = @folder.is_root? ? "" : @folder.parent.id
   	@new_folder_options = { parent_id: @folder.id }
   	  
+  	
   end
 
   # GET /folders/new
