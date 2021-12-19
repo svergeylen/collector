@@ -7,27 +7,8 @@ class TagsController < ApplicationController
   # Attention, ne pas confondre avec welcome > Collector
   def index
     per_page = 50
-    case params[:letter]
-      when "A".."W"
-        @tags = Tag.includes(:items).where(letter: params[:letter].upcase).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "XYZ"
-        @tags = Tag.includes(:items).where(letter: "X".."Z").order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "#"
-        @tags = Tag.includes(:items).where(letter: 0..9999999).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "Vide"
-        @tags = Tag.includes(:items).where(letter: [nil, ""]).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      when "Racine"
-        # Recherche de tags orphelins (suppression de leur parent ou erreur database)
-        all_tags = Tag.all.map(&:id)
-        all_tags_with_parent = Ownertag.where(owner_type: "Tag").map(&:tag_id)
-        orphan_ids = all_tags - all_tags_with_parent
-        @tags = Tag.includes(:items).where(id: orphan_ids).order(name: :asc).paginate(page: params[:page], per_page: per_page)
-      else
-        # pas d'action. @tags = nil
-        @tag_counter = Tag.all.count 
-    end
-
-    # Options pour les actions en bas de page (selectize)
+		@tags = Tag.includes(:items).order(name: :asc).paginate(page: params[:page], per_page: per_page)
+	  # Options pour les actions en bas de page (selectize)
     @tag_list = Tag.order(name: :asc).pluck(:name)
 
   end
@@ -37,7 +18,6 @@ class TagsController < ApplicationController
     if @tag
       # Recherche des items qui possèdent tous les tags actifs
       items = @tag.items #order(@order)
-      logger.debug "---->"+items.count.to_s
       @items = items.paginate(page: params[:page], per_page: 100)
     end # if tag
   end # show
