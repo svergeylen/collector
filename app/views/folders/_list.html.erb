@@ -2,7 +2,7 @@
 
 	<li class="list-group-item collector-item-li bg-major pt-2 pb-2">
 		<div class="row align-items-center">
-			<div class="col-10 col-lg-5 row">
+			<div class="col-11 col-lg-7 row">
 				<div class="col-2">
 					N°
 				</div>
@@ -10,7 +10,7 @@
 					Titre
 				</div>
 			</div>
-			<div class="col-lg-5 d-none d-lg-block">
+			<div class="col-lg-4 d-none d-lg-block">
 				Tags
 			</div>
 		</div>
@@ -19,23 +19,21 @@
 	<% items.each do |item| %>
 		<li class="list-group-item collector-item-li <%= item.is_owned? ? "owned" : "not-owned" %>" data-item-id="<%= item.id.to_s %>">
 			<div class="row align-items-center">
-				<div class="col-10 col-lg-5 row" >
+				<div class="col-11 col-lg-7 row" >
 					<div class="col-2 text-secondary">
+						<%= link_to "<i class='far fa-edit'></i>".html_safe, edit_item_path(item), class:"text-secondary" %>
 						<%= item.friendly_number %>
 					</div>
 					<div class="col-10">
 						<%= link_to item.name, item %>
 					</div>
 				</div>
-				<div class="col-lg-5 d-none d-lg-block">
+				<div class="col-lg-4 d-none d-lg-block">
 					<%= item.tags.map { |tag| link_to tag.name, tag }.join(", ").html_safe %>
 				</div>
 				<div class="col-1 col-lg-1 text-right">
 					<%= render_users(item) %>
 					<%= check_box_tag 'item_ids[]', item.id, false, {id: dom_id(item), style: "display:none;"} %>
-				</div>
-				<div class="col-1 col-lg-1 text-right">
-					<%= link_to "<i class='far fa-edit'></i>".html_safe, edit_item_path(item) %>
 				</div>
 			</div>
 		</li>

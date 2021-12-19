@@ -51,8 +51,6 @@ class ItemsController < ApplicationController
     @item = Item.new(item_params)
     @item.adder_id = current_user.id
 
-		logger.debug @item.inspect
-
     if @item.save
       # Si l'utilisateur coche l'option "ajouter à ma collection", on ajoute cet élément directement.
       if params[:add_to_collection].present?
