@@ -23,8 +23,10 @@ namespace :db do
 
 						
 						bonsai.notes.order(created_at: :asc).each do |note|
-							puts "     "+note.message.to_s
-							f.write(" - "  + " : " + note.classification.to_s + " - " + note.message.to_s + "\n")  #+ note.created_at.strftime("%d/%m/%Y").to_s
+							puts "          " + note.created_at.strftime("%d/%m/%Y")
+							f.write(" - " 
+							f.write( note.created_at.strftime("%d/%m/%Y") ) 
+							f.write(" : " + note.classification.to_s + " - " + note.message.to_s + "\n")  
 						end
 						
 						bonsai.attachments.each do |a|
