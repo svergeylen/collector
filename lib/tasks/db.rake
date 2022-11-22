@@ -9,17 +9,19 @@ namespace :db do
 		prefix = 'tmp/exportbonsais/'
 		FileUtils.mkdir_p prefix
 		Folder.find_by(name: "Bonsais").children.order(name: :asc).each do |folder|
-				puts " - "+folder.name+". "+			folder.items.count.to_s+" items"
+				puts "  "+folder.name+" => "+			folder.items.count.to_s+" bonsais"
 				FileUtils.mkdir_p prefix + folder.name
 				folder.items.order(number: :asc).each do |bonsai|
-					puts "    - "+bonsai.name + " - " + bonsai.notes.count.to_s + " notes - "+ bonsai.attachments.count.to_s + " attachements"
-					path = prefix + folder.name + "/" + bonsai.number.to_s + " " + bonsai.name
+					puts "    - "+bonsai.name + ", " + bonsai.notes.count.to_s + " notes, "+ bonsai.attachments.count.to_s + " attachements"
+					path = prefix + folder.name + "/" + bonsai.name
 					FileUtils.mkdir_p path
 					
 					File.open(path+ "/" + bonsai.name + ".md", "w") do |f| 
-						f.write(bonsai.name+"\n")
-						f.write(bonsai.description+"\n")
-						f.write(bonsai.created_at+"\n\n")
+						puts "      "
+						f.write(bonsai.id.to_s + " " + bonsai.name + "\n")
+						f.write(bonsai.created_at.to_s + "\n\n")
+						f.write(bonsai.description.to_s + "\n\n")
+
 						
 						bonsai.notes.order(created_at: :asc).each do |note|
 							f.write(note.created_at+" : "+note.classification+ " - "+note.message+"\n")
