@@ -24,11 +24,11 @@ namespace :db do
 
 						
 						bonsai.notes.order(created_at: :asc).each do |note|
-							f.write(note.created_at+" : "+note.classification+ " - "+note.message+"\n")
+							f.write(note.created_at.to_s +" : "+note.classification.to_s+ " - "+note.message.to_s+"\n")
 						end
 						
 						bonsai.attachments.each do |a|
-							name = a.image.instance.image_file_name
+							name = a.image.instance.image_file_name.to_s
 							FileUtils.cp(a.image.path, path+"/"+name)
 						end
 						
