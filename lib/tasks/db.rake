@@ -19,7 +19,7 @@ namespace :db do
 					File.open(path+ "/" + bonsai.name + ".md", "w") do |f| 
 						puts "      "
 						f.write("# "bonsai.name +"\n")
-						f.write("Ajouté le "bonsai.created_at.strftime("%d/%m/%Y") + "\n\n")
+						f.write("Ajouté le " + bonsai.created_at.strftime("%d/%m/%Y") + "\n\n")
 						f.write(bonsai.description.to_s + "\n\n")
 
 						
