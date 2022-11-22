@@ -2,6 +2,42 @@ namespace :db do
 	desc "Conversion des données site Collector"
 
 
+	# Extraction des Bonsais en fichiers, dossiers et avec images orginale
+	task exportbonsais: :environment do
+	require 'fileutils'
+		puts "Export des Bonsais"	
+		prefix = 'tmp/exportbonsais/'
+		FileUtils.mkdir_p prefix
+		Folder.find_by(name: "Bonsais").children.order(name: :asc).each do |folder|
+				puts " - "+folder.name+". "+			folder.items.count.to_s+" items"
+				FileUtils.mkdir_p prefix + folder.name
+				folder.items.order(number: :asc).each do |bonsai|
+					puts "    - "+bonsai.name + " - " + bonsai.notes.count.to_s + " notes - "+ bonsai.attachments.count.to_s + " attachements"
+					path = prefix + folder.name + "/" + bonsai.number + " " + bonsai.name
+					FileUtils.mkdir_p path
+					
+					File.open(path+ "/" + bonsai.name + ".md", "w") do |f| 
+						f.write(bonsai.name+"\n")
+						f.write(bonsai.description+"\n")
+						f.write(bonsai.created_at+"\n\n")
+						
+						bonsai.notes.order(created_at: :asc).each do |note|
+							f.write(note.created_at+" : "+note.classification+ " - "+note.message+"\n")
+						end
+						
+						bonsai.attachments.each do |a|
+							name = a.image.instance.image_file_name
+							FileUtils.cp(a.image.path, path+"/"+name)
+						end
+						
+					end
+					
+				end
+			
+			end
+		puts "Fin"
+	end
+	
 
 	# Extraction des BD en fichiers
 	task exportBD: :environment do
