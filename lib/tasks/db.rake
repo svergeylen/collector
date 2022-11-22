@@ -13,7 +13,7 @@ namespace :db do
 				FileUtils.mkdir_p prefix + folder.name
 				folder.items.order(number: :asc).each do |bonsai|
 					puts "    - "+bonsai.name + " - " + bonsai.notes.count.to_s + " notes - "+ bonsai.attachments.count.to_s + " attachements"
-					path = prefix + folder.name + "/" + bonsai.number + " " + bonsai.name
+					path = prefix + folder.name + "/" + bonsai.number.to_s + " " + bonsai.name
 					FileUtils.mkdir_p path
 					
 					File.open(path+ "/" + bonsai.name + ".md", "w") do |f| 
