@@ -17,15 +17,14 @@ namespace :db do
 					FileUtils.mkdir_p path
 					
 					File.open(path+ "/" + bonsai.name + ".md", "w") do |f| 
-						puts "      "
-						f.write("# " + bonsai.name +"\n")
-						f.write("Ajouté le " + bonsai.created_at.strftime("%d/%m/%Y") + "\n\n")
+						f.write("# " + bonsai.name.to_s + "\n")
+						f.write("Ajouté le " + bonsai.created_at.strftime("%d/%m/%Y").to_s + "\n\n")
 						f.write(bonsai.description.to_s + "\n\n")
 
 						
 						bonsai.notes.order(created_at: :asc).each do |note|
 							puts "     "+note.message.to_s
-							f.write(" - "+note.created_at.strftime("%d/%m/%Y") +" : "+note.classification.to_s+ " - "+note.message.to_s+"\n")
+							f.write(" - "+note.created_at.strftime("%d/%m/%Y").to_s +" : "+note.classification.to_s+ " - "+note.message.to_s+"\n")
 						end
 						
 						bonsai.attachments.each do |a|
